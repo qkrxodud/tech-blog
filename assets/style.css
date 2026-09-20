@@ -17,7 +17,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 a { color: var(--ink); text-decoration: none; }
-.wrap { max-width: 640px; margin: 0 auto; padding: 0 28px; }
+/* 본문 폭. 코드 블록이 많은 글이라 한 줄이 잘리지 않을 만큼은 넓히되,
+   한글 한 줄이 50자를 크게 넘지 않는 선에서 잡았다. */
+.wrap { max-width: 800px; margin: 0 auto; padding: 0 32px; }
 
 /* 헤더 */
 .site-header { display: flex; align-items: baseline; padding: 34px 0 26px; }
@@ -55,7 +57,7 @@ a { color: var(--ink); text-decoration: none; }
 .row-title a:hover { color: var(--accent-strong); }
 .row-summary { font-size: 13.5px; color: var(--muted); line-height: 1.65; margin: 0 0 12px; }
 .row-meta { font: 400 12px var(--mono); color: var(--faint); }
-.row-thumb { width: 126px; height: 126px; flex: none; align-self: center; overflow: hidden; border-radius: 8px; background: var(--code-bg); }
+.row-thumb { width: 150px; height: 150px; flex: none; align-self: center; overflow: hidden; border-radius: 8px; background: var(--code-bg); }
 .row-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* 전체 글 보기 링크 */
@@ -154,7 +156,7 @@ a { color: var(--ink); text-decoration: none; }
 
 /* 검색 오버레이 */
 .search-overlay { position: fixed; inset: 0; background: rgba(17, 24, 19, .45); z-index: 100; padding: 10vh 20px 0; }
-.search-box { max-width: 560px; margin: 0 auto; background: #fff; border: 1px solid var(--ink); border-radius: 12px; box-shadow: 6px 6px 0 rgba(17, 24, 19, .25); overflow: hidden; }
+.search-box { max-width: 640px; margin: 0 auto; background: #fff; border: 1px solid var(--ink); border-radius: 12px; box-shadow: 6px 6px 0 rgba(17, 24, 19, .25); overflow: hidden; }
 .search-head { display: flex; align-items: center; border-bottom: 1px solid var(--line); }
 #search-input { flex: 1; border: none; outline: none; padding: 16px 20px; font: 500 16px 'IBM Plex Sans KR', sans-serif; background: none; color: var(--ink); }
 /* 브라우저 기본 지우기 버튼을 감춘다 — 우리 닫기 버튼과 겹쳐 보인다. */
