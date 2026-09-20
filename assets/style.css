@@ -71,6 +71,10 @@ a { color: var(--ink); text-decoration: none; }
 .arc-head a:hover { color: var(--accent-strong); }
 .arc-count { font: 400 12px var(--mono); color: var(--faint); margin-left: 4px; }
 .arc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+/* 제목만 늘어놓는 목록이라 넓은 화면에서는 두 줄로 나눠 담는다. */
+@media (min-width: 760px) {
+  .arc-list { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 28px; }
+}
 .arc-list li { font-size: 14.5px; line-height: 1.5; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 .arc-list a { color: var(--body); }
 .arc-list a:hover { color: var(--accent-strong); }
