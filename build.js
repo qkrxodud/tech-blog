@@ -1,0 +1,385 @@
+// 정적 사이트 빌드 스크립트
+// content/<slug>/index.md (frontmatter + 본문) → dist/ 정적 HTML
+const fs = require('fs');
+const path = require('path');
+const { marked } = require('marked');
+
+const ROOT = __dirname;
+const DIST = path.join(ROOT, 'dist');
+const CONTENT = path.join(ROOT, 'content');
+
+const config = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'categories.json'), 'utf8'));
+const postMeta = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'posts.json'), 'utf8'));
+
+marked.setOptions({ gfm: true, breaks: false, mangle: false, headerIds: false });
+
+// ---------- 유틸 ----------
+const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+function parseFrontmatter(raw) {
+  const m = raw.match(/^---\n([\s\S]*?)\n---\n?/);
+  if (!m) return { attrs: {}, body: raw };
+  const attrs = {};
+  for (const line of m[1].split('\n')) {
+    const idx = line.indexOf(':');
+    if (idx < 0) continue;
+    const key = line.slice(0, idx).trim();
+    let val = line.slice(idx + 1).trim();
+    if (val.startsWith('[')) {
+      try { attrs[key] = JSON.parse(val); continue; } catch { /* fallthrough */ }
+    }
+    if (/^".*"$/.test(val)) val = JSON.parse(val);
+    else if (/^\d+$/.test(val)) val = Number(val);
+    attrs[key] = val;
+  }
+  return { attrs, body: raw.slice(m[0].length) };
+}
+
+function stripMd(md) {
+  return md
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`([^`]*)`/g, '$1')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/[#>*_|-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function readingTime(text) {
+  return Math.max(1, Math.round(text.length / 600));
+}
+
+// 제목 앞의 대괄호 접두어를 덜어낸다. 화면에는 카테고리·시리즈 라벨이 이미
+// 붙으므로 "[Java] GC 튜닝" 같은 제목은 라벨과 중복된다.
+const TITLE_PREFIXES = /^\s*\[(java|spring|db|git|kafka|clean[ -]?code|리뷰)\]\s*/i;
+function cleanTitle(raw, inSeries) {
+  let t = raw.trim();
+  // 시리즈 글은 시리즈 박스가 맥락을 주므로 대괄호 접두어를 모두 덜어낸다.
+  if (inSeries) t = t.replace(/^\s*\[[^\]]+\]\s*/, '');
+  while (TITLE_PREFIXES.test(t)) {
+    const stripped = t.replace(TITLE_PREFIXES, '');
+    // 접두어를 떼면 "[Kafka] 재처리" → "재처리"처럼 뜻이 흐려지는 제목이 있다.
+    // 그런 경우엔 대괄호만 벗기고 단어는 제목에 남긴다.
+    if (stripped.trim().length < 10) { t = t.replace(/^\s*\[([^\]]+)\]\s*/, '$1 '); break; }
+    t = stripped;
+  }
+  return t.replace(/\s*\(1\)\s*$/, '').trim();
+}
+
+// 본문의 로컬 이미지 링크를 images/ 안의 실제 파일명으로 맞춘다.
+// 원본 파일명에 공백·괄호가 섞여 있어 링크가 어긋나기 쉬우므로, 파일명 앞의
+// 일련번호(01_, 02_ …)를 키로 삼아 실제 파일을 찾는다.
+function fixImageLinks(body, slug) {
+  const dir = path.join(CONTENT, slug, 'images');
+  if (!fs.existsSync(dir)) return body;
+  const files = fs.readdirSync(dir).filter(f => !f.startsWith('.'));
+  const byNum = {};
+  for (const f of files) {
+    const m = f.match(/^(\d+)_/);
+    if (m) byNum[m[1]] = f;
+  }
+  const used = new Set();
+  const out = body.replace(/!\[[^\]]*\]\(\s*(?:\.\/)?images\/(\d+)[^\n]*?\.(?:png|jpe?g|gif|webp|svg)\)?/gi,
+    (whole, num) => {
+      const file = byNum[num.padStart(2, '0')] || byNum[num];
+      if (!file) { console.warn(`이미지 없음: ${slug} / ${num}`); return whole; }
+      used.add(file);
+      return `![](images/${file})`;
+    });
+  const missing = files.filter(f => !used.has(f));
+  if (missing.length) console.warn(`본문에 삽입되지 않은 이미지: ${slug} → ${missing.join(', ')}`);
+  return out;
+}
+
+// ---------- 콘텐츠 로드 ----------
+const posts = [];
+for (const meta of postMeta) {
+  const mdPath = path.join(CONTENT, meta.slug, 'index.md');
+  if (!fs.existsSync(mdPath)) { console.warn('누락:', meta.slug); continue; }
+  const raw = fs.readFileSync(mdPath, 'utf8');
+  const parsed = parseFrontmatter(raw);
+  const attrs = parsed.attrs;
+  const body = fixImageLinks(parsed.body, meta.slug);
+  const plain = stripMd(body);
+  const firstImg = (body.match(/!\[[^\]]*\]\((images\/[^)]+)\)/) || [])[1] || null;
+  posts.push({
+    ...meta,
+    title: cleanTitle(attrs.title || meta.slug, Boolean(meta.series)),
+    tags: attrs.tags || [],
+    summary: attrs.summary || '',
+    body, plain,
+    minutes: readingTime(plain),
+    thumb: firstImg,
+    catName: config.categories[meta.category].name,
+    url: `posts/${meta.slug}/`,
+  });
+}
+
+const byCategory = {};
+for (const p of posts) (byCategory[p.category] ??= []).push(p);
+const seriesMap = {};
+for (const p of posts) if (p.series) (seriesMap[p.series] ??= []).push(p);
+for (const s of Object.values(seriesMap)) s.sort((a, b) => a.seriesOrder - b.seriesOrder);
+
+// ---------- 공통 템플릿 ----------
+function page({ rel, title, description, canonicalPath, content, extraHead = '' }) {
+  const canonical = `${config.baseUrl}/${canonicalPath}`;
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(description)}">
+<link rel="canonical" href="${canonical}">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${canonical}">
+<meta property="og:site_name" content="${esc(config.siteTitle)}">
+<link rel="alternate" type="application/rss+xml" title="${esc(config.siteTitle)}" href="${config.baseUrl}/rss.xml">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="${rel}assets/style.css">
+${extraHead}
+</head>
+<body>
+<div class="wrap">
+  <header class="site-header">
+    <a class="logo" href="${rel}">코징의 개발탐방<span class="dot">.</span></a>
+    <nav>
+      <a href="${rel}">홈</a>
+      <a href="${rel}about/">소개</a>
+      <button class="search-btn" id="search-open" aria-label="검색">⌕</button>
+    </nav>
+  </header>
+${content}
+  <footer class="site-footer">
+    <span>© 2026 ${esc(config.author)}</span>
+    <span class="footer-links"><a href="${rel}rss.xml">RSS</a> · <a href="https://github.com/qkrxodud/tech-blog">GitHub</a></span>
+  </footer>
+</div>
+<div class="search-overlay" id="search-overlay" hidden>
+  <div class="search-box">
+    <div class="search-head">
+      <input type="search" id="search-input" placeholder="제목, 태그, 본문 검색…" autocomplete="off">
+      <button id="search-close" aria-label="닫기">✕</button>
+    </div>
+    <div class="search-results" id="search-results"><div class="search-hint">검색어를 입력하시면 전체 글에서 찾아드립니다.</div></div>
+  </div>
+</div>
+<script>window.__REL__=${JSON.stringify(rel)};</script>
+<script src="${rel}assets/search.js" defer></script>
+</body>
+</html>`;
+}
+
+function seriesLabel(p) {
+  if (!p.series) return `<div class="row-cat">${esc(p.catName.toUpperCase())}</div>`;
+  const s = seriesMap[p.series];
+  return `<div class="row-cat accent">${esc(p.series.toUpperCase())} · ${p.seriesOrder}/${s.length}</div>`;
+}
+
+function postRow(p, rel) {
+  const thumb = p.thumb
+    ? `<a class="row-thumb" href="${rel}${p.url}"><img src="${rel}posts/${p.slug}/${encodeURI(p.thumb)}" alt="" loading="lazy"></a>`
+    : '';
+  return `<article class="post-row">
+  <div class="row-main">
+    ${seriesLabel(p)}
+    <h2 class="row-title"><a href="${rel}${p.url}">${esc(p.title)}</a></h2>
+    <p class="row-summary">${esc(p.summary)}</p>
+    <div class="row-meta">${esc(p.catName)} — ${p.minutes} min</div>
+  </div>
+  ${thumb}
+</article>`;
+}
+
+// ---------- 홈 ----------
+function homeTabs(rel, activeSlug) {
+  const tabs = [`<a class="tab${activeSlug === null ? ' active' : ''}" href="${rel}">전체</a>`];
+  for (const c of config.homeTabs) {
+    tabs.push(`<a class="tab${activeSlug === c ? ' active' : ''}" href="${rel}category/${c}/">${esc(config.categories[c].name)}</a>`);
+  }
+  const rest = Object.keys(config.categories).length - config.homeTabs.length;
+  tabs.push(`<button class="tab tab-all" id="panel-toggle">모든 주제 +${rest} <span id="panel-arrow">▾</span></button>`);
+  return `<div class="tabs">${tabs.join('\n')}</div>`;
+}
+
+function topicPanel(rel) {
+  const cols = config.groups.map(g => {
+    const items = g.categories.map(c => {
+      const n = (byCategory[c] || []).length;
+      return `<a href="${rel}category/${c}/"><span>${esc(config.categories[c].name)}</span><span class="count">${n}</span></a>`;
+    }).join('\n');
+    return `<div class="panel-col"><div class="panel-title">${esc(g.name)}</div><div class="panel-items">${items}</div></div>`;
+  }).join('\n');
+  return `<div class="topic-panel" id="topic-panel" hidden><div class="panel-grid">${cols}</div></div>
+<script>document.addEventListener('DOMContentLoaded',function(){var t=document.getElementById('panel-toggle'),p=document.getElementById('topic-panel'),a=document.getElementById('panel-arrow');if(t)t.addEventListener('click',function(){p.hidden=!p.hidden;a.textContent=p.hidden?'▾':'▴';});});</script>`;
+}
+
+function buildHome() {
+  const rel = './';
+  const rows = posts.map(p => postRow(p, rel)).join('\n');
+  const content = `${homeTabs(rel, null)}\n${topicPanel(rel)}\n<div class="post-list">${rows}</div>`;
+  write('index.html', page({ rel, title: config.siteTitle, description: config.description, canonicalPath: '', content }));
+}
+
+// ---------- 카테고리 ----------
+function seriesBox(seriesName, rel, currentSlug, compact) {
+  const list = seriesMap[seriesName];
+  const items = list.map(p => {
+    const num = String(p.seriesOrder).padStart(2, '0');
+    const isCurrent = p.slug === currentSlug;
+    const cls = isCurrent ? ' class="current"' : '';
+    const name = isCurrent ? `${esc(p.title)} <span class="now">← 지금 읽는 글</span>` : `<a href="${rel}${p.url}">${esc(p.title)}</a>`;
+    return `<div class="series-item"${cls}><span class="num">${num}</span><span class="s-title">${name}</span></div>`;
+  }).join('\n');
+  return `<div class="series-box${compact ? ' compact' : ''}">
+  <div class="series-head"><div class="series-name">${compact ? '이 시리즈 · ' : '연재 · '}${esc(seriesName)}</div><div class="series-count">전체 ${list.length}편</div></div>
+  <div class="series-list">${items}</div>
+</div>`;
+}
+
+function buildCategories() {
+  for (const [slug, cat] of Object.entries(config.categories)) {
+    const rel = '../../';
+    const list = byCategory[slug] || [];
+    const seriesNames = [...new Set(list.filter(p => p.series).map(p => p.series))];
+    const standalone = list.filter(p => !p.series);
+    let content = `<div class="cat-header">
+  <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> 주제</div>
+  <h1 class="cat-title">${esc(cat.name)} <span class="cat-count">${list.length} posts</span></h1>
+  <p class="cat-desc">${esc(cat.description)}</p>
+</div>`;
+    for (const sn of seriesNames) content += '\n' + seriesBox(sn, rel, null, false);
+    if (standalone.length) {
+      if (seriesNames.length) content += `\n<div class="section-label">단편 글</div>`;
+      content += `\n<div class="post-list">${standalone.map(p => postRow(p, rel)).join('\n')}</div>`;
+    }
+    write(`category/${slug}/index.html`, page({
+      rel, title: `${cat.name} — ${config.siteTitle}`, description: cat.description,
+      canonicalPath: `category/${slug}/`, content,
+    }));
+  }
+}
+
+// ---------- 글 상세 ----------
+function buildPosts() {
+  posts.forEach((p, i) => {
+    const rel = '../../';
+    // 이전/다음: 시리즈가 있으면 시리즈 순서, 없으면 카테고리 순서
+    let prev = null, next = null;
+    if (p.series) {
+      const s = seriesMap[p.series];
+      const idx = s.indexOf(p);
+      prev = s[idx - 1] || null; next = s[idx + 1] || null;
+    } else {
+      const c = byCategory[p.category].filter(x => !x.series);
+      const idx = c.indexOf(p);
+      prev = c[idx - 1] || null; next = c[idx + 1] || null;
+    }
+    const crumbLabel = p.series ? p.series : p.catName;
+    const bodyHtml = marked.parse(p.body);
+    let content = `<div class="post-header">
+  <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}category/${p.category}/">${esc(crumbLabel.toUpperCase())}</a>${p.series ? ` <span class="sep">· ${p.seriesOrder}/${seriesMap[p.series].length}</span>` : ''}</div>
+  <h1 class="post-title">${esc(p.title)}</h1>
+  <div class="post-meta">${esc(config.author)} · ${esc(p.catName)} — ${p.minutes} min</div>
+  ${p.tags.length ? `<div class="post-tags">${p.tags.map(t => `<span class="tag">#${esc(t)}</span>`).join(' ')}</div>` : ''}
+</div>
+<div class="post-body">${bodyHtml}</div>`;
+    if (p.series) content += '\n' + seriesBox(p.series, rel, p.slug, true);
+    if (prev || next) {
+      content += `\n<div class="pn-nav">`;
+      content += prev
+        ? `<a class="pn prev" href="${rel}${prev.url}"><div class="pn-label">← 이전 글</div><div class="pn-title">${esc(prev.title)}</div></a>`
+        : `<div class="pn empty"></div>`;
+      content += next
+        ? `<a class="pn next" href="${rel}${next.url}"><div class="pn-label">다음 글 →</div><div class="pn-title">${esc(next.title)}</div></a>`
+        : `<div class="pn empty"></div>`;
+      content += `</div>`;
+    }
+    const desc = p.summary || p.plain.slice(0, 150);
+    write(`posts/${p.slug}/index.html`, page({
+      rel, title: `${p.title} — ${config.siteTitle}`, description: desc,
+      canonicalPath: p.url, content,
+      extraHead: `<script type="application/ld+json">${JSON.stringify({
+        '@context': 'https://schema.org', '@type': 'BlogPosting',
+        headline: p.title, description: desc, author: { '@type': 'Person', name: config.author },
+        url: `${config.baseUrl}/${p.url}`, keywords: p.tags.join(', '),
+      })}</script>`,
+    }));
+    // 이미지 복사
+    const imgSrc = path.join(CONTENT, p.slug, 'images');
+    if (fs.existsSync(imgSrc)) {
+      const imgDst = path.join(DIST, 'posts', p.slug, 'images');
+      fs.mkdirSync(imgDst, { recursive: true });
+      for (const f of fs.readdirSync(imgSrc)) fs.copyFileSync(path.join(imgSrc, f), path.join(imgDst, f));
+    }
+  });
+}
+
+// ---------- 소개 ----------
+function buildAbout() {
+  const rel = '../';
+  const aboutMd = fs.readFileSync(path.join(CONTENT, 'about.md'), 'utf8');
+  const content = `<div class="post-header">
+  <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> 소개</div>
+  <h1 class="post-title">소개</h1>
+</div>
+<div class="post-body">${marked.parse(aboutMd)}</div>`;
+  write('about/index.html', page({ rel, title: `소개 — ${config.siteTitle}`, description: config.description, canonicalPath: 'about/', content }));
+}
+
+// ---------- 검색 인덱스 / 사이트맵 / RSS / 404 ----------
+function buildAux() {
+  const index = posts.map(p => ({
+    title: p.title, url: p.url, category: p.catName, series: p.series || null,
+    tags: p.tags, summary: p.summary, text: p.plain.slice(0, 4000), minutes: p.minutes,
+  }));
+  write('search-index.json', JSON.stringify(index));
+
+  const urls = ['', 'about/', ...Object.keys(config.categories).map(c => `category/${c}/`), ...posts.map(p => p.url)];
+  write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(u => `  <url><loc>${config.baseUrl}/${u}</loc></url>`).join('\n')}
+</urlset>`);
+
+  write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${config.baseUrl}/sitemap.xml\n`);
+
+  write('rss.xml', `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+<title>${esc(config.siteTitle)}</title>
+<link>${config.baseUrl}/</link>
+<description>${esc(config.description)}</description>
+<language>ko</language>
+${posts.map(p => `<item><title>${esc(p.title)}</title><link>${config.baseUrl}/${p.url}</link><guid>${config.baseUrl}/${p.url}</guid><description>${esc(p.summary)}</description><category>${esc(p.catName)}</category></item>`).join('\n')}
+</channel></rss>`);
+
+  const rel = './';
+  write('404.html', page({
+    rel, title: `페이지를 찾을 수 없습니다 — ${config.siteTitle}`, description: config.description, canonicalPath: '404.html',
+    content: `<div class="post-header"><h1 class="post-title">페이지를 찾을 수 없습니다</h1></div>
+<div class="post-body"><p>주소가 바뀌었거나 삭제된 페이지입니다. <a href="/tech-blog/">홈으로 돌아가시면</a> 전체 글 목록을 보실 수 있습니다.</p></div>`,
+  }));
+}
+
+// ---------- 실행 ----------
+function write(relPath, data) {
+  const full = path.join(DIST, relPath);
+  fs.mkdirSync(path.dirname(full), { recursive: true });
+  fs.writeFileSync(full, data);
+}
+
+fs.rmSync(DIST, { recursive: true, force: true });
+fs.mkdirSync(DIST, { recursive: true });
+fs.cpSync(path.join(ROOT, 'assets'), path.join(DIST, 'assets'), { recursive: true });
+buildHome();
+buildCategories();
+buildPosts();
+buildAbout();
+buildAux();
+console.log(`빌드 완료: 글 ${posts.length}개, 카테고리 ${Object.keys(config.categories).length}개`);

@@ -1,0 +1,13 @@
+{
+  "name": "tech-blog",
+  "private": true,
+  "version": "1.0.0",
+  "description": "코징의 개발탐방 — 정적 블로그",
+  "scripts": {
+    "build": "node build.js",
+    "serve": "npx http-server dist -p 4173"
+  },
+  "dependencies": {
+    "marked": "^12.0.0"
+  }
+}
