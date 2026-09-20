@@ -60,6 +60,14 @@ summary: "목록에 노출될 한두 문장 소개입니다."
 - 전문 검색 인덱스(`search-index.json`), `sitemap.xml`, `rss.xml`, `robots.txt` 생성
 - 글마다 JSON-LD(BlogPosting)와 Open Graph 메타 태그 삽입
 
+## 댓글
+
+글마다 아래쪽에 댓글란이 있습니다. [giscus](https://giscus.app)를 쓰며, 댓글은 이 저장소의 [Discussions](https://github.com/qkrxodud/tech-blog/discussions)에 쌓입니다. 글과 글타래는 URL 경로로 연결되고, 첫 댓글이 달릴 때 글타래가 자동으로 만들어집니다.
+
+댓글을 남기려면 GitHub 로그인이 필요합니다. 설정값(저장소 ID, 카테고리 ID)은 `data/categories.json`의 `comments`에 모여 있습니다.
+
+동작하려면 저장소에 [giscus 앱](https://github.com/apps/giscus)이 설치되어 있어야 하고, Discussions가 켜져 있어야 합니다. 둘 중 하나라도 빠지면 댓글란 자리에 안내 문구가 대신 뜹니다.
+
 ## 검색
 
 헤더의 `⌕` 버튼이나 `/` 키로 검색창을 엽니다. 제목·태그·요약·본문을 대상으로 하며, 일치한 위치를 발췌해 보여줍니다. 별도 서버 없이 `search-index.json` 하나를 내려받아 브라우저에서 처리합니다.
