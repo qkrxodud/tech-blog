@@ -50,15 +50,15 @@ summary: "인프런 워밍업 클럽 백엔드 스터디 2기 1주차 회고로,
 
 ### **Day 4 SOLID를 활용하여 아래 코드를 수정**
 
-S - **Single Responsibility Principle (SRP)** : 정의: 클래스는 단 하나의 책임만 가져야 한다.
+S - **Single Responsibility Principle (SRP)** : 정의: 클래스는 단 하나의 책임만 가져야 합니다.
 
-O - **Open/Closed Principle (OCP)** : 소프트웨어 엔티티는 확장에는 열려 있어야 하지만 수정에는 닫혀 있어야 한다.
+O - **Open/Closed Principle (OCP)** : 소프트웨어 엔티티는 확장에는 열려 있어야 하지만 수정에는 닫혀 있어야 합니다.
 
-L - **Liskov Substitution Principle (LSP)** : 자식 클래스는 부모 클래스에서 호출하는 동작에 대체가 가능해야 한다.
+L - **Liskov Substitution Principle (LSP)** : 자식 클래스는 부모 클래스에서 호출하는 동작에 대체가 가능해야 합니다.
 
 I - **Interface Segregation Principle (ISP)** : 하나의 일반적인 인터페이스보다는 여러 개의 구체적인 인터페이스가 더 좋다.
 
-D - **Dependency Inversion Principle (DIP)** : 고수준 모듈은 저수준 모듈에 의존해서는 안 되며, 둘 다 추상화에 의존해야 한다.
+D - **Dependency Inversion Principle (DIP)** : 고수준 모듈은 저수준 모듈에 의존해서는 안 되며, 둘 다 추상화에 의존해야 합니다.
 
 ```java
 public boolean validateOrder(Order order) {

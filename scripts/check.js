@@ -33,9 +33,32 @@ for (const p of posts) {
     .replace(/<!--[\s\S]*?-->/g, '');
   const casual = prose.match(/(?:[가-힣)\]])(?:했다|한다|이다|있다|없다|된다|같다|보자|하자|였다|아니다|싶다)\.（?/g);
   if (casual && casual.length > 2) warn('반말 종결 의심', p.slug, `${casual.length}건 (예: ${casual.slice(0, 3).join(', ')})`);
+  // 노션 속성 줄이 본문에 남아 있으면 글 맨 앞에 메타데이터가 노출된다.
+  const head = body.trim().split('\n').slice(0, 8).join('\n');
+  const leftover = head.match(/^(상태|담당자|속성|속성 1|만든날짜|수정날짜|날짜|순서|태그):/m);
+  if (leftover) warn('노션 속성 잔존', p.slug, leftover[0]);
 }
 
-// 2) 시리즈 순서 충돌
+// 2) 강의 노트에 슬라이드 캡처가 딸려 오지 않았는지
+//    (유료 강의 자료라 본문에 실을 수 없다 — scripts/LECTURE_RULES.md 참고)
+const LECTURE_SERIES = new Set([
+  '스프링 입문', '스프링 핵심 원리', '스프링 MVC', '자바 ORM 표준 JPA',
+  '스프링 데이터 JPA', 'Querydsl', '스프링 부트와 JPA 활용',
+  '클린 코드 with Java', 'HTTP 웹 기본 지식',
+]);
+const LECTURE_CATS = new Set(['algorithm', 'infra', 'clean-code-java', 'network']);
+for (const p of posts) {
+  if (!LECTURE_SERIES.has(p.series) && !LECTURE_CATS.has(p.category)) continue;
+  const md = path.join(CONTENT, p.slug, 'index.md');
+  if (fs.existsSync(md) && /!\[[^\]]*\]\(/.test(fs.readFileSync(md, 'utf8'))) {
+    warn('강의 노트에 이미지', p.slug, '슬라이드 캡처로 보이는 이미지가 본문에 있음');
+  }
+  if (fs.existsSync(path.join(CONTENT, p.slug, 'images'))) {
+    warn('강의 노트에 images 폴더', p.slug, '');
+  }
+}
+
+// 3) 시리즈 순서 충돌
 const series = {};
 for (const p of posts) if (p.series) (series[p.series] ??= []).push(p);
 for (const [name, list] of Object.entries(series)) {

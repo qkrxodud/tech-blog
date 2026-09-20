@@ -233,11 +233,46 @@ function topicPanel(rel) {
 <script>document.addEventListener('DOMContentLoaded',function(){var t=document.getElementById('panel-toggle'),p=document.getElementById('topic-panel'),a=document.getElementById('panel-arrow');if(t)t.addEventListener('click',function(){p.hidden=!p.hidden;a.textContent=p.hidden?'▾':'▴';});});</script>`;
 }
 
+const HOME_LIMIT = 24;
+
 function buildHome() {
   const rel = './';
-  const rows = posts.map(p => postRow(p, rel)).join('\n');
-  const content = `${homeTabs(rel, null)}\n${topicPanel(rel)}\n<div class="post-list">${rows}</div>`;
+  const shown = posts.slice(0, HOME_LIMIT);
+  const rows = shown.map(p => postRow(p, rel)).join('\n');
+  const more = posts.length > HOME_LIMIT
+    ? `<a class="more-link" href="${rel}archive/">전체 글 ${posts.length}편 보기 →</a>`
+    : '';
+  const content = `${homeTabs(rel, null)}\n${topicPanel(rel)}\n<div class="post-list">${rows}</div>\n${more}`;
   write('index.html', page({ rel, title: config.siteTitle, description: config.description, canonicalPath: '', content }));
+}
+
+// 전체 글을 카테고리별로 모아 한 페이지에 싣는다. 목록이 길어 제목만 나열한다.
+function buildArchive() {
+  const rel = '../';
+  const sections = [];
+  for (const [slug, cat] of Object.entries(config.categories)) {
+    const list = byCategory[slug] || [];
+    if (!list.length) continue;
+    const items = list.map(p => {
+      const badge = p.series ? `<span class="arc-series">${esc(p.series)} ${p.seriesOrder}</span>` : '';
+      return `<li><a href="${rel}${p.url}">${esc(p.title)}</a>${badge}</li>`;
+    }).join('\n');
+    sections.push(`<section class="arc-section">
+  <h2 class="arc-head"><a href="${rel}category/${slug}/">${esc(cat.name)}</a> <span class="arc-count">${list.length}</span></h2>
+  <ul class="arc-list">${items}</ul>
+</section>`);
+  }
+  const content = `<div class="cat-header">
+  <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> 전체 글</div>
+  <h1 class="cat-title">전체 글 <span class="cat-count">${posts.length} posts</span></h1>
+  <p class="cat-desc">지금까지 쓴 글을 주제별로 모았습니다. 찾는 내용이 있으시면 검색(<code>/</code> 키)을 이용하셔도 됩니다.</p>
+</div>
+${sections.join('\n')}`;
+  write('archive/index.html', page({
+    rel, title: `전체 글 — ${config.siteTitle}`,
+    description: `${config.siteTitle}의 전체 글 ${posts.length}편을 주제별로 모았습니다.`,
+    canonicalPath: 'archive/', content,
+  }));
 }
 
 // ---------- 카테고리 ----------
@@ -354,7 +389,7 @@ function buildAux() {
   }));
   write('search-index.json', JSON.stringify(index));
 
-  const urls = ['', 'about/', ...Object.keys(config.categories).map(c => `category/${c}/`), ...posts.map(p => p.url)];
+  const urls = ['', 'about/', 'archive/', ...Object.keys(config.categories).map(c => `category/${c}/`), ...posts.map(p => p.url)];
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${config.baseUrl}/${u}</loc></url>`).join('\n')}
@@ -390,6 +425,7 @@ fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 fs.cpSync(path.join(ROOT, 'assets'), path.join(DIST, 'assets'), { recursive: true });
 buildHome();
+buildArchive();
 buildCategories();
 buildPosts();
 buildAbout();

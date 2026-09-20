@@ -3,19 +3,19 @@
   "author": "코징",
   "baseUrl": "https://qkrxodud.github.io/tech-blog",
   "description": "Java, Spring, 데이터베이스, 아키텍처를 탐구하는 백엔드 개발 블로그입니다.",
-  "homeTabs": ["spring", "database", "clean-code"],
+  "homeTabs": ["spring", "spring-jpa", "database"],
   "groups": [
     {
       "name": "언어 & 백엔드",
-      "categories": ["spring", "spring-jpa", "testing", "java-jvm", "oop-design"]
+      "categories": ["spring", "spring-jpa", "java-jvm", "oop-design", "testing", "algorithm"]
     },
     {
-      "name": "데이터 & AI",
-      "categories": ["database", "kafka", "ai-dev"]
+      "name": "데이터 & 인프라",
+      "categories": ["database", "kafka", "infra", "network", "ai-dev"]
     },
     {
       "name": "책 & 기록",
-      "categories": ["clean-code", "ddd-start", "clean-architecture", "retrospective", "git"]
+      "categories": ["clean-code", "clean-code-java", "ddd-start", "clean-architecture", "retrospective", "git"]
     }
   ],
   "categories": {
@@ -31,6 +31,10 @@
     "ddd-start": {"name": "도메인 주도 개발 시작하기", "description": "「도메인 주도 개발 시작하기」를 읽으며 DDD의 핵심 개념을 정리한 연재입니다."},
     "clean-architecture": {"name": "만들면서 배우는 클린 아키텍처", "description": "「만들면서 배우는 클린 아키텍처」를 따라 헥사고날 아키텍처를 학습한 연재입니다."},
     "retrospective": {"name": "회고", "description": "스터디와 학습 과정을 돌아본 회고 글들입니다."},
-    "git": {"name": "Git · 협업", "description": "Git 컨벤션과 협업 프로세스에 대한 글들입니다."}
+    "git": {"name": "Git · 협업", "description": "Git 컨벤션과 협업 프로세스에 대한 글들입니다."},
+    "clean-code-java": {"name": "클린 코드 with Java", "description": "TDD와 리팩터링을 단계별 과제로 익힌 기록입니다. 로또, 사다리, 자동차 경주를 만들며 요구사항 분해부터 리팩터링까지 정리했습니다."},
+    "algorithm": {"name": "알고리즘", "description": "배열, 스택·큐, 해시, 그래프 탐색 등 코딩 테스트를 준비하며 자료구조와 알고리즘을 정리한 노트입니다."},
+    "network": {"name": "네트워크 · HTTP", "description": "인터넷이 동작하는 원리부터 HTTP 메서드와 상태 코드까지, 웹의 기본기를 정리했습니다."},
+    "infra": {"name": "인프라 · 컨테이너", "description": "쿠버네티스와 컨테이너 오케스트레이션, YAML 문법 등 인프라 기초를 학습한 노트입니다."}
   }
 }

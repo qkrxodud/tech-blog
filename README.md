@@ -22,7 +22,14 @@ data/posts.json             글 목록 — slug, 카테고리, 시리즈, 순서
 data/categories.json        카테고리 정의, 그룹, 사이트 메타
 assets/                     스타일시트와 검색 스크립트
 build.js                    빌드 스크립트
+scripts/check.js            빌드 결과 점검 (링크, 문체, 편집 흔적)
+scripts/CONVERT_RULES.md    노션 글을 옮길 때의 규칙
+scripts/LECTURE_RULES.md    강의 수강 노트를 옮길 때의 규칙
 ```
+
+## 강의 수강 노트에 대하여
+
+강의를 들으며 정리한 노트가 상당수 있습니다. 이 글들은 **이미지를 싣지 않습니다.** 원본 노트의 그림이 대부분 유료 강의 슬라이드 캡처라 그대로 옮길 수 없기 때문입니다. 대신 글 끝에 어떤 강의를 듣고 정리했는지 출처를 답니다. 자세한 기준은 `scripts/LECTURE_RULES.md`에 있고, `scripts/check.js`가 이 글들에 이미지가 딸려 들어오지 않았는지 확인해 줍니다.
 
 ## 글 추가하기
 
