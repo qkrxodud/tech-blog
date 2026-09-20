@@ -19,6 +19,8 @@ function safeName(f) {
 const posts = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'posts.json'), 'utf8'));
 let total = 0;
 for (const p of posts) {
+  // dir이 없는 글은 노션 일괄 변환을 거치지 않고 직접 추가한 것이라 임포트 대상이 아니다.
+  if (!p.dir) continue;
   const imgDir = path.join(SRC, p.dir, 'images');
   if (!fs.existsSync(imgDir)) continue;
   const files = fs.readdirSync(imgDir).filter(f => !f.startsWith('.'));

@@ -84,5 +84,10 @@
   {"dir": "83_B-tree", "slug": "b-tree", "category": "database"},
   {"dir": "84_원시값-포장", "slug": "primitive-wrapping", "category": "oop-design"},
   {"dir": "85_일급컬렉션", "slug": "first-class-collection", "category": "oop-design"},
-  {"dir": "86_[리뷰]클린코드-clean-code-11장-까지의-리뷰-그리고-진행", "slug": "clean-code-review-progress", "category": "clean-code", "series": "Clean Code", "seriesOrder": 11}
+  {"dir": "86_[리뷰]클린코드-clean-code-11장-까지의-리뷰-그리고-진행", "slug": "clean-code-review-progress", "category": "clean-code", "series": "Clean Code", "seriesOrder": 11},
+  {"slug": "retrospective-2024", "category": "retrospective"},
+  {"slug": "retrospective-2025", "category": "retrospective"},
+  {"slug": "gc-os-basics", "category": "java-jvm", "series": "GC 챌린지", "seriesOrder": 1},
+  {"slug": "jvm-execution-classloading", "category": "java-jvm", "series": "GC 챌린지", "seriesOrder": 2},
+  {"slug": "gc-tuning-criteria", "category": "java-jvm", "series": "GC 챌린지", "seriesOrder": 3}
 ]

@@ -68,6 +68,17 @@ function cleanTitle(raw, inSeries) {
   return t.replace(/\s*\(1\)\s*$/, '').trim();
 }
 
+// 페이지의 H1은 글 제목 하나여야 한다. 본문에 남은 H1은 한 단계씩 낮춘다.
+// (코드 블록 안의 `#`는 건드리지 않는다.)
+function demoteHeadings(body) {
+  const blocks = body.split(/(```[\s\S]*?```)/g);
+  return blocks.map((chunk, i) => {
+    if (i % 2 === 1) return chunk;
+    if (!/^# /m.test(chunk)) return chunk;
+    return chunk.replace(/^(#{1,5}) /gm, (m, h) => '#'.repeat(h.length + 1) + ' ');
+  }).join('');
+}
+
 // 본문의 로컬 이미지 링크를 images/ 안의 실제 파일명으로 맞춘다.
 // 원본 파일명에 공백·괄호가 섞여 있어 링크가 어긋나기 쉬우므로, 파일명 앞의
 // 일련번호(01_, 02_ …)를 키로 삼아 실제 파일을 찾는다.
@@ -88,7 +99,8 @@ function fixImageLinks(body, slug) {
       used.add(file);
       return `![](images/${file})`;
     });
-  const missing = files.filter(f => !used.has(f));
+  // 번호 접두어가 없는 파일은 위 정규식에 걸리지 않으므로 본문에 이름이 있는지로 확인한다.
+  const missing = files.filter(f => !used.has(f) && !out.includes(f));
   if (missing.length) console.warn(`본문에 삽입되지 않은 이미지: ${slug} → ${missing.join(', ')}`);
   return out;
 }
@@ -101,7 +113,7 @@ for (const meta of postMeta) {
   const raw = fs.readFileSync(mdPath, 'utf8');
   const parsed = parseFrontmatter(raw);
   const attrs = parsed.attrs;
-  const body = fixImageLinks(parsed.body, meta.slug);
+  const body = demoteHeadings(fixImageLinks(parsed.body, meta.slug));
   const plain = stripMd(body);
   const firstImg = (body.match(/!\[[^\]]*\]\((images\/[^)]+)\)/) || [])[1] || null;
   posts.push({
