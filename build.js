@@ -8,6 +8,16 @@ const ROOT = __dirname;
 const DIST = path.join(ROOT, 'dist');
 const CONTENT = path.join(ROOT, 'content');
 
+// 스타일·스크립트를 고쳐도 브라우저가 옛 파일을 계속 쓰지 않도록,
+// 파일 내용에서 뽑은 해시를 주소에 붙인다.
+const assetHash = (() => {
+  const h = require('crypto').createHash('sha1');
+  for (const f of ['style.css', 'search.js']) {
+    h.update(fs.readFileSync(path.join(ROOT, 'assets', f)));
+  }
+  return h.digest('hex').slice(0, 8);
+})();
+
 const config = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'categories.json'), 'utf8'));
 const postMeta = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'posts.json'), 'utf8'));
 
@@ -155,7 +165,7 @@ function page({ rel, title, description, canonicalPath, content, extraHead = '' 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="${rel}assets/style.css">
+<link rel="stylesheet" href="${rel}assets/style.css?v=${assetHash}">
 ${extraHead}
 </head>
 <body>
@@ -184,7 +194,7 @@ ${content}
   </div>
 </div>
 <script>window.__REL__=${JSON.stringify(rel)};</script>
-<script src="${rel}assets/search.js" defer></script>
+<script src="${rel}assets/search.js?v=${assetHash}" defer></script>
 </body>
 </html>`;
 }

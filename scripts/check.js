@@ -90,7 +90,10 @@ if (fs.existsSync(DIST)) {
       if (/^(https?:|data:|mailto:|#)/.test(ref)) continue;
       // 404 페이지는 배포 도메인 기준 절대경로를 쓴다. 로컬 dist에는 그 경로가 없다.
       if (ref.startsWith('/')) continue;
-      const target = path.resolve(dir, decodeURI(ref));
+      // 정적 파일 주소에는 캐시 무효화용 ?v=… 가 붙는다. 파일을 찾을 때는 뗀다.
+      const clean = ref.split(/[?#]/)[0];
+      if (!clean) continue;
+      const target = path.resolve(dir, decodeURI(clean));
       const ok = fs.existsSync(target) || fs.existsSync(path.join(target, 'index.html'));
       if (!ok) warn('링크 깨짐', rel, ref);
     }
