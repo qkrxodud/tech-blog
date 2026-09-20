@@ -20,6 +20,8 @@ const assetHash = (() => {
 
 const config = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'categories.json'), 'utf8'));
 const postMeta = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'posts.json'), 'utf8'));
+const projectsPath = path.join(ROOT, 'data', 'projects.json');
+const projects = fs.existsSync(projectsPath) ? JSON.parse(fs.readFileSync(projectsPath, 'utf8')) : [];
 
 marked.setOptions({ gfm: true, breaks: false, mangle: false, headerIds: false });
 
@@ -269,6 +271,32 @@ function topicPanel(rel) {
 <script>document.addEventListener('DOMContentLoaded',function(){var t=document.getElementById('panel-toggle'),p=document.getElementById('topic-panel'),a=document.getElementById('panel-arrow');if(t)t.addEventListener('click',function(){p.hidden=!p.hidden;a.textContent=p.hidden?'▾':'▴';});});</script>`;
 }
 
+// 만들어 운영 중인 서비스를 홈 맨 위에 둔다. 글보다 먼저 보여 주고 싶은
+// 것이라 탭 위에 놓았다.
+function projectSection(rel) {
+  if (!projects.length) return '';
+  const cards = projects.map(p => {
+    const stack = (p.stack || []).map(s => `<span class="pj-tag">${esc(s)}</span>`).join('');
+    const related = p.postSlug && posts.some(x => x.slug === p.postSlug)
+      ? `<a class="pj-post" href="${rel}posts/${p.postSlug}/">만든 이야기 →</a>` : '';
+    return `<article class="pj-card">
+  <a class="pj-main" href="${esc(p.url)}" target="_blank" rel="noopener">
+    <div class="pj-name">${esc(p.name)}<span class="pj-go">↗</span></div>
+    <div class="pj-tagline">${esc(p.tagline)}</div>
+    <p class="pj-desc">${esc(p.description)}</p>
+  </a>
+  <div class="pj-foot">${stack}${related}</div>
+</article>`;
+  }).join('\n');
+  return `<section class="projects">
+  <div class="pj-head">
+    <h2 class="pj-title">만든 것들</h2>
+    <span class="pj-sub">직접 만들어 운영하고 있는 서비스입니다</span>
+  </div>
+  <div class="pj-grid">${cards}</div>
+</section>`;
+}
+
 const HOME_LIMIT = 24;
 
 function buildHome() {
@@ -278,7 +306,7 @@ function buildHome() {
   const more = posts.length > HOME_LIMIT
     ? `<a class="more-link" href="${rel}archive/">전체 글 ${posts.length}편 보기 →</a>`
     : '';
-  const content = `${homeTabs(rel, null)}\n${topicPanel(rel)}\n<div class="post-list">${rows}</div>\n${more}`;
+  const content = `${projectSection(rel)}\n${homeTabs(rel, null)}\n${topicPanel(rel)}\n<div class="post-list">${rows}</div>\n${more}`;
   write('index.html', page({ rel, title: config.siteTitle, description: config.description, canonicalPath: '', content }));
 }
 

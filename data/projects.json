@@ -1,0 +1,24 @@
+[
+  {
+    "name": "또렷",
+    "tagline": "읽은 것이 사라지지 않는 브라우저",
+    "description": "다시 볼 페이지는 책갈피로, 중요한 구절은 형광펜으로 남기는 크롬 익스텐션입니다. 형광펜은 다시 방문해도 그 자리에 그대로 있고, 폴더·태그 정리와 검색을 지원합니다. 온디바이스로 처리해 가입이 필요 없습니다.",
+    "url": "https://qkrxodud.github.io/easy-read/",
+    "stack": ["Chrome Extension", "온디바이스"]
+  },
+  {
+    "name": "내용",
+    "tagline": "문서 작성 마법사",
+    "description": "내용증명, 차용증, 합의서, 위임장, 사직서 같은 문서를 질문 몇 개에 답하면 격식을 갖춰 완성해 줍니다. 입력한 내용은 서버로 보내지 않고 브라우저 안에서만 다룹니다.",
+    "url": "https://naeyong.co.kr/",
+    "stack": ["문서 자동화", "클라이언트 처리"]
+  },
+  {
+    "name": "BTC 레이더",
+    "tagline": "비트코인 투자 타이밍 지표",
+    "description": "RSI, MVRV-Z, SOPR, 공포탐욕지수, 펀딩비 등 25개가 넘는 시장 지표를 매일 자동으로 모아 한 화면에서 보여 주는 대시보드입니다. Claude Code와 함께 헥사고날 아키텍처로 설계했습니다.",
+    "url": "https://btctiming.co.kr/",
+    "stack": ["Spring Boot", "헥사고날 아키텍처"],
+    "postSlug": "claude-code-crypto-dashboard"
+  }
+]
