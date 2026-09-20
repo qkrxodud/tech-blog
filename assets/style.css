@@ -138,6 +138,14 @@ a { color: var(--ink); text-decoration: none; }
 .pn-title { font-size: 14px; font-weight: 700; }
 .pn.prev:hover { border-color: var(--ink); }
 
+/* 댓글 */
+.comments { border-top: 1px solid var(--line); margin-top: 8px; padding: 28px 0 8px; }
+.comments-head { font-size: 17px; font-weight: 800; letter-spacing: -.02em; margin: 0 0 8px; }
+.comments-note { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 0 0 18px; }
+.comments-note a { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+.giscus, .giscus-frame { width: 100%; }
+.giscus-frame { border: none; color-scheme: light; }
+
 /* 푸터 */
 .site-footer { border-top: 1px solid var(--ink); margin-top: 16px; padding: 18px 0 40px; display: flex; font: 400 12px var(--mono); color: var(--faint); }
 .site-footer a { color: var(--faint); }

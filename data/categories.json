@@ -4,6 +4,12 @@
   "baseUrl": "https://qkrxodud.github.io/tech-blog",
   "description": "Java, Spring, 데이터베이스, 아키텍처를 탐구하는 백엔드 개발 블로그입니다.",
   "homeTabs": ["spring", "spring-jpa", "database"],
+  "comments": {
+    "repo": "qkrxodud/tech-blog",
+    "repoId": "R_kgDOUiNyhg",
+    "category": "Announcements",
+    "categoryId": "DIC_kwDOUiNyhs4DGBlX"
+  },
   "groups": [
     {
       "name": "언어 & 백엔드",

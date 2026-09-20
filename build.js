@@ -189,6 +189,32 @@ ${content}
 </html>`;
 }
 
+// 댓글은 giscus로 단다. 글마다 pathname으로 GitHub Discussions의 글타래를
+// 찾고, 없으면 첫 댓글이 달릴 때 만들어진다.
+function commentBox(rel) {
+  const c = config.comments;
+  if (!c) return '';
+  return `<section class="comments">
+  <h2 class="comments-head">댓글</h2>
+  <p class="comments-note">GitHub 계정으로 로그인하시면 댓글과 질문을 남기실 수 있습니다. 남겨 주신 글은 이 저장소의 <a href="https://github.com/${c.repo}/discussions">Discussions</a>에 쌓입니다.</p>
+  <script src="https://giscus.app/client.js"
+    data-repo="${esc(c.repo)}"
+    data-repo-id="${esc(c.repoId)}"
+    data-category="${esc(c.category)}"
+    data-category-id="${esc(c.categoryId)}"
+    data-mapping="pathname"
+    data-strict="1"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="ko"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async></script>
+</section>`;
+}
+
 function seriesLabel(p) {
   if (!p.series) return `<div class="row-cat">${esc(p.catName.toUpperCase())}</div>`;
   const s = seriesMap[p.series];
@@ -349,6 +375,7 @@ function buildPosts() {
         : `<div class="pn empty"></div>`;
       content += `</div>`;
     }
+    content += '\n' + commentBox(rel);
     const desc = p.summary || p.plain.slice(0, 150);
     write(`posts/${p.slug}/index.html`, page({
       rel, title: `${p.title} — ${config.siteTitle}`, description: desc,
