@@ -23,6 +23,23 @@ const postMeta = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'posts.json'
 const projectsPath = path.join(ROOT, 'data', 'projects.json');
 const projects = fs.existsSync(projectsPath) ? JSON.parse(fs.readFileSync(projectsPath, 'utf8')) : [];
 
+// 글마다 그 파일을 마지막으로 건드린 커밋 해시를 찾아 둔다. 목록에 함께
+// 보여 주기 위한 것이라, git 이력을 못 읽는 환경이면 조용히 건너뛴다.
+const commitOf = (() => {
+  const map = {};
+  try {
+    const log = require('child_process')
+      .execSync('git log --format="C:%h" --name-only -- content', { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    let cur = null;
+    for (const line of log.split('\n')) {
+      if (line.startsWith('C:')) { cur = line.slice(2).trim(); continue; }
+      const m = line.match(/^content\/([^/]+)\//);
+      if (m && cur && !map[m[1]]) map[m[1]] = cur;  // 최신 커밋이 먼저 나온다
+    }
+  } catch { /* git 없이 빌드해도 문제없다 */ }
+  return map;
+})();
+
 marked.setOptions({ gfm: true, breaks: false, mangle: false, headerIds: false });
 
 // ---------- 유틸 ----------
@@ -138,6 +155,7 @@ for (const meta of postMeta) {
     thumb: firstImg,
     catName: config.categories[meta.category].name,
     url: `posts/${meta.slug}/`,
+    commit: commitOf[meta.slug] || null,
   });
 }
 
@@ -148,8 +166,11 @@ for (const p of posts) if (p.series) (seriesMap[p.series] ??= []).push(p);
 for (const s of Object.values(seriesMap)) s.sort((a, b) => a.seriesOrder - b.seriesOrder);
 
 // ---------- 공통 템플릿 ----------
-function page({ rel, title, description, canonicalPath, content, extraHead = '' }) {
+function page({ rel, title, description, canonicalPath, content, extraHead = '', shellPath = '~/tech-blog', isHome = false }) {
   const canonical = `${config.baseUrl}/${canonicalPath}`;
+  const tagline = isHome
+    ? `<div class="site-tagline"><span class="cmt">//</span> Java, Spring, 데이터베이스, 아키텍처를 탐구하는 백엔드 개발 블로그</div>`
+    : '';
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -172,19 +193,35 @@ ${extraHead}
 </head>
 <body>
 <div class="wrap">
+ <div class="term">
+  <div class="term-bar">
+    <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+    <span class="term-path">${esc(shellPath)} — zsh</span>
+  </div>
+  <div class="term-body">
   <header class="site-header">
-    <a class="logo" href="${rel}">코징의 개발탐방<span class="dot">.</span></a>
+    <a class="brand" href="${rel}">
+      <div class="prompt"><span class="arrow">➜</span> ${esc(shellPath)} <span class="paren">git:(</span><span class="branch">main</span><span class="paren">)</span></div>
+      <div class="logo">코징의 개발탐방<span class="caret"></span></div>
+      ${tagline}
+    </a>
     <nav>
       <a href="${rel}">홈</a>
       <a href="${rel}about/">소개</a>
-      <button class="search-btn" id="search-open" aria-label="검색">⌕</button>
+      <button class="search-btn" id="search-open" aria-label="검색">⌕<span class="kbd">/</span></button>
     </nav>
   </header>
 ${content}
-  <footer class="site-footer">
-    <span>© 2026 ${esc(config.author)}</span>
-    <span class="footer-links"><a href="${rel}rss.xml">RSS</a> · <a href="https://github.com/qkrxodud/tech-blog">GitHub</a></span>
-  </footer>
+  </div>
+  <div class="term-status">
+    <span class="st-branch">● main</span>
+    <span>${posts.length} posts</span>
+    <span class="st-hide">UTF-8</span>
+    <span class="st-hide">LF</span>
+    <span class="st-right">© 2026 ${esc(config.author)}</span>
+    <span><a href="${rel}rss.xml">RSS</a> · <a href="https://github.com/qkrxodud/tech-blog">GitHub</a></span>
+  </div>
+ </div>
 </div>
 <div class="search-overlay" id="search-overlay" hidden>
   <div class="search-box">
@@ -242,7 +279,7 @@ function postRow(p, rel) {
     ${seriesLabel(p)}
     <h2 class="row-title"><a href="${rel}${p.url}">${esc(p.title)}</a></h2>
     <p class="row-summary">${esc(p.summary)}</p>
-    <div class="row-meta">${esc(p.catName)} — ${p.minutes} min</div>
+    <div class="row-meta">${p.commit ? `<span class="sha">${esc(p.commit)}</span> · ` : ''}${esc(p.catName)} — ${p.minutes} min</div>
   </div>
   ${thumb}
 </article>`;
@@ -289,10 +326,7 @@ function projectSection(rel) {
 </article>`;
   }).join('\n');
   return `<section class="projects">
-  <div class="pj-head">
-    <h2 class="pj-title">만든 것들</h2>
-    <span class="pj-sub">직접 만들어 운영하고 있는 서비스입니다</span>
-  </div>
+  <div class="cmd"><span class="sig">$</span> ls projects/ <span class="cmt"># 만든 것들 — 직접 만들어 운영하고 있는 서비스입니다</span></div>
   <div class="pj-grid">${cards}</div>
 </section>`;
 }
@@ -306,8 +340,9 @@ function buildHome() {
   const more = posts.length > HOME_LIMIT
     ? `<a class="more-link" href="${rel}archive/">전체 글 ${posts.length}편 보기 →</a>`
     : '';
-  const content = `${projectSection(rel)}\n${homeTabs(rel, null)}\n${topicPanel(rel)}\n<div class="post-list">${rows}</div>\n${more}`;
-  write('index.html', page({ rel, title: config.siteTitle, description: config.description, canonicalPath: '', content }));
+  const listCmd = `<div class="cmd"><span class="sig">$</span> ls -lt posts/ <span class="cmt">| head -${shown.length}</span></div>`;
+  const content = `${projectSection(rel)}\n${homeTabs(rel, null)}\n${topicPanel(rel)}\n${listCmd}\n<div class="post-list">${rows}</div>\n${more}`;
+  write('index.html', page({ rel, title: config.siteTitle, description: config.description, canonicalPath: '', content, isHome: true }));
 }
 
 // 전체 글을 카테고리별로 모아 한 페이지에 싣는다. 목록이 길어 제목만 나열한다.
@@ -335,7 +370,7 @@ ${sections.join('\n')}`;
   write('archive/index.html', page({
     rel, title: `전체 글 — ${config.siteTitle}`,
     description: `${config.siteTitle}의 전체 글 ${posts.length}편을 주제별로 모았습니다.`,
-    canonicalPath: 'archive/', content,
+    canonicalPath: 'archive/', content, shellPath: '~/tech-blog/archive',
   }));
 }
 
@@ -373,7 +408,7 @@ function buildCategories() {
     }
     write(`category/${slug}/index.html`, page({
       rel, title: `${cat.name} — ${config.siteTitle}`, description: cat.description,
-      canonicalPath: `category/${slug}/`, content,
+      canonicalPath: `category/${slug}/`, content, shellPath: `~/tech-blog/category/${slug}`,
     }));
   }
 }
@@ -417,7 +452,7 @@ function buildPosts() {
     const desc = p.summary || p.plain.slice(0, 150);
     write(`posts/${p.slug}/index.html`, page({
       rel, title: `${p.title} — ${config.siteTitle}`, description: desc,
-      canonicalPath: p.url, content,
+      canonicalPath: p.url, content, shellPath: `~/tech-blog/posts/${p.slug}`,
       extraHead: `<script type="application/ld+json">${JSON.stringify({
         '@context': 'https://schema.org', '@type': 'BlogPosting',
         headline: p.title, description: desc, author: { '@type': 'Person', name: config.author },
@@ -443,7 +478,7 @@ function buildAbout() {
   <h1 class="post-title">소개</h1>
 </div>
 <div class="post-body">${marked.parse(aboutMd)}</div>`;
-  write('about/index.html', page({ rel, title: `소개 — ${config.siteTitle}`, description: config.description, canonicalPath: 'about/', content }));
+  write('about/index.html', page({ rel, title: `소개 — ${config.siteTitle}`, description: config.description, canonicalPath: 'about/', content, shellPath: '~/tech-blog/about' }));
 }
 
 // ---------- 검색 인덱스 / 사이트맵 / RSS / 404 ----------
