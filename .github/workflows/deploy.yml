@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # 글 목록에 보여 줄 커밋 해시를 찾으려면 전체 이력이 필요하다.
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
