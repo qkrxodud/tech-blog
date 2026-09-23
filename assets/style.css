@@ -200,6 +200,22 @@ a { color: var(--ink); text-decoration: none; }
 .post-body hr { border: none; border-top: 1px solid var(--line); margin: 32px 0; }
 .post-body aside { border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 20px; margin: 0 0 20px; background: var(--code-bg); }
 
+/* 소개 페이지의 통계와 연재 목록 */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0 0 28px; }
+.stat { border: 1px solid var(--line); border-radius: 10px; padding: 16px 14px; text-align: center; }
+.stat-v { font: 700 21px var(--mono); color: var(--ink); letter-spacing: -.02em; }
+.stat-k { font-size: 12.5px; color: var(--faint); margin-top: 4px; }
+.series-list-about { list-style: none; margin: 0 0 20px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 9px 24px; }
+.series-list-about li { display: flex; align-items: baseline; gap: 7px; font-size: 14.5px; }
+.series-list-about a { color: var(--body); text-decoration: none; }
+.series-list-about a:hover { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+.sl-n { font: 700 11.5px var(--mono); color: var(--accent); white-space: nowrap; }
+.sl-when { font: 400 11px var(--mono); color: var(--faint); margin-left: auto; white-space: nowrap; }
+@media (max-width: 620px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .series-list-about { grid-template-columns: 1fr; }
+}
+
 /* 이전/다음 */
 .pn-nav { display: flex; gap: 12px; padding-bottom: 30px; }
 .pn { flex: 1; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0; }

@@ -531,6 +531,34 @@ function buildPosts() {
 }
 
 // ---------- 소개 ----------
+// 소개 페이지의 숫자와 연재 목록은 글이 늘 때마다 손으로 고치면 금세
+// 어긋난다. 글 데이터에서 그때그때 만들어 붙인다.
+function aboutStats(rel) {
+  const dates = posts.map(p => p.date).filter(Boolean).sort();
+  const since = dates.length ? dates[0].slice(0, 4) : null;
+  const tiles = [
+    ['글', `${posts.length}편`],
+    ['주제', `${Object.keys(config.categories).length}개`],
+    ['연재', `${Object.keys(seriesMap).length}종`],
+    ...(since ? [['기록 시작', `${since}년`]] : []),
+  ].map(([k, v]) => `<div class="stat"><div class="stat-v">${esc(v)}</div><div class="stat-k">${esc(k)}</div></div>`).join('');
+
+  const rows = Object.entries(seriesMap)
+    .sort((a, b) => b[1].length - a[1].length)
+    .map(([name, list]) => {
+      const cat = list[0].category;
+      const dl = list.map(p => p.date).filter(Boolean).sort();
+      const span = dl.length ? `<span class="sl-when">${esc(dl[0].slice(0, 7).replace('-', '.'))}</span>` : '';
+      return `<li><a href="${rel}category/${cat}/">${esc(name)}</a> <span class="sl-n">${list.length}편</span>${span}</li>`;
+    }).join('\n');
+
+  return `<h2>숫자로 보는 블로그</h2>
+<div class="stats">${tiles}</div>
+<h2>연재하는 글</h2>
+<p>한 주제를 여러 편에 걸쳐 쓴 글들입니다. 제목을 누르시면 그 주제의 글을 순서대로 보실 수 있습니다.</p>
+<ul class="series-list-about">${rows}</ul>`;
+}
+
 function buildAbout() {
   const rel = '../';
   const aboutMd = fs.readFileSync(path.join(CONTENT, 'about.md'), 'utf8');
@@ -538,7 +566,7 @@ function buildAbout() {
   <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> 소개</div>
   <h1 class="post-title">소개</h1>
 </div>
-<div class="post-body">${marked.parse(aboutMd)}</div>`;
+<div class="post-body">${marked.parse(aboutMd)}\n${aboutStats(rel)}</div>`;
   write('about/index.html', page({ rel, title: `소개 — ${config.siteTitle}`, description: config.description, canonicalPath: 'about/', content, shellPath: '~/tech-blog/about' }));
 }
 
