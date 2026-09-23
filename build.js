@@ -308,6 +308,33 @@ function postRow(p, rel) {
 </article>`;
 }
 
+// 홈에서는 연재를 한 줄로 접는다. 열 편짜리 연재가 첫 화면을 다 차지하면
+// 다른 주제가 묻히기 때문이다. 대표는 첫 편으로 두어 처음부터 읽기 시작할 수
+// 있게 하고, 전체 편수와 쓴 기간을 함께 보여 준다.
+function seriesRow(name, rel) {
+  const list = seriesMap[name];
+  const lead = list[0];
+  const dates = list.map(p => p.date).filter(Boolean).sort();
+  const span = dates.length
+    ? (dates[0] === dates[dates.length - 1]
+        ? dates[0].replace(/-/g, '.')
+        : `${dates[0].replace(/-/g, '.')} — ${dates[dates.length - 1].replace(/-/g, '.')}`)
+    : '';
+  const withThumb = list.find(p => p.thumb);
+  const thumb = withThumb
+    ? `<a class="row-thumb" href="${rel}${withThumb.url}"><img src="${rel}posts/${withThumb.slug}/${encodeURI(withThumb.thumb)}" alt="" loading="lazy"></a>`
+    : '';
+  return `<article class="post-row">
+  <div class="row-main">
+    <div class="row-cat accent">${esc(name.toUpperCase())} <span class="ser-count">전체 ${list.length}편</span></div>
+    <h2 class="row-title"><a href="${rel}${lead.url}">${esc(lead.title)}</a></h2>
+    <p class="row-summary">${esc(lead.summary)}</p>
+    <div class="row-meta">${span ? `${esc(span)} · ` : ''}${esc(lead.catName)}<a class="ser-more" href="${rel}category/${lead.category}/">연재 ${list.length}편 모두 보기 →</a></div>
+  </div>
+  ${thumb}
+</article>`;
+}
+
 // ---------- 홈 ----------
 function homeTabs(rel, activeSlug) {
   const tabs = [`<a class="tab${activeSlug === null ? ' active' : ''}" href="${rel}">전체</a>`];
@@ -358,12 +385,22 @@ const HOME_LIMIT = 24;
 
 function buildHome() {
   const rel = './';
-  const shown = posts.slice(0, HOME_LIMIT);
-  const rows = shown.map(p => postRow(p, rel)).join('\n');
-  const more = posts.length > HOME_LIMIT
-    ? `<a class="more-link" href="${rel}archive/">전체 글 ${posts.length}편 보기 →</a>`
-    : '';
-  const listCmd = `<div class="cmd"><span class="sig">$</span> ls -lt posts/ <span class="cmt">| head -${shown.length}</span></div>`;
+  // 연재는 첫 편을 만났을 때 한 줄로 접고, 나머지 편은 건너뛴다.
+  const folded = new Set();
+  const items = [];
+  for (const p of posts) {
+    if (p.series) {
+      if (folded.has(p.series)) continue;
+      folded.add(p.series);
+      items.push(seriesRow(p.series, rel));
+    } else {
+      items.push(postRow(p, rel));
+    }
+    if (items.length >= HOME_LIMIT) break;
+  }
+  const rows = items.join('\n');
+  const more = `<a class="more-link" href="${rel}archive/">전체 글 ${posts.length}편 보기 →</a>`;
+  const listCmd = `<div class="cmd"><span class="sig">$</span> ls -lt posts/ <span class="cmt">| head -${items.length}  # 연재는 첫 편만</span></div>`;
   const content = `${projectSection(rel)}\n${homeTabs(rel, null)}\n${topicPanel(rel)}\n${listCmd}\n<div class="post-list">${rows}</div>\n${more}`;
   write('index.html', page({ rel, title: config.siteTitle, description: config.description, canonicalPath: '', content, isHome: true }));
 }

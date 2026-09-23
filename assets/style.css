@@ -119,6 +119,10 @@ a { color: var(--ink); text-decoration: none; }
 .row-summary { font-size: 14px; color: var(--muted); line-height: 1.65; margin: 0 0 12px; }
 .row-meta { font: 400 12px var(--mono); color: var(--faint); }
 .row-meta .sha { color: oklch(0.55 0.12 60); }
+/* 홈에서 한 줄로 접힌 연재 */
+.ser-count { color: var(--faint); font-weight: 400; margin-left: 4px; }
+.ser-more { font: 700 12px var(--mono); color: var(--accent); margin-left: 12px; white-space: nowrap; }
+.ser-more:hover { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
 .row-thumb { width: 170px; height: 170px; flex: none; align-self: center; overflow: hidden; border-radius: 8px; background: var(--code-bg); }
 .row-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
