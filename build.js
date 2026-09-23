@@ -12,7 +12,7 @@ const CONTENT = path.join(ROOT, 'content');
 // 파일 내용에서 뽑은 해시를 주소에 붙인다.
 const assetHash = (() => {
   const h = require('crypto').createHash('sha1');
-  for (const f of ['style.css', 'search.js']) {
+  for (const f of ['style.css', 'search.js', 'theme.js']) {
     h.update(fs.readFileSync(path.join(ROOT, 'assets', f)));
   }
   return h.digest('hex').slice(0, 8);
@@ -271,6 +271,7 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${rel}assets/style.css?v=${assetHash}">
+<script src="${rel}assets/theme.js?v=${assetHash}"></script>
 ${extraHead}
 </head>
 <body>
@@ -292,6 +293,7 @@ ${extraHead}
       <a href="${rel}tag/">태그</a>
       <a href="${rel}about/">소개</a>
       <button class="search-btn" id="search-open" aria-label="검색">⌕<span class="kbd">/</span></button>
+      <button class="theme-btn" id="theme-toggle" aria-label="화면 밝기 전환">☾</button>
     </nav>
   </header>
 ${content}
@@ -339,7 +341,7 @@ function commentBox(rel) {
     data-reactions-enabled="1"
     data-emit-metadata="0"
     data-input-position="top"
-    data-theme="light"
+    data-theme="preferred_color_scheme"
     data-lang="ko"
     data-loading="lazy"
     crossorigin="anonymous"
