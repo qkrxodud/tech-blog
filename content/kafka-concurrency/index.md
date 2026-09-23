@@ -139,9 +139,9 @@ Conflict equivalent
 1. 두 schedule은 같은 transaction들을 가진다.
 2. 어떤(any) conflicting operation의 순서도 양쪽 schedule 모두 동일하다.
 
-    ![](images/01_KakaoTalk_Photo_2024-07-18-14-50-49.png)
+    ![](images/01_KakaoTalk_Photo_2024-07-18-14-50-49.webp)
 
-    ![](images/02_KakaoTalk_Photo_2024-07-18-14-51-31.png)
+    ![](images/02_KakaoTalk_Photo_2024-07-18-14-51-31.webp)
 
 Conflict serializable
 
@@ -166,12 +166,12 @@ Conflict serializable
         - Schedule 내에서 commit된 Transaction이 rollback된 Transaction이 write 했던 데이터를 읽는 경우
         - rollback을 해도 **`이전 상태로 회복 불가능할 수 있기 때문에 이런 Schedule은 DBMS가 허용하면 안된다.`**
 
-        ![](images/03_Untitled.png)
+        ![](images/03_Untitled.webp)
 
     - recoverable Schedule
         - Schedule 내에서 그 어떤 Transaction도 자신이 읽는 데이터를 write한 Transaction이 먼저 commit/rollback 전까지는 commit 하지 않는 경우.
 
-            ![](images/04_Untitled-1.png)
+            ![](images/04_Untitled-1.webp)
 
         - cascading rollback
             - 여러 Transaction의 rollback이 연쇄적으로 일어나는 것을 말합니다.
@@ -181,12 +181,12 @@ Conflict serializable
         - cascading schedule
             - schedule 내에서 어떤 Transaction도 commit 되지 않는 transaction들이 write한 데이터는 읽지 않는 경우.
 
-            ![](images/05_Untitled-2.png)
+            ![](images/05_Untitled-2.webp)
 
         - strict schedule
             - schedule 내에서 어떤 Transaction도 commit 되지 않는 Transaction들이 write한 데이터는 쓰지도 읽지도 않는 경우.
 
-            ![](images/06_Untitled-3.png)
+            ![](images/06_Untitled-3.webp)
 
 - Isolation level
     - https://mangkyu.tistory.com/299

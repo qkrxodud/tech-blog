@@ -6,7 +6,7 @@ summary: "Lucene의 flush·commit과 Elasticsearch의 refresh·translog가 맞�
 
 ## 1. 3단계 색인 구조
 
-![](images/01_image.png)
+![](images/01_image.webp)
 
 > **`write()`를 호출해도 데이터는 디스크에 가지 않습니다.**
 > 커널 메모리(페이지 캐시)에 복사될 뿐이고, 실제 디스크 기록은 OS가 나중에 알아서 처리합니다.
@@ -24,7 +24,7 @@ Elasticsearch가 빠른 이유의 상당 부분이 여기서 나옵니다. 검�
 
 **물리 메모리 64GB인 데이터 노드**
 
-![](images/02_image-1.png)
+![](images/02_image-1.webp)
 
 나머지 절반은 노는 게 아닙니다. 힙을 60GB로 잡으면 페이지 캐시가 4GB밖에 안 남아서 매 검색마다 디스크를 읽게 되고, **힙을 키운 것이 오히려 검색을 느리게 만드는** 역설이 생깁니다.
 
@@ -41,7 +41,7 @@ Elasticsearch가 빠른 이유의 상당 부분이 여기서 나옵니다. 검�
 2. 생성된 역색인을 **인메모리 버퍼**에 쌓습니다
 3. **flush**: 버퍼의 내용을 **세그먼트(segment)** 라는 파일로 만들어 `write()` 합니다
 
-![](images/03_image-2.png)
+![](images/03_image-2.webp)
 
 **세그먼트는 Lucene이 검색을 수행하는 단위**입니다. 검색 요청이 오면 Lucene은 현재 존재하는 모든 세그먼트를 순회하며 결과를 모읍니다. 즉 세그먼트로 만들어지기 전, 버퍼에만 있는 문서는 **검색되지 않습니다.**
 
@@ -53,13 +53,13 @@ Elasticsearch의 **refresh**는 Lucene flush를 트리거해서, 색인된 문�
 
 **색인 요청이 들어온 직후**
 
-![](images/04_image-3.png)
+![](images/04_image-3.webp)
 
 현재 Page Cache에 세그먼트(데이터)가 없기 때문에 검색되지 않습니다.
 
 **refresh 발생 후**
 
-![](images/05_image-4.png)
+![](images/05_image-4.webp)
 
 세그먼트가 만들어져 페이지 캐시에 올라간 순간부터 검색이 가능해집니다. **디스크에 도달하는 것을 기다리지 않습니다.**
 
@@ -107,7 +107,7 @@ Elasticsearch는 이를 **translog(transaction log)** 로 해결합니다. RDBMS
 
 즉 색인 성공 응답을 받은 시점의 상태는 이렇습니다.
 
-![](images/06_image-5.png)
+![](images/06_image-5.webp)
 
 캐시에 세그먼트가 적재되지 않았기 때문에 검색되지 않음
 
@@ -130,7 +130,7 @@ translog가 계속 쌓이기만 하면 두 가지 문제가 생깁니다.
 
 **Elasticsearch의 flush**는 이 Lucene commit을 트리거하고, 추가로 필요 없어진 translog를 비웁니다.
 
-![](images/07_image-6.png)
+![](images/07_image-6.webp)
 
 여기서 페이지 캐시의 세그먼트는 **지워지지 않습니다.** 검색은 계속 메모리에서 이뤄집니다. fsync는 디스크에 사본을 확정하는 것이지 메모리를 비우는 게 아닙니다.
 
@@ -160,6 +160,6 @@ Elasticsearch flush    =  Lucene commit    (디스크까지, 영속)
 
 ## 흐름도
 
-![](images/08_image-7.png)
+![](images/08_image-7.webp)
 
 이를 통해 검색을 최적화하기 위해 미리 선행 작업을 진행한다는 것, 이러한 선행 작업으로 인해 실시간으로 업데이트되지 않는다는 것, 그리고 비용이 많이 든다는 것을 알 수 있었습니다.

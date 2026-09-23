@@ -24,7 +24,7 @@ summary: "JVM 메모리 구조와 가비지 컬렉션의 동작 원리를 정리
 - 자바 프로그램이 실행되면 OS로부터 메모리를 할당받아 메모리 용도에 따라 여러 영역으로 나눕니다.
 - 컴퓨터의 메모리는 한정적이기 때문에, 어떻게 관리하느냐에 따라 프로그램의 속도가 좌우됩니다. 결과적으로 같은 기능의 프로그램이더라도 메모리 관리에 따라 성능 차이가 크게 나게 됩니다.
 
-![](images/01_image.png)
+![](images/01_image.webp)
 
 - **Method Area(메소드 영역)**
     - 필드, 메서드, 인터페이스 정보
@@ -91,7 +91,7 @@ summary: "JVM 메모리 구조와 가비지 컬렉션의 동작 원리를 정리
 - **Serial GC**는 **단일 스레드**를 사용하여 GC를 처리합니다. Young Generation과 Old Generation에서 발생하는 GC를 모두 **`단일 스레드로 순차적으로 수행`**합니다.
 - 작은 힙 크기를 가진 애플리케이션에서 주로 사용됩니다.
 
-![](images/02_image-1.png)
+![](images/02_image-1.webp)
 
 **동작순서**
 
@@ -117,7 +117,7 @@ summary: "JVM 메모리 구조와 가비지 컬렉션의 동작 원리를 정리
 - **Parallel GC**는 **여러 스레드**를 사용하여 Young Generation과 Old Generation의 **`GC 작업을 병렬로 처리`**합니다.
 - 멀티코어 CPU를 가진 환경에서 성능을 극대화하는데 적합하며, 서버 애플리케이션에 주로 사용됩니다.
 
-![](images/03_image-2.png)
+![](images/03_image-2.webp)
 
 **동작순서**
 
@@ -152,7 +152,7 @@ summary: "JVM 메모리 구조와 가비지 컬렉션의 동작 원리를 정리
 - **Mark and Sweep** 방식을 사용하여 Old Generation의 GC를 처리합니다.
 - 단점은 메모리 단편화가 발생할 수 있다는 점입니다.
 
-![](images/04_image-3.png)
+![](images/04_image-3.webp)
 
 **동작순서**
 
@@ -197,9 +197,9 @@ summary: "JVM 메모리 구조와 가비지 컬렉션의 동작 원리를 정리
 - 각 영역을 **Young Generation** 또는 **Old Generation**으로 다룰 수 있으며, `병렬로 GC`를 처리합니다.
 - `Stop-The-World 시간을 최소`화하고, 대규모 애플리케이션에서 성능을 향상시키기 위해 설계된 최신 GC입니다.
 
-![](images/05_image-4.png)
+![](images/05_image-4.webp)
 
-![](images/06_image-5.png)
+![](images/06_image-5.webp)
 
 1. **Initial Mark** (Stop-The-World):
     - 루트 객체로부터 접근 가능한 Young Generation 및 Old Generation의 객체들을 표시(mark)합니다.
@@ -235,7 +235,7 @@ summary: "JVM 메모리 구조와 가비지 컬렉션의 동작 원리를 정리
 - **병행(Concurrent)**: 대부분의 작업이 애플리케이션과 동시에 수행됩니다.
 - **대규모 힙을 지원**: ZGC는 대규모 메모리(TB 단위)를 처리할 수 있으며, 힙 크기에 관계없이 일시정지 시간을 **10ms 이하**로 유지합니다.
 
-![](images/07_image-6.png)
+![](images/07_image-6.webp)
 
 **동작순서**
 

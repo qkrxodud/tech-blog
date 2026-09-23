@@ -6,7 +6,7 @@ summary: "애그리거트를 동시에 수정할 때 발생하는 일관성 문�
 
 ### 애그리거트와 트랜잭션
 
-![](images/01_Untitled.png)
+![](images/01_Untitled.webp)
 
 - 운영자는 기존 배송지 정보를 이용해서 배송 상태를 변경합니다.
 - 고객은 배송지 정보를 변경합니다.
@@ -24,7 +24,7 @@ summary: "애그리거트를 동시에 수정할 때 발생하는 일관성 문�
 
 ### 선점 잠금
 
-![](images/02_Untitled-1.png)
+![](images/02_Untitled-1.webp)
 
 먼저 애그리거트를 구한 스레드가 애그리거트 사용이 끝날 때까지 다른 스레드가 해당 애그리거트를 수정하지 못하게 막는 방식입니다.
 
@@ -57,7 +57,7 @@ public interface MemberRepository extends Repository<Member, MemberId> {
 
 ### 비선점 잠금
 
-![](images/03_Untitled-2.png)
+![](images/03_Untitled-2.webp)
 
 1. 운영자는 배송을 위해 주문 정보를 조회합니다. 시스템은 정보를 제공합니다.
 2. 고객이 배송지 변경을 위해 변경 폼을 요청합니다. 시스템은 변경 폼을 제공합니다.
@@ -83,7 +83,7 @@ public interface MemberRepository extends Repository<Member, MemberId> {
     ```
     
 
-![](images/04_Untitled-3.png)
+![](images/04_Untitled-3.webp)
 
 JPA는 버전을 이용한 비선점 잠금 기능을 지원합니다.
 
@@ -139,7 +139,7 @@ public class OrderController {
 }
 ```
 
-![](images/05_Untitled-4.png)
+![](images/05_Untitled-4.webp)
 
 그림과 같이 비선점 잠금 방식을 여러 트랜잭션으로 확장하려면,
 
@@ -225,7 +225,7 @@ public class JpaOrderRepostiory implements OrderRepository {
 - 여러 트랜잭션에 걸쳐 동시 변경을 막습니다.
 - 첫 번째 트랜잭션을 시작할 때 오프라인 잠금을 선점하고, 마지막 트랜잭션에서 잠금을 해제합니다. 잠금을 해제하기 전까지 다른 사용자는 잠금을 구할 수 없습니다.
 
-![](images/06_Untitled-5.png)
+![](images/06_Untitled-5.webp)
 
 **문제 발생**
 

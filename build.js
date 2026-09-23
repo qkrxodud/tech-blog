@@ -144,6 +144,27 @@ function fixImageLinks(body, slug) {
   return out;
 }
 
+// 그림에 설명문(alt)을 채운다. 화면을 못 보는 분에게는 이것이 그림의 전부이고,
+// 검색엔진도 이 글을 읽는다. 원본에는 하나도 없어서, 그림 바로 앞의 소제목을
+// 가져다 쓴다. 그림 자체를 묘사하진 못해도 "무엇을 설명하는 그림인지"는 전한다.
+function fillAltText(body) {
+  const lines = body.split('\n');
+  let heading = null, inCode = false, n = 0;
+  const out = lines.map(line => {
+    if (/^```/.test(line)) { inCode = !inCode; return line; }
+    if (inCode) return line;
+    const h = line.match(/^#{2,4}\s+(.+?)\s*$/);
+    if (h) { heading = h[1].replace(/[*`#]/g, '').trim(); n = 0; return line; }
+    return line.replace(/^(\s*)!\[\]\(/, (m, indent) => {
+      if (!heading) return m;
+      n++;
+      const label = n > 1 ? `${heading} — 그림 ${n}` : heading;
+      return `${indent}![${label.replace(/[[\]]/g, '')}](`;
+    });
+  });
+  return out.join('\n');
+}
+
 // ---------- 콘텐츠 로드 ----------
 const posts = [];
 for (const meta of postMeta) {
@@ -152,7 +173,7 @@ for (const meta of postMeta) {
   const raw = fs.readFileSync(mdPath, 'utf8');
   const parsed = parseFrontmatter(raw);
   const attrs = parsed.attrs;
-  const body = demoteHeadings(fixImageLinks(parsed.body, meta.slug));
+  const body = fillAltText(demoteHeadings(fixImageLinks(parsed.body, meta.slug)));
   const plain = stripMd(body);
   const firstImg = (body.match(/!\[[^\]]*\]\((images\/[^)]+)\)/) || [])[1] || null;
   posts.push({

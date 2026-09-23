@@ -67,7 +67,7 @@ cmd > jstat -gcutil -t 6554 1000 00
 
 jstat -gcutil -t [Spring Boot port] 1000 00
 
-![](images/01_image.png)
+![](images/01_image.webp)
 
 - S0 / S1 (Survivor 0, 1): Eden에서 살아남은 객체들이 이동하는 Survivor 영역의 사용률을 나타냅니다.
 - E (Eden): 객체가 처음 할당되는 Eden 영역의 사용률을 나타냅니다.
@@ -82,7 +82,7 @@ jstat -gcutil -t [Spring Boot port] 1000 00
 
 ### GC 상태 분석 및 튜닝 기준
 
-![](images/02_image-1.png)
+![](images/02_image-1.webp)
 
 1. Young Generation 영역(Survivor, Eden) 가득 참
     - **증상**: `S0`, `S1`, `E` 값이 90% 이상 지속적으로 유지되는 경우.

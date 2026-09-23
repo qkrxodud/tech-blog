@@ -19,11 +19,11 @@ summary: "Claude Code와 Ralph Loop로 1,208회의 자율 반복 루프를 돌�
 - 포트폴리오 관리: 수익률 추적, 몬테카를로 시뮬레이션
 - 세금 계산기: 국내 암호화폐 과세 기준 자동 계산
 
-![](images/01_Crypto-Timing-Radar-05-23-2026_06_22_PM_part1.png)
+![](images/01_Crypto-Timing-Radar-05-23-2026_06_22_PM_part1.webp)
 
-![](images/02_Crypto-Timing-Radar-05-23-2026_06_22_PM_part2.png)
+![](images/02_Crypto-Timing-Radar-05-23-2026_06_22_PM_part2.webp)
 
-![](images/03_image.png)
+![](images/03_image.webp)
 
 기술 스택
 

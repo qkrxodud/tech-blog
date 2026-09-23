@@ -4,7 +4,7 @@ tags: ["JVM","클래스 로딩","스레드","운영체제","JIT 컴파일러"]
 summary: "jar 파일이 프로세스로 실행되는 과정과 커널 스레드-자바 스레드의 매핑, JVM의 클래스 로딩 흐름을 정리합니다."
 ---
 
-![](images/01_image.png)
+![](images/01_image.webp)
 
 JVM을 실행할 수 있는 환경이라면 어디든지 jar 파일을 동작시킬 수 있습니다. JVM은 바이트코드를 해석하거나 실행할 수 있는 실행 파일이기 때문입니다.
 
@@ -277,7 +277,7 @@ public static void superAmazingPopularMethod);
 
 인터프리터 언어로 동작하다가 자주 호출되는 영역(hotspot)은 JIT compiler를 통해 기계어로 컴파일하여, 그 기계어가 직접 실행되도록 하는 방식의 VM을 HotSpot VM이라고 합니다.
 
-![](images/02_image-1.png)
+![](images/02_image-1.webp)
 
 ## JVM 클래스 로딩: RAM에 한번에 다 올라갈까?
 
@@ -496,6 +496,6 @@ OrderService service = new OrderService();
 
 #### JVM 프로세스 메모리 구조
 
-![](images/03_image-2.png)
+![](images/03_image-2.webp)
 
 참고 영상: [GC 2부: GC 공부를 위해 알아야할 JVM 지식](https://www.youtube.com/watch?v=NFwYJnvUFzI&list=PLcXyemr8ZeoSUPUhwqtxe1oztltsJhxBY&index=4)

@@ -9,7 +9,7 @@ summary: "GC의 역할과 주요 테크닉을 살펴보고, Ergonomics와 Pause-
 - OS로부터 메모리 영역을 확보합니다.
 - 애플리케이션에서는 객체 생성 등 메모리가 필요할 때 GC가 확보한 메모리 영역을 사용합니다.
 
-![](images/01_image.png)
+![](images/01_image.webp)
 
 ## GC의 주요 테크닉
 
@@ -17,7 +17,7 @@ summary: "GC의 역할과 주요 테크닉을 살펴보고, Ergonomics와 Pause-
 - 살아있는 객체들은 한 곳에 모아서 최대한 연속된 free 영역을 확보하려고 노력합니다.
 - GC가 동작할 때 여러 스레드를 사용해 최대한 병렬로 동작할 수 있도록 하고, 오래 걸리는 GC 작업은 백그라운드에서 애플리케이션 코드와 동시에 실행될 수 있도록 합니다.
 
-![](images/02_image-1.png)
+![](images/02_image-1.webp)
 
 ## 언제 GC 선택과 튜닝이 중요한가?
 
@@ -25,7 +25,7 @@ summary: "GC의 역할과 주요 테크닉을 살펴보고, Ergonomics와 Pause-
 
 기본적으로 작은 프로젝트나 사이드 프로젝트에서는 GC를 튜닝할 정도로 큰 트래픽이 발생하지 않습니다. 그래서 기본적인 설정값으로 프로그램을 진행해도 됩니다. 하지만 스케일이 큰 애플리케이션, 특히 데이터를 많이 쓰고 스레드도 많이 쓰며 높은 처리량을 요구하는 애플리케이션의 경우에는 성능을 위해 별도의 GC 선택과 튜닝이 필요할 수 있습니다.
 
-![](images/03_image-2.png)
+![](images/03_image-2.webp)
 
 - 소규모 시스템에서는 별 문제가 안 될 GC로 인한 성능 이슈가, 대규모 시스템으로 확장될 때는 주요 병목 지점이 될 수 있습니다.
 - 대규모 시스템에서는 GC 오버헤드를 조금만 낮춰도 성능 향상에 이점이 크기 때문에, 적절한 garbage collector를 선택하고 필요하다면 GC 튜닝도 하는 것이 중요하고 가치 있는 일입니다.
@@ -59,7 +59,7 @@ Ergonomics란 JVM이 주어진 환경에서 GC와 메모리 관련 설정을 스
   - `51379 com.ic.api.InterviewConnectApiApplication`
 - `jcmd 51379 VM.flags`
 
-![](images/04_image-3.png)
+![](images/04_image-3.webp)
 
 - `-XX:InitialHeapSize=536870912` → 512MB
 - `-XX:MaxHeapSize=8589934592` → 8GB
@@ -67,7 +67,7 @@ Ergonomics란 JVM이 주어진 환경에서 GC와 메모리 관련 설정을 스
 
 현재 제 컴퓨터 기준 애플리케이션의 유동적인 JVM 설정은 다음과 같습니다.
 
-![](images/05_image-4.png)
+![](images/05_image-4.webp)
 
 ## Maximum Pause-Time goal
 

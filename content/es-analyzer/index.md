@@ -165,7 +165,7 @@ GET /products/_search
 
 ### 애널라이저의 토큰화와 검색 방식
 
-![](images/01_image.png)
+![](images/01_image.webp)
 
 도큐먼트를 생성할 때 애널라이저가 문자열을 토큰으로 분리해 역인덱스를 만듭니다. 그런데 검색을 할 때도 애널라이저가 검색어로 입력한 문자열을 토큰으로 분리해 검색합니다.
 
@@ -292,7 +292,7 @@ PUT /boards
 }
 ```
 
-![](images/02_image-1.png)
+![](images/02_image-1.webp)
 
 이 때문에 `jumped`라고 검색어를 입력하더라도 `stemmer`에 의해 `jump`로 바뀐 채로 검색을 하게 됩니다. 그래서 `jumped`라고 검색했는데도 도큐먼트가 조회됩니다.
 

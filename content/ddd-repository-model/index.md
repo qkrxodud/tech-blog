@@ -10,7 +10,7 @@ summary: "도메인 주도 개발 시작하기 4장을 정리하며, 밸류 타�
 
 엔티티와 밸류가 한 테이블에 매핑됩니다.
 
-![](images/01_Untitled.png)
+![](images/01_Untitled.webp)
 
 ```java
 @Entity
@@ -126,7 +126,7 @@ public class Length {
 }
 ```
 
-![](images/02_Untitled-1.png)
+![](images/02_Untitled-1.webp)
 
 두 개 이상의 프로퍼티를 가진 밸류 타입을 한 개 칼럼에 매핑하려면 @Embeddable 애너테이션으로는 처리할 수 없습니다. 이럴 때 사용할 수 있는 것이 AttributeConverter입니다.
 
@@ -184,7 +184,7 @@ public class Order {
 
 **밸류 컬렉션: 별도 테이블 매핑**
 
-![](images/03_Untitled-2.png)
+![](images/03_Untitled-2.webp)
 
 **밸류 컬렉션을 별도 테이블로 매핑**
 
@@ -333,7 +333,7 @@ if (order.getNumber().is2ndGeneration()) {
 
 밸류가 아니라 엔티티가 확실하다면 다른 애그리거트는 아닌지 확인해야 합니다. 특히 자신만의 라이프 사이클을 갖는다면 구분되는 애그리거트일 가능성이 높습니다.
 
-![](images/04_Untitled-3.png)
+![](images/04_Untitled-3.webp)
 
 밸류를 엔티티로 잘못 매핑한 예
 
@@ -341,7 +341,7 @@ ArticleContent를 엔티티로 생각할 수 있지만, ArticleContent는 Articl
 
 ArticleContent를 밸류로 보고 접근하면 그림은 아래와 같습니다.
 
-![](images/05_Untitled-4.png)
+![](images/05_Untitled-4.webp)
 
 ArticleContent는 밸류이므로 @Embeddable로 매핑합니다. ArticleContent와 매핑되는 테이블은 Article과 매핑되는 테이블과 다릅니다. 이때 밸류를 매핑할 테이블을 지정하기 위해 @SecondaryTable과 @AttributeOverride를 사용합니다.
 
@@ -390,13 +390,13 @@ Article article = entityManager.find(Article.class, 1L);
 
 제품의 이미지 업로드 방식에 따라 이미지 경로와 섬네일 이미지 제공 여부가 달라진다고 해보겠습니다.
 
-![](images/06_Untitled-5.png)
+![](images/06_Untitled-5.webp)
 
 JPA는 @Embeddable 타입의 클래스 상속 매핑을 지원하지 않습니다. 상속 구조를 가지려면 @Entity를 이용해야 합니다.
 
 식별자 매핑을 위한 필드도 추가해야 합니다. 또한 구현 클래스를 구분하기 위한 타입 칼럼을 추가해야 합니다.
 
-![](images/07_Untitled-6.png)
+![](images/07_Untitled-6.webp)
 
 한 테이블에 Image와 그 하위 클래스를 매핑하므로 Image 클래스에 다음 설정을 사용합니다.
 

@@ -10,7 +10,7 @@ summary: "여러 애그리거트를 조합해야 하는 조회 성능 문제를,
 - Product에서 상품 이름
 - Member에서 회원 이름과 ID
 
-![](images/01_Untitled.png)
+![](images/01_Untitled.webp)
 
 조회 화면 특성상 조회 속도가 빠를수록 좋은데, 여러 애그리거트의 데이터가 필요하면 구현 방법을 고민해야 합니다.
 
@@ -25,11 +25,11 @@ summary: "여러 애그리거트를 조합해야 하는 조회 성능 문제를,
 
 - **상태 변경을 위한 모델과 조회를 위한 모델을 분리하는 것입니다!**
 
-![](images/02_Untitled-1.png)
+![](images/02_Untitled-1.webp)
 
 도메인이 복잡할수록 명령 기능과 조회 기능이 다루는 데이터 범위에 차이가 납니다.
 
-![](images/03_Untitled-2.png)
+![](images/03_Untitled-2.webp)
 
 (NoSQL의 경우 메모리 기반이라 조회 성능이 좋습니다.)
 

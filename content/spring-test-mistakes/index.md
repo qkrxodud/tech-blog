@@ -20,7 +20,7 @@ nextStep에서 객체지향적으로 설계하는 방법과 TDD 작성을 배웠
 
 1. 제일 중요한 것은 당연하게도 소형 테스트입니다.
 
-![](images/01_Untitled.png)
+![](images/01_Untitled.webp)
 
 소형 테스트를 진행하기 위해서는 행위보다는 상태를 테스트하는 것이 좋습니다.
 
@@ -141,11 +141,11 @@ class StubUserRepository implements UserRepository {
 
 - 의존성 주입 (DI) : 인스턴스를 직접 만드는 것이 아니라, 상위에서 생성해서 생성자를 통해 객체를 매개변수로 받습니다.
 
-![](images/02_Untitled-1.png)
+![](images/02_Untitled-1.webp)
 
 - 의존성 역전 (DIP) : 인터페이스나 추상 클래스 같은 추상적인 선언을 참조해서 사용합니다.
 
-![](images/03_Untitled-2.png)
+![](images/03_Untitled-2.webp)
 
 ⭐️⭐️⭐️ 테스트 잘하는 방법
 
@@ -327,7 +327,7 @@ class UserService {
     
     02 [만들면서 배우는 클린 아키텍처] 의존성 역전하기.
     
-    ![](images/04_Untitled-3.png)
+    ![](images/04_Untitled-3.webp)
     
     ### 후기
     

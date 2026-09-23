@@ -81,7 +81,7 @@ public class Order {
 
 **이벤트 관련 구성요소**
 
-![](images/01_Untitled.png)
+![](images/01_Untitled.webp)
 
 - 이벤트 생성 주체 : 엔티티, 밸류, 도메인 서비스와 같은 도메인 객체
 - 이벤트 핸들러 : 이벤트 핸들러는 생성 주체가 발생한 이벤트를 전달받아 이벤트에 담긴 데이터를 이용해서 원하는 기능을 실행합니다.
@@ -139,7 +139,7 @@ public class ShippingInfoChangedHandler {
 1. 트리거 → 도메인 상태가 바뀔 때 다른 후처리가 필요하면 후처리를 실행하기 위한 트리거로 사용합니다.
     1. 예) 주문에서는 주문 취소 이벤트를 트리거로 사용합니다 → 주문을 취소하면 환불을 처리해야 하는데, 이때 환불 처리를 위한 트리거로 주문 취소 이벤트를 사용합니다.
     
-    ![](images/02_Untitled-1.png)
+    ![](images/02_Untitled-1.webp)
     
 2. 서로 다른 시스템 간의 데이터 동기화입니다. 배송지를 변경하면 외부 배송 서비스에 바뀐 배송지 정보를 전송해야 합니다. → **현재 제가 맡고 있는 시스템에서 동기화 관련된 외부 API 작업이 많은데, 적용하면 좋을 것으로 생각합니다.**
 
@@ -185,7 +185,7 @@ public class Order {
 
 구매 취소에 더 이상 환불 로직이 없습니다 → 이벤트 핸들러를 사용하면 기능 확장도 용이합니다. 구매 취소 시 환불과 함께 이메일로 취소 내용을 보내고 싶다면 이메일 발송을 처리하는 핸들러를 구하면 됩니다.
 
-![](images/03_Untitled-2.png)
+![](images/03_Untitled-2.webp)
 
 ### 이벤트, 핸들러, 디스패처 구현
 
@@ -300,7 +300,7 @@ public class OrderCanceledEventHandler {
 
 **흐름 처리**
 
-![](images/04_Untitled-3.png)
+![](images/04_Untitled-3.webp)
 
 1. 도메인 기능을 실행합니다.
 2. 도메인 기능은 Events.raise()를 이용해서 이벤트를 발생시킵니다.
@@ -394,7 +394,7 @@ public class OrderCancelEventHandler {
 
 비동기 이벤트를 처리해야 할 때 사용하는 또 다른 방법은 카프카나 래빗MQ와 같은 메시징 시스템을 사용하는 것입니다.
 
-![](images/05_Untitled-4.png)
+![](images/05_Untitled-4.webp)
 
 필요하다면 이벤트를 발생시키는 도메인 기능과 메시지 큐에 이벤트를 저장하는 절차를 한 트랜잭션으로 묶어야 합니다. → 글로벌 트랜잭션이 필요합니다.
 
@@ -412,7 +412,7 @@ public class OrderCancelEventHandler {
 
 1. 이벤트를 DB에 저장한 뒤에 별도 프로그램을 이용해서 이벤트 핸들러에 전달하는 것입니다.
 
-![](images/06_Untitled-5.png)
+![](images/06_Untitled-5.webp)
 
 1. 이벤트 발생
 2. 핸들러에서 → 스토리지에 이벤트 저장
@@ -421,11 +421,11 @@ public class OrderCancelEventHandler {
 
 **API를 이용해서 이벤트를 외부에 제공하는 방식**
 
-![](images/07_Untitled-6.png)
+![](images/07_Untitled-6.webp)
 
 **이벤트 저장소 구현**
 
-![](images/08_Untitled-7.png)
+![](images/08_Untitled-7.webp)
 
 - EventEntry : 이벤트 저장소에 보관할 데이터
 - EventStore : 이벤트를 저장하고 조회하는 인터페이스
@@ -711,7 +711,7 @@ public interface EventSender {
 
 **동기로 처리하는 실행 흐름**
 
-![](images/09_Untitled-8.png)
+![](images/09_Untitled-8.webp)
 
 **문제 발생**
 
@@ -719,7 +719,7 @@ public interface EventSender {
 
 **비동기 처리하는 실행 흐름**
 
-![](images/10_Untitled-9.png)
+![](images/10_Untitled-9.webp)
 
 이벤트 핸들러를 호출하는 5번 과정은 비동기로 실행됩니다 → 만약 12번 과정에서 외부 API 호출에 실패하면, DB는 주문이 취소된 상태로 데이터가 바뀌었는데 결제는 취소되지 않은 상태로 남게 됩니다.
 

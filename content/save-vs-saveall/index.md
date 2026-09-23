@@ -37,7 +37,7 @@ summary: "JPA의 save와 saveAll을 각각 10,000건씩 테스트하여 실행 �
 4. 저장 후 시스템 시간을 적시
 5. 저장 후 시스템 시간 - 저장 전 시스템 시간을 = 총 걸린 시간
 
-![](images/01_Untitled.png)
+![](images/01_Untitled.webp)
 
 ### 2. saveAll
 
@@ -67,7 +67,7 @@ summary: "JPA의 save와 saveAll을 각각 10,000건씩 테스트하여 실행 �
 5. 저장 후 시스템 시간을 적시
 6. 저장 후 시스템 시간 - 저장 전 시스템 시간을 = 총 걸린 시간
 
-![](images/02_Untitled-1.png)
+![](images/02_Untitled-1.webp)
 
 ### 결과
 

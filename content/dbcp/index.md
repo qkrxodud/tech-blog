@@ -24,7 +24,7 @@ DBCP는 (DataBase Connection Pool)의 약자로 클라이언트 서버에서 요
 - 서버가 이 요청을 받고, 요청을 수락(`SYN-ACK`)합니다.
 - 클라이언트가 서버에게 연결 수락 확인(`ACK`)을 보냅니다.
 
-![](images/01_image.png)
+![](images/01_image.webp)
 
 이 과정을 통해 양쪽 호스트는 데이터를 전송하기 전에 서로의 상태를 확인하고, 안정적인 연결을 설정할 수 있습니다.
 
@@ -35,7 +35,7 @@ DBCP는 (DataBase Connection Pool)의 약자로 클라이언트 서버에서 요
 - 상대방도 자신의 데이터 전송이 완료되면 `FIN` 패킷을 보내 연결 종료를 요청합니다.
 - 첫 번째로 `FIN` 요청을 보낸 쪽이 이 `FIN`을 확인하고, 마지막 `ACK` 패킷을 보내면서 연결이 종료됩니다.
 
-![](images/02_image-1.png)
+![](images/02_image-1.webp)
 
 위와 같이 API 호출 한 번에 TCP통신의 연결을 맺고 끊는 것에 너무 많은 시간이 소요될 것이고, 사용자는 느린 응답값에 지치게 될 것입니다.
 
@@ -45,7 +45,7 @@ DBCP는 (DataBase Connection Pool)의 약자로 클라이언트 서버에서 요
 
 DBCP는 데이터베이스 연결 객체들을 미리 생성하여 풀 안에 보관하고, 애플리케이션에서 데이터베이스에 상호작용을 할 때마다 Pool에서 Connection을 빌려 재사용하는 것으로, 기존의 3way HandShake와 4way HandShake를 사용하는 번거로움을 없앴습니다. 이로 하여금 사용자는 더 빠르게 정보를 제공받을 수 있습니다.
 
-![](images/03_image-2.png)
+![](images/03_image-2.webp)
 
 ### 그렇다면 이렇게 미리 만들어 넣는 DBCP에서 개발자는 무엇을 잘 해야 되는가?
 

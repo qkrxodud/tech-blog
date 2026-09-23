@@ -8,7 +8,7 @@ summary: "패키지 접근 제한자와 빌드 아티팩트 분리로 아키텍�
 
 ---
 
-![](images/01_Untitled.png)
+![](images/01_Untitled.webp)
 
 - 도메인 엔티티
     - 가장 안쪽에 있는 엔티티
@@ -32,7 +32,7 @@ summary: "패키지 접근 제한자와 빌드 아티팩트 분리로 아키텍�
 
 접근 제한자를 염두에 두고 패키지 구조를 다시 보겠습니다.
 
-![](images/02_Untitled-1.png)
+![](images/02_Untitled-1.webp)
 
 - persistence 패키지에 있는 클래스들은 외부에서 접근할 필요가 없기 때문에 package-private('o')로 표기합니다.
     - 영속성 어댑터는 자신이 구현하는 출력 포트를 통해 접근됩니다.

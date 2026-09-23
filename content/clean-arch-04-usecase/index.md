@@ -199,7 +199,7 @@ public class SendMoneyService implements SendMoneyUseCase {
 2. 계좌를 불러오기 위해 아웃고잉 포트 인터페이스 LoadAccountPort를 호출합니다.
 3. 데이터베이스의 계좌 상태를 변경하기 위해 UpdateAccountStatePort를 호출합니다.
 
-![](images/01_Untitled.png)
+![](images/01_Untitled.webp)
 
 그림처럼 하나의 서비스가 하나의 유스케이스를 구현하고, 도메인 모델을 변경하고, 변경된 상태를 저장하기 위해 아웃고잉 포트를 호출합니다.
 
@@ -258,7 +258,7 @@ class SendMoneyCommand extends SelfValidating<SendMoneyCommand> {
 
 생성자를 직접 사용했다면 새로운 필드를 추가하거나 필드를 삭제할 때마다 컴파일 에러를 따라 나머지 코드에 변경 사항을 반영할 수 있을 것입니다.
 
-![](images/02_Untitled-1.png)
+![](images/02_Untitled-1.webp)
 
 파라미터들을 헷갈리지 않도록 IDE가 파라미터명 힌트를 보여줍니다.
 

@@ -45,7 +45,7 @@ MySQL Workbench에서 Explain을 통하여 실행계획을 확인하였습니다
 
 아래와 같이 노출되는 것을 확인하였습니다.
 
-![](images/01_image.png)
+![](images/01_image.webp)
 
 테이블을 보면 **`Rule 테이블이 드라이빙 테이블`**이 되었고, detection 테이블이 드리븐 테이블이 되는 것을 확인할 수 있습니다. 그렇다면 `rule.status` 조회 조건을 삭제하면 어떻게 노출될까요?
 
@@ -63,7 +63,7 @@ WHERE detection.check_ts >= '2024-05-01'
 (생략)
 ```
 
-![](images/02_image-1.png)
+![](images/02_image-1.webp)
 
 드라이빙 테이블이 detection으로 변경된 것을 확인할 수 있습니다. 그렇다면 왜 `rule.status`를 조건으로 넣으면 느려지는 것일까요?
 
