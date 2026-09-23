@@ -186,7 +186,18 @@ a { color: var(--ink); text-decoration: none; }
 .post-body h3 { font-size: 18px; font-weight: 800; letter-spacing: -.02em; margin: 34px 0 14px; color: var(--ink); }
 .post-body h4 { font-size: 16px; font-weight: 700; margin: 28px 0 12px; color: var(--ink); }
 .post-body a { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
-.post-body img { max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); }
+/* 본문 그림. 세로로 긴 다이어그램이 많아 폭만 맞추면 한 장이 화면을 다 덮는다.
+   높이도 함께 제한해 한눈에 들어오게 하고, 자세히 볼 사람은 눌러서 원본을 연다. */
+.post-body img {
+  max-width: 100%; max-height: 620px;
+  width: auto; height: auto;
+  display: block; margin: 0 auto;
+  border-radius: 8px; border: 1px solid var(--line);
+}
+.img-zoom { display: block; margin: 0 0 8px; }
+.img-zoom:hover img { border-color: var(--accent); }
+.img-cap { display: block; text-align: center; font: 400 11.5px var(--mono); color: var(--faint); margin: 0 0 20px; }
+.img-zoom:hover + .img-cap { color: var(--accent); }
 .post-body pre { background: var(--code-bg); border-radius: 8px; padding: 18px 20px; font: 400 13px/1.7 var(--mono); overflow-x: auto; margin: 0 0 20px; }
 .post-body pre code { background: none; padding: 0; font-size: 13px; }
 .post-body code { background: var(--code-bg); border-radius: 4px; padding: 2px 6px; font-family: var(--mono); font-size: 13px; }

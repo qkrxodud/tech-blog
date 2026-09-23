@@ -80,6 +80,16 @@ function readingTime(text) {
   return Math.max(1, Math.round(text.length / 600));
 }
 
+// 본문 그림은 화면에 들어올 만큼만 보여 주고, 눌러서 원본을 열 수 있게 한다.
+// 세로로 긴 다이어그램이 많아 크기를 줄이면 글씨가 작아지기 때문이다.
+function zoomableImages(html) {
+  return html.replace(/<img src="([^"]+)"([^>]*)>/g, (whole, src, rest) => {
+    if (/^https?:/.test(src)) return whole;   // 외부 이미지는 그대로 둔다
+    return `<a class="img-zoom" href="${src}" target="_blank" rel="noopener">${whole}</a>` +
+           `<span class="img-cap">눌러서 원본 크기로 보기</span>`;
+  });
+}
+
 // 제목 앞의 대괄호 접두어를 덜어낸다. 화면에는 카테고리·시리즈 라벨이 이미
 // 붙으므로 "[Java] GC 튜닝" 같은 제목은 라벨과 중복된다.
 const TITLE_PREFIXES = /^\s*\[(java|spring|db|git|kafka|clean[ -]?code|리뷰)\]\s*/i;
@@ -489,7 +499,7 @@ function buildPosts() {
       prev = c[idx - 1] || null; next = c[idx + 1] || null;
     }
     const crumbLabel = p.series ? p.series : p.catName;
-    const bodyHtml = marked.parse(p.body);
+    const bodyHtml = zoomableImages(marked.parse(p.body));
     let content = `<div class="post-header">
   <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}category/${p.category}/">${esc(crumbLabel.toUpperCase())}</a>${p.series ? ` <span class="sep">· ${p.seriesOrder}/${seriesMap[p.series].length}</span>` : ''}</div>
   <h1 class="post-title">${esc(p.title)}</h1>
