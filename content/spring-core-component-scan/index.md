@@ -1,6 +1,6 @@
 ---
 title: "컴포넌트 스캔"
-tags: ["Spring","컴포넌트 스캔","Autowired","의존관계자동주입","ComponentScan"]
+tags: ["Spring","컴포넌트 스캔","Autowired","의존성 주입"]
 summary: "설정 정보 없이 스프링 빈을 자동으로 등록하는 컴포넌트 스캔과 @Autowired 의존관계 자동 주입의 동작 방식을 정리합니다."
 ---
 

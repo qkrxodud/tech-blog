@@ -1,6 +1,6 @@
 ---
 title: "NPE를 막는 자바 방어 코드 모음"
-tags: ["Java","NPE","Stream","방어 코드"]
+tags: ["Java","NullPointerException","Stream","방어 코드"]
 summary: "NPE를 예방하기 위해 사용했던 null 체크, partition, Function.identity() 방어 코드를 모아 정리합니다."
 ---
 

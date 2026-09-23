@@ -1,6 +1,6 @@
 ---
 title: "쿠버네티스 알아보기"
-tags: ["Kubernetes","쿠버네티스","Pod","etcd","APIServer","컨테이너오케스트레이션"]
+tags: ["Kubernetes","Pod","etcd","APIServer","오케스트레이션"]
 summary: "쿠버네티스의 아키텍처(Master, Node, etcd, API Server)와 Pod, ReplicaSet, Deployment, Service, Ingress 등 핵심 개념을 정리합니다."
 ---
 

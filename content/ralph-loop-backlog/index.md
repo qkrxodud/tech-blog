@@ -1,6 +1,6 @@
 ---
 title: "Ralph Loop 설계하기 — BACKLOG.md와 상태 파일 운영법"
-tags: ["Claude Code","Ralph Loop","BACKLOG","자동화","상태관리","AI 협업"]
+tags: ["Claude Code","Ralph Loop","백로그","AI 협업"]
 summary: "Claude Code가 자율적으로 반복 작업을 수행하는 Ralph Loop를 BACKLOG.md, PROGRESS.md, MEMORY 파일로 설계하고 1,208번의 루프 동안 운영한 방법을 정리합니다."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "스트림, 람다, Optional — 1단계"
-tags: ["클린 코드","Java","스트림","람다","Optional"]
+tags: ["클린 코드","Java","Stream","람다","Optional"]
 summary: "익명 클래스를 람다로 바꾸고 스트림의 map, filter, reduce와 Optional을 활용해 리팩토링한 학습 기록입니다."
 ---
 

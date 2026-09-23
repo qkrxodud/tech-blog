@@ -1,6 +1,6 @@
 ---
 title: "웹 스코프"
-tags: ["Spring","빈스코프","웹스코프","request스코프","CGLIB프록시"]
+tags: ["Spring","빈스코프","CGLIB"]
 summary: "웹 스코프와 request 스코프의 동작 방식을 살펴보고, ObjectProvider와 CGLIB 프록시로 스코프 문제를 해결하는 방법을 정리합니다."
 ---
 

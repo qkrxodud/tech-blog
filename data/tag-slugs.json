@@ -79,5 +79,11 @@
   "파티션": "partition",
   "스프링 빈": "spring-bean",
   "스프링 컨테이너": "spring-container",
-  "컴포넌트 스캔": "component-scan"
+  "컴포넌트 스캔": "component-scan",
+  "가독성": "readability",
+  "리포지토리": "repository",
+  "무상태": "stateless",
+  "백로그": "backlog",
+  "오케스트레이션": "orchestration",
+  "인덱스": "index"
 }

@@ -1,6 +1,6 @@
 ---
 title: "컨테이너 오케스트레이션"
-tags: ["Kubernetes","컨테이너","오케스트레이션","Docker","DevOps","인프라"]
+tags: ["Kubernetes","컨테이너","오케스트레이션","Docker","DevOps"]
 summary: "서버 관리 방식의 변화부터 도커 컨테이너의 등장, 컨테이너 오케스트레이션이 필요한 이유까지 정리합니다."
 ---
 

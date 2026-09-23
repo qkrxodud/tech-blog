@@ -1,6 +1,6 @@
 ---
 title: "H2 데이터베이스 설치와 연동"
-tags: ["Spring","H2","DB","JDBC","환경설정"]
+tags: ["Spring","H2","DB","JDBC"]
 summary: "H2 데이터베이스를 설치하고 build.gradle과 application.properties를 설정해 스프링 프로젝트와 연동하는 과정을 정리합니다."
 ---
 

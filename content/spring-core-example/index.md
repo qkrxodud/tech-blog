@@ -1,6 +1,6 @@
 ---
 title: "예제 만들기"
-tags: ["Spring","의존성 역전","관심사분리","AppConfig","생성자주입"]
+tags: ["Spring","의존성 역전","관심사 분리","AppConfig","생성자주입"]
 summary: "회원 조회와 주문 할인 정책 예제를 구현하며 DIP 위반 문제를 발견하고, AppConfig로 관심사를 분리하는 과정을 정리합니다."
 ---
 

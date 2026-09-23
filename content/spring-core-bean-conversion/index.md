@@ -1,6 +1,6 @@
 ---
 title: "스프링 빈으로 전환하기"
-tags: ["Spring","스프링 빈","Configuration","Bean","ApplicationContext"]
+tags: ["Spring","스프링 빈","Configuration","@Bean","ApplicationContext"]
 summary: "순수 자바 코드로 작성했던 AppConfig를 @Configuration과 @Bean으로 전환해 스프링 컨테이너에 빈을 등록하는 과정을 정리합니다."
 ---
 

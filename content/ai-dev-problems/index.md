@@ -1,6 +1,6 @@
 ---
 title: "AI와 함께 개발하면서 겪은 문제들과 해결 방법"
-tags: ["Claude Code","AI 협업","트러블슈팅","CLAUDE.md","Playwright"]
+tags: ["Claude Code","AI 협업","CLAUDE.md","Playwright"]
 summary: "Claude Code를 1,200회 이상 반복 사용하며 겪은 여섯 가지 문제와 해결 방법을 정리합니다. 상태 파일, 백로그 분할, 규칙 명문화로 AI 협업의 한계를 보완한 경험을 공유합니다."
 ---
 

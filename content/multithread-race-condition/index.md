@@ -1,6 +1,6 @@
 ---
 title: "Java 기준 멀티스레드와 레이스 컨디션"
-tags: ["Java","멀티스레드","레이스 컨디션","synchronized","AtomicInteger"]
+tags: ["Java","스레드","레이스 컨디션","synchronized","AtomicInteger"]
 summary: "Java에서 멀티스레드 프로그래밍 시 발생하는 레이스 컨디션의 원인을 예제로 살펴보고, synchronized·Lock·Atomic을 활용한 해결 방법을 정리합니다."
 ---
 

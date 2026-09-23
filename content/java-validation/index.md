@@ -1,6 +1,6 @@
 ---
 title: "Bean Validation으로 요청 값 검증하기"
-tags: ["Java","Spring Boot","Validation","Bean Validation"]
+tags: ["Java","Spring Boot","Bean Validation"]
 summary: "Spring Boot에서 제공하는 유효성 검사 어노테이션 종류와 실제 사용 예시를 정리합니다."
 ---
 

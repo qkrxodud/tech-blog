@@ -1,6 +1,6 @@
 ---
 title: "슬로우 쿼리 개선"
-tags: ["MySQL","슬로우 쿼리","실행계획","옵티마이저","STRAIGHT_JOIN"]
+tags: ["MySQL","슬로우 쿼리","쿼리 최적화","STRAIGHT_JOIN"]
 summary: "응답에 6초 이상 걸리던 페이지의 원인을 실행계획으로 분석하고, MySQL 옵티마이저의 드라이빙 테이블 선택 문제를 STRAIGHT_JOIN으로 해결한 경험을 정리합니다."
 ---
 

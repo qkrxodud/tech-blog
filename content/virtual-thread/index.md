@@ -1,6 +1,6 @@
 ---
 title: "Java 21의 Virtual Thread: 운영체제 개념과 효율성, 장단점 정리"
-tags: ["Java 21","Virtual Thread","Project Loom","동시성","운영체제"]
+tags: ["Java","Virtual Thread","Project Loom","동시성","운영체제"]
 summary: "Java 21에서 도입된 Virtual Thread의 동작 원리를 운영체제의 멀티프로그래밍·멀티태스킹·멀티스레딩 개념과 연결해 설명하고, 장단점과 활용 시나리오를 정리합니다."
 ---
 

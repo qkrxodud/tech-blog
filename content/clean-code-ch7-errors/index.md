@@ -1,6 +1,6 @@
 ---
 title: "[Clean Code] 7장 오류처리"
-tags: ["클린 코드","예외 처리","checked Exception","NullPointerException"]
+tags: ["클린 코드","예외 처리","NullPointerException"]
 summary: "오류 코드 대신 예외를 사용하고, checked Exception의 캡슐화 문제와 null을 반환하지 않는 방법 등 오류 처리 원칙을 정리합니다."
 ---
 

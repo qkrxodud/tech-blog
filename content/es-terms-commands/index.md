@@ -1,6 +1,6 @@
 ---
 title: "RDBMS와 ElasticSearch 용어 대응시키기"
-tags: ["ElasticSearch","MySQL","용어정리","매핑"]
+tags: ["ElasticSearch","MySQL","매핑"]
 summary: "RDBMS와 ElasticSearch의 용어 차이를 정리하고, 인덱스 생성·매핑 정의·도큐먼트 삽입 같은 기본 명령어를 실습합니다."
 ---
 

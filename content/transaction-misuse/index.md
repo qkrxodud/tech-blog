@@ -1,6 +1,6 @@
 ---
 title: "[Java] 실무에서 잘못 사용하고 있던 Transaction"
-tags: ["Spring","Transactional","프록시 패턴","트랜잭션 전파","롤백"]
+tags: ["Spring","Transactional","프록시 패턴","트랜잭션","롤백"]
 summary: "실무 프로젝트 전반에 REQUIRES_NEW가 남용되던 원인을 프록시 패턴과 롤백 시점 이해 부족에서 찾아 분석한 경험을 공유합니다."
 ---
 

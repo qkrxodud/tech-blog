@@ -1,6 +1,6 @@
 ---
 title: "HTTP 메서드"
-tags: ["HTTP","REST","URI설계","HTTP메서드","GET","POST"]
+tags: ["HTTP","REST","URI","HTTP 메서드","GET","POST"]
 summary: "회원 API 설계를 예로 URI와 리소스 개념을 짚고, GET·POST·PUT·PATCH·DELETE의 의미와 안전·멱등·캐시 가능 속성을 정리합니다."
 ---
 

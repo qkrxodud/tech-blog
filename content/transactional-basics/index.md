@@ -1,6 +1,6 @@
 ---
 title: "[JAVA] @Transactional 이란? 트랜잭션 성질 (1)"
-tags: ["@Transactional","트랜잭션","격리수준","rollbackFor","ACID"]
+tags: ["@Transactional","트랜잭션","격리수준","롤백","ACID"]
 summary: "트랜잭션의 ACID 성질과 @Transactional의 propagation, isolation, rollbackFor 등 주요 옵션을 정리합니다."
 ---
 

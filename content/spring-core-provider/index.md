@@ -1,6 +1,6 @@
 ---
 title: "프로토타입과 싱글톤을 함께 쓸 때 Provider로 푸는 법"
-tags: ["Spring","빈스코프","프로토타입","ObjectProvider","DL"]
+tags: ["Spring","빈스코프","프로토타입","ObjectProvider"]
 summary: "싱글톤 빈이 프로토타입 빈을 매번 새로 받아 쓰지 못하는 문제를 ObjectProvider로 해결하는 방법을 정리합니다."
 ---
 

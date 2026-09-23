@@ -1,6 +1,6 @@
 ---
 title: "엔티티 매핑"
-tags: ["JPA","엔티티 매핑","@Entity","기본 키 매핑","DDL 자동 생성"]
+tags: ["JPA","엔티티 매핑","@Entity","매핑","DDL 자동 생성"]
 summary: "@Entity, @Table, @Column 등 엔티티와 테이블을 매핑하는 어노테이션과 IDENTITY·SEQUENCE·TABLE 기본 키 생성 전략을 정리합니다."
 ---
 

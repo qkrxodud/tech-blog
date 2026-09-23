@@ -1,6 +1,6 @@
 ---
 title: "빈 생명주기 콜백"
-tags: ["Spring","빈생명주기","PostConstruct","PreDestroy","InitializingBean"]
+tags: ["Spring","스프링 빈","PostConstruct","PreDestroy","InitializingBean"]
 summary: "스프링 빈의 생명주기와 초기화·소멸 콜백을 인터페이스, 설정 정보, @PostConstruct/@PreDestroy 세 가지 방식으로 비교해 정리합니다."
 ---
 

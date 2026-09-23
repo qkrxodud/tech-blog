@@ -1,6 +1,6 @@
 ---
 title: "서블릿, JSP, MVC 패턴"
-tags: ["Spring MVC","서블릿","JSP","MVC 패턴","Java"]
+tags: ["Spring MVC","서블릿","JSP","MVC","Java"]
 summary: "서블릿과 JSP만으로 회원 관리 애플리케이션을 만들어보며 한계를 확인하고, 컨트롤러·모델·뷰로 역할을 분리하는 MVC 패턴을 적용합니다."
 ---
 
