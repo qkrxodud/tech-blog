@@ -220,9 +220,23 @@ for (const p of posts) (byCategory[p.category] ??= []).push(p);
 // 그 글 하나만 나오므로, 둘 이상에 달린 것만 추린다.
 // 디렉터리는 사람이 읽는 이름 그대로 만들고, 주소에 넣을 때만 인코딩한다.
 // 인코딩한 문자열로 폴더를 만들면 브라우저가 주소를 되돌려 요청하면서 어긋난다.
-// `@`나 `+`처럼 주소에서 다른 뜻을 갖는 기호는 빼고 글자만 남긴다.
-// 화면에 보이는 태그 이름은 원문 그대로다("#N+1", "#@Transactional").
-const tagSlug = t => t.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9가-힣._-]/g, '');
+// 한글 태그를 주소에 그대로 쓰면 북마크하거나 공유할 때 %ED%81%B4… 같은
+// 알아볼 수 없는 문자열이 된다. data/tag-slugs.json에 적어 둔 영문 이름을 쓰고,
+// 화면에 보이는 태그 이름은 원문 그대로 둔다.
+const TAG_SLUGS = (() => {
+  const f = path.join(ROOT, 'data', 'tag-slugs.json');
+  if (!fs.existsSync(f)) return {};
+  const raw = JSON.parse(fs.readFileSync(f, 'utf8'));
+  delete raw._comment;
+  return raw;
+})();
+const tagSlug = t => {
+  if (TAG_SLUGS[t]) return TAG_SLUGS[t];
+  const s = t.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9._-]/g, '');
+  // 영문이 하나도 남지 않는 태그(순한글)는 위 표에 넣어 두어야 한다.
+  if (!s) console.warn(`태그 주소 없음: "${t}" — data/tag-slugs.json에 영문 이름을 적어 주세요`);
+  return s || encodeURIComponent(t);
+};
 const tagHref = t => encodeURIComponent(tagSlug(t));
 const byTag = {};
 for (const p of posts) for (const t of p.tags) (byTag[t] ??= []).push(p);

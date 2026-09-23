@@ -178,17 +178,17 @@ Claude.md만으로는 부족했습니다. 서브에이전트를 두고 설계 �
 
 - 동물병원, 약국, 일반병원 검색 웹사이트: NCP
 
-![](images/근처-약국-찾기-동물병원-병원-검색-하루병원-01-01-2026_06_30_PM.webp)
+![](images/04_nearby-pharmacy-search.webp)
 
 ![](images/image.webp)
 
-![](images/약국-검색-결과-01-01-2026_06_28_PM.webp)
+![](images/03_pharmacy-search-result.webp)
 
 - LLM 프롬프트 챗팅 웹: AWS
 
-![](images/프롬프트-템플릿-관리-LLM-Service-01-01-2026_05_17_PM.webp)
+![](images/02_llm-service-prompt-template.webp)
 
-![](images/AI-채팅-LLM-Service-01-01-2026_05_16_PM.webp)
+![](images/01_llm-service-chat.webp)
 
 ### AWS 사용 경험
 
