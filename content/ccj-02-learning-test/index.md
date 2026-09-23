@@ -1,6 +1,6 @@
 ---
 title: "Set 컬렉션으로 배우는 학습 테스트 — 1단계"
-tags: ["클린 코드", "Java", "JUnit5", "ParameterizedTest", "학습 테스트"]
+tags: ["클린 코드","Java","JUnit5","ParameterizedTest","학습 테스트"]
 summary: "Set 컬렉션을 대상으로 학습 테스트를 작성하고 JUnit5의 ParameterizedTest로 중복 코드를 제거한 기록입니다."
 ---
 

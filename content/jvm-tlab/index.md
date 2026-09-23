@@ -1,6 +1,6 @@
 ---
 title: "JVM TLAB (Thread Local Allocation Buffer)"
-tags: ["JVM", "TLAB", "GC", "Eden", "메모리 할당"]
+tags: ["JVM","TLAB","GC","Eden","메모리 할당"]
 summary: "멀티스레드 환경에서 객체 할당 경합을 줄이는 JVM의 TLAB(Thread Local Allocation Buffer) 동작 원리와 주요 튜닝 플래그를 정리합니다."
 ---
 

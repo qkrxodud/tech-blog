@@ -1,6 +1,6 @@
 ---
 title: "AI와 함께 자동매매 시스템을 설계한 과정"
-tags: ["자동매매", "ClaudeCode", "멱등성", "SpringBoot", "리스크관리"]
+tags: ["자동매매","Claude Code","멱등성","Spring Boot","리스크관리"]
 summary: "자동매매 시스템을 AI와 함께 설계하며 요구사항을 Phase로 나누고, 멱등성 키와 시뮬레이션 모드 등 실거래 전 안전장치를 만든 과정을 정리합니다."
 ---
 

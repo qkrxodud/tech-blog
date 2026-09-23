@@ -1,6 +1,6 @@
 ---
 title: "해시맵과 트리셋"
-tags: ["알고리즘", "자바", "HashMap", "TreeSet", "코딩테스트"]
+tags: ["알고리즘","Java","HashMap","TreeSet","코딩테스트"]
 summary: "HashMap과 TreeSet을 활용해 투표 집계, 아나그램 판별, 슬라이딩 윈도우 매출 분석 등 문제 5개를 자바로 풀이합니다."
 ---
 

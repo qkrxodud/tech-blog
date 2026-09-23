@@ -1,6 +1,6 @@
 ---
 title: "중급 문법"
-tags: ["Querydsl", "DTO 프로젝션", "동적 쿼리", "벌크 연산", "JPA"]
+tags: ["Querydsl","DTO 프로젝션","동적 쿼리","벌크 연산","JPA"]
 summary: "Querydsl의 프로젝션과 DTO 조회 방법, BooleanBuilder와 Where절을 활용한 동적 쿼리, 벌크 연산과 SQL Function 호출법을 정리합니다."
 ---
 

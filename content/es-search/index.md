@@ -1,6 +1,6 @@
 ---
 title: "검색 쿼리 기본"
-tags: ["ElasticSearch", "검색쿼리", "match", "term", "terms"]
+tags: ["ElasticSearch","검색쿼리","match","term","terms"]
 summary: "ElasticSearch의 match, term, terms 쿼리를 예제와 함께 정리하고 각각 어떤 상황에 적합한지 설명합니다."
 ---
 

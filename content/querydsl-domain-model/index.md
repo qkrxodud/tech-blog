@@ -1,6 +1,6 @@
 ---
 title: "예제 도메인 모델"
-tags: ["Querydsl", "JPA", "엔티티 매핑", "연관관계", "Spring Boot"]
+tags: ["Querydsl","JPA","엔티티 매핑","연관관계","Spring Boot"]
 summary: "Querydsl 실습에 사용할 Member, Team 엔티티를 설계하고 양방향 연관관계와 롬복 설정을 정리합니다."
 ---
 

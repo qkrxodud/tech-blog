@@ -1,6 +1,6 @@
 ---
 title: "싱글톤 컨테이너와 @Configuration"
-tags: ["Spring", "싱글톤", "Configuration", "CGLIB", "스프링컨테이너"]
+tags: ["Spring","싱글톤","Configuration","CGLIB","스프링컨테이너"]
 summary: "AppConfig가 여러 번 호출되어도 싱글톤이 보장되는 이유를 @Configuration과 CGLIB 바이트코드 조작을 통해 분석합니다."
 ---
 

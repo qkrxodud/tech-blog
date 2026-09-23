@@ -1,6 +1,6 @@
 ---
 title: "[Java] Kafka 동시성 발생"
-tags: ["Kafka", "동시성", "분산락", "Redisson", "트랜잭션 ACID"]
+tags: ["Kafka","동시성","분산락","Redisson","트랜잭션 ACID"]
 summary: "카프카 다중 컨슈머로 인한 중복 적재 문제를 분산락으로 해결한 경험과, 트랜잭션 ACID·동시성 제어 이론을 함께 정리합니다."
 ---
 

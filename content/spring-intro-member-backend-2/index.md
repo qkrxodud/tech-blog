@@ -1,6 +1,6 @@
 ---
 title: "회원 관리 예제 — 백엔드 개발 (2)"
-tags: ["Spring", "회원 관리", "Service", "JUnit", "의존성 주입"]
+tags: ["Spring","회원 관리","Service","JUnit","의존성 주입"]
 summary: "회원가입 중복 검증 로직을 담은 Service 계층을 구현하고, given-when-then 패턴으로 정상 케이스와 예외 케이스를 테스트합니다."
 ---
 

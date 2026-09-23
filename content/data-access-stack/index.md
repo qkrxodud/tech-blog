@@ -1,6 +1,6 @@
 ---
 title: "데이터 액세스 스택"
-tags: ["JPA", "Hibernate", "P6Spy", "Flyway", "커넥션풀"]
+tags: ["JPA","Hibernate","P6Spy","Flyway","커넥션풀"]
 summary: "JPA·Hibernate 기반 데이터 액세스 계층에서 SQL 로깅, 스키마 관리, 커넥션 풀 모니터링 등 성능을 좌우하는 요소들을 정리합니다."
 ---
 

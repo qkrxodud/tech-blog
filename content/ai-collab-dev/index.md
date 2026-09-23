@@ -1,6 +1,6 @@
 ---
 title: "AI 협업 개발"
-tags: ["ClaudeCode", "AI협업", "RalphLoop", "CLAUDE.md", "AI코딩"]
+tags: ["Claude Code","AI 협업","Ralph Loop","CLAUDE.md"]
 summary: "Claude Code와 Ralph Loop로 1,208번의 루프를 돌리며 배운 AI 협업의 교훈을 정리합니다. 지시 작성법, 규칙의 파일화, 검증 자동화 등 협업 방식 자체를 다루는 시리즈의 마지막 편입니다."
 ---
 

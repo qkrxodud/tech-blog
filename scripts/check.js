@@ -93,7 +93,7 @@ if (fs.existsSync(DIST)) {
       // 정적 파일 주소에는 캐시 무효화용 ?v=… 가 붙는다. 파일을 찾을 때는 뗀다.
       const clean = ref.split(/[?#]/)[0];
       if (!clean) continue;
-      const target = path.resolve(dir, decodeURI(clean));
+      const target = path.resolve(dir, decodeURIComponent(clean));
       const ok = fs.existsSync(target) || fs.existsSync(path.join(target, 'index.html'));
       if (!ok) warn('링크 깨짐', rel, ref);
     }

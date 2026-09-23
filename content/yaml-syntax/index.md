@@ -1,6 +1,6 @@
 ---
 title: "YAML 문법"
-tags: ["Kubernetes", "YAML", "문법", "DevOps", "설정관리"]
+tags: ["Kubernetes","YAML","문법","DevOps","설정관리"]
 summary: "들여쓰기, 맵과 배열, 주석, 줄바꿈 표현 등 쿠버네티스 매니페스트 작성에 필요한 YAML 기본 문법을 정리합니다."
 ---
 

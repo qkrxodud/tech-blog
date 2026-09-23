@@ -1,6 +1,6 @@
 ---
 title: "[Java] Spring JPA 1:N 일급컬렉션 Cascade insert시 null 발생"
-tags: ["JPA", "Cascade", "CascadeType.MERGE", "일급컬렉션", "OneToMany"]
+tags: ["JPA","Cascade","CascadeType.MERGE","일급 컬렉션","OneToMany"]
 summary: "일급컬렉션에 Cascade를 적용했을 때 자식 엔티티 Id가 null로 저장되는 문제와 CascadeType.MERGE로 해결하는 방법을 소개합니다."
 ---
 

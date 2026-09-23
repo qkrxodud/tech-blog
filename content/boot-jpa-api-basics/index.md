@@ -1,6 +1,6 @@
 ---
 title: "스프링 부트와 JPA로 만드는 API 기본"
-tags: ["Spring Boot", "JPA", "API", "DTO", "Java"]
+tags: ["Spring Boot","JPA","API","DTO","Java"]
 summary: "회원 등록·수정·조회 API를 예제로, 엔티티 대신 DTO를 사용해 API 스펙과 엔티티를 분리하는 방법을 정리합니다."
 ---
 

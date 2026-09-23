@@ -1,6 +1,6 @@
 ---
 title: "DB 낙관적 락"
-tags: ["낙관적락", "동시성", "JPA", "@Version", "MySQL"]
+tags: ["낙관적 락","동시성","JPA","@Version","MySQL"]
 summary: "재고 차감 동시성 테스트로 문제를 재현하고, JPA @Version 기반 낙관적 락의 동작 원리와 사용 시점, 주의할 점을 정리합니다."
 ---
 

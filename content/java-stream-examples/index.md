@@ -1,6 +1,6 @@
 ---
 title: "Stream을 활용한 예제 모음"
-tags: ["Java", "Stream", "컬렉션", "함수형 프로그래밍", "리팩토링"]
+tags: ["Java","Stream","컬렉션","함수형 프로그래밍","리팩터링"]
 summary: "for문 대신 자바 Stream을 활용해 리스트·맵 변환, 중복 체크, null 처리, reduce 등을 정리한 예제 모음입니다."
 ---
 

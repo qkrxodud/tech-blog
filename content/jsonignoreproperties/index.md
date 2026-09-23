@@ -1,6 +1,6 @@
 ---
 title: "[Java] @JsonIgnoreProperties(ignoreUnknown=true)"
-tags: ["Java", "Jackson", "JsonIgnoreProperties", "역직렬화", "REST API"]
+tags: ["Java","Jackson","JsonIgnoreProperties","역직렬화","REST API"]
 summary: "@JsonIgnoreProperties(ignoreUnknown=true) 어노테이션으로 정의되지 않은 JSON 프로퍼티를 무시해 역직렬화 오류를 방지하는 방법을 정리합니다."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "ElasticSearch를 도입하게 된 이유"
-tags: ["ElasticSearch", "역인덱스", "검색엔진", "RDBMS"]
+tags: ["ElasticSearch","역인덱스","검색엔진","RDBMS"]
 summary: "대량 거래 데이터에서 여러 조건을 조합해 이상 건을 찾아내는 작업이 RDBMS 인덱스로는 한계가 있어 ElasticSearch를 도입하게 된 과정을 정리합니다."
 ---
 

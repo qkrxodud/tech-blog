@@ -1,6 +1,6 @@
 ---
 title: "[Kafka] 재처리"
-tags: ["Kafka", "Spring Kafka", "AckMode", "offset commit", "멱등성"]
+tags: ["Kafka","Spring Kafka","AckMode","offset commit","멱등성"]
 summary: "Kafka 운영 중 발생한 주기적 재처리 문제를 계기로 offset commit의 동작 방식과 Spring Kafka AckMode의 종류별 특징을 정리합니다."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "기본 문법"
-tags: ["Querydsl", "JPQL", "JPA", "동적 쿼리", "Spring Data JPA"]
+tags: ["Querydsl","JPQL","JPA","동적 쿼리","Spring Data JPA"]
 summary: "JPQL과 비교하며 Querydsl의 기본 문법인 검색 조건, 정렬, 페이징, 집합, 조인, 서브쿼리, Case문을 정리합니다."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "[JAVA] Ehcache 사용방법 (1)"
-tags: ["Ehcache", "Spring 캐싱", "@Cacheable", "CacheManager", "성능 최적화"]
+tags: ["Ehcache","Spring 캐싱","@Cacheable","CacheManager","성능 최적화"]
 summary: "Spring Boot에서 Ehcache로 캐시를 설정하고 @Cacheable로 조회 성능을 개선하는 방법을 정리합니다."
 ---
 

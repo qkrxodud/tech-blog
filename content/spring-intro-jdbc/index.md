@@ -1,6 +1,6 @@
 ---
 title: "순수 JDBC 사용과 연동"
-tags: ["Spring", "JDBC", "DataSource", "회원 관리", "의존성 주입"]
+tags: ["Spring","JDBC","DataSource","회원 관리","의존성 주입"]
 summary: "순수 JDBC로 MemberRepository를 구현하고, SpringConfig의 빈 설정만 바꿔서 메모리 저장소를 DB로 교체하는 과정을 정리합니다."
 ---
 

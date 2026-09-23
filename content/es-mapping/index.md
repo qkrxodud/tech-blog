@@ -1,6 +1,6 @@
 ---
 title: "매핑 설계"
-tags: ["ElasticSearch", "매핑", "데이터타입", "검색엔진"]
+tags: ["ElasticSearch","매핑","데이터타입","검색엔진"]
 summary: "ElasticSearch 매핑 개념과 자주 사용하는 데이터 타입, 그리고 text와 keyword를 구분해야 하는 이유를 정리합니다."
 ---
 

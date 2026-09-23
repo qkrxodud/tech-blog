@@ -179,6 +179,16 @@ a { color: var(--ink); text-decoration: none; }
 .post-meta { font: 400 12px var(--mono); color: var(--faint); }
 .post-tags { font: 400 12px var(--mono); margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px 10px; }
 .post-tags .tag { color: var(--accent); }
+.post-tags a.tag:hover { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+.post-tags .tag.plain { color: var(--faint); }
+
+/* 태그 모아 보기 */
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 9px 12px; align-items: baseline; padding: 24px 0 30px; }
+.tg { color: var(--muted); line-height: 1.5; display: inline-flex; align-items: baseline; gap: 3px; }
+.tg:hover { color: var(--accent-strong); }
+.tg.warm { color: var(--body); font-weight: 600; }
+.tg.hot { color: var(--ink); font-weight: 800; }
+.tg-n { font: 400 10.5px var(--mono); color: var(--faint); }
 .post-body { font-size: 16.5px; line-height: 1.85; color: var(--body); padding: 28px 0 10px; overflow-wrap: break-word; }
 .post-body > :first-child { margin-top: 0; }
 .post-body p { margin: 0 0 20px; }

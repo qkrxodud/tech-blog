@@ -1,6 +1,6 @@
 ---
 title: "[Java] Garbage Collection(GC)"
-tags: ["Java", "Garbage Collection", "JVM", "Stop-The-World", "G1 GC"]
+tags: ["Java","GC","JVM","Stop-The-World","G1 GC"]
 summary: "JVM 메모리 구조와 가비지 컬렉션의 동작 원리를 정리하고, Serial GC부터 G1 GC, ZGC까지 주요 GC 알고리즘의 특징을 비교합니다."
 ---
 

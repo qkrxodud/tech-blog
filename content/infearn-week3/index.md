@@ -1,6 +1,6 @@
 ---
 title: "[인프런 워밍업 클럽 백엔드 스터디 2기] 3주차 발자국"
-tags: ["인프런 워밍업 클럽", "테스트 코드", "Practical Testing", "DisplayName", "회고"]
+tags: ["인프런 워밍업 클럽","테스트 코드","Practical Testing","DisplayName","회고"]
 summary: "인프런 워밍업 클럽 백엔드 스터디 2기 3주차 Practical Testing 강의를 들으며 배운 테스트의 필요성과 DisplayName 작성법을 정리합니다."
 ---
 

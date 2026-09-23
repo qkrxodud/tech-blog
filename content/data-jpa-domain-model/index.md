@@ -1,6 +1,6 @@
 ---
 title: "예제 도메인 모델과 동작 확인"
-tags: ["Spring Data JPA", "JPA", "Entity", "연관관계", "롬복"]
+tags: ["Spring Data JPA","JPA","Entity","연관관계","롬복"]
 summary: "실습에 사용할 Member, Team 엔티티와 양방향 연관관계를 정의하고, 순수 JPA로 저장·조회 동작을 확인합니다."
 ---
 

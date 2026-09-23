@@ -1,6 +1,6 @@
 ---
 title: "[Java] Garbage Collection 튜닝"
-tags: ["Java", "GC 튜닝", "JVM", "jstat", "Full GC"]
+tags: ["Java","GC 튜닝","JVM","jstat","Full GC"]
 summary: "jstat으로 GC 상태를 모니터링하는 방법과 Young/Old/Metaspace 영역별 증상에 따른 GC 튜닝 기준을 정리합니다."
 ---
 

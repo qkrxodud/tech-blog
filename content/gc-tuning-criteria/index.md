@@ -1,6 +1,6 @@
 ---
 title: "GC의 역할과 튜닝 기준: Ergonomics와 JVM 기본 설정"
-tags: ["GC", "JVM", "Ergonomics", "GC 튜닝", "G1GC"]
+tags: ["GC","JVM","Ergonomics","GC 튜닝","G1 GC"]
 summary: "GC의 역할과 주요 테크닉을 살펴보고, Ergonomics와 Pause-Time·Throughput·Footprint 목표로 이어지는 JVM 튜닝 기준을 정리합니다."
 ---
 

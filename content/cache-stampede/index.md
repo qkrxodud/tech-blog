@@ -1,6 +1,6 @@
 ---
 title: "Cache Stampede(캐시 스템피드)"
-tags: ["CacheStampede", "ColdStart", "JIT", "JVM", "Redis"]
+tags: ["CacheStampede","ColdStart","JIT","JVM","Redis"]
 summary: "if(kakao)에서 소개된 캐시 스템피드 현상의 원인과 해결책(락, 캐시 웜업, 하이브리드 캐시), 그리고 Spring Boot Cold Start와 JIT 컴파일러의 동작 원리를 정리합니다."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "self-invocation"
-tags: ["Spring AOP", "@Transactional", "self-invocation", "REQUIRES_NEW", "프록시"]
+tags: ["Spring AOP","@Transactional","self-invocation","REQUIRES_NEW","프록시"]
 summary: "같은 클래스 내부 호출에서 @Transactional이 조용히 무시되는 self-invocation 문제의 원인과, REQUIRES_NEW를 안전하게 쓰는 해결 방법을 정리합니다."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "[Clean Code] 8장 경계"
-tags: ["클린코드", "Clean Code", "경계", "캡슐화", "외부 API"]
+tags: ["클린 코드","경계","캡슐화","외부 API"]
 summary: "외부 패키지나 프레임워크를 사용할 때 생기는 경계 문제를, java.util.Map을 캡슐화하는 예제로 정리합니다."
 ---
 

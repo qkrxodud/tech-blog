@@ -1,6 +1,6 @@
 ---
 title: "영속성 전이와 고아 객체"
-tags: ["JPA", "영속성 전이", "CASCADE", "고아 객체", "Hibernate"]
+tags: ["JPA","영속성 전이","CASCADE","고아 객체","Hibernate"]
 summary: "JPA CASCADE 옵션으로 부모와 자식 엔티티를 함께 영속화하는 방법과 orphanRemoval로 고아 객체를 제거하는 원리를 정리합니다."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "순수 JPA와 함께 쓰기"
-tags: ["Querydsl", "JPA", "동적 쿼리", "리포지토리 패턴", "Spring Boot"]
+tags: ["Querydsl","JPA","동적 쿼리","리포지토리 패턴","Spring Boot"]
 summary: "순수 JPA 리포지토리에 Querydsl을 도입하고, BooleanBuilder와 Where절 파라미터로 동적 쿼리를 최적화한 뒤 조회 API를 만드는 과정을 정리합니다."
 ---
 

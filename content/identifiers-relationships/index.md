@@ -1,6 +1,6 @@
 ---
 title: "식별자 (Identifiers), 관계 (Relationships)"
-tags: ["JPA", "Hibernate", "연관관계 매핑", "ID 생성 전략", "N+1"]
+tags: ["JPA","Hibernate","연관관계 매핑","ID 생성 전략","N+1"]
 summary: "JPA의 ID 생성 전략과 OneToMany, OneToOne, ManyToMany 연관관계 매핑에서 성능을 고려한 실무 선택 기준을 정리합니다."
 ---
 

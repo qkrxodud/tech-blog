@@ -1,6 +1,6 @@
 ---
 title: "처음 쓰는 스프링 웹 플럭스"
-tags: ["Spring WebFlux", "Spring MVC", "리액티브", "Netty", "이벤트 루프"]
+tags: ["Spring WebFlux","Spring MVC","리액티브","Netty","이벤트 루프"]
 summary: "자동매매 프로젝트를 구성하며 Spring MVC와 WebFlux의 스레드 모델 차이를 비교하고, WebFlux를 선택하게 된 이유를 정리합니다."
 ---
 

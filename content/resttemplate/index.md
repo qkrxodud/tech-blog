@@ -1,6 +1,6 @@
 ---
 title: "[Java] RestTemplate 이란, 메소드, 사용예시"
-tags: ["RestTemplate", "Spring", "REST API", "HTTP 클라이언트", "WebClient"]
+tags: ["RestTemplate","Spring","REST API","HTTP 클라이언트","WebClient"]
 summary: "Spring이 제공하는 HTTP 클라이언트 RestTemplate의 개념과 주요 메서드, 실전 사용 예시를 정리합니다."
 ---
 

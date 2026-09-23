@@ -1,6 +1,6 @@
 ---
 title: "값 타입 기초 - 기본값 타입과 임베디드 타입"
-tags: ["JPA", "값 타입", "임베디드 타입", "Embeddable", "AttributeOverride"]
+tags: ["JPA","값 타입","임베디드 타입","Embeddable","AttributeOverride"]
 summary: "JPA의 값 타입 개념과 기본값 타입, 임베디드 타입의 사용법, @AttributeOverride로 컬럼명을 재정의하는 방법을 정리합니다."
 ---
 

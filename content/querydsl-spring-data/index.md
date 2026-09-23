@@ -1,6 +1,6 @@
 ---
 title: "스프링 데이터 JPA와 함께 쓰기"
-tags: ["Querydsl", "Spring Data JPA", "사용자 정의 리포지토리", "페이징", "JPA"]
+tags: ["Querydsl","Spring Data JPA","사용자 정의 리포지토리","페이징","JPA"]
 summary: "스프링 데이터 JPA 리포지토리에 Querydsl을 결합하는 사용자 정의 리포지토리 패턴과, 카운트 쿼리를 최적화한 페이징 처리 방법을 정리합니다."
 ---
 

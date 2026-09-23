@@ -1,6 +1,6 @@
 ---
 title: "스프링 JPA 통합 테스트"
-tags: ["Spring", "JPA", "EntityManager", "Transactional", "통합 테스트"]
+tags: ["Spring","JPA","EntityManager","Transactional","통합 테스트"]
 summary: "JPA 엔티티 매핑과 EntityManager 기반 리포지토리를 구현하고, SpringConfig의 빈 설정만 바꿔 JDBC 구현체를 JPA로 교체하는 과정을 정리합니다."
 ---
 

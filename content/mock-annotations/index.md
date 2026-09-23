@@ -1,6 +1,6 @@
 ---
 title: "@Mock, @MockBean, @Spy, @SpyBean, @InjectMocks"
-tags: ["Spring", "테스트 코드", "Mockito", "MockBean", "SpyBean"]
+tags: ["Spring","테스트 코드","Mockito","MockBean","SpyBean"]
 summary: "Mockito의 @Mock, @MockBean, @Spy, @SpyBean, @InjectMocks 애노테이션의 차이와 단위·통합 테스트에서의 활용법을 예제 코드로 정리합니다."
 ---
 

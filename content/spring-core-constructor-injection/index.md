@@ -1,6 +1,6 @@
 ---
 title: "생성자 주입을 선택해야 하는 이유"
-tags: ["Spring", "생성자주입", "DI", "Lombok", "RequiredArgsConstructor"]
+tags: ["Spring","생성자주입","DI","Lombok","RequiredArgsConstructor"]
 summary: "수정자 주입 대신 생성자 주입을 권장하는 이유와, 롬복의 @RequiredArgsConstructor로 생성자 코드를 줄이는 방법을 정리합니다."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "쿼리 메소드 기능"
-tags: ["Spring Data JPA", "JPA", "JPQL", "페이징", "쿼리 메소드"]
+tags: ["Spring Data JPA","JPA","JPQL","페이징","쿼리 메소드"]
 summary: "메소드 이름으로 쿼리를 생성하는 방법부터 @Query, 파라미터 바인딩, 페이징과 정렬, 벌크 연산, @EntityGraph까지 쿼리 메소드 기능을 정리합니다."
 ---
 

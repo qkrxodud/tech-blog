@@ -1,6 +1,6 @@
 ---
 title: "Claude Code를 실제로 어떻게 사용했나"
-tags: ["ClaudeCode", "CLAUDE.md", "서브에이전트", "AI협업", "백로그"]
+tags: ["Claude Code","CLAUDE.md","서브에이전트","AI 협업","백로그"]
 summary: "Claude Code로 1,200회 넘게 개발 루프를 돌리며 정립한 에이전트 역할 분리, CLAUDE.md 규칙, 세션 간 컨텍스트 유지 방법을 정리합니다."
 ---
 

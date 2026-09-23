@@ -1,6 +1,6 @@
 ---
 title: "특정 조건을 제외하고 조회하기 — must_not"
-tags: ["ElasticSearch", "must_not", "Query DSL", "bool query", "검색엔진"]
+tags: ["ElasticSearch","must_not","Querydsl","bool query","검색엔진"]
 summary: "bool 쿼리의 must_not을 활용해 특정 조건을 만족하지 않는 데이터만 골라 조회하는 방법을 정리합니다."
 ---
 

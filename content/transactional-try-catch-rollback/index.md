@@ -1,6 +1,6 @@
 ---
 title: "[Java] @Transactional try ~ catch 롤백 안 되는 원인"
-tags: ["Spring", "Transactional", "롤백", "TransactionAspectSupport", "RuntimeException"]
+tags: ["Spring","Transactional","롤백","TransactionAspectSupport","RuntimeException"]
 summary: "@Transactional 안에서 try ~ catch로 예외를 감쌀 때 롤백이 동작하지 않는 원인을 TransactionAspectSupport 내부 동작으로 분석하고 해결 방법을 정리합니다."
 ---
 

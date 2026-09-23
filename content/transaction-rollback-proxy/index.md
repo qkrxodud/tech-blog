@@ -1,6 +1,6 @@
 ---
 title: "[Java] @Transactional 롤백 안 되는 원인 [프록시]"
-tags: ["@Transactional", "프록시", "자기 호출", "REQUIRES_NEW", "Spring AOP"]
+tags: ["@Transactional","프록시","자기 호출","REQUIRES_NEW","Spring AOP"]
 summary: "같은 서비스 안에서 @Transactional 메서드를 자기 호출하면 프록시가 적용되지 않아 롤백이 안 되는 원인을 정리합니다."
 ---
 

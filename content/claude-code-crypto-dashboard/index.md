@@ -1,6 +1,6 @@
 ---
 title: "Claude Code로 만든 암호화폐 투자 대시보드"
-tags: ["ClaudeCode", "헥사고날아키텍처", "SpringBoot", "암호화폐", "AI협업"]
+tags: ["Claude Code","육각형 아키텍처","Spring Boot","암호화폐","AI 협업"]
 summary: "Claude Code와 Ralph Loop로 1,208회의 자율 반복 루프를 돌려 BTC 온체인 지표 대시보드와 자동매매 시스템을 약 3주 만에 구축한 과정을 소개합니다."
 ---
 

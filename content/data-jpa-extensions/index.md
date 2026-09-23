@@ -1,6 +1,6 @@
 ---
 title: "확장 기능"
-tags: ["Spring Data JPA", "JPA", "Auditing", "페이징", "Spring MVC"]
+tags: ["Spring Data JPA","JPA","Auditing","페이징","Spring MVC"]
 summary: "사용자 정의 리포지토리 구현, Auditing, 도메인 클래스 컨버터, 웹 페이징·정렬 등 스프링 데이터 JPA의 확장 기능을 정리합니다."
 ---
 

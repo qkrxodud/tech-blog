@@ -1,6 +1,6 @@
 ---
 title: "여러 조건을 함께 만족시키기 — bool 쿼리"
-tags: ["ElasticSearch", "bool쿼리", "must", "filter", "검색쿼리"]
+tags: ["ElasticSearch","bool쿼리","must","filter","검색쿼리"]
 summary: "ElasticSearch에서 2가지 이상의 조건을 동시에 만족시키는 데이터를 조회할 때 사용하는 bool 쿼리와 must, filter의 차이를 정리합니다."
 ---
 

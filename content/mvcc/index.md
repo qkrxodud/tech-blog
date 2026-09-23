@@ -1,6 +1,6 @@
 ---
 title: "[DB] MVCC (multiversion concurrency control)"
-tags: ["DB", "MVCC", "동시성 제어", "트랜잭션 격리 수준", "Consistent Read"]
+tags: ["DB","MVCC","동시성","트랜잭션 격리 수준","Consistent Read"]
 summary: "락 기반 동시성 제어의 한계를 살펴보고, MVCC가 커밋된 데이터만 읽는 방식과 트랜잭션 격리 수준에 따라 읽는 데이터가 달라지는 원리를 정리합니다."
 ---
 

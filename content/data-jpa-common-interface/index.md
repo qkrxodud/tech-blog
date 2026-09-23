@@ -1,6 +1,6 @@
 ---
 title: "공통 인터페이스 기능"
-tags: ["Spring Data JPA", "JPA", "JpaRepository", "CRUD", "Spring"]
+tags: ["Spring Data JPA","JPA","JpaRepository","CRUD","Spring"]
 summary: "순수 JPA로 기본 CRUD 리포지토리를 만들어본 뒤, 스프링 데이터 JPA의 공통 인터페이스 JpaRepository로 대체하는 과정을 정리합니다."
 ---
 

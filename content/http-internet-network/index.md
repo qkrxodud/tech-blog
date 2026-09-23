@@ -1,6 +1,6 @@
 ---
 title: "인터넷 네트워크"
-tags: ["HTTP", "네트워크", "IP", "TCP", "UDP", "DNS"]
+tags: ["HTTP","네트워크","IP","TCP","UDP","DNS"]
 summary: "인터넷에서 IP, TCP/UDP, PORT, DNS가 각각 어떤 역할을 하며 데이터를 주고받는지 정리합니다."
 ---
 

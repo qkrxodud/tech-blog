@@ -1,6 +1,6 @@
 ---
 title: "상속 매핑 전략"
-tags: ["JPA", "상속매핑", "Inheritance", "MappedSuperclass", "Hibernate"]
+tags: ["JPA","상속매핑","Inheritance","MappedSuperclass","Hibernate"]
 summary: "JPA의 상속 매핑 전략인 SINGLE_TABLE, JOINED, TABLE_PER_CLASS, MappedSuperclass를 비교하고 실무 선택 기준과 성능 최적화 팁을 정리합니다."
 ---
 

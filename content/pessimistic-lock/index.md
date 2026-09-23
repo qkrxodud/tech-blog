@@ -1,6 +1,6 @@
 ---
 title: "DB 비관적 락"
-tags: ["비관적락", "갭락", "NextKeyLock", "동시성", "MySQL"]
+tags: ["비관적 락","갭락","NextKeyLock","동시성","MySQL"]
 summary: "비관적 락의 개념과 S-Lock/X-Lock, 갭 락(Next-Key Lock)의 동작을 살펴보고, JPA 동시성 테스트로 재고 차감 문제를 해결하는 과정을 정리한 글입니다."
 ---
 

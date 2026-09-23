@@ -1,6 +1,6 @@
 ---
 title: "웹 개발 기초: 정적 컨텐츠, MVC와 템플릿 엔진"
-tags: ["Spring Boot", "MVC", "Thymeleaf", "템플릿 엔진", "정적 컨텐츠"]
+tags: ["Spring Boot","MVC","Thymeleaf","템플릿 엔진","정적 컨텐츠"]
 summary: "스프링 부트가 정적 컨텐츠와 MVC 템플릿 엔진, API 응답을 각각 어떻게 처리하는지 예제 코드로 정리합니다."
 ---
 

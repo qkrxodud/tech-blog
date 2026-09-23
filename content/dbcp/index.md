@@ -1,6 +1,6 @@
 ---
 title: "DBCP"
-tags: ["DBCP", "HikariCP", "커넥션풀", "TCP", "MySQL"]
+tags: ["DBCP","HikariCP","커넥션풀","TCP","MySQL"]
 summary: "TCP 연결 과정의 비효율을 DBCP가 어떻게 해결하는지 설명하고, HikariCP의 minimumIdle, maximumPoolSize 등 주요 설정을 정리합니다."
 ---
 

@@ -194,12 +194,56 @@ posts.sort((a, b) => {
 
 const byCategory = {};
 for (const p of posts) (byCategory[p.category] ??= []).push(p);
+
+// 태그로도 글을 모아 볼 수 있게 한다. 한 편에만 달린 태그는 페이지를 만들어도
+// 그 글 하나만 나오므로, 둘 이상에 달린 것만 추린다.
+// 디렉터리는 사람이 읽는 이름 그대로 만들고, 주소에 넣을 때만 인코딩한다.
+// 인코딩한 문자열로 폴더를 만들면 브라우저가 주소를 되돌려 요청하면서 어긋난다.
+// `@`나 `+`처럼 주소에서 다른 뜻을 갖는 기호는 빼고 글자만 남긴다.
+// 화면에 보이는 태그 이름은 원문 그대로다("#N+1", "#@Transactional").
+const tagSlug = t => t.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9가-힣._-]/g, '');
+const tagHref = t => encodeURIComponent(tagSlug(t));
+const byTag = {};
+for (const p of posts) for (const t of p.tags) (byTag[t] ??= []).push(p);
+const tagPages = Object.entries(byTag)
+  .filter(([, list]) => list.length > 1)
+  .sort((a, b) => b[1].length - a[1].length);
+const tagLinked = new Set(tagPages.map(([t]) => t));
 const seriesMap = {};
 for (const p of posts) if (p.series) (seriesMap[p.series] ??= []).push(p);
 for (const s of Object.values(seriesMap)) s.sort((a, b) => a.seriesOrder - b.seriesOrder);
 
+// 링크를 공유했을 때 보이는 카드 이미지. 글마다 한 장씩 만든다.
+// sharp가 없는 환경에서도 빌드는 되게 하고, 그때는 카드만 생략한다.
+const ogQueue = [];
+let ogCard = null;
+try { ogCard = require('./scripts/og-card.js'); } catch { /* 카드 없이 진행 */ }
+
+// 홈·카테고리처럼 글이 아닌 페이지에도 대표 카드를 붙인다.
+function ogForPage(title, kind, meta, name) {
+  if (!ogCard) return null;
+  const rel = `og/_${name}.png`;
+  ogQueue.push({ out: rel, opts: { title, kind, meta, site: config.siteTitle } });
+  return `${config.baseUrl}/${rel}`;
+}
+
+function ogFor(p) {
+  if (!ogCard) return null;
+  const rel = `og/${p.slug}.png`;
+  ogQueue.push({
+    out: rel,
+    opts: {
+      title: p.title,
+      kind: p.series ? `${p.series} · ${p.seriesOrder}/${seriesMap[p.series].length}` : p.catName,
+      meta: `${p.date ? p.date.replace(/-/g, '.') + ' — ' : ''}${p.minutes} min`,
+      site: config.siteTitle,
+    },
+  });
+  return `${config.baseUrl}/${rel}`;
+}
+
 // ---------- 공통 템플릿 ----------
-function page({ rel, title, description, canonicalPath, content, extraHead = '', shellPath = '~/tech-blog', isHome = false }) {
+function page({ rel, title, description, canonicalPath, content, extraHead = '', shellPath = '~/tech-blog', isHome = false, ogImage = null }) {
   const canonical = `${config.baseUrl}/${canonicalPath}`;
   const tagline = isHome
     ? `<div class="site-tagline"><span class="cmt">//</span> Java, Spring, 데이터베이스, 아키텍처를 탐구하는 백엔드 개발 블로그</div>`
@@ -217,6 +261,11 @@ function page({ rel, title, description, canonicalPath, content, extraHead = '',
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonical}">
 <meta property="og:site_name" content="${esc(config.siteTitle)}">
+${ogImage ? `<meta property="og:image" content="${ogImage}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${ogImage}">` : ''}
 <link rel="alternate" type="application/rss+xml" title="${esc(config.siteTitle)}" href="${config.baseUrl}/rss.xml">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -240,6 +289,7 @@ ${extraHead}
     </a>
     <nav>
       <a href="${rel}">홈</a>
+      <a href="${rel}tag/">태그</a>
       <a href="${rel}about/">소개</a>
       <button class="search-btn" id="search-open" aria-label="검색">⌕<span class="kbd">/</span></button>
     </nav>
@@ -412,7 +462,7 @@ function buildHome() {
   const more = `<a class="more-link" href="${rel}archive/">전체 글 ${posts.length}편 보기 →</a>`;
   const listCmd = `<div class="cmd"><span class="sig">$</span> ls -lt posts/ <span class="cmt">| head -${items.length}  # 연재는 첫 편만</span></div>`;
   const content = `${projectSection(rel)}\n${homeTabs(rel, null)}\n${topicPanel(rel)}\n${listCmd}\n<div class="post-list">${rows}</div>\n${more}`;
-  write('index.html', page({ rel, title: config.siteTitle, description: config.description, canonicalPath: '', content, isHome: true }));
+  write('index.html', page({ rel, title: config.siteTitle, description: config.description, canonicalPath: '', content, isHome: true, ogImage: ogForPage(config.siteTitle, "blog", `글 ${posts.length}편`, "home") }));
 }
 
 // 전체 글을 카테고리별로 모아 한 페이지에 싣는다. 목록이 길어 제목만 나열한다.
@@ -479,6 +529,7 @@ function buildCategories() {
     write(`category/${slug}/index.html`, page({
       rel, title: `${cat.name} — ${config.siteTitle}`, description: cat.description,
       canonicalPath: `category/${slug}/`, content, shellPath: `~/tech-blog/category/${slug}`,
+      ogImage: ogForPage(cat.name, "category", `글 ${list.length}편`, `cat-${slug}`),
     }));
   }
 }
@@ -504,7 +555,9 @@ function buildPosts() {
   <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}category/${p.category}/">${esc(crumbLabel.toUpperCase())}</a>${p.series ? ` <span class="sep">· ${p.seriesOrder}/${seriesMap[p.series].length}</span>` : ''}</div>
   <h1 class="post-title">${esc(p.title)}</h1>
   <div class="post-meta">${esc(config.author)}${p.date ? ` · ${esc(p.date.replace(/-/g, '.'))}` : ''} · ${esc(p.catName)} — ${p.minutes} min</div>
-  ${p.tags.length ? `<div class="post-tags">${p.tags.map(t => `<span class="tag">#${esc(t)}</span>`).join(' ')}</div>` : ''}
+  ${p.tags.length ? `<div class="post-tags">${p.tags.map(t => tagLinked.has(t)
+      ? `<a class="tag" href="${rel}tag/${tagHref(t)}/">#${esc(t)}</a>`
+      : `<span class="tag plain">#${esc(t)}</span>`).join(' ')}</div>` : ''}
 </div>
 <div class="post-body">${bodyHtml}</div>`;
     if (p.series) content += '\n' + seriesBox(p.series, rel, p.slug, true);
@@ -522,7 +575,7 @@ function buildPosts() {
     const desc = p.summary || p.plain.slice(0, 150);
     write(`posts/${p.slug}/index.html`, page({
       rel, title: `${p.title} — ${config.siteTitle}`, description: desc,
-      canonicalPath: p.url, content, shellPath: `~/tech-blog/posts/${p.slug}`,
+      canonicalPath: p.url, content, shellPath: `~/tech-blog/posts/${p.slug}`, ogImage: ogFor(p),
       extraHead: `<script type="application/ld+json">${JSON.stringify({
         '@context': 'https://schema.org', '@type': 'BlogPosting',
         headline: p.title, description: desc, author: { '@type': 'Person', name: config.author },
@@ -538,6 +591,46 @@ function buildPosts() {
       for (const f of fs.readdirSync(imgSrc)) fs.copyFileSync(path.join(imgSrc, f), path.join(imgDst, f));
     }
   });
+}
+
+// ---------- 태그 ----------
+function buildTags() {
+  const rel = '../../';
+  for (const [tag, list] of tagPages) {
+    const rows = list.map(p => postRow(p, rel)).join('\n');
+    const content = `<div class="cat-header">
+  <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}tag/">태그</a></div>
+  <h1 class="cat-title">#${esc(tag)} <span class="cat-count">${list.length} posts</span></h1>
+  <p class="cat-desc">카테고리를 가로질러 <strong>${esc(tag)}</strong>를 다룬 글을 모았습니다.</p>
+</div>
+<div class="post-list">${rows}</div>`;
+    write(`tag/${tagSlug(tag)}/index.html`, page({
+      rel, title: `#${tag} — ${config.siteTitle}`,
+      description: `${tag}를 다룬 글 ${list.length}편을 모았습니다.`,
+      canonicalPath: `tag/${tagHref(tag)}/`, content, shellPath: `~/tech-blog/tag/${tag}`,
+    }));
+  }
+
+  // 태그 모아 보기. 글이 많이 달린 태그일수록 크게 보여 준다.
+  const rel1 = '../';
+  const max = tagPages.length ? tagPages[0][1].length : 1;
+  const cloud = tagPages.map(([t, list]) => {
+    const w = list.length / max;
+    const size = (13 + w * 9).toFixed(1);
+    const tone = w > 0.5 ? 'hot' : w > 0.2 ? 'warm' : '';
+    return `<a class="tg ${tone}" href="${rel1}tag/${tagHref(t)}/" style="font-size:${size}px">${esc(t)}<span class="tg-n">${list.length}</span></a>`;
+  }).join('\n');
+  const content = `<div class="cat-header">
+  <div class="crumbs"><a href="${rel1}">홈</a> <span class="sep">/</span> 태그</div>
+  <h1 class="cat-title">태그 <span class="cat-count">${tagPages.length}개</span></h1>
+  <p class="cat-desc">두 편 이상에 달린 태그입니다. 카테고리와 달리 주제를 가로질러 묶이므로, 같은 기술을 다룬 글을 한눈에 모아 볼 때 쓰시면 됩니다.</p>
+</div>
+<div class="tag-cloud">${cloud}</div>`;
+  write('tag/index.html', page({
+    rel: rel1, title: `태그 — ${config.siteTitle}`,
+    description: `${tagPages.length}개 태그로 글을 모아 봅니다.`,
+    canonicalPath: 'tag/', content, shellPath: '~/tech-blog/tag',
+  }));
 }
 
 // ---------- 소개 ----------
@@ -588,7 +681,7 @@ function buildAux() {
   }));
   write('search-index.json', JSON.stringify(index));
 
-  const urls = ['', 'about/', 'archive/', ...Object.keys(config.categories).map(c => `category/${c}/`), ...posts.map(p => p.url)];
+  const urls = ['', 'about/', 'archive/', 'tag/', ...tagPages.map(([t]) => `tag/${tagHref(t)}/`), ...Object.keys(config.categories).map(c => `category/${c}/`), ...posts.map(p => p.url)];
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${config.baseUrl}/${u}</loc></url>`).join('\n')}
@@ -629,7 +722,15 @@ fs.cpSync(path.join(ROOT, 'assets'), path.join(DIST, 'assets'), { recursive: tru
 buildHome();
 buildArchive();
 buildCategories();
+buildTags();
 buildPosts();
 buildAbout();
 buildAux();
-console.log(`빌드 완료: 글 ${posts.length}개, 카테고리 ${Object.keys(config.categories).length}개`);
+(async () => {
+  if (ogCard && ogQueue.length) {
+    fs.mkdirSync(path.join(DIST, "og"), { recursive: true });
+    for (const job of ogQueue) await ogCard.renderCard(job.opts, path.join(DIST, job.out));
+    console.log(`공유 카드 ${ogQueue.length}장 생성`);
+  }
+  console.log(`빌드 완료: 글 ${posts.length}개, 카테고리 ${Object.keys(config.categories).length}개`);
+})();

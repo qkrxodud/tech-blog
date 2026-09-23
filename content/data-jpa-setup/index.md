@@ -1,6 +1,6 @@
 ---
 title: "프로젝트 환경설정"
-tags: ["Spring Data JPA", "JPA", "Gradle", "H2", "Spring Boot"]
+tags: ["Spring Data JPA","JPA","Gradle","H2","Spring Boot"]
 summary: "스프링 데이터 JPA 실습 프로젝트의 Gradle 설정, 라이브러리 구성, H2 데이터베이스 연동과 기본 동작 확인 과정을 정리합니다."
 ---
 

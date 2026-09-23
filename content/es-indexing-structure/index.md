@@ -1,6 +1,6 @@
 ---
 title: "색인이 만들어지는 순서와 구조"
-tags: ["ElasticSearch", "Lucene", "색인", "refresh", "translog", "flush"]
+tags: ["ElasticSearch","Lucene","색인","refresh","translog","flush"]
 summary: "Lucene의 flush·commit과 Elasticsearch의 refresh·translog가 맞물려 색인과 검색을 처리하는 과정을 정리합니다."
 ---
 

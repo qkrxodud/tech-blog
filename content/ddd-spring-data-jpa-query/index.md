@@ -1,6 +1,6 @@
 ---
 title: "[도메인 주도 개발 시작하기] 스프링 데이터 JPA를 이용한 조회 기능"
-tags: ["DDD", "스프링 데이터 JPA", "Specification", "Pageable", "Subselect"]
+tags: ["DDD","Spring Data JPA","Specification","Pageable","Subselect"]
 summary: "도메인 주도 개발 시작하기 5장을 정리하며, 스펙을 이용한 동적 검색, 정렬·페이징 처리, @Subselect를 이용한 조회 전용 모델 구현 방법을 다룹니다."
 ---
 

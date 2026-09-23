@@ -1,6 +1,6 @@
 ---
 title: "[GIT] commit message 규칙"
-tags: ["Git", "커밋 메시지", "커밋 컨벤션", "협업", "nextstep"]
+tags: ["Git","커밋 메시지","커밋 컨벤션","협업","nextstep"]
 summary: "Git 커밋 메시지를 작성할 때 지켜야 할 7가지 규칙과 타입(feat, fix 등) 구분 기준을 정리합니다."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "[Java] 공급자 Supplier<T>"
-tags: ["Java", "Supplier", "함수형 인터페이스", "람다", "지연 초기화"]
+tags: ["Java","Supplier","함수형 인터페이스","람다","지연 초기화"]
 summary: "Java의 함수형 인터페이스 Supplier의 개념과 사용법, 지연 초기화(Lazy Initialization)에 활용되는 이유를 예제로 정리합니다."
 ---
 

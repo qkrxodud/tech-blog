@@ -1,6 +1,6 @@
 ---
 title: "Layered Architecture 구조별 테스트 작성법"
-tags: ["Spring", "테스트 코드", "Layered Architecture", "DataJpaTest", "WebMvcTest"]
+tags: ["Spring","테스트 코드","Layered Architecture","DataJpaTest","WebMvcTest"]
 summary: "Persistence, Business, Presentation 계층의 역할과 계층별 테스트 전략, @DataJpaTest·@WebMvcTest 활용법을 정리합니다."
 ---
 

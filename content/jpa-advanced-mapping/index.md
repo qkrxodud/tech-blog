@@ -1,6 +1,6 @@
 ---
 title: "상속관계 매핑과 @MappedSuperclass"
-tags: ["JPA", "상속관계 매핑", "Inheritance", "MappedSuperclass", "DiscriminatorColumn"]
+tags: ["JPA","상속관계 매핑","Inheritance","MappedSuperclass","DiscriminatorColumn"]
 summary: "객체의 상속 구조를 테이블로 옮기는 세 가지 전략을 비교하고, 공통 매핑 정보를 모으는 @MappedSuperclass의 쓰임을 정리합니다."
 ---
 

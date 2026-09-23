@@ -1,6 +1,6 @@
 ---
 title: "프로젝트 생성과 환경 설정"
-tags: ["Querydsl", "Spring Boot", "JPA", "H2", "Gradle"]
+tags: ["Querydsl","Spring Boot","JPA","H2","Gradle"]
 summary: "Querydsl 학습을 위해 스프링 부트 프로젝트를 생성하고, Gradle 빌드 설정과 H2 데이터베이스, 쿼리 로그 확인 방법을 정리합니다."
 ---
 

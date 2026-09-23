@@ -1,6 +1,6 @@
 ---
 title: "[도메인 주도 개발 시작하기] 리포지터리와 모델 구현"
-tags: ["DDD", "JPA", "밸류 타입", "AttributeConverter", "애그리거트"]
+tags: ["DDD","JPA","밸류 타입","AttributeConverter","애그리거트"]
 summary: "도메인 주도 개발 시작하기 4장을 정리하며, 밸류 타입의 JPA 매핑 방법과 애그리거트를 완전한 상태로 저장·조회하는 전략을 다룹니다."
 ---
 

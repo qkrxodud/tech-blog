@@ -1,6 +1,6 @@
 ---
 title: "단어 검색은 어떻게 동작할까 — 역인덱스"
-tags: ["ElasticSearch", "역인덱스", "Lucene", "검색엔진", "MySQL"]
+tags: ["ElasticSearch","역인덱스","Lucene","검색엔진","MySQL"]
 summary: "역인덱스가 단어 단위 검색을 빠르게 만드는 원리와, MySQL 인덱스 대비 역인덱스가 감수하는 쓰기·갱신 비용의 트레이드오프를 정리합니다."
 ---
 

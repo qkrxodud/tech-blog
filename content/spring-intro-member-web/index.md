@@ -1,6 +1,6 @@
 ---
 title: "회원 웹 기능 — 등록, 출력"
-tags: ["Spring", "Thymeleaf", "MVC", "회원 관리", "폼 처리"]
+tags: ["Spring","Thymeleaf","MVC","회원 관리","폼 처리"]
 summary: "Thymeleaf로 홈, 회원 등록 폼, 회원 목록 화면을 구성하고 HomeController에서 등록·조회 요청을 처리하는 과정을 정리합니다."
 ---
 

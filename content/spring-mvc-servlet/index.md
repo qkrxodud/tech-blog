@@ -1,6 +1,6 @@
 ---
 title: "서블릿"
-tags: ["Spring MVC", "서블릿", "HttpServletRequest", "HttpServletResponse", "Java"]
+tags: ["Spring MVC","서블릿","HttpServletRequest","HttpServletResponse","Java"]
 summary: "스프링 부트 내장 톰캣 환경에서 서블릿을 등록하고, HttpServletRequest와 HttpServletResponse로 요청과 응답을 다루는 방법을 정리합니다."
 ---
 

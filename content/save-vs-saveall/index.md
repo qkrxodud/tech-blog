@@ -1,6 +1,6 @@
 ---
 title: "[Java] Save와 SaveAll 테스트 및 성능 테스트"
-tags: ["Spring Data JPA", "saveAll", "성능 테스트", "Transactional", "프록시"]
+tags: ["Spring Data JPA","saveAll","성능 테스트","Transactional","프록시"]
 summary: "JPA의 save와 saveAll을 각각 10,000건씩 테스트하여 실행 시간을 비교하고, saveAll이 더 빠른 이유를 프록시 기반 @Transactional 동작 원리로 설명합니다."
 ---
 

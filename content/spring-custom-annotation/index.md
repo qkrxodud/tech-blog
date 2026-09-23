@@ -1,6 +1,6 @@
 ---
 title: "[Spring] Spring Annotation 그리고 Custom Annotation"
-tags: ["Spring", "어노테이션", "Custom Annotation", "Component Scan", "Retention"]
+tags: ["Spring","어노테이션","Custom Annotation","Component Scan","Retention"]
 summary: "Spring이 @Component, @Service 같은 어노테이션을 인식하는 원리와 Target, Retention 등 메타 어노테이션의 의미를 정리합니다."
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "JPA 시작하기"
-tags: ["JPA", "Hibernate", "EntityManager", "persistence.xml", "JPQL"]
+tags: ["JPA","Hibernate","EntityManager","persistence.xml","JPQL"]
 summary: "JPA 프로젝트에 필요한 라이브러리 설정부터 EntityManager로 엔티티를 저장·조회하는 기본 동작 방식, JPQL 사용법까지 정리합니다."
 ---
 
