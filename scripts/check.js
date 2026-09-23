@@ -115,6 +115,13 @@ if (fs.existsSync(DIST)) {
       const ok = fs.existsSync(target) || fs.existsSync(path.join(target, 'index.html'));
       if (!ok) warn('링크 깨짐', rel, ref);
     }
+    // 같은 속성을 태그에 두 번 쓰면 브라우저는 뒤엣것을 버린다. 조용히 스타일이
+    // 빠지므로 눈으로는 알아채기 어렵다.
+    for (const tag of html.match(/<[a-z][a-z0-9]*\s[^>]*>/gi) || []) {
+      const names = [...tag.matchAll(/(?:^|\s)([a-zA-Z-]+)=/g)].map(m => m[1].toLowerCase());
+      const dup = names.find((n, i) => names.indexOf(n) !== i);
+      if (dup) warn('속성 중복', rel, `${dup}를 두 번 쓴 태그 — ${tag.slice(0, 80)}`);
+    }
     // 코드 예제 안의 주석은 글의 일부다. 산문에 남은 편집 메모만 찾는다.
     const visible = html.replace(/<!--[\s\S]*?-->/g, '').replace(/<pre[\s\S]*?<\/pre>/g, '');
     if (/이미지\s*누락|누락\s*이미지|원본 내보내기에 미포함/.test(visible)) {

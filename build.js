@@ -93,6 +93,21 @@ function zoomableImages(html) {
 // 제목 앞의 대괄호 접두어를 덜어낸다. 화면에는 카테고리·시리즈 라벨이 이미
 // 붙으므로 "[Java] GC 튜닝" 같은 제목은 라벨과 중복된다.
 const TITLE_PREFIXES = /^\s*\[(java|spring|db|git|kafka|clean[ -]?code|리뷰)\]\s*/i;
+// 노션에서 같은 제목이 겹칠 때 붙던 "(1)"은 군더더기라 뗀다. 다만 "(2)"가 짝으로
+// 있는 제목이라면 두 편을 가르는 표시이므로 남겨야 한다 — 떼면 목록에서 두 글이
+// 똑같아 보인다.
+const PAIRED = new Set(
+  postMeta
+    .map(m => {
+      const f = path.join(CONTENT, m.slug, 'index.md');
+      if (!fs.existsSync(f)) return null;
+      const t = (fs.readFileSync(f, 'utf8').match(/^title: "(.*)"/m) || [])[1] || '';
+      const pair = t.match(/^(.*?)\s*\(2\)\s*$/);
+      return pair ? pair[1].trim() : null;
+    })
+    .filter(Boolean)
+);
+
 function cleanTitle(raw, inSeries) {
   let t = raw.trim();
   // 시리즈 글은 시리즈 박스가 맥락을 주므로 대괄호 접두어를 모두 덜어낸다.
@@ -104,7 +119,9 @@ function cleanTitle(raw, inSeries) {
     if (stripped.trim().length < 10) { t = t.replace(/^\s*\[([^\]]+)\]\s*/, '$1 '); break; }
     t = stripped;
   }
-  return t.replace(/\s*\(1\)\s*$/, '').trim();
+  const solo = t.match(/^(.*?)\s*\(1\)\s*$/);
+  if (solo && !PAIRED.has(solo[1].trim())) t = solo[1];
+  return t.trim();
 }
 
 // 페이지의 H1은 글 제목 하나여야 한다. 본문에 남은 H1은 한 단계씩 낮춘다.
@@ -537,9 +554,8 @@ function seriesBox(seriesName, rel, currentSlug, compact) {
   const items = list.map(p => {
     const num = String(p.seriesOrder).padStart(2, '0');
     const isCurrent = p.slug === currentSlug;
-    const cls = isCurrent ? ' class="current"' : '';
     const name = isCurrent ? `${esc(p.title)} <span class="now">← 지금 읽는 글</span>` : `<a href="${rel}${p.url}">${esc(p.title)}</a>`;
-    return `<div class="series-item"${cls}><span class="num">${num}</span><span class="s-title">${name}</span></div>`;
+    return `<div class="series-item${isCurrent ? ' current' : ''}"><span class="num">${num}</span><span class="s-title">${name}</span></div>`;
   }).join('\n');
   return `<div class="series-box${compact ? ' compact' : ''}">
   <div class="series-head"><div class="series-name">${compact ? '이 시리즈 · ' : '연재 · '}${esc(seriesName)}</div><div class="series-count">전체 ${list.length}편</div></div>
