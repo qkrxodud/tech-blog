@@ -12,7 +12,7 @@ const CONTENT = path.join(ROOT, 'content');
 // 파일 내용에서 뽑은 해시를 주소에 붙인다.
 const assetHash = (() => {
   const h = require('crypto').createHash('sha1');
-  for (const f of ['style.css', 'search.js', 'theme.js']) {
+  for (const f of ['style.css', 'search.js', 'theme.js', 'code.js']) {
     h.update(fs.readFileSync(path.join(ROOT, 'assets', f)));
   }
   return h.digest('hex').slice(0, 8);
@@ -134,6 +134,26 @@ function demoteHeadings(body) {
     if (!/^# /m.test(chunk)) return chunk;
     return chunk.replace(/^(#{1,5}) /gm, (m, h) => '#'.repeat(h.length + 1) + ' ');
   }).join('');
+}
+
+// 코드 블록에 언어 이름과 복사 버튼을 붙인다.
+// 노션이 언어를 엉뚱하게 잡아 둔 블록이 섞여 있어(자바 코드에 arduino, fsharp),
+// 믿을 수 있는 것만 이름을 보여 주고 나머지는 이름 없이 복사 버튼만 둔다.
+const LANG_LABEL = {
+  java: 'Java', kotlin: 'Kotlin', sql: 'SQL', json: 'JSON', yaml: 'YAML', yml: 'YAML',
+  xml: 'XML', html: 'HTML', css: 'CSS', javascript: 'JavaScript', js: 'JavaScript',
+  typescript: 'TypeScript', ts: 'TypeScript', bash: 'Shell', sh: 'Shell', shell: 'Shell',
+  properties: 'Properties', gradle: 'Gradle', dockerfile: 'Dockerfile', python: 'Python',
+};
+
+function codeBlocks(html) {
+  return html
+    .replace(/<pre><code(?: class="language-([^"]*)")?>/g, (_, lang) => {
+      const label = LANG_LABEL[(lang || '').toLowerCase()];
+      const bar = `<div class="code-bar">${label ? `<span class="code-lang">${esc(label)}</span>` : ''}<button class="code-copy" type="button" aria-label="코드 복사">복사</button></div>`;
+      return `<div class="code-wrap">${bar}<pre><code${lang ? ` class="language-${esc(lang)}"` : ''}>`;
+    })
+    .replace(/<\/code><\/pre>/g, '</code></pre></div>');
 }
 
 // 본문의 로컬 이미지 링크를 images/ 안의 실제 파일명으로 맞춘다.
@@ -266,6 +286,43 @@ const seriesMap = {};
 for (const p of posts) if (p.series) (seriesMap[p.series] ??= []).push(p);
 for (const s of Object.values(seriesMap)) s.sort((a, b) => a.seriesOrder - b.seriesOrder);
 
+// 연재도 태그와 같은 이유로 주소는 영문을 쓴다.
+const SERIES_SLUGS = (() => {
+  const f = path.join(ROOT, 'data', 'series-slugs.json');
+  if (!fs.existsSync(f)) return {};
+  const raw = JSON.parse(fs.readFileSync(f, 'utf8'));
+  delete raw._comment;
+  return raw;
+})();
+const seriesSlug = name => {
+  if (SERIES_SLUGS[name]) return SERIES_SLUGS[name];
+  const s = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9._-]/g, '');
+  if (!s) console.warn(`연재 주소 없음: "${name}" — data/series-slugs.json에 영문 이름을 적어 주세요`);
+  return s || encodeURIComponent(name);
+};
+// 연재가 놓인 자리를 그 연재에서 가장 최근에 쓴 날로 본다(홈 정렬과 같은 기준).
+const seriesEntries = Object.entries(seriesMap).sort((a, b) => {
+  const last = l => l.map(p => p.date).filter(Boolean).sort().pop() || '0000-00-00';
+  return last(b[1]) < last(a[1]) ? -1 : last(b[1]) > last(a[1]) ? 1 : 0;
+});
+// 연재의 기간과 대표 그림처럼 여러 곳에서 되쓰는 값
+function seriesInfo(name) {
+  const list = seriesMap[name];
+  const dates = list.map(p => p.date).filter(Boolean).sort();
+  const span = !dates.length ? ''
+    : dates[0] === dates[dates.length - 1]
+      ? dates[0].replace(/-/g, '.')
+      : `${dates[0].replace(/-/g, '.')} — ${dates[dates.length - 1].replace(/-/g, '.')}`;
+  return {
+    list, span,
+    href: `series/${seriesSlug(name)}/`,
+    minutes: list.reduce((n, p) => n + p.minutes, 0),
+    catName: list[0].catName,
+    category: list[0].category,
+    thumbOf: list.find(p => p.thumb) || null,
+  };
+}
+
 // 링크를 공유했을 때 보이는 카드 이미지. 글마다 한 장씩 만든다.
 // sharp가 없는 환경에서도 빌드는 되게 하고, 그때는 카드만 생략한다.
 const ogQueue = [];
@@ -343,6 +400,7 @@ ${extraHead}
     </a>
     <nav>
       <a href="${rel}">홈</a>
+      <a href="${rel}series/">연재</a>
       <a href="${rel}tag/">태그</a>
       <a href="${rel}about/">소개</a>
       <button class="search-btn" id="search-open" aria-label="검색">⌕<span class="kbd">/</span></button>
@@ -372,6 +430,7 @@ ${content}
 </div>
 <script>window.__REL__=${JSON.stringify(rel)};</script>
 <script src="${rel}assets/search.js?v=${assetHash}" defer></script>
+<script src="${rel}assets/code.js?v=${assetHash}" defer></script>
 </body>
 </html>`;
 }
@@ -429,12 +488,7 @@ function postRow(p, rel) {
 function seriesRow(name, rel) {
   const list = seriesMap[name];
   const lead = list[0];
-  const dates = list.map(p => p.date).filter(Boolean).sort();
-  const span = dates.length
-    ? (dates[0] === dates[dates.length - 1]
-        ? dates[0].replace(/-/g, '.')
-        : `${dates[0].replace(/-/g, '.')} — ${dates[dates.length - 1].replace(/-/g, '.')}`)
-    : '';
+  const { span, href } = seriesInfo(name);
   const withThumb = list.find(p => p.thumb);
   const thumb = withThumb
     ? `<a class="row-thumb" href="${rel}${withThumb.url}"><img src="${rel}posts/${withThumb.slug}/${encodeURI(withThumb.thumb)}" alt="" loading="lazy"></a>`
@@ -444,7 +498,7 @@ function seriesRow(name, rel) {
     <div class="row-cat accent">${esc(name.toUpperCase())} <span class="ser-count">전체 ${list.length}편</span></div>
     <h2 class="row-title"><a href="${rel}${lead.url}">${esc(lead.title)}</a></h2>
     <p class="row-summary">${esc(lead.summary)}</p>
-    <div class="row-meta">${span ? `${esc(span)} · ` : ''}${esc(lead.catName)}<a class="ser-more" href="${rel}category/${lead.category}/">연재 ${list.length}편 모두 보기 →</a></div>
+    <div class="row-meta">${span ? `${esc(span)} · ` : ''}${esc(lead.catName)}<a class="ser-more" href="${rel}${href}">연재 ${list.length}편 모두 보기 →</a></div>
   </div>
   ${thumb}
 </article>`;
@@ -558,10 +612,71 @@ function seriesBox(seriesName, rel, currentSlug, compact) {
     const name = isCurrent ? `${esc(p.title)} <span class="now">← 지금 읽는 글</span>` : `<a href="${rel}${p.url}">${esc(p.title)}</a>`;
     return `<div class="series-item${isCurrent ? ' current' : ''}"><span class="num">${num}</span><span class="s-title">${name}</span></div>`;
   }).join('\n');
+  const href = `${rel}series/${seriesSlug(seriesName)}/`;
   return `<div class="series-box${compact ? ' compact' : ''}">
-  <div class="series-head"><div class="series-name">${compact ? '이 시리즈 · ' : '연재 · '}${esc(seriesName)}</div><div class="series-count">전체 ${list.length}편</div></div>
+  <div class="series-head"><div class="series-name">${compact ? '이 시리즈 · ' : '연재 · '}<a href="${href}">${esc(seriesName)}</a></div><div class="series-count">전체 ${list.length}편</div></div>
   <div class="series-list">${items}</div>
 </div>`;
+}
+
+// ---------- 연재 ----------
+// 연재에 속한 글이 전체의 3분의 2라서, 연재마다 제 주소를 준다. 카테고리
+// 페이지는 여러 연재와 단편이 섞여 있어 "1편부터 읽기"의 입구가 되지 못한다.
+function buildSeries() {
+  for (const [name, list] of seriesEntries) {
+    const rel = '../../';
+    const info = seriesInfo(name);
+    const items = list.map(p => `<article class="ser-row">
+  <div class="ser-num">${String(p.seriesOrder).padStart(2, '0')}</div>
+  <div class="ser-main">
+    <h2 class="ser-title"><a href="${rel}${p.url}">${esc(p.title)}</a></h2>
+    <p class="ser-summary">${esc(p.summary)}</p>
+    <div class="ser-meta">${p.date ? `${esc(p.date.replace(/-/g, '.'))} · ` : ''}${p.minutes} min</div>
+  </div>
+</article>`).join('\n');
+
+    const content = `<div class="cat-header">
+  <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}series/">연재</a></div>
+  <h1 class="cat-title">${esc(name)} <span class="cat-count">${list.length} posts</span></h1>
+  <p class="cat-desc">${esc(info.span ? `${info.span} · ` : '')}${esc(info.catName)} · 다 읽는 데 약 ${info.minutes}분</p>
+  <div class="ser-actions"><a class="ser-start" href="${rel}${list[0].url}">1편부터 읽기 →</a><a class="ser-cat" href="${rel}category/${info.category}/">${esc(info.catName)} 주제의 다른 글</a></div>
+</div>
+<div class="ser-list">${items}</div>`;
+
+    write(`${info.href}index.html`, page({
+      rel, title: `${name} — ${config.siteTitle}`,
+      description: `${name} 연재 ${list.length}편입니다. ${list[0].summary}`,
+      canonicalPath: info.href, content, shellPath: `~/tech-blog/series/${seriesSlug(name)}`,
+      ogImage: ogForPage(name, 'series', `전체 ${list.length}편`, `ser-${seriesSlug(name)}`),
+    }));
+  }
+
+  // 연재 모아 보기
+  const rel = '../';
+  const cards = seriesEntries.map(([name, list]) => {
+    const info = seriesInfo(name);
+    // 카테고리 이름이 연재 이름과 같은 경우가 있다(클린 아키텍처). 두 번 적지 않는다.
+    const chip = info.catName === name ? '' : `<span class="ser-card-cat">${esc(info.catName)}</span>`;
+    return `<a class="ser-card" href="${rel}${info.href}">
+  <div class="ser-card-head"><span class="ser-card-n">${list.length}편</span>${chip}</div>
+  <div class="ser-card-name">${esc(name)}</div>
+  <div class="ser-card-first">1편 · ${esc(list[0].title)}</div>
+  ${info.span ? `<div class="ser-card-when">${esc(info.span)}</div>` : ''}
+</a>`;
+  }).join('\n');
+  const inSeries = seriesEntries.reduce((n, [, l]) => n + l.length, 0);
+  const content = `<div class="cat-header">
+  <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> 연재</div>
+  <h1 class="cat-title">연재 <span class="cat-count">${seriesEntries.length}종</span></h1>
+  <p class="cat-desc">한 주제를 여러 편에 걸쳐 쓴 글입니다. 전체 ${posts.length}편 가운데 ${inSeries}편이 연재에 속해 있습니다. 순서가 있으니 1편부터 읽으시면 가장 잘 읽힙니다.</p>
+</div>
+<div class="ser-grid">${cards}</div>`;
+  write('series/index.html', page({
+    rel, title: `연재 — ${config.siteTitle}`,
+    description: `${seriesEntries.length}종 연재, ${inSeries}편을 순서대로 모았습니다.`,
+    canonicalPath: 'series/', content, shellPath: '~/tech-blog/series',
+    ogImage: ogForPage('연재', 'series', `${seriesEntries.length}종 · ${inSeries}편`, 'series-index'),
+  }));
 }
 
 function buildCategories() {
@@ -588,6 +703,55 @@ function buildCategories() {
   }
 }
 
+// 글 끝에 붙는 "함께 읽어 볼 글". 연재 글은 이전·다음과 연재 상자가 길을
+// 내주지만 단독 글은 다 읽으면 갈 곳이 없다. 태그가 겹치는 정도를 주로 보고,
+// 같은 주제면 조금 더 얹는다. 같은 연재의 글은 이미 위에 목록이 있으니 뺀다.
+function relatedPosts(p, howMany = 3) {
+  const mine = new Set(p.tags);
+  const other = q => q.slug !== p.slug && !(p.series && q.series === p.series);
+  const scored = [];
+  for (const q of posts) {
+    if (!other(q)) continue;
+    const shared = q.tags.filter(t => mine.has(t));
+    if (!shared.length) continue;
+    scored.push({ q, score: shared.length * 3 + (q.category === p.category ? 1 : 0), shared });
+  }
+  scored.sort((a, b) => b.score - a.score || ((b.q.date || '') < (a.q.date || '') ? -1 : 1));
+
+  // 태그가 같은 연재 안에서만 겹치는 글은 여기서 빈손이 된다. 그럴 때는 같은
+  // 주제의 다른 글로 채운다. 아무것도 안 보여 주는 것보다는 길이 된다.
+  if (scored.length < howMany) {
+    const have = new Set(scored.map(s => s.q.slug));
+    for (const q of byCategory[p.category] || []) {
+      if (scored.length >= howMany) break;
+      if (!other(q) || have.has(q.slug)) continue;
+      scored.push({ q, score: 0, shared: [] });
+      have.add(q.slug);
+    }
+  }
+  return scored.slice(0, howMany);
+}
+
+function relatedBox(p, rel) {
+  const picks = relatedPosts(p);
+  if (!picks.length) return '';
+  const items = picks.map(({ q, shared }) => {
+    // 겹치는 태그가 없어 주제만으로 고른 글은 태그 자리에 날짜를 둔다.
+    const foot = shared.length
+      ? `<div class="rel-tags">${shared.slice(0, 3).map(t => `#${esc(t)}`).join(' ')}</div>`
+      : `<div class="rel-tags plain">${esc(q.date ? q.date.replace(/-/g, '.') : `${q.minutes} min`)}</div>`;
+    return `<a class="rel-card" href="${rel}${q.url}">
+  <div class="rel-cat">${esc(q.series || q.catName)}</div>
+  <div class="rel-title">${esc(q.title)}</div>
+  ${foot}
+</a>`;
+  }).join('\n');
+  return `<div class="rel-box">
+  <div class="rel-head">함께 읽어 볼 글</div>
+  <div class="rel-grid">${items}</div>
+</div>`;
+}
+
 // ---------- 글 상세 ----------
 function buildPosts() {
   posts.forEach((p, i) => {
@@ -604,9 +768,10 @@ function buildPosts() {
       prev = c[idx - 1] || null; next = c[idx + 1] || null;
     }
     const crumbLabel = p.series ? p.series : p.catName;
-    const bodyHtml = zoomableImages(marked.parse(p.body));
+    const crumbHref = p.series ? `series/${seriesSlug(p.series)}/` : `category/${p.category}/`;
+    const bodyHtml = codeBlocks(zoomableImages(marked.parse(p.body)));
     let content = `<div class="post-header">
-  <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}category/${p.category}/">${esc(crumbLabel.toUpperCase())}</a>${p.series ? ` <span class="sep">· ${p.seriesOrder}/${seriesMap[p.series].length}</span>` : ''}</div>
+  <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}${crumbHref}">${esc(crumbLabel.toUpperCase())}</a>${p.series ? ` <span class="sep">· ${p.seriesOrder}/${seriesMap[p.series].length}</span>` : ''}</div>
   <h1 class="post-title">${esc(p.title)}</h1>
   <div class="post-meta">${esc(config.author)}${p.date ? ` · ${esc(p.date.replace(/-/g, '.'))}` : ''} · ${esc(p.catName)} — ${p.minutes} min</div>
   ${p.tags.length ? `<div class="post-tags">${p.tags.map(t => tagLinked.has(t)
@@ -625,6 +790,7 @@ function buildPosts() {
         : `<div class="pn empty"></div>`;
       content += `</div>`;
     }
+    content += '\n' + relatedBox(p, rel);
     content += '\n' + commentBox(rel);
     const desc = p.summary || p.plain.slice(0, 150);
     write(`posts/${p.slug}/index.html`, page({
@@ -703,10 +869,9 @@ function aboutStats(rel) {
   const rows = Object.entries(seriesMap)
     .sort((a, b) => b[1].length - a[1].length)
     .map(([name, list]) => {
-      const cat = list[0].category;
       const dl = list.map(p => p.date).filter(Boolean).sort();
       const span = dl.length ? `<span class="sl-when">${esc(dl[0].slice(0, 7).replace('-', '.'))}</span>` : '';
-      return `<li><a href="${rel}category/${cat}/">${esc(name)}</a> <span class="sl-n">${list.length}편</span>${span}</li>`;
+      return `<li><a href="${rel}series/${seriesSlug(name)}/">${esc(name)}</a> <span class="sl-n">${list.length}편</span>${span}</li>`;
     }).join('\n');
 
   return `<h2>숫자로 보는 블로그</h2>
@@ -723,7 +888,7 @@ function buildAbout() {
   <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> 소개</div>
   <h1 class="post-title">소개</h1>
 </div>
-<div class="post-body">${marked.parse(aboutMd)}\n${aboutStats(rel)}</div>`;
+<div class="post-body">${codeBlocks(marked.parse(aboutMd))}\n${aboutStats(rel)}</div>`;
   write('about/index.html', page({ rel, title: `소개 — ${config.siteTitle}`, description: config.description, canonicalPath: 'about/', content, shellPath: '~/tech-blog/about' }));
 }
 
@@ -735,7 +900,11 @@ function buildAux() {
   }));
   write('search-index.json', JSON.stringify(index));
 
-  const urls = ['', 'about/', 'archive/', 'tag/', ...tagPages.map(([t]) => `tag/${tagHref(t)}/`), ...Object.keys(config.categories).map(c => `category/${c}/`), ...posts.map(p => p.url)];
+  const urls = ['', 'about/', 'archive/', 'tag/', 'series/',
+    ...seriesEntries.map(([name]) => `series/${seriesSlug(name)}/`),
+    ...tagPages.map(([t]) => `tag/${tagHref(t)}/`),
+    ...Object.keys(config.categories).map(c => `category/${c}/`),
+    ...posts.map(p => p.url)];
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${config.baseUrl}/${u}</loc></url>`).join('\n')}
@@ -776,6 +945,7 @@ fs.cpSync(path.join(ROOT, 'assets'), path.join(DIST, 'assets'), { recursive: tru
 buildHome();
 buildArchive();
 buildCategories();
+buildSeries();
 buildTags();
 buildPosts();
 buildAbout();

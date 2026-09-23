@@ -1,0 +1,21 @@
+{
+  "_comment": "연재 주소에 쓸 영문 이름. 한글 그대로 쓰면 북마크나 공유할 때 알아볼 수 없는 문자열이 된다. 화면에 보이는 연재 이름은 왼쪽(한글) 그대로다. 새 연재를 만들면 여기에 한 줄 더해야 하고, 빠뜨리면 빌드가 알려준다.",
+
+  "스프링 핵심 원리": "spring-core",
+  "스프링 입문": "spring-intro",
+  "스프링 MVC": "spring-mvc",
+  "자바 ORM 표준 JPA": "jpa-basic",
+  "스프링 데이터 JPA": "spring-data-jpa",
+  "스프링 부트와 JPA 활용": "boot-jpa",
+  "Querydsl": "querydsl",
+  "클린 코드 with Java": "clean-code-java",
+  "Clean Code": "clean-code",
+  "만들면서 배우는 클린 아키텍처": "clean-architecture",
+  "도메인 주도 개발 시작하기": "ddd-start",
+  "HTTP 웹 기본 지식": "http",
+  "아파치 카프카 입문": "kafka",
+  "ElasticSearch 적용기": "elasticsearch",
+  "GC 챌린지": "gc-challenge",
+  "AI 협업 개발": "ai-dev",
+  "인프런 워밍업 클럽 발자국": "inflearn-warmup"
+}
