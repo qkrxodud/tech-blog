@@ -159,6 +159,16 @@ for (const meta of postMeta) {
   });
 }
 
+// 최신 글이 먼저 오도록 정렬한다. 작성일을 아는 글은 그 날짜로, 모르는 글은
+// 노션 페이지 순서에서 가늠한 시점(order)으로 세운다. 둘 다 없는 옛 글은 뒤로
+// 보내되, 연재 안에서는 편 순서를 지킨다.
+const when = p => p.date || p.order || '0000-00-00';
+posts.sort((a, b) => {
+  if (when(a) !== when(b)) return when(a) < when(b) ? 1 : -1;
+  if (a.series && a.series === b.series) return (a.seriesOrder || 0) - (b.seriesOrder || 0);
+  return 0;
+});
+
 const byCategory = {};
 for (const p of posts) (byCategory[p.category] ??= []).push(p);
 const seriesMap = {};
@@ -279,7 +289,7 @@ function postRow(p, rel) {
     ${seriesLabel(p)}
     <h2 class="row-title"><a href="${rel}${p.url}">${esc(p.title)}</a></h2>
     <p class="row-summary">${esc(p.summary)}</p>
-    <div class="row-meta">${p.commit ? `<span class="sha">${esc(p.commit)}</span> · ` : ''}${esc(p.catName)} — ${p.minutes} min</div>
+    <div class="row-meta">${p.date ? `${esc(p.date.replace(/-/g, '.'))} · ` : ''}${p.commit ? `<span class="sha">${esc(p.commit)}</span> · ` : ''}${esc(p.catName)} — ${p.minutes} min</div>
   </div>
   ${thumb}
 </article>`;
@@ -433,7 +443,7 @@ function buildPosts() {
     let content = `<div class="post-header">
   <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}category/${p.category}/">${esc(crumbLabel.toUpperCase())}</a>${p.series ? ` <span class="sep">· ${p.seriesOrder}/${seriesMap[p.series].length}</span>` : ''}</div>
   <h1 class="post-title">${esc(p.title)}</h1>
-  <div class="post-meta">${esc(config.author)} · ${esc(p.catName)} — ${p.minutes} min</div>
+  <div class="post-meta">${esc(config.author)}${p.date ? ` · ${esc(p.date.replace(/-/g, '.'))}` : ''} · ${esc(p.catName)} — ${p.minutes} min</div>
   ${p.tags.length ? `<div class="post-tags">${p.tags.map(t => `<span class="tag">#${esc(t)}</span>`).join(' ')}</div>` : ''}
 </div>
 <div class="post-body">${bodyHtml}</div>`;
@@ -457,6 +467,7 @@ function buildPosts() {
         '@context': 'https://schema.org', '@type': 'BlogPosting',
         headline: p.title, description: desc, author: { '@type': 'Person', name: config.author },
         url: `${config.baseUrl}/${p.url}`, keywords: p.tags.join(', '),
+        ...(p.date ? { datePublished: p.date } : {}),
       })}</script>`,
     }));
     // 이미지 복사
@@ -503,7 +514,10 @@ ${urls.map(u => `  <url><loc>${config.baseUrl}/${u}</loc></url>`).join('\n')}
 <link>${config.baseUrl}/</link>
 <description>${esc(config.description)}</description>
 <language>ko</language>
-${posts.map(p => `<item><title>${esc(p.title)}</title><link>${config.baseUrl}/${p.url}</link><guid>${config.baseUrl}/${p.url}</guid><description>${esc(p.summary)}</description><category>${esc(p.catName)}</category></item>`).join('\n')}
+${posts.map(p => {
+  const pub = p.date ? `<pubDate>${new Date(`${p.date}T09:00:00+09:00`).toUTCString()}</pubDate>` : '';
+  return `<item><title>${esc(p.title)}</title><link>${config.baseUrl}/${p.url}</link><guid>${config.baseUrl}/${p.url}</guid><description>${esc(p.summary)}</description><category>${esc(p.catName)}</category>${pub}</item>`;
+}).join('\n')}
 </channel></rss>`);
 
   const rel = './';
