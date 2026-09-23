@@ -1,6 +1,6 @@
 ---
 title: "회원 관리 예제 — 백엔드 개발 (1)"
-tags: ["Spring","회원 관리","Repository","JUnit","테스트"]
+tags: ["Spring","회원 관리","Repository","JUnit","테스트 코드"]
 summary: "회원 도메인과 메모리 기반 리포지토리를 인터페이스로 설계하고, JUnit으로 저장/조회 기능을 검증하는 과정을 정리합니다."
 ---
 

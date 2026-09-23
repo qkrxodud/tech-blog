@@ -37,6 +37,20 @@ for (const p of posts) {
   const head = body.trim().split('\n').slice(0, 8).join('\n');
   const leftover = head.match(/^(상태|담당자|속성|속성 1|만든날짜|수정날짜|날짜|순서|태그):/m);
   if (leftover) warn('노션 속성 잔존', p.slug, leftover[0]);
+  // 강의 노트에서 그림을 빼면 소제목만 남고 내용이 비는 자리가 생긴다.
+  const lines = body.split('\n');
+  const heads = lines.map((l, i) => [l, i]).filter(([l]) => /^#{2,4} /.test(l));
+  for (let k = 0; k < heads.length; k++) {
+    const [text, at] = heads[k];
+    const next = heads[k + 1];
+    // 아래에 소제목이 이어진다면 묶음의 머리말이므로 본문이 없어도 읽힌다.
+    // 정말 문제인 자리는 뒤가 끊기거나 더 얕은 단계로 올라가 버려 내용이 아예 비는 경우다.
+    const depth = l => l.match(/^#+/)[0].length;
+    if (next && depth(next[0]) >= depth(text)) continue;
+    const until = next ? next[1] : lines.length;
+    const inner = lines.slice(at + 1, until).join('').replace(/[-\s─—*_]/g, '');
+    if (!inner) warn('내용 없는 소제목', p.slug, text.trim());
+  }
 }
 
 // 2) 강의 노트에 슬라이드 캡처가 딸려 오지 않았는지
@@ -44,7 +58,7 @@ for (const p of posts) {
 const LECTURE_SERIES = new Set([
   '스프링 입문', '스프링 핵심 원리', '스프링 MVC', '자바 ORM 표준 JPA',
   '스프링 데이터 JPA', 'Querydsl', '스프링 부트와 JPA 활용',
-  '클린 코드 with Java', 'HTTP 웹 기본 지식',
+  '클린 코드 with Java', 'HTTP 웹 기본 지식', '아파치 카프카 입문',
 ]);
 const LECTURE_CATS = new Set(['algorithm', 'infra', 'clean-code-java', 'network']);
 for (const p of posts) {
@@ -68,6 +82,10 @@ for (const [name, list] of Object.entries(series)) {
     else if (seen.has(p.seriesOrder)) warn('시리즈 순서 충돌', p.slug, `${name} #${p.seriesOrder} — ${seen.get(p.seriesOrder)}와 중복`);
     else seen.set(p.seriesOrder, p.slug);
   }
+  // 편 번호는 1부터 빠짐없이 이어져야 한다. 중간이 비면 목록에 구멍이 보인다.
+  const nums = [...seen.keys()].sort((a, b) => a - b);
+  const gaps = nums.map((n, i) => (n === i + 1 ? null : n)).filter(Boolean);
+  if (gaps.length) warn('시리즈 번호 끊김', name, `${nums.join(',')} — 1부터 이어지지 않음`);
 }
 
 // 3) 빌드 산출물의 내부 링크와 이미지

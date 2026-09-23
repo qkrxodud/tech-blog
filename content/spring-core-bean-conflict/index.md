@@ -1,6 +1,6 @@
 ---
 title: "조회 빈이 2개 이상 충돌할 때"
-tags: ["Spring","의존관계주입","Autowired","Qualifier","Primary"]
+tags: ["Spring","의존성 주입","Autowired","Qualifier","Primary"]
 summary: "스프링에서 @Autowired로 조회한 빈이 2개 이상일 때 발생하는 충돌을 필드명 매칭, @Qualifier, @Primary로 해결하는 방법을 정리합니다."
 ---
 

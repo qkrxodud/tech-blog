@@ -70,5 +70,14 @@
   "정렬": "sorting",
   "프로그래머스": "programmers",
   "매핑": "mapping",
-  "검색쿼리": "search-query"
+  "검색쿼리": "search-query",
+  "다형성": "polymorphism",
+  "브로커": "broker",
+  "수강신청": "course-enrollment",
+  "어노테이션": "annotation",
+  "트랜잭션": "transaction",
+  "파티션": "partition",
+  "스프링 빈": "spring-bean",
+  "스프링 컨테이너": "spring-container",
+  "컴포넌트 스캔": "component-scan"
 }

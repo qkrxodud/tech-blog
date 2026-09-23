@@ -1,6 +1,6 @@
 # 강의 수강 노트 변환 규칙
 
-원본 루트: `/Users/taeyoung/blog/Export-c1198803-3981-4e38-9804-6e391f86aed6/`
+원본 루트: `/Users/taeyoung/Downloads/Export-c1198803-3981-4e38-9804-6e391f86aed6/`
 대상: `/Users/taeyoung/blog/tech-blog/content/<slug>/index.md`
 
 작업 목록은 호출하는 쪽에서 `원본경로 → slug` 형태로 건네받습니다. 원본은 노션에서 내보낸 `.md` 파일 하나뿐이고, 별도의 `meta.md`는 없습니다.
