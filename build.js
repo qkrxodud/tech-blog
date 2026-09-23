@@ -160,13 +160,26 @@ for (const meta of postMeta) {
 }
 
 // 최신 글이 먼저 오도록 정렬한다. 작성일을 아는 글은 그 날짜로, 모르는 글은
-// 노션 페이지 순서에서 가늠한 시점(order)으로 세운다. 둘 다 없는 옛 글은 뒤로
-// 보내되, 연재 안에서는 편 순서를 지킨다.
+// 노션 페이지 순서에서 가늠한 시점(order)으로 세운다.
+//
+// 연재는 한 덩어리로 다룬다. 편마다 쓴 날이 달라 그대로 날짜순으로 세우면
+// 8편이 1편보다 위에 오는 식으로 흩어져 읽는 순서가 무너지기 때문이다.
+// 연재가 놓일 자리는 그 연재에서 가장 최근에 쓴 날로 정하고, 안에서는 1편부터
+// 차례로 붙인다.
 const when = p => p.date || p.order || '0000-00-00';
+const seriesLatest = {};
+for (const p of posts) {
+  if (!p.series) continue;
+  const w = when(p);
+  if (!seriesLatest[p.series] || w > seriesLatest[p.series]) seriesLatest[p.series] = w;
+}
+const rank = p => (p.series ? seriesLatest[p.series] : when(p));
 posts.sort((a, b) => {
-  if (when(a) !== when(b)) return when(a) < when(b) ? 1 : -1;
+  if (rank(a) !== rank(b)) return rank(a) < rank(b) ? 1 : -1;
+  // 같은 자리에 선 글끼리는 같은 연재면 편 순서, 아니면 각자의 날짜순
   if (a.series && a.series === b.series) return (a.seriesOrder || 0) - (b.seriesOrder || 0);
-  return 0;
+  if (a.series !== b.series) return (a.series ? 1 : 0) - (b.series ? 1 : 0);
+  return when(a) < when(b) ? 1 : -1;
 });
 
 const byCategory = {};
