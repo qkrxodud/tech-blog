@@ -110,6 +110,8 @@ const PAIRED = new Set(
 
 function cleanTitle(raw, inSeries) {
   let t = raw.trim();
+  // 짝이 있는지는 접두어를 떼기 전 원래 제목끼리 견준다.
+  const paired = PAIRED.has((t.match(/^(.*?)\s*\(1\)\s*$/) || [, ''])[1].trim());
   // 시리즈 글은 시리즈 박스가 맥락을 주므로 대괄호 접두어를 모두 덜어낸다.
   if (inSeries) t = t.replace(/^\s*\[[^\]]+\]\s*/, '');
   while (TITLE_PREFIXES.test(t)) {
@@ -119,8 +121,7 @@ function cleanTitle(raw, inSeries) {
     if (stripped.trim().length < 10) { t = t.replace(/^\s*\[([^\]]+)\]\s*/, '$1 '); break; }
     t = stripped;
   }
-  const solo = t.match(/^(.*?)\s*\(1\)\s*$/);
-  if (solo && !PAIRED.has(solo[1].trim())) t = solo[1];
+  if (!paired) t = t.replace(/\s*\(1\)\s*$/, '');
   return t.trim();
 }
 
