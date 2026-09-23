@@ -959,7 +959,7 @@
     "category": "kafka",
     "date": "2024-02-04",
     "series": "아파치 카프카 입문",
-    "seriesOrder": 2
+    "seriesOrder": 3
   },
   {
     "slug": "ccj-01-stream-lambda-optional",
@@ -1302,20 +1302,20 @@
     "slug": "kafka-basics",
     "category": "kafka",
     "series": "아파치 카프카 입문",
-    "seriesOrder": 1,
+    "seriesOrder": 2,
     "date": "2024-02-04"
   },
   {
     "slug": "kafka-local-setup",
     "category": "kafka",
     "series": "아파치 카프카 입문",
-    "seriesOrder": 3
+    "seriesOrder": 4
   },
   {
     "slug": "kafka-cli",
     "category": "kafka",
     "series": "아파치 카프카 입문",
-    "seriesOrder": 4,
+    "seriesOrder": 5,
     "date": "2024-02-12"
   },
   {
@@ -1366,5 +1366,12 @@
   {
     "slug": "algo-brute-force",
     "category": "algorithm"
+  },
+  {
+    "slug": "kafka-why",
+    "category": "kafka",
+    "series": "아파치 카프카 입문",
+    "seriesOrder": 1,
+    "date": "2024-02-04"
   }
 ]
