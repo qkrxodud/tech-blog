@@ -189,7 +189,7 @@ a { color: var(--ink); text-decoration: none; }
 /* 본문 그림. 세로로 긴 다이어그램이 많아 폭만 맞추면 한 장이 화면을 다 덮는다.
    높이도 함께 제한해 한눈에 들어오게 하고, 자세히 볼 사람은 눌러서 원본을 연다. */
 .post-body img {
-  max-width: 100%; max-height: 620px;
+  max-width: 100%; max-height: 480px;
   width: auto; height: auto;
   display: block; margin: 0 auto;
   border-radius: 8px; border: 1px solid var(--line);
