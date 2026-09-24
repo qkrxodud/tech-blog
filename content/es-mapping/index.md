@@ -31,3 +31,5 @@ Elasticsearch에서 데이터 타입의 종류는 아주 많습니다. 그중 �
 
 - 날짜 데이터를 저장해야 하는 경우: `date`
 - true, false를 저장해야 하는 경우: `boolean`
+
+> 이 글은 인프런 박재성 님의 [실전에서 바로 써먹는 Elasticsearch 입문 (검색 최적화편)](https://www.inflearn.com/course/실전-elasticsearch-입문)을 들으며 정리한 노트입니다.

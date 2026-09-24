@@ -73,3 +73,5 @@ POST /users/_doc
 ```
 
 간단한 C/R/U/D 작업을 완료하였고, 해당 명령어를 진행할 때 JSON 형태의 데이터로 검색을 진행해야 된다는 것을 알았습니다. 이어서 단어 검색과 역인덱스로 진행하도록 하겠습니다.
+
+> 이 글은 인프런 박재성 님의 [실전에서 바로 써먹는 Elasticsearch 입문 (검색 최적화편)](https://www.inflearn.com/course/실전-elasticsearch-입문)을 들으며 정리한 노트입니다.

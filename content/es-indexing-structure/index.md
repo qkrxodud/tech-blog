@@ -163,3 +163,5 @@ Elasticsearch flush    =  Lucene commit    (디스크까지, 영속)
 ![](images/08_image-7.webp)
 
 이를 통해 검색을 최적화하기 위해 미리 선행 작업을 진행한다는 것, 이러한 선행 작업으로 인해 실시간으로 업데이트되지 않는다는 것, 그리고 비용이 많이 든다는 것을 알 수 있었습니다.
+
+> 이 글은 인프런 박재성 님의 [실전에서 바로 써먹는 Elasticsearch 입문 (검색 최적화편)](https://www.inflearn.com/course/실전-elasticsearch-입문)을 들으며 정리한 노트입니다.
