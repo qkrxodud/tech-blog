@@ -64,8 +64,20 @@ body {
 }
 a { color: var(--ink); text-decoration: none; }
 
+/* 키보드로 볼 때 헤더를 지나치지 않고 바로 본문으로 갈 수 있게 한다.
+   탭 키로 처음 눌렀을 때만 나타난다. */
+.skip {
+  position: absolute; left: 12px; top: -60px; z-index: 50;
+  background: var(--ink); color: var(--page-bg);
+  border-radius: 0 0 8px 8px; padding: 10px 16px;
+  font: 700 13px var(--mono); transition: top .12s;
+}
+.skip:focus { top: 0; color: var(--page-bg); }
+
 /* 터미널 창 */
-.term { background: var(--card); border: 1px solid var(--ink); border-radius: 12px; box-shadow: 7px 7px 0 var(--shadow); overflow: hidden; }
+/* clip은 hidden과 똑같이 모서리를 잘라 내지만 스크롤 상자를 만들지 않는다.
+   hidden이면 안쪽의 차례를 화면에 고정(sticky)할 수 없다. */
+.term { background: var(--card); border: 1px solid var(--ink); border-radius: 12px; box-shadow: 7px 7px 0 var(--shadow); overflow: clip; }
 .term-bar { display: flex; align-items: center; gap: 8px; padding: 11px 16px; border-bottom: 1px solid var(--ink); background: var(--code-bg); }
 .term-bar span[class^="dot-"] { width: 11px; height: 11px; border-radius: 50%; border: 1px solid rgba(0,0,0,.15); flex: none; }
 .dot-r { background: #eb5f57; } .dot-y { background: #f5bd4e; } .dot-g { background: #57c353; }
@@ -245,6 +257,54 @@ a { color: var(--ink); text-decoration: none; }
 .ser-summary { font-size: 13.5px; color: var(--muted); line-height: 1.7; margin: 0 0 7px; }
 .ser-meta { font: 400 11.5px var(--mono); color: var(--faint); }
 
+/* 글의 차례 */
+/* 좁은 화면에서는 본문 위에 접힌 한 줄로 두고, 넓어지면 옆으로 빠져 따라다닌다. */
+.post-main { position: relative; }
+.toc { border: 1px solid var(--line); border-radius: 9px; margin: 22px 0 0; }
+.toc-head {
+  width: 100%; display: flex; align-items: center; gap: 8px;
+  background: none; border: 0; cursor: pointer; padding: 11px 14px;
+  font: 700 12px var(--mono); color: var(--dim); text-align: left;
+}
+.toc-head::before { content: '▸'; color: var(--accent); transition: transform .15s; }
+.toc.open .toc-head::before { transform: rotate(90deg); }
+.toc-head:hover { color: var(--accent-strong); }
+.toc-n { margin-left: auto; color: var(--faint); font-weight: 400; }
+.toc-list { display: none; padding: 0 14px 12px; flex-direction: column; gap: 7px; max-height: 50vh; overflow-y: auto; }
+.toc.open .toc-list { display: flex; }
+.toc-i { font-size: 13px; line-height: 1.5; color: var(--muted); border-left: 2px solid transparent; padding-left: 10px; }
+.toc-i.lv3 { padding-left: 22px; font-size: 12.5px; color: var(--faint); }
+.toc-i:hover { color: var(--accent-strong); }
+.toc-i.here { color: var(--ink); font-weight: 700; border-left-color: var(--accent); }
+.toc-i.lv3.here { color: var(--ink); }
+
+@media (min-width: 1080px) {
+  /* 창을 넓혀 차례가 들어갈 자리를 만든다. 본문 폭은 그대로 둔다. */
+  .wrap { max-width: 1260px; }
+  .post-main { display: grid; grid-template-columns: minmax(0, 1fr) 234px; gap: 40px; align-items: start; }
+  .toc {
+    grid-column: 2; grid-row: 1;
+    position: sticky; top: 24px; margin: 34px 0 0;
+    border: 0; border-left: 1px solid var(--line); border-radius: 0; padding-left: 16px;
+  }
+  .toc-head { padding: 0 0 12px; cursor: default; }
+  .toc-head::before { display: none; }
+  .toc-list { padding: 0; max-height: calc(100vh - 140px); }
+  .post-main > .post-body { grid-column: 1; grid-row: 1; }
+  /* 차례가 없는 글은 본문이 가운데에 그대로 있어야 한다. */
+  .post-main:not(:has(.toc)) { display: block; max-width: 1000px; }
+}
+/* 본문 다른 부분은 글 폭을 따라간다 */
+@media (min-width: 1080px) {
+  .post-header, .series-box, .pn-nav, .rel-box, .comments, .cat-header, .post-list,
+  .ser-list, .ser-grid, .tag-cloud, .tabs, .topic-panel, .projects, .cmd, .arc-section {
+    max-width: 1000px;
+  }
+}
+
+/* 닻으로 건너뛸 때 소제목이 화면 맨 위에 딱 붙지 않게 여유를 둔다 */
+.post-body h2, .post-body h3 { scroll-margin-top: 24px; }
+
 /* 함께 읽어 볼 글 */
 .rel-box { margin: 34px 0 10px; padding-top: 24px; border-top: 1px solid var(--line); }
 .rel-head { font: 700 11px var(--mono); color: var(--accent); letter-spacing: .08em; margin-bottom: 14px; }
@@ -403,3 +463,27 @@ a { color: var(--ink); text-decoration: none; }
   font-size: 15px; line-height: 1; color: var(--nav); font-family: inherit;
 }
 .theme-btn:hover { color: var(--accent-strong); }
+
+/* 인쇄·PDF 저장 */
+/* 화면을 꾸미는 것들(터미널 창, 메뉴, 댓글, 버튼)은 종이에서 자리만 차지한다.
+   본문과 코드만 남기고, 링크는 주소를 괄호로 붙여 종이에서도 따라갈 수 있게 한다. */
+@media print {
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .wrap { max-width: none; padding: 0; }
+  .term { border: 0; border-radius: 0; box-shadow: none; }
+  .term-bar, .term-status, .site-header, .crumbs, .skip,
+  .toc, .pn-nav, .rel-box, .comments, .code-copy, .img-cap,
+  .tabs, .topic-panel, .projects, .search-overlay { display: none !important; }
+  .term-body { padding: 0; }
+  .post-main { display: block; }
+  .post-title { font-size: 20pt; }
+  .post-body { font-size: 11pt; line-height: 1.6; }
+  .post-body pre, .code-bar { background: #f6f6f6; border: 1px solid #ddd; }
+  .code-bar { border-bottom: 0; }
+  /* 코드와 그림이 페이지 사이에서 잘리지 않게 한다 */
+  .code-wrap, .post-body img, .post-body table { break-inside: avoid; }
+  .post-body h2, .post-body h3 { break-after: avoid; }
+  .post-body img { max-height: none; }
+  /* 종이에서는 누를 수 없으니 주소를 적어 준다 (글 안의 닻 링크는 뺀다) */
+  .post-body a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; word-break: break-all; }
+}

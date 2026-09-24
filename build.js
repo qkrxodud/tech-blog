@@ -12,7 +12,7 @@ const CONTENT = path.join(ROOT, 'content');
 // 파일 내용에서 뽑은 해시를 주소에 붙인다.
 const assetHash = (() => {
   const h = require('crypto').createHash('sha1');
-  for (const f of ['style.css', 'search.js', 'theme.js', 'code.js']) {
+  for (const f of ['style.css', 'search.js', 'theme.js', 'code.js', 'toc.js']) {
     h.update(fs.readFileSync(path.join(ROOT, 'assets', f)));
   }
   return h.digest('hex').slice(0, 8);
@@ -145,6 +145,34 @@ const LANG_LABEL = {
   typescript: 'TypeScript', ts: 'TypeScript', bash: 'Shell', sh: 'Shell', shell: 'Shell',
   properties: 'Properties', gradle: 'Gradle', dockerfile: 'Dockerfile', python: 'Python',
 };
+
+// 소제목에 닻을 박고 차례를 뽑는다.
+// 닻 이름은 s1, s2… 처럼 번호로 둔다. 소제목이 한글이라 그대로 쓰면 주소를
+// 복사했을 때 %ED%94%84… 로 늘어져 알아볼 수 없게 되기 때문이다.
+function headingAnchors(html) {
+  const toc = [];
+  let n = 0;
+  const out = html.replace(/<(h[23])>([\s\S]*?)<\/\1>/g, (whole, tag, inner) => {
+    const text = inner.replace(/<[^>]+>/g, '').trim();
+    if (!text) return whole;
+    const id = `s${++n}`;
+    toc.push({ level: Number(tag[1]), id, text });
+    return `<${tag} id="${id}">${inner}</${tag}>`;
+  });
+  return { html: out, toc };
+}
+
+// 차례는 소제목이 다섯 개는 넘어야 쓸모가 있다. 서너 개짜리 글은 그냥 훑으면 된다.
+const TOC_MIN = 5;
+function tocBox(toc) {
+  if (toc.length < TOC_MIN) return '';
+  const items = toc.map(t =>
+    `<a class="toc-i lv${t.level}" href="#${t.id}">${esc(t.text)}</a>`).join('\n');
+  return `<nav class="toc" aria-label="이 글의 차례">
+  <button class="toc-head" type="button" aria-expanded="false" aria-controls="toc-list">이 글의 차례<span class="toc-n">${toc.length}</span></button>
+  <div class="toc-list" id="toc-list">${items}</div>
+</nav>`;
+}
 
 function codeBlocks(html) {
   return html
@@ -385,6 +413,7 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}">
 ${extraHead}
 </head>
 <body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
 <div class="wrap">
  <div class="term">
   <div class="term-bar">
@@ -407,7 +436,9 @@ ${extraHead}
       <button class="theme-btn" id="theme-toggle" aria-label="화면 밝기 전환">☾</button>
     </nav>
   </header>
+<main id="main">
 ${content}
+</main>
   </div>
   <div class="term-status">
     <span class="st-branch">● main</span>
@@ -431,6 +462,7 @@ ${content}
 <script>window.__REL__=${JSON.stringify(rel)};</script>
 <script src="${rel}assets/search.js?v=${assetHash}" defer></script>
 <script src="${rel}assets/code.js?v=${assetHash}" defer></script>
+<script src="${rel}assets/toc.js?v=${assetHash}" defer></script>
 </body>
 </html>`;
 }
@@ -769,7 +801,8 @@ function buildPosts() {
     }
     const crumbLabel = p.series ? p.series : p.catName;
     const crumbHref = p.series ? `series/${seriesSlug(p.series)}/` : `category/${p.category}/`;
-    const bodyHtml = codeBlocks(zoomableImages(marked.parse(p.body)));
+    const anchored = headingAnchors(codeBlocks(zoomableImages(marked.parse(p.body))));
+    const bodyHtml = anchored.html;
     let content = `<div class="post-header">
   <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}${crumbHref}">${esc(crumbLabel.toUpperCase())}</a>${p.series ? ` <span class="sep">· ${p.seriesOrder}/${seriesMap[p.series].length}</span>` : ''}</div>
   <h1 class="post-title">${esc(p.title)}</h1>
@@ -778,7 +811,7 @@ function buildPosts() {
       ? `<a class="tag" href="${rel}tag/${tagHref(t)}/">#${esc(t)}</a>`
       : `<span class="tag plain">#${esc(t)}</span>`).join(' ')}</div>` : ''}
 </div>
-<div class="post-body">${bodyHtml}</div>`;
+<div class="post-main">${tocBox(anchored.toc)}<div class="post-body">${bodyHtml}</div></div>`;
     if (p.series) content += '\n' + seriesBox(p.series, rel, p.slug, true);
     if (prev || next) {
       content += `\n<div class="pn-nav">`;
@@ -912,15 +945,31 @@ ${urls.map(u => `  <url><loc>${config.baseUrl}/${u}</loc></url>`).join('\n')}
 
   write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${config.baseUrl}/sitemap.xml\n`);
 
+  // 구독자가 리더 안에서 다 읽을 수 있도록 본문을 함께 싣는다. 다만 214편을
+  // 전부 담으면 한 번 받을 때마다 1MB에 가까워지므로 최신 것만 둔다. 지난 글은
+  // 사이트에서 읽으면 된다.
+  const FEED_ITEMS = 30;
+  // 본문의 이미지·링크는 글 폴더를 기준으로 한 상대 주소라 리더에서는 깨진다.
+  // 글 주소를 앞에 붙여 절대 주소로 바꾼다.
+  const absolutize = (html, postUrl) => {
+    const base = `${config.baseUrl}/${postUrl}`;
+    return html.replace(/(<(?:img|a)\b[^>]*?\s(?:src|href)=")([^"]+)/g, (whole, head, ref) => {
+      if (/^(https?:|mailto:|#|data:)/.test(ref)) return whole;
+      return head + new URL(ref, base).href;
+    });
+  };
+
   write('rss.xml', `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"><channel>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
 <title>${esc(config.siteTitle)}</title>
 <link>${config.baseUrl}/</link>
+<atom:link href="${config.baseUrl}/rss.xml" rel="self" type="application/rss+xml"/>
 <description>${esc(config.description)}</description>
 <language>ko</language>
-${posts.map(p => {
+${posts.slice(0, FEED_ITEMS).map(p => {
   const pub = p.date ? `<pubDate>${new Date(`${p.date}T09:00:00+09:00`).toUTCString()}</pubDate>` : '';
-  return `<item><title>${esc(p.title)}</title><link>${config.baseUrl}/${p.url}</link><guid>${config.baseUrl}/${p.url}</guid><description>${esc(p.summary)}</description><category>${esc(p.catName)}</category>${pub}</item>`;
+  const body = absolutize(marked.parse(p.body), p.url);
+  return `<item><title>${esc(p.title)}</title><link>${config.baseUrl}/${p.url}</link><guid>${config.baseUrl}/${p.url}</guid><description>${esc(p.summary)}</description><content:encoded><![CDATA[${body}]]></content:encoded><category>${esc(p.catName)}</category>${pub}</item>`;
 }).join('\n')}
 </channel></rss>`);
 
