@@ -6,6 +6,11 @@ const W = 1200, H = 630;
 const INK = '#111813', LINE = '#e8ebe9', FAINT = '#9aa39c';
 const MUTED = '#5c655e', ACCENT = '#2f7d55', BG = '#fdfdfc';
 
+// 카드는 빌드하는 컴퓨터에 깔린 폰트로 그려진다. 한글 폰트가 없으면 글자가
+// 네모(두부)로 나오므로, 리눅스(배포용 러너)에 흔한 Noto CJK까지 적어 둔다.
+const SANS = `'IBM Plex Sans KR','Noto Sans KR','Noto Sans CJK KR',sans-serif`;
+const MONO = `'JetBrains Mono','Noto Sans Mono CJK KR',monospace`;
+
 const esc = s => String(s ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;').replace(/'/g, '&apos;');
@@ -48,19 +53,39 @@ function cardSvg({ title, kind, meta, site }) {
   <circle cx="76" cy="64" r="8" fill="#eb5f57"/>
   <circle cx="102" cy="64" r="8" fill="#f5bd4e"/>
   <circle cx="128" cy="64" r="8" fill="#57c353"/>
-  <text x="600" y="70" font-family="monospace" font-size="19" fill="#7d8680" text-anchor="middle">~/tech-blog — zsh</text>
+  <text x="600" y="70" font-family="${MONO}" font-size="19" fill="#7d8680" text-anchor="middle">~/tech-blog — zsh</text>
 
-  <text x="100" y="168" font-family="monospace" font-size="23" fill="${ACCENT}">$ cat <tspan fill="${FAINT}">${esc(kind)}</tspan></text>
+  <text x="100" y="168" font-family="${MONO}" font-size="23" fill="${ACCENT}">$ cat <tspan fill="${FAINT}">${esc(kind)}</tspan></text>
 
-  <text font-family="'IBM Plex Sans KR','Noto Sans KR',sans-serif" font-size="${size}" font-weight="800" fill="${INK}">${titleTspans}</text>
+  <text font-family="${SANS}" font-size="${size}" font-weight="800" fill="${INK}">${titleTspans}</text>
 
   <path d="M100 486 H1100" stroke="${LINE}" stroke-width="2"/>
-  <text x="100" y="528" font-family="monospace" font-size="24" fill="${MUTED}">${esc(meta)}</text>
-  <text x="1100" y="528" font-family="'IBM Plex Sans KR',sans-serif" font-size="25" font-weight="800" fill="${INK}" text-anchor="end">${esc(site)}<tspan fill="${ACCENT}">.</tspan></text>
+  <text x="100" y="528" font-family="${MONO}" font-size="24" fill="${MUTED}">${esc(meta)}</text>
+  <text x="1100" y="528" font-family="${SANS}" font-size="25" font-weight="800" fill="${INK}" text-anchor="end">${esc(site)}<tspan fill="${ACCENT}">.</tspan></text>
 </svg>`;
 }
 
+// 한글이 실제로 그려지는지 한 번만 확인한다. 없는 글자는 모두 같은 네모로
+// 그려지므로, '한'과 세상에 없는 글자를 나란히 그려 보고 같으면 폰트가 없는 것이다.
+let fontChecked = false;
+async function assertKoreanFont() {
+  if (fontChecked) return;
+  const draw = ch => sharp(Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><text x="8" y="60" font-family="${SANS}" font-size="56">${ch}</text></svg>`,
+  )).raw().toBuffer();
+  const [korean, missing] = await Promise.all([draw('한'), draw('&#x10FFFF;')]);
+  if (korean.equals(missing)) {
+    throw new Error(
+      '한글 폰트가 없어 카드 이미지의 글자가 네모로 나옵니다.\n' +
+      '  리눅스: sudo apt-get install -y fonts-noto-cjk\n' +
+      '  맥: Noto Sans KR 또는 IBM Plex Sans KR 설치',
+    );
+  }
+  fontChecked = true;
+}
+
 async function renderCard(opts, outPath) {
+  await assertKoreanFont();
   await sharp(Buffer.from(cardSvg(opts)))
     .png({ compressionLevel: 9, palette: true })
     .toFile(outPath);

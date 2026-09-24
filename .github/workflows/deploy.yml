@@ -25,6 +25,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # 러너에는 한글 폰트가 없어, 없으면 공유 카드 이미지의 글자가 네모로 나온다.
+      - name: 한글 폰트 설치
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk
       - run: npm install
       - run: npm run build
       - uses: actions/configure-pages@v5

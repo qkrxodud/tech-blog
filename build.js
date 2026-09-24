@@ -357,12 +357,17 @@ const ogQueue = [];
 let ogCard = null;
 try { ogCard = require('./scripts/og-card.js'); } catch { /* 카드 없이 진행 */ }
 
+// 카카오톡·슬랙 같은 곳은 한 번 가져간 카드 이미지를 오래 붙들고 있다.
+// 카드 모양을 고칠 때 이 숫자를 올리면 주소가 달라져 새 이미지를 다시 가져간다.
+const OG_VERSION = 2;
+const ogUrl = rel => `${config.baseUrl}/${rel}?v=${OG_VERSION}`;
+
 // 홈·카테고리처럼 글이 아닌 페이지에도 대표 카드를 붙인다.
 function ogForPage(title, kind, meta, name) {
   if (!ogCard) return null;
   const rel = `og/_${name}.png`;
   ogQueue.push({ out: rel, opts: { title, kind, meta, site: config.siteTitle } });
-  return `${config.baseUrl}/${rel}`;
+  return ogUrl(rel);
 }
 
 function ogFor(p) {
@@ -377,7 +382,7 @@ function ogFor(p) {
       site: config.siteTitle,
     },
   });
-  return `${config.baseUrl}/${rel}`;
+  return ogUrl(rel);
 }
 
 // ---------- 공통 템플릿 ----------
