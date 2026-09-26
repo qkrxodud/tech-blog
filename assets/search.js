@@ -10,13 +10,28 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  // 제목·태그·요약은 가벼워 먼저 받아 바로 찾을 수 있게 하고, 본문은 뒤따라
+  // 받아 같은 자리에 붙인다. 본문이 도착하면 이미 친 검색어로 한 번 더 그린다.
+  var bodyLoading = false;
+  function loadBody() {
+    if (bodyLoading) return;
+    bodyLoading = true;
+    fetch(rel + 'search-body.json')
+      .then(function (r) { return r.json(); })
+      .then(function (texts) {
+        for (var i = 0; i < index.length && i < texts.length; i++) index[i].text = texts[i];
+        if (input.value) render(input.value);
+      })
+      .catch(function () { bodyLoading = false; });
+  }
+
   function open() {
     overlay.hidden = false;
     input.focus();
     if (!index) {
       fetch(rel + 'search-index.json')
         .then(function (r) { return r.json(); })
-        .then(function (d) { index = d; if (input.value) render(input.value); });
+        .then(function (d) { index = d; if (input.value) render(input.value); loadBody(); });
     }
   }
   function close() { overlay.hidden = true; }
@@ -44,7 +59,7 @@
       if ((p.series || '').toLowerCase().indexOf(ql) >= 0) score += 40;
       for (var t = 0; t < p.tags.length; t++) if (p.tags[t].toLowerCase().indexOf(ql) >= 0) { score += 50; break; }
       if (p.summary.toLowerCase().indexOf(ql) >= 0) score += 30;
-      if (p.text.toLowerCase().indexOf(ql) >= 0) score += 10;
+      if ((p.text || '').toLowerCase().indexOf(ql) >= 0) score += 10;
       if (score > 0) scored.push({ p: p, score: score });
     }
     scored.sort(function (a, b) { return b.score - a.score; });
@@ -54,7 +69,7 @@
     }
     results.innerHTML = scored.slice(0, 20).map(function (r) {
       var p = r.p;
-      var source = p.title.toLowerCase().indexOf(ql) >= 0 ? p.summary : (p.summary.toLowerCase().indexOf(ql) >= 0 ? p.summary : p.text);
+      var source = p.title.toLowerCase().indexOf(ql) >= 0 ? p.summary : (p.summary.toLowerCase().indexOf(ql) >= 0 ? p.summary : (p.text || p.summary));
       var re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
       return '<a class="search-item" href="' + rel + p.url + '">' +
         '<div class="si-cat">' + esc((p.series || p.category).toUpperCase()) + '</div>' +

@@ -179,6 +179,37 @@ function tocBox(toc) {
 </nav>`;
 }
 
+// 코드에 색을 입힌다. 빌드할 때 한 번 칠해 두면 글을 읽는 쪽에서 내려받는
+// 스크립트가 없다. 노션에서 잘못 붙어 온 언어 이름(arduino, fsharp …)은
+// 아는 것만 칠하므로 자연히 걸러진다.
+let hljs = null;
+try { hljs = require('highlight.js'); } catch { /* 색 없이 진행 */ }
+
+const HL_LANG = {
+  java: 'java', kotlin: 'kotlin', sql: 'sql', json: 'json', yaml: 'yaml', yml: 'yaml',
+  xml: 'xml', html: 'xml', css: 'css', less: 'less', scss: 'scss',
+  javascript: 'javascript', js: 'javascript', jsx: 'javascript',
+  typescript: 'typescript', ts: 'typescript', tsx: 'typescript',
+  bash: 'bash', sh: 'bash', shell: 'bash', properties: 'properties', gradle: 'gradle',
+  dockerfile: 'dockerfile', python: 'python', c: 'c', cpp: 'cpp', swift: 'swift',
+  markdown: 'markdown', md: 'markdown', diff: 'diff', ini: 'ini', toml: 'ini',
+};
+
+const unesc = s => s
+  .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+  .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+
+function highlightCode(html) {
+  if (!hljs) return html;
+  return html.replace(/<pre><code class="language-([^"]+)">([\s\S]*?)<\/code><\/pre>/g, (whole, lang, code) => {
+    const name = HL_LANG[lang.toLowerCase()];
+    if (!name || !hljs.getLanguage(name)) return whole;
+    // 문법이 어긋난 조각(설명용으로 잘라 붙인 코드)이 많아 중간에 멈추지 않게 한다.
+    const painted = hljs.highlight(unesc(code), { language: name, ignoreIllegals: true }).value;
+    return `<pre><code class="language-${lang} hljs">${painted}</code></pre>`;
+  });
+}
+
 function codeBlocks(html) {
   return html
     .replace(/<pre><code(?: class="language-([^"]*)")?>/g, (_, lang) => {
@@ -392,6 +423,22 @@ function ogFor(p) {
   return ogUrl(rel);
 }
 
+// 어떤 글이 읽히는지 보려면 방문 기록이 남아야 한다. 정적 사이트라 서버 기록이
+// 없어 바깥 서비스를 하나 붙인다. data/categories.json의 analytics에 값을 적을
+// 때만 스크립트가 실리고, 비워 두면 아무것도 들어가지 않는다.
+//   goatcounter — 가입한 이름 (https://<이름>.goatcounter.com)
+//   cloudflare  — Web Analytics 토큰
+// 둘 다 적혀 있으면 goatcounter를 쓴다. 두 벌을 함께 실을 이유가 없다.
+function analyticsTag() {
+  const a = config.analytics || {};
+  const safe = (v, re) => String(v || '').replace(re, '');
+  const gc = safe(a.goatcounter, /[^a-zA-Z0-9-]/g);
+  if (gc) return `\n<script data-goatcounter="https://${gc}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>`;
+  const cf = safe(a.cloudflare, /[^a-zA-Z0-9]/g);
+  if (cf) return `\n<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${cf}"}'></script>`;
+  return '';
+}
+
 // ---------- 공통 템플릿 ----------
 function page({ rel, title, description, canonicalPath, content, extraHead = '', shellPath = '~/tech-blog', isHome = false, ogImage = null }) {
   const canonical = `${config.baseUrl}/${canonicalPath}`;
@@ -421,7 +468,7 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${rel}assets/style.css?v=${assetHash}">
-<script src="${rel}assets/theme.js?v=${assetHash}"></script>
+<script src="${rel}assets/theme.js?v=${assetHash}"></script>${analyticsTag()}
 ${extraHead}
 </head>
 <body>
@@ -813,7 +860,7 @@ function buildPosts() {
     }
     const crumbLabel = p.series ? p.series : p.catName;
     const crumbHref = p.series ? `series/${seriesSlug(p.series)}/` : `category/${p.category}/`;
-    const anchored = headingAnchors(codeBlocks(zoomableImages(marked.parse(p.body))));
+    const anchored = headingAnchors(highlightCode(codeBlocks(zoomableImages(marked.parse(p.body)))));
     const bodyHtml = anchored.html;
     let content = `<div class="post-header">
   <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}${crumbHref}">${esc(crumbLabel.toUpperCase())}</a>${p.series ? ` <span class="sep">· ${p.seriesOrder}/${seriesMap[p.series].length}</span>` : ''}</div>
@@ -933,17 +980,21 @@ function buildAbout() {
   <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> 소개</div>
   <h1 class="post-title">소개</h1>
 </div>
-<div class="post-body">${codeBlocks(marked.parse(aboutMd))}\n${aboutStats(rel)}</div>`;
+<div class="post-body">${highlightCode(codeBlocks(marked.parse(aboutMd)))}\n${aboutStats(rel)}</div>`;
   write('about/index.html', page({ rel, title: `소개 — ${config.siteTitle}`, description: config.description, canonicalPath: 'about/', content, shellPath: '~/tech-blog/about' }));
 }
 
 // ---------- 검색 인덱스 / 사이트맵 / RSS / 404 ----------
 function buildAux() {
+  // 검색 자료는 두 벌로 나눈다. 제목·태그·요약만 담은 쪽은 가벼워 검색창을 열자마자
+  // 결과가 나오고, 본문은 뒤따라 받아 붙는다. 한 벌로 두면 본문 때문에 첫 검색이
+  // 내려받기를 기다린다. 두 파일은 같은 순서라 자리끼리 짝이 맞는다.
   const index = posts.map(p => ({
     title: p.title, url: p.url, category: p.catName, series: p.series || null,
-    tags: p.tags, summary: p.summary, text: p.plain.slice(0, 4000), minutes: p.minutes,
+    tags: p.tags, summary: p.summary, minutes: p.minutes,
   }));
   write('search-index.json', JSON.stringify(index));
+  write('search-body.json', JSON.stringify(posts.map(p => p.plain.slice(0, 4000))));
 
   const urls = ['', 'about/', 'archive/', 'tag/', 'series/',
     ...seriesEntries.map(([name]) => `series/${seriesSlug(name)}/`),
