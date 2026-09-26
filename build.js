@@ -12,7 +12,7 @@ const CONTENT = path.join(ROOT, 'content');
 // 파일 내용에서 뽑은 해시를 주소에 붙인다.
 const assetHash = (() => {
   const h = require('crypto').createHash('sha1');
-  for (const f of ['style.css', 'search.js', 'theme.js', 'code.js', 'toc.js']) {
+  for (const f of ['style.css', 'fonts.css', 'search.js', 'theme.js', 'code.js', 'toc.js']) {
     h.update(fs.readFileSync(path.join(ROOT, 'assets', f)));
   }
   return h.digest('hex').slice(0, 8);
@@ -423,6 +423,32 @@ function ogFor(p) {
   return ogUrl(rel);
 }
 
+// 화면 위쪽의 '홈 / 연재 / 글' 자취를 검색엔진도 읽을 수 있게 같은 내용을
+// 구조화 데이터로 적어 준다. 검색 결과에 주소 대신 이 자취가 표시된다.
+function breadcrumb(items) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map(([name, url], i) => ({
+      '@type': 'ListItem', position: i + 1, name,
+      item: `${config.baseUrl}/${url}`,
+    })),
+  };
+}
+
+// 누를 듯한 링크의 문서를 미리 받아 둔다. 목록에서 글로, 글에서 연재로 오가는
+// 일이 잦은데 매번 흰 화면을 거쳤다. 링크에 손이 머무르면(moderate) 그때 받는다.
+//
+// 미리 '받기'(prefetch)만 하고 미리 '그리기'(prerender)는 하지 않는다. 미리
+// 그리면 그 페이지의 스크립트까지 돌아, 읽지도 않은 글이 방문 수로 잡힌다.
+// 글이 HTML 한 장뿐이라 받아 두는 것만으로도 눌렀을 때 기다릴 것이 없다.
+// 모르는 브라우저는 이 줄을 무시하고 예전처럼 동작한다.
+function speculationTag() {
+  const base = new URL(config.baseUrl).pathname.replace(/\/$/, '');
+  const rules = { prefetch: [{ where: { href_matches: `${base}/*` }, eagerness: 'moderate' }] };
+  return `\n<script type="speculationrules">${JSON.stringify(rules)}</script>`;
+}
+
 // 어떤 글이 읽히는지 보려면 방문 기록이 남아야 한다. 정적 사이트라 서버 기록이
 // 없어 바깥 서비스를 하나 붙인다. data/categories.json의 analytics에 값을 적을
 // 때만 스크립트가 실리고, 비워 두면 아무것도 들어가지 않는다.
@@ -465,10 +491,10 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}">
 <meta name="twitter:image" content="${ogImage}">` : ''}
 <link rel="alternate" type="application/rss+xml" title="${esc(config.siteTitle)}" href="${config.baseUrl}/rss.xml">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="${rel}assets/fonts.css?v=${assetHash}">
 <link rel="stylesheet" href="${rel}assets/style.css?v=${assetHash}">
-<script src="${rel}assets/theme.js?v=${assetHash}"></script>${analyticsTag()}
+<script src="${rel}assets/theme.js?v=${assetHash}"></script>${speculationTag()}${analyticsTag()}
 ${extraHead}
 </head>
 <body>
@@ -893,7 +919,12 @@ function buildPosts() {
         headline: p.title, description: desc, author: { '@type': 'Person', name: config.author },
         url: `${config.baseUrl}/${p.url}`, keywords: p.tags.join(', '),
         ...(p.date ? { datePublished: p.date } : {}),
-      })}</script>`,
+      })}</script>
+<script type="application/ld+json">${JSON.stringify(breadcrumb([
+        ['홈', ''],
+        [crumbLabel, crumbHref],
+        [p.title, p.url],
+      ]))}</script>`,
     }));
     // 이미지 복사
     const imgSrc = path.join(CONTENT, p.slug, 'images');
@@ -996,14 +1027,22 @@ function buildAux() {
   write('search-index.json', JSON.stringify(index));
   write('search-body.json', JSON.stringify(posts.map(p => p.plain.slice(0, 4000))));
 
-  const urls = ['', 'about/', 'archive/', 'tag/', 'series/',
-    ...seriesEntries.map(([name]) => `series/${seriesSlug(name)}/`),
-    ...tagPages.map(([t]) => `tag/${tagHref(t)}/`),
-    ...Object.keys(config.categories).map(c => `category/${c}/`),
-    ...posts.map(p => p.url)];
+  // 주소마다 마지막으로 달라진 날을 함께 적는다. 이것이 없으면 검색엔진이 214편
+  // 가운데 무엇이 새것인지 알 길이 없어 다시 훑을 이유를 못 찾는다.
+  // 날짜를 모르는 글에는 적지 않는다. 없는 것보다 틀린 날짜가 나쁘다.
+  const newest = list => list.map(p => p.date).filter(Boolean).sort().pop() || null;
+  const siteNewest = newest(posts);
+  const urls = [
+    ['', siteNewest], ['about/', null], ['archive/', siteNewest],
+    ['tag/', siteNewest], ['series/', siteNewest],
+    ...seriesEntries.map(([name]) => [`series/${seriesSlug(name)}/`, newest(seriesMap[name])]),
+    ...tagPages.map(([t, list]) => [`tag/${tagHref(t)}/`, newest(list)]),
+    ...Object.keys(config.categories).map(c => [`category/${c}/`, newest(byCategory[c] || [])]),
+    ...posts.map(p => [p.url, p.date || null]),
+  ];
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map(u => `  <url><loc>${config.baseUrl}/${u}</loc></url>`).join('\n')}
+${urls.map(([u, d]) => `  <url><loc>${config.baseUrl}/${u}</loc>${d ? `<lastmod>${d}</lastmod>` : ''}</url>`).join('\n')}
 </urlset>`);
 
   write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${config.baseUrl}/sitemap.xml\n`);
