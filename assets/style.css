@@ -17,6 +17,7 @@
   --accent: oklch(0.5 0.14 155);
   --accent-strong: oklch(0.45 0.14 155);
   --code-bg: #f4f6f5;
+  color-scheme: light;
   --hl-com: #8a948d;       /* 주석 */
   --hl-key: oklch(0.45 0.13 285);   /* public, class, return */
   --hl-str: oklch(0.45 0.12 150);   /* 문자열 */
@@ -48,6 +49,7 @@
   --accent: oklch(0.72 0.14 155);
   --accent-strong: oklch(0.82 0.13 155);
   --code-bg: #1b2320;
+  color-scheme: dark;
   --hl-com: #6f7a74;
   --hl-key: oklch(0.76 0.11 285);
   --hl-str: oklch(0.75 0.12 150);
@@ -58,7 +60,10 @@
 }
 :root[data-theme="dark"] .term-status { background: #080b0a; }
 :root[data-theme="dark"] .term-bar span[class^="dot-"] { border-color: rgba(255,255,255,.14); }
+/* 그림은 대개 흰 바탕의 다이어그램이라 어두운 화면에서 눈을 찌른다. 한 꺼풀
+   눌러 둔다. 목록의 작은 그림도 같이 맞춘다. */
 :root[data-theme="dark"] .post-body img { opacity: .92; }
+:root[data-theme="dark"] .row-thumb img { opacity: .88; }
 :root[data-theme="dark"] .pj-card:hover { box-shadow: 4px 4px 0 oklch(0.4 0.09 155); }
 :root[data-theme="dark"] .search-overlay { background: rgba(0,0,0,.6); }
 :root[data-theme="dark"] .search-item mark { background: oklch(0.42 0.1 155); color: #eaf2ee; }
@@ -73,7 +78,6 @@
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  color-scheme: light dark;
   /* 모눈종이 같은 바탕 위에 터미널 창을 올린 화면 */
   background: var(--page-bg);
   background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
@@ -467,7 +471,10 @@ a { color: var(--ink); text-decoration: none; }
 .comments-note { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 0 0 18px; }
 .comments-note a { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
 .giscus, .giscus-frame { width: 100%; }
+/* 댓글창은 iframe이라 바깥 색을 물려받지 못한다. 화면 밝기에 맞춰 준다.
+   맞춰 두지 않으면 어두운 화면에서 댓글칸만 하얗게 뜬다. */
 .giscus-frame { border: none; color-scheme: light; }
+:root[data-theme="dark"] .giscus-frame { color-scheme: dark; }
 
 
 /* 검색 오버레이 */

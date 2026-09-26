@@ -153,7 +153,9 @@ node scripts/fetch-fonts.js
 
 ## 화면 밝기
 
-기기 설정을 따르고, 헤더의 버튼으로 바꾸면 그 선택을 기억합니다. 색은 `assets/style.css` 맨 위의 변수로 모여 있어 `:root`와 `:root[data-theme="dark"]` 두 벌만 손보면 전체가 바뀝니다.
+**어두운 화면이 기본입니다.** 기기 설정은 따르지 않습니다. 터미널 창 모양의 화면이라 어두운 쪽이 더 어울립니다. 헤더의 버튼으로 바꾸면 그 선택을 기억합니다.
+
+색은 `assets/style.css` 맨 위의 변수로 모여 있어 `:root`와 `:root[data-theme="dark"]` 두 벌만 손보면 전체가 바뀝니다. CSS 자체의 기본값은 밝은 쪽이고, `assets/theme.js`가 화면이 그려지기 전에 `data-theme="dark"`를 붙입니다. 이 스크립트는 `head`에서 바로 실행되므로 밝은 화면이 번쩍이지 않습니다.
 
 ## 그림
 
