@@ -4,7 +4,7 @@
   "baseUrl": "https://qkrxodud.github.io/tech-blog",
   "description": "Java, Spring, 데이터베이스, 아키텍처를 탐구하는 백엔드 개발 블로그입니다.",
   "homeTabs": ["spring", "spring-jpa", "database"],
-  "analytics": { "goatcounter": "", "cloudflare": "" },
+  "analytics": { "goatcounter": "typark", "cloudflare": "" },
   "comments": {
     "repo": "qkrxodud/tech-blog",
     "repoId": "R_kgDOUiNyhg",
