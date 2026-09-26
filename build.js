@@ -76,8 +76,13 @@ function stripMd(md) {
     .trim();
 }
 
-function readingTime(text) {
-  return Math.max(1, Math.round(text.length / 600));
+// 본문은 글자 수로, 코드는 줄 수로 센다. stripMd가 코드 블록을 통째로 덜어
+// 내기 때문에 글자 수만 세면 코드가 대부분인 글이 1~2분으로 눌린다. 코드는
+// 한 줄씩 읽기보다 훑어 내려가므로 마흔 줄을 1분으로 본다.
+function readingTime(text, md = '') {
+  const codeLines = (md.match(/```[\s\S]*?```/g) || [])
+    .reduce((n, block) => n + Math.max(0, block.split('\n').length - 2), 0);
+  return Math.max(1, Math.round(text.length / 600 + codeLines / 40));
 }
 
 // 본문 그림은 화면에 들어올 만큼만 보여 주고, 눌러서 원본을 열 수 있게 한다.
@@ -248,7 +253,7 @@ for (const meta of postMeta) {
     tags: attrs.tags || [],
     summary: attrs.summary || '',
     body, plain,
-    minutes: readingTime(plain),
+    minutes: readingTime(plain, body),
     thumb: firstImg,
     catName: config.categories[meta.category].name,
     url: `posts/${meta.slug}/`,
@@ -256,14 +261,16 @@ for (const meta of postMeta) {
   });
 }
 
-// 최신 글이 먼저 오도록 정렬한다. 작성일을 아는 글은 그 날짜로, 모르는 글은
-// 노션 페이지 순서에서 가늠한 시점(order)으로 세운다.
+// 최신 글이 먼저 오도록 정렬한다. 작성일을 아는 글이 먼저고, 모르는 글은
+// 그 뒤에 둔다. 모르는 시점을 가늠한 값(order)은 저희끼리 앞뒤를 맞추는 데만
+// 쓴다. 예전에는 이 값을 날짜와 같은 줄에 세웠는데, 가늠한 값이 올해 초로
+// 잡히는 바람에 날짜도 안 보이는 글이 최신 글 자리를 계속 차지했다.
 //
 // 연재는 한 덩어리로 다룬다. 편마다 쓴 날이 달라 그대로 날짜순으로 세우면
 // 8편이 1편보다 위에 오는 식으로 흩어져 읽는 순서가 무너지기 때문이다.
 // 연재가 놓일 자리는 그 연재에서 가장 최근에 쓴 날로 정하고, 안에서는 1편부터
 // 차례로 붙인다.
-const when = p => p.date || p.order || '0000-00-00';
+const when = p => (p.date ? `1 ${p.date}` : `0 ${p.order || '0000-00-00'}`);
 const seriesLatest = {};
 for (const p of posts) {
   if (!p.series) continue;
@@ -359,7 +366,7 @@ try { ogCard = require('./scripts/og-card.js'); } catch { /* 카드 없이 진�
 
 // 카카오톡·슬랙 같은 곳은 한 번 가져간 카드 이미지를 오래 붙들고 있다.
 // 카드 모양을 고칠 때 이 숫자를 올리면 주소가 달라져 새 이미지를 다시 가져간다.
-const OG_VERSION = 2;
+const OG_VERSION = 3;
 const ogUrl = rel => `${config.baseUrl}/${rel}?v=${OG_VERSION}`;
 
 // 홈·카테고리처럼 글이 아닌 페이지에도 대표 카드를 붙인다.
