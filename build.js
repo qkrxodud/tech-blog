@@ -644,6 +644,30 @@ function topicPanel(rel) {
 <script>document.addEventListener('DOMContentLoaded',function(){var t=document.getElementById('panel-toggle'),p=document.getElementById('topic-panel'),a=document.getElementById('panel-arrow');if(t)t.addEventListener('click',function(){p.hidden=!p.hidden;a.textContent=p.hidden?'▾':'▴';});});</script>`;
 }
 
+// 최근 한 달 동안 많이 읽힌 글. 214편 가운데 처음 온 사람에게 무엇부터
+// 권할지 최신순 하나로는 정할 수 없어 덧붙였다.
+//
+// 목록은 scripts/fetch-popular.js가 배포할 때 적어 둔다. 기록이 아직 없거나
+// 집계를 끊으면 이 칸은 통째로 사라진다. 세 편이 안 되면 순위라고 할 것이
+// 없어 그때도 내보내지 않는다. 조회수 숫자는 싣지 않는다. 순서만으로 충분하고,
+// 숫자는 글의 값어치와 상관없이 크고 작아 보인다.
+function popularSection(rel) {
+  let data = null;
+  try { data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'popular.json'), 'utf8')); } catch { return ''; }
+  const bySlug = Object.fromEntries(posts.map(p => [p.slug, p]));
+  const list = (data.posts || []).map(x => bySlug[x.slug]).filter(Boolean).slice(0, 6);
+  if (list.length < 3) return '';
+
+  const items = list.map((p, i) => `<a class="pop-item" href="${rel}${p.url}">
+    <span class="pop-rank">${String(i + 1).padStart(2, '0')}</span>
+    <span class="pop-title">${esc(p.title)}</span>
+    <span class="pop-cat">${esc(p.series || p.catName)}</span>
+  </a>`).join('\n');
+
+  return `<div class="cmd"><span class="sig">$</span> sort -rn hits/ <span class="cmt">| head -${list.length}  # 최근 ${data.days || 30}일 동안 많이 읽은 글</span></div>
+<div class="pop-list">${items}</div>`;
+}
+
 // 만들어 운영 중인 서비스를 홈 맨 위에 둔다. 글보다 먼저 보여 주고 싶은
 // 것이라 탭 위에 놓았다.
 function projectSection(rel) {
@@ -687,7 +711,7 @@ function buildHome() {
   const rows = items.join('\n');
   const more = `<a class="more-link" href="${rel}archive/">전체 글 ${posts.length}편 보기 →</a>`;
   const listCmd = `<div class="cmd"><span class="sig">$</span> ls -lt posts/ <span class="cmt">| head -${items.length}  # 연재는 첫 편만</span></div>`;
-  const content = `${projectSection(rel)}\n${homeTabs(rel, null)}\n${topicPanel(rel)}\n${listCmd}\n<div class="post-list">${rows}</div>\n${more}`;
+  const content = `${projectSection(rel)}\n${popularSection(rel)}\n${homeTabs(rel, null)}\n${topicPanel(rel)}\n${listCmd}\n<div class="post-list">${rows}</div>\n${more}`;
   write('index.html', page({ rel, title: config.siteTitle, description: config.description, canonicalPath: '', content, isHome: true, ogImage: ogForPage(config.siteTitle, "blog", `글 ${posts.length}편`, "home") }));
 }
 

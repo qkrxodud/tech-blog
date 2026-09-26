@@ -29,6 +29,12 @@ jobs:
       - name: 한글 폰트 설치
         run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk
       - run: npm install
+      # 토큰이 없거나 집계 서버가 대답하지 않으면 그냥 넘어간다. 통계 때문에
+      # 배포가 멈추지는 않는다.
+      - name: 많이 읽힌 글 갱신
+        run: node scripts/fetch-popular.js
+        env:
+          GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
       - run: npm run build
       - uses: actions/configure-pages@v5
         with:
