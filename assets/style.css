@@ -382,9 +382,19 @@ a { color: var(--ink); text-decoration: none; }
 .post-body a { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
 /* 본문 그림. 세로로 긴 다이어그램이 많아 폭만 맞추면 한 장이 화면을 다 덮는다.
    높이도 함께 제한해 한눈에 들어오게 하고, 자세히 볼 사람은 눌러서 원본을 연다. */
+/* width는 HTML에 적힌 실제 너비를 그대로 쓴다(max-width로 줄어든다). 여기서
+   width: auto로 덮으면 그림이 도착하기 전까지 높이가 0이라, 그림이 하나씩
+   뜰 때마다 아래 글이 밀려 내려간다. 세로로 긴 그림은 max-height에 걸리는데,
+   그때 너비까지 같이 줄도록 aspect-ratio로 비율을 묶어 둔다. */
+/* 그림이 차지할 자리를 미리 잡아 둔다. 크기를 모르면 그림이 도착할 때마다
+   아래 글이 밀려 내려가 읽던 줄을 놓친다. 빌드가 --w/--h에 실제 크기를 적어 두면
+   너비는 셋 중 가장 작은 값으로 정해진다 — 창 너비, 그림의 원래 너비, 높이가
+   480px에 닿는 너비. 높이는 비율을 따라가므로 늘어나거나 찌그러지지 않는다.
+   크기를 못 잰 그림은 이 선언이 통째로 무시되어 예전처럼 max-height만 걸린다. */
 .post-body img {
   max-width: 100%; max-height: 480px;
-  width: auto; height: auto;
+  width: min(100%, calc(var(--w) * 1px), calc(480px * var(--w) / var(--h)));
+  height: auto; aspect-ratio: var(--w) / var(--h);
   display: block; margin: 0 auto;
   border-radius: 8px; border: 1px solid var(--line);
 }

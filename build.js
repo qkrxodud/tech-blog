@@ -87,10 +87,38 @@ function readingTime(text, md = '') {
 
 // 본문 그림은 화면에 들어올 만큼만 보여 주고, 눌러서 원본을 열 수 있게 한다.
 // 세로로 긴 다이어그램이 많아 크기를 줄이면 글씨가 작아지기 때문이다.
-function zoomableImages(html) {
+// 그림의 실제 크기를 미리 재 둔다. 크기를 적어 두지 않으면 그림이 도착할 때마다
+// 아래 글이 밀려 내려가, 읽던 줄을 놓치게 된다.
+const imgSize = new Map();
+let sharpLib = null;
+try { sharpLib = require('sharp'); } catch { /* 크기 없이 진행 */ }
+
+async function measureImages() {
+  if (!sharpLib) return;
+  for (const slug of fs.readdirSync(CONTENT)) {
+    const dir = path.join(CONTENT, slug, 'images');
+    if (!fs.existsSync(dir)) continue;
+    for (const name of fs.readdirSync(dir)) {
+      try {
+        const m = await sharpLib(path.join(dir, name)).metadata();
+        if (m.width && m.height) imgSize.set(`${slug}/images/${name}`, [m.width, m.height]);
+      } catch { /* 읽지 못하는 파일은 크기 없이 둔다 */ }
+    }
+  }
+}
+
+function zoomableImages(html, slug) {
+  let n = 0;
   return html.replace(/<img src="([^"]+)"([^>]*)>/g, (whole, src, rest) => {
     if (/^https?:/.test(src)) return whole;   // 외부 이미지는 그대로 둔다
-    return `<a class="img-zoom" href="${src}" target="_blank" rel="noopener">${whole}</a>` +
+    const size = imgSize.get(`${slug}/${src}`);
+    // 첫 장은 글을 열면 바로 보이는 자리라 미루지 않는다. 미루면 오히려 늦게 뜬다.
+    const lazy = n++ === 0 ? '' : ' loading="lazy" decoding="async"';
+    // width·height는 검색엔진과 브라우저 기본 계산용이고, --w/--h는 스타일이
+    // 자리를 미리 잡는 데 쓴다. 둘이 같은 값이다.
+    const dim = size ? ` width="${size[0]}" height="${size[1]}" style="--w:${size[0]};--h:${size[1]}"` : '';
+    const img = `<img src="${src}"${rest}${dim}${lazy}>`;
+    return `<a class="img-zoom" href="${src}" target="_blank" rel="noopener">${img}</a>` +
            `<span class="img-cap">눌러서 원본 크기로 보기</span>`;
   });
 }
@@ -910,7 +938,7 @@ function buildPosts() {
     }
     const crumbLabel = p.series ? p.series : p.catName;
     const crumbHref = p.series ? `series/${seriesSlug(p.series)}/` : `category/${p.category}/`;
-    const anchored = headingAnchors(highlightCode(codeBlocks(zoomableImages(marked.parse(p.body)))));
+    const anchored = headingAnchors(highlightCode(codeBlocks(zoomableImages(marked.parse(p.body), p.slug))));
     const bodyHtml = anchored.html;
     let content = `<div class="post-header">
   <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}${crumbHref}">${esc(crumbLabel.toUpperCase())}</a>${p.series ? ` <span class="sep">· ${p.seriesOrder}/${seriesMap[p.series].length}</span>` : ''}</div>
@@ -1117,15 +1145,20 @@ function write(relPath, data) {
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 fs.cpSync(path.join(ROOT, 'assets'), path.join(DIST, 'assets'), { recursive: true });
-buildHome();
-buildArchive();
-buildCategories();
-buildSeries();
-buildTags();
-buildPosts();
-buildAbout();
-buildAux();
+
 (async () => {
+  // 그림 크기를 먼저 재 둬야 본문을 찍을 때 태그에 적을 수 있다.
+  await measureImages();
+
+  buildHome();
+  buildArchive();
+  buildCategories();
+  buildSeries();
+  buildTags();
+  buildPosts();
+  buildAbout();
+  buildAux();
+
   if (ogCard && ogQueue.length) {
     fs.mkdirSync(path.join(DIST, "og"), { recursive: true });
     for (const job of ogQueue) await ogCard.renderCard(job.opts, path.join(DIST, job.out));
