@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>검사 방식과 규칙(프로토콜) 방식의 흐름 비교</title>
+  <style>
+    .h { font-size: 18px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12.5px; fill: #6b7280; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .t { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .nb { font-size: 13px; fill: #b91c1c; }
+    .ng { font-size: 13px; fill: #15803d; }
+    .nn { font-size: 13px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+
+  <!-- ===== 검사 ===== -->
+  <rect x="16" y="16" width="356" height="438" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="40" y="50" class="h">검사</text>
+  <text x="40" y="74" class="sub">시험이 끝난 뒤 답안지를 모두 비교해 찾아냄</text>
+
+  <rect x="44" y="100" width="300" height="50" rx="10" class="box"/>
+  <circle cx="72" cy="125" r="12" fill="#6b7280"/>
+  <text x="72" y="130" class="num" text-anchor="middle">1</text>
+  <text x="94" y="130" class="t">트랜잭션들을 섞어서 실행</text>
+  <line x1="194" y1="152" x2="194" y2="178" class="flow" marker-end="url(#ar)"/>
+
+  <rect x="44" y="182" width="300" height="50" rx="10" class="box"/>
+  <circle cx="72" cy="207" r="12" fill="#6b7280"/>
+  <text x="72" y="212" class="num" text-anchor="middle">2</text>
+  <text x="94" y="212" class="t">모두 끝난 뒤 순서를 전부 비교</text>
+  <line x1="194" y1="234" x2="194" y2="260" class="flow" marker-end="url(#ar)"/>
+
+  <rect x="44" y="264" width="300" height="50" rx="10" class="bad"/>
+  <circle cx="72" cy="289" r="12" fill="#dc2626"/>
+  <text x="72" y="294" class="num" text-anchor="middle">3</text>
+  <text x="94" y="294" class="badt">틀린 게 있으면 되돌림</text>
+
+  <text x="44" y="352" class="nb">· 다 끝나야 검사할 수 있음</text>
+  <text x="44" y="378" class="nb">· DB는 지금 들어온 쿼리를 지금 실행해야 함</text>
+  <text x="44" y="404" class="nb">· 트랜잭션이 늘면 비교할 쌍이 폭발</text>
+
+  <!-- ===== 규칙 ===== -->
+  <rect x="388" y="16" width="356" height="438" rx="12" fill="#fafafa" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="412" y="50" class="h">규칙 (프로토콜)</text>
+  <rect x="640" y="32" width="84" height="26" rx="13" class="ok"/>
+  <text x="682" y="50" class="okt" text-anchor="middle" style="font-size:12.5px">DB의 선택</text>
+  <text x="412" y="74" class="sub">애초에 책상을 떨어뜨려 앉히고 고개를 못 돌리게 함</text>
+
+  <rect x="416" y="100" width="300" height="50" rx="10" class="box"/>
+  <circle cx="444" cy="125" r="12" fill="#6b7280"/>
+  <text x="444" y="130" class="num" text-anchor="middle">1</text>
+  <text x="466" y="130" class="t">실행 전에 규칙을 확인</text>
+  <line x1="566" y1="152" x2="566" y2="178" class="flow" marker-end="url(#ar)"/>
+
+  <rect x="416" y="182" width="300" height="50" rx="10" class="box"/>
+  <circle cx="444" cy="207" r="12" fill="#6b7280"/>
+  <text x="444" y="212" class="num" text-anchor="middle">2</text>
+  <text x="466" y="212" class="t">규칙이 허용하는 순서로만 실행</text>
+  <line x1="566" y1="234" x2="566" y2="260" class="flow" marker-end="url(#ar)"/>
+
+  <rect x="416" y="264" width="300" height="50" rx="10" class="ok"/>
+  <circle cx="444" cy="289" r="12" fill="#16a34a"/>
+  <text x="444" y="294" class="num" text-anchor="middle">3</text>
+  <text x="466" y="294" class="okt">결과는 항상 시리얼과 같음</text>
+
+  <text x="416" y="352" class="ng">· 검사 비용 없음</text>
+  <text x="416" y="378" class="ng">· 항상 안전</text>
+  <text x="416" y="404" class="nn">· 대신 베낄 수도 있었던 경우까지 막아</text>
+  <text x="427" y="424" class="nn">조금 손해를 봄</text>
+</svg>

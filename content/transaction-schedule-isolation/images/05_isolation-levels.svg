@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>격리 수준 네 단계와 단계별로 막히는 현상</title>
+  <style>
+    .axl { font-size: 13px; font-weight: 600; fill: #6b7280; }
+    .axis { stroke: #9ca3af; stroke-width: 1.4; }
+    .stair { fill: #e5e7eb; stroke: #d1d5db; }
+    .stairk { fill: #d1d5db; stroke: #9ca3af; }
+    .stept { font-size: 13px; font-weight: 700; fill: #374151; }
+    .name { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .rule { font-size: 12px; fill: #6b7280; }
+    .rowh { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .rows { font-size: 12px; fill: #6b7280; }
+    .bad { fill: #fee2e2; stroke: #fca5a5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .ok { fill: #dcfce7; stroke: #86efac; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .badge { fill: #1f2937; }
+    .badget { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .foot { font-size: 12px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="500" fill="#ffffff"/>
+
+  <!-- 축 -->
+  <text x="180" y="30" class="axl">느슨 · 빠름</text>
+  <text x="740" y="30" class="axl" text-anchor="end">빡빡 · 느림</text>
+  <line x1="180" y1="42" x2="736" y2="42" class="axis" marker-end="url(#ar)"/>
+
+  <!-- 계단 -->
+  <rect x="180" y="140" width="134" height="30" rx="4" class="stair"/>
+  <text x="247" y="160" class="stept" text-anchor="middle">1단계</text>
+  <rect x="322" y="115" width="134" height="55" rx="4" class="stair"/>
+  <text x="389" y="135" class="stept" text-anchor="middle">2단계</text>
+  <rect x="464" y="90" width="134" height="80" rx="4" class="stairk" stroke-width="1.5"/>
+  <text x="531" y="110" class="stept" text-anchor="middle">3단계</text>
+  <rect x="606" y="65" width="134" height="105" rx="4" class="stair"/>
+  <text x="673" y="85" class="stept" text-anchor="middle">4단계</text>
+  <rect x="477" y="56" width="108" height="24" rx="12" class="badge"/>
+  <text x="531" y="73" class="badget" text-anchor="middle">MySQL 기본값</text>
+  <line x1="170" y1="170" x2="744" y2="170" stroke="#d1d5db"/>
+
+  <!-- 이름 -->
+  <text x="247" y="196" class="name" text-anchor="middle">READ</text>
+  <text x="247" y="213" class="name" text-anchor="middle">UNCOMMITTED</text>
+  <text x="389" y="196" class="name" text-anchor="middle">READ</text>
+  <text x="389" y="213" class="name" text-anchor="middle">COMMITTED</text>
+  <text x="531" y="196" class="name" text-anchor="middle">REPEATABLE</text>
+  <text x="531" y="213" class="name" text-anchor="middle">READ</text>
+  <text x="673" y="204" class="name" text-anchor="middle">SERIALIZABLE</text>
+
+  <!-- 규칙 -->
+  <text x="20" y="246" class="rowh">규칙</text>
+  <text x="247" y="246" class="rule" text-anchor="middle">규칙 없음</text>
+  <text x="389" y="240" class="rule" text-anchor="middle">쓰기만 쥠</text>
+  <text x="389" y="256" class="rule" text-anchor="middle">읽기는 매번 새 사진</text>
+  <text x="531" y="240" class="rule" text-anchor="middle">쓰기 쥠</text>
+  <text x="531" y="256" class="rule" text-anchor="middle">읽기는 처음 사진 고정</text>
+  <text x="673" y="246" class="rule" text-anchor="middle">읽기까지 쥠</text>
+
+  <!-- Dirty Read -->
+  <text x="20" y="300" class="rowh">Dirty Read</text>
+  <text x="20" y="317" class="rows">안 끝난 값을 읽음</text>
+  <rect x="180" y="282" width="134" height="44" rx="6" class="bad"/>
+  <text x="247" y="309" class="badt" text-anchor="middle">발생</text>
+  <rect x="322" y="282" width="134" height="44" rx="6" class="ok"/>
+  <text x="389" y="309" class="okt" text-anchor="middle">막음</text>
+  <rect x="464" y="282" width="134" height="44" rx="6" class="ok"/>
+  <text x="531" y="309" class="okt" text-anchor="middle">막음</text>
+  <rect x="606" y="282" width="134" height="44" rx="6" class="ok"/>
+  <text x="673" y="309" class="okt" text-anchor="middle">막음</text>
+
+  <!-- Non-repeatable Read -->
+  <text x="20" y="352" class="rowh">Non-repeatable Read</text>
+  <text x="20" y="369" class="rows">두 번 읽으면 값이 바뀜</text>
+  <rect x="180" y="334" width="134" height="44" rx="6" class="bad"/>
+  <text x="247" y="361" class="badt" text-anchor="middle">발생</text>
+  <rect x="322" y="334" width="134" height="44" rx="6" class="bad"/>
+  <text x="389" y="361" class="badt" text-anchor="middle">발생</text>
+  <rect x="464" y="334" width="134" height="44" rx="6" class="ok"/>
+  <text x="531" y="361" class="okt" text-anchor="middle">막음</text>
+  <rect x="606" y="334" width="134" height="44" rx="6" class="ok"/>
+  <text x="673" y="361" class="okt" text-anchor="middle">막음</text>
+
+  <!-- Phantom Read -->
+  <text x="20" y="404" class="rowh">Phantom Read</text>
+  <text x="20" y="421" class="rows">없던 행이 새로 보임</text>
+  <rect x="180" y="386" width="134" height="44" rx="6" class="bad"/>
+  <text x="247" y="413" class="badt" text-anchor="middle">발생</text>
+  <rect x="322" y="386" width="134" height="44" rx="6" class="bad"/>
+  <text x="389" y="413" class="badt" text-anchor="middle">발생</text>
+  <rect x="464" y="386" width="134" height="44" rx="6" class="ok"/>
+  <text x="531" y="413" class="okt" text-anchor="middle">대부분 막음 *</text>
+  <rect x="606" y="386" width="134" height="44" rx="6" class="ok"/>
+  <text x="673" y="413" class="okt" text-anchor="middle">막음</text>
+
+  <text x="20" y="466" class="foot">* MySQL은 REPEATABLE READ에서도 갭 락으로 팬텀을 대부분 차단합니다.</text>
+  <text x="20" y="486" class="foot">오른쪽 단계로 갈수록 규칙이 빡빡해져 막는 현상이 늘고, 그만큼 더 자주 기다립니다.</text>
+</svg>

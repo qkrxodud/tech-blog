@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>규칙 1(락)과 규칙 2(MVCC)가 함께 동작하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #fafafa; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .lock { fill: #4b5563; }
+    .lockt { font-size: 12px; font-weight: 600; fill: #ffffff; }
+    .wait { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12.5px; fill: #166534; }
+    .snap { fill: #ffffff; stroke: #16a34a; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    .leg { font-size: 13px; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ard" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4b5563"/>
+    </marker>
+    <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+  <rect width="760" height="450" fill="#ffffff"/>
+
+  <text x="24" y="34" class="h">규칙 1 (락) + 규칙 2 (MVCC) — 계좌 A를 두고 세 트랜잭션이 동시에</text>
+
+  <text x="210" y="60" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="60" class="step" text-anchor="middle">2단계</text>
+  <text x="510" y="60" class="step" text-anchor="middle">3단계</text>
+  <text x="660" y="60" class="step" text-anchor="middle">4단계</text>
+  <line x1="145" y1="68" x2="730" y2="68" class="axis" marker-end="url(#ar)"/>
+
+  <!-- T1 -->
+  <text x="24" y="114" class="lane">T1</text>
+  <text x="24" y="132" class="sub">A에 쓰기</text>
+  <rect x="138" y="80" width="598" height="84" rx="8" class="track"/>
+  <rect x="145" y="86" width="130" height="48" rx="8" class="box"/>
+  <text x="210" y="106" class="op" text-anchor="middle">A에 900 쓰기</text>
+  <text x="210" y="125" class="val" text-anchor="middle">X락 획득</text>
+  <rect x="445" y="86" width="130" height="48" rx="8" class="box"/>
+  <text x="510" y="106" class="op" text-anchor="middle">커밋</text>
+  <text x="510" y="125" class="val" text-anchor="middle">X락 해제</text>
+  <rect x="145" y="140" width="430" height="18" rx="4" class="lock"/>
+  <text x="360" y="153" class="lockt" text-anchor="middle">X락 보유 — 커밋 전엔 안 놓음</text>
+
+  <!-- 락 넘겨줌 -->
+  <path d="M577,110 C640,110 660,140 660,174" fill="none" stroke="#4b5563" stroke-width="1.6" marker-end="url(#ard)"/>
+  <text x="626" y="104" class="sub">락이 풀리면 진행</text>
+
+  <!-- T2 -->
+  <text x="24" y="214" class="lane">T2</text>
+  <text x="24" y="232" class="sub">A에 쓰기</text>
+  <rect x="138" y="180" width="598" height="84" rx="8" class="track"/>
+  <rect x="295" y="186" width="130" height="48" rx="8" class="box"/>
+  <text x="360" y="206" class="op" text-anchor="middle">A에 쓰기 요청</text>
+  <text x="360" y="225" class="val" text-anchor="middle">X락이 T1에 있음</text>
+  <rect x="295" y="240" width="280" height="18" rx="4" class="wait"/>
+  <text x="435" y="253" class="waitt" text-anchor="middle">대기</text>
+  <rect x="595" y="186" width="130" height="48" rx="8" class="box"/>
+  <text x="660" y="206" class="op" text-anchor="middle">X락 획득</text>
+  <text x="660" y="225" class="val" text-anchor="middle">A에 쓰기</text>
+  <rect x="595" y="240" width="130" height="18" rx="4" class="lock"/>
+  <text x="660" y="253" class="lockt" text-anchor="middle">X락 보유</text>
+
+  <!-- T3 -->
+  <text x="24" y="314" class="lane">T3</text>
+  <text x="24" y="332" class="sub">A를 읽기만</text>
+  <rect x="138" y="280" width="598" height="84" rx="8" class="track"/>
+  <rect x="295" y="298" width="130" height="48" rx="8" class="ok"/>
+  <text x="360" y="318" class="okt" text-anchor="middle">A 읽기</text>
+  <text x="360" y="337" class="oks" text-anchor="middle">막히지 않음</text>
+  <line x1="427" y1="322" x2="449" y2="322" stroke="#16a34a" stroke-width="1.6" marker-end="url(#arg)"/>
+  <rect x="453" y="294" width="272" height="56" rx="8" class="snap"/>
+  <text x="589" y="317" class="okt" text-anchor="middle">스냅샷(사진) 속 A = 1000</text>
+  <text x="589" y="337" class="oks" text-anchor="middle">T1이 뒤에서 고쳐도 사진은 그대로</text>
+
+  <!-- 범례 -->
+  <rect x="24" y="388" width="14" height="14" rx="3" class="lock"/>
+  <text x="48" y="400" class="leg">규칙 1 (락): 쓰기는 커밋까지 쥐고 있으므로, 쓰기끼리는 줄을 섭니다</text>
+  <rect x="24" y="414" width="14" height="14" rx="3" class="ok"/>
+  <text x="48" y="426" class="leg">규칙 2 (MVCC): 읽기는 그 순간의 사진을 보므로, 쓰기와 부딪히지 않습니다</text>
+</svg>

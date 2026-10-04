@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>입장권 0장으로 시작한 세마포로 A가 끝난 뒤에만 B가 실행되게 하는 흐름과, 뮤텍스로는 같은 구조를 만들 수 없는 이유</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="540" fill="#ffffff"/>
+
+  <!-- ===== 세마포 신호 ===== -->
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">세마포로 순서 맞추기 — 입장권 0장에서 시작</text>
+  <text x="730" y="42" class="code" text-anchor="end">new Semaphore(0)</text>
+
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+
+  <!-- A -->
+  <text x="30" y="108" class="lane">스레드 A</text>
+  <text x="30" y="126" class="sub">데이터를 만드는 쪽</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="256" height="48" rx="8" class="hold"/>
+  <text x="290" y="108" class="op" text-anchor="middle">makeData()</text>
+  <text x="290" y="127" class="val" text-anchor="middle">데이터 만드는 중</text>
+  <rect x="442" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="108" class="op" text-anchor="middle">release()</text>
+  <text x="500" y="127" class="val" text-anchor="middle">"준비됐어"</text>
+
+  <!-- B -->
+  <text x="30" y="168" class="lane">스레드 B</text>
+  <text x="30" y="186" class="sub">데이터를 쓰는 쪽</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="168" class="op" text-anchor="middle">acquire()</text>
+  <text x="220" y="187" class="val" text-anchor="middle">0장이라 막힘</text>
+  <rect x="290" y="156" width="282" height="32" rx="6" class="wait"/>
+  <text x="431" y="177" class="waitt" text-anchor="middle">대기 (A의 신호를 기다림)</text>
+  <rect x="582" y="148" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="168" class="okc" text-anchor="middle">useData()</text>
+  <text x="640" y="187" class="val" text-anchor="middle">깨어나 실행</text>
+
+  <line x1="530" y1="138" x2="590" y2="150" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+
+  <!-- 입장권 -->
+  <text x="30" y="235" class="db">입장권</text>
+  <rect x="180" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="220" y="235" class="db" text-anchor="middle">0장</text>
+  <rect x="320" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="360" y="235" class="db" text-anchor="middle">0장</text>
+  <rect x="460" y="214" width="80" height="32" rx="6" class="ok"/>
+  <text x="500" y="235" class="okt" text-anchor="middle">1장</text>
+  <rect x="600" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="640" y="235" class="db" text-anchor="middle">0장</text>
+
+  <text x="150" y="272" class="sub">A가 놓은 입장권을 B가 가져갑니다. 입장권에 이름이 없어서(소유권 없음) 가능합니다.</text>
+  <rect x="150" y="290" width="330" height="30" rx="15" class="ok"/>
+  <text x="315" y="310" class="okt" text-anchor="middle">A 끝나면 B 시작 — 순서를 강제합니다</text>
+
+  <!-- ===== 뮤텍스로는 ===== -->
+  <rect x="10" y="356" width="740" height="174" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="388" class="h">뮤텍스로 하면? — A가 잠근 걸 B가 풀 수 없음</text>
+
+  <text x="30" y="424" class="lane">스레드 A</text>
+  <rect x="150" y="402" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="404" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="424" class="op" text-anchor="middle">lock()</text>
+  <text x="220" y="443" class="val" text-anchor="middle">A가 잠금</text>
+
+  <text x="30" y="484" class="lane">스레드 B</text>
+  <rect x="150" y="462" width="585" height="52" rx="6" class="track"/>
+  <rect x="442" y="464" width="116" height="48" rx="8" class="bad"/>
+  <text x="500" y="484" class="badc" text-anchor="middle">unlock()</text>
+  <text x="500" y="503" class="note" text-anchor="middle">허용 안 됨</text>
+  <text x="572" y="484" class="note">잠근 A만 풀 수 있습니다</text>
+  <text x="572" y="503" class="note">(소유권)</text>
+
+  <line x1="280" y1="436" x2="438" y2="480" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arr)"/>
+</svg>

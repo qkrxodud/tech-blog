@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>계좌 A와 계좌 B를 건드리는 두 트랜잭션은 섞어 실행해도 T1→T2와 결과가 같다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .res { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .rest { font-size: 14px; font-weight: 700; fill: #374151; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 15px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12.5px; fill: #166534; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+  </defs>
+  <rect width="760" height="540" fill="#ffffff"/>
+
+  <!-- ===== 섞어서 실행 ===== -->
+  <rect x="10" y="10" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">섞어서 실행</text>
+  <text x="730" y="42" class="code" text-anchor="end">R1(A) R2(B) W1(A) W2(B)</text>
+
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+
+  <text x="30" y="108" class="lane">T1</text>
+  <text x="30" y="126" class="sub">A에서 100 출금</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="op" text-anchor="middle">R1(A)</text>
+  <text x="220" y="127" class="val" text-anchor="middle">1000 읽음</text>
+  <rect x="442" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="108" class="op" text-anchor="middle">W1(A)</text>
+  <text x="500" y="127" class="val" text-anchor="middle">900 씀</text>
+
+  <text x="30" y="168" class="lane">T2</text>
+  <text x="30" y="186" class="sub">B에서 50 출금</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="302" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="168" class="op" text-anchor="middle">R2(B)</text>
+  <text x="360" y="187" class="val" text-anchor="middle">1000 읽음</text>
+  <rect x="582" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="168" class="op" text-anchor="middle">W2(B)</text>
+  <text x="640" y="187" class="val" text-anchor="middle">950 씀</text>
+
+  <text x="150" y="228" class="sub">A·B 모두 1000에서 시작 · T1은 A만, T2는 B만 건드려 서로 끼어들 데이터가 없습니다</text>
+
+  <!-- ===== 한 줄로 실행 ===== -->
+  <rect x="10" y="262" width="740" height="140" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="294" class="h">T1 → T2 한 줄로 실행 (시리얼)</text>
+  <text x="730" y="294" class="code" text-anchor="end">R1(A) W1(A) R2(B) W2(B)</text>
+
+  <text x="30" y="354" class="lane">순서</text>
+  <rect x="150" y="320" width="585" height="64" rx="6" class="track"/>
+  <rect x="162" y="328" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="348" class="op" text-anchor="middle">R1(A)</text>
+  <text x="220" y="367" class="val" text-anchor="middle">1000 읽음</text>
+  <rect x="302" y="328" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="348" class="op" text-anchor="middle">W1(A)</text>
+  <text x="360" y="367" class="val" text-anchor="middle">900 씀</text>
+  <rect x="442" y="328" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="348" class="op" text-anchor="middle">R2(B)</text>
+  <text x="500" y="367" class="val" text-anchor="middle">1000 읽음</text>
+  <rect x="582" y="328" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="348" class="op" text-anchor="middle">W2(B)</text>
+  <text x="640" y="367" class="val" text-anchor="middle">950 씀</text>
+
+  <!-- ===== 결과 비교 ===== -->
+  <rect x="60" y="420" width="270" height="44" rx="8" class="res"/>
+  <text x="195" y="447" class="rest" text-anchor="middle">섞어서: A = 900, B = 950</text>
+  <text x="380" y="450" class="h" text-anchor="middle">=</text>
+  <rect x="430" y="420" width="270" height="44" rx="8" class="res"/>
+  <text x="565" y="447" class="rest" text-anchor="middle">한 줄로: A = 900, B = 950</text>
+
+  <rect x="60" y="478" width="640" height="48" rx="10" class="ok"/>
+  <text x="380" y="500" class="okt" text-anchor="middle">결과가 같으므로 이 섞인 스케줄은 시리얼라이저블</text>
+  <text x="380" y="518" class="oks" text-anchor="middle">섞어서 빠르게 돌리되, 결과는 한 줄로 실행한 것과 같게</text>
+</svg>

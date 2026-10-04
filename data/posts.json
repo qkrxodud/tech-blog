@@ -1373,5 +1373,15 @@
     "series": "아파치 카프카 입문",
     "seriesOrder": 1,
     "date": "2024-02-04"
+  },
+  {
+    "slug": "transaction-schedule-isolation",
+    "category": "database",
+    "date": "2026-10-04"
+  },
+  {
+    "slug": "spinlock-mutex-semaphore",
+    "category": "java-jvm",
+    "date": "2026-10-04"
   }
 ]

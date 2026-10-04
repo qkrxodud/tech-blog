@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 660" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>count = count + 1을 두 스레드가 섞어 실행하면 11, 락으로 차례대로 실행하면 12가 되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+  </defs>
+  <rect width="760" height="660" fill="#ffffff"/>
+
+  <!-- ===== 락 없이 ===== -->
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">락 없이 — 두 스레드가 섞여서 실행</text>
+  <text x="730" y="42" class="code" text-anchor="end">count = count + 1</text>
+
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+
+  <text x="30" y="108" class="lane">스레드 A</text>
+  <text x="30" y="126" class="sub">count + 1</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="op" text-anchor="middle">읽기</text>
+  <text x="220" y="127" class="val" text-anchor="middle">10 읽음</text>
+  <rect x="442" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="108" class="op" text-anchor="middle">더하기·쓰기</text>
+  <text x="500" y="127" class="val" text-anchor="middle">11 씀</text>
+
+  <text x="30" y="168" class="lane">스레드 B</text>
+  <text x="30" y="186" class="sub">count + 1</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="302" y="148" width="116" height="48" rx="8" class="bad"/>
+  <text x="360" y="168" class="op" text-anchor="middle">읽기</text>
+  <text x="360" y="187" class="val" text-anchor="middle">10 읽음</text>
+  <rect x="582" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="168" class="op" text-anchor="middle">더하기·쓰기</text>
+  <text x="640" y="187" class="val" text-anchor="middle">11 씀</text>
+
+  <text x="30" y="235" class="db">count</text>
+  <rect x="180" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="220" y="235" class="db" text-anchor="middle">10</text>
+  <rect x="320" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="360" y="235" class="db" text-anchor="middle">10</text>
+  <rect x="460" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="500" y="235" class="db" text-anchor="middle">11</text>
+  <rect x="600" y="214" width="80" height="32" rx="6" class="bad"/>
+  <text x="640" y="235" class="badt" text-anchor="middle">11</text>
+
+  <text x="150" y="270" class="note">B가 A의 쓰기 전 값 10을 읽어서, A가 더한 1이 B의 쓰기에 덮어써집니다</text>
+  <rect x="150" y="280" width="290" height="24" rx="12" class="bad"/>
+  <text x="295" y="297" class="badt" text-anchor="middle" style="font-size:13px">결과 11 (12여야 함) → 경쟁 상태</text>
+  <text x="454" y="297" class="sub">DB의 Lost Update와 같은 모양입니다</text>
+
+  <!-- ===== 락으로 차례대로 ===== -->
+  <rect x="10" y="326" width="740" height="324" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="358" class="h">락으로 — 한 번에 한 스레드만</text>
+  <text x="730" y="358" class="code" text-anchor="end">lock → 읽기·쓰기 → unlock</text>
+
+  <text x="220" y="384" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="384" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="384" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="384" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="392" x2="722" y2="392" class="axis" marker-end="url(#ar)"/>
+
+  <text x="30" y="424" class="lane">스레드 A</text>
+  <text x="30" y="442" class="sub">먼저 락을 쥠</text>
+  <rect x="150" y="402" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="404" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="424" class="op" text-anchor="middle">읽기</text>
+  <text x="220" y="443" class="val" text-anchor="middle">10 읽음</text>
+  <rect x="302" y="404" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="424" class="op" text-anchor="middle">더하기·쓰기</text>
+  <text x="360" y="443" class="val" text-anchor="middle">11 씀, 락 해제</text>
+
+  <text x="30" y="484" class="lane">스레드 B</text>
+  <text x="30" y="502" class="sub">락이 풀린 뒤</text>
+  <rect x="150" y="462" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="474" width="256" height="28" rx="6" class="wait"/>
+  <text x="290" y="493" class="waitt" text-anchor="middle">락 대기 (A가 쥐고 있음)</text>
+  <rect x="442" y="464" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="484" class="op" text-anchor="middle">읽기</text>
+  <text x="500" y="503" class="val" text-anchor="middle">11 읽음</text>
+  <rect x="582" y="464" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="484" class="op" text-anchor="middle">더하기·쓰기</text>
+  <text x="640" y="503" class="val" text-anchor="middle">12 씀</text>
+
+  <text x="30" y="551" class="db">count</text>
+  <rect x="180" y="530" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="220" y="551" class="db" text-anchor="middle">10</text>
+  <rect x="320" y="530" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="360" y="551" class="db" text-anchor="middle">11</text>
+  <rect x="460" y="530" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="500" y="551" class="db" text-anchor="middle">11</text>
+  <rect x="600" y="530" width="80" height="32" rx="6" class="ok"/>
+  <text x="640" y="551" class="okt" text-anchor="middle">12</text>
+
+  <text x="150" y="590" class="sub">B는 A가 쓴 11을 읽고 나서 더하므로 두 번의 +1이 모두 남습니다</text>
+  <rect x="150" y="604" width="230" height="30" rx="15" class="ok"/>
+  <text x="265" y="624" class="okt" text-anchor="middle">결과 count = 12 (정상)</text>
+</svg>

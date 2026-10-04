@@ -85,5 +85,6 @@
   "무상태": "stateless",
   "백로그": "backlog",
   "오케스트레이션": "orchestration",
-  "인덱스": "index"
+  "인덱스": "index",
+  "격리수준": "isolation-level"
 }

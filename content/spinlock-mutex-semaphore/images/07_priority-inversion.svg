@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 652" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>우선순위 역전: 낮은 L이 락을 쥔 사이 중간 M이 CPU를 차지해 높은 H가 굶는 흐름과, 뮤텍스가 L의 우선순위를 잠시 올려 해결하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 13.5px; font-weight: 700; fill: #1f2937; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .badw { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .note { font-size: 12.5px; font-weight: 700; fill: #b91c1c; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13.5px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13.5px; font-weight: 700; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+  </defs>
+  <rect width="760" height="652" fill="#ffffff"/>
+
+  <rect x="10" y="10" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">우선순위 역전 — 락이 없는 M이 H를 가로막음</text>
+  <text x="730" y="42" class="sub" text-anchor="end">락: L이 쥐고 있음</text>
+  <text x="215" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="325" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="435" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="545" y="68" class="step" text-anchor="middle">4단계</text>
+  <text x="655" y="68" class="step" text-anchor="middle">5단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">H 높음</text>
+  <text x="30" y="125" class="sub">우선순위 높음</text>
+  <rect x="150" y="86" width="585" height="46" rx="6" class="track"/>
+  <text x="30" y="162" class="lane">M 중간</text>
+  <text x="30" y="179" class="sub">우선순위 중간</text>
+  <rect x="150" y="140" width="585" height="46" rx="6" class="track"/>
+  <text x="30" y="216" class="lane">L 낮음</text>
+  <text x="30" y="233" class="sub">우선순위 낮음</text>
+  <rect x="150" y="194" width="585" height="46" rx="6" class="track"/>
+  <rect x="165" y="198" width="100" height="38" rx="8" class="box"/>
+  <text x="215" y="222" class="op" text-anchor="middle">lock 획득</text>
+  <rect x="275" y="198" width="430" height="38" rx="8" class="wait"/>
+  <text x="490" y="222" class="waitt" text-anchor="middle">H·M에게 CPU를 뺏겨 멈춤 (락은 쥔 채)</text>
+  <rect x="275" y="90" width="100" height="38" rx="8" class="box"/>
+  <text x="325" y="114" class="op" text-anchor="middle">lock 요청</text>
+  <rect x="385" y="90" width="320" height="38" rx="8" class="badw"/>
+  <text x="545" y="114" class="note" text-anchor="middle">L이 락을 놓기를 하염없이 대기</text>
+  <rect x="385" y="144" width="320" height="38" rx="8" class="hold"/>
+  <text x="545" y="168" class="op" text-anchor="middle">CPU를 계속 차지 (락과 상관없는 일)</text>
+  <rect x="150" y="256" width="420" height="30" rx="15" class="bad"/>
+  <text x="360" y="276" class="badt" text-anchor="middle">높은 H가 중간 M 때문에 못 돌아감 → 역전</text>
+  <rect x="10" y="320" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="352" class="h">우선순위 상속 — 뮤텍스가 L을 잠시 끌어올림</text>
+  <text x="730" y="352" class="sub" text-anchor="end">뮤텍스는 락 주인이 L인 걸 앎</text>
+  <text x="215" y="378" class="step" text-anchor="middle">1단계</text>
+  <text x="325" y="378" class="step" text-anchor="middle">2단계</text>
+  <text x="435" y="378" class="step" text-anchor="middle">3단계</text>
+  <text x="545" y="378" class="step" text-anchor="middle">4단계</text>
+  <text x="655" y="378" class="step" text-anchor="middle">5단계</text>
+  <line x1="160" y1="386" x2="722" y2="386" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="418" class="lane">H 높음</text>
+  <text x="30" y="435" class="sub">우선순위 높음</text>
+  <rect x="150" y="396" width="585" height="46" rx="6" class="track"/>
+  <text x="30" y="472" class="lane">M 중간</text>
+  <text x="30" y="489" class="sub">우선순위 중간</text>
+  <rect x="150" y="450" width="585" height="46" rx="6" class="track"/>
+  <text x="30" y="526" class="lane">L 낮음</text>
+  <text x="30" y="543" class="sub">우선순위 낮음</text>
+  <rect x="150" y="504" width="585" height="46" rx="6" class="track"/>
+  <rect x="165" y="508" width="100" height="38" rx="8" class="box"/>
+  <text x="215" y="532" class="op" text-anchor="middle">lock 획득</text>
+  <rect x="385" y="508" width="100" height="38" rx="8" class="ok"/>
+  <text x="435" y="532" class="okt" text-anchor="middle">높음으로 올림</text>
+  <rect x="495" y="508" width="100" height="38" rx="8" class="box"/>
+  <text x="545" y="532" class="op" text-anchor="middle">unlock</text>
+  <rect x="275" y="400" width="100" height="38" rx="8" class="box"/>
+  <text x="325" y="424" class="op" text-anchor="middle">lock 요청</text>
+  <rect x="385" y="400" width="210" height="38" rx="8" class="wait"/>
+  <text x="490" y="424" class="waitt" text-anchor="middle">잠깐 대기</text>
+  <rect x="605" y="400" width="100" height="38" rx="8" class="ok"/>
+  <text x="655" y="424" class="okt" text-anchor="middle">진입</text>
+  <rect x="385" y="454" width="320" height="38" rx="8" class="wait"/>
+  <text x="545" y="478" class="waitt" text-anchor="middle">L·H보다 낮아 차례를 기다림</text>
+  <rect x="150" y="566" width="420" height="30" rx="15" class="ok"/>
+  <text x="360" y="586" class="okt" text-anchor="middle">L이 빨리 끝내고 놓아 H가 들어감 (L은 원래대로)</text>
+  <text x="30" y="636" class="sub">세마포는 입장권을 누가 가져갔는지 모르므로 누구의 우선순위를 올려야 할지 알 수 없습니다.</text>
+</svg>

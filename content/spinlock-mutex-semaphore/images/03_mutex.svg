@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 610" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>뮤텍스: 스레드 B가 대기 큐에서 잠들어 CPU를 내주고, A가 unlock하며 깨우면 컨텍스트 스위칭을 거쳐 들어가는 흐름과 JVM synchronized의 적응형 스핀</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+  <rect width="760" height="610" fill="#ffffff"/>
+
+  <!-- ===== 뮤텍스 흐름 ===== -->
+  <rect x="10" y="10" width="740" height="352" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">뮤텍스 — 대기실에 앉아 있다가 호출받기</text>
+  <text x="730" y="42" class="code" text-anchor="end">lock() … unlock()</text>
+
+  <text x="160" y="68" class="sub">시간</text>
+  <line x1="190" y1="64" x2="722" y2="64" class="axis" marker-end="url(#ar)"/>
+
+  <!-- 스레드 A -->
+  <text x="30" y="104" class="lane">스레드 A</text>
+  <text x="30" y="122" class="sub">열쇠를 가진 쪽</text>
+  <rect x="150" y="80" width="585" height="56" rx="6" class="track"/>
+  <rect x="162" y="84" width="80" height="48" rx="8" class="box"/>
+  <text x="202" y="104" class="op" text-anchor="middle">lock</text>
+  <text x="202" y="123" class="val" text-anchor="middle">획득</text>
+  <rect x="250" y="84" width="220" height="48" rx="8" class="hold"/>
+  <text x="360" y="104" class="op" text-anchor="middle">임계 구역 실행 중</text>
+  <text x="360" y="123" class="val" text-anchor="middle">락 보유</text>
+  <rect x="478" y="84" width="80" height="48" rx="8" class="box"/>
+  <text x="518" y="104" class="op" text-anchor="middle">unlock</text>
+  <text x="518" y="123" class="val" text-anchor="middle">"다음 분"</text>
+
+  <!-- 스레드 B -->
+  <text x="30" y="168" class="lane">스레드 B</text>
+  <text x="30" y="186" class="sub">대기 큐에서 잠듦</text>
+  <rect x="150" y="144" width="585" height="56" rx="6" class="track"/>
+  <rect x="162" y="148" width="80" height="48" rx="8" class="box"/>
+  <text x="202" y="168" class="op" text-anchor="middle">lock 시도</text>
+  <text x="202" y="187" class="val" text-anchor="middle">잠겨 있음</text>
+  <rect x="250" y="152" width="308" height="40" rx="8" class="wait"/>
+  <text x="404" y="177" class="waitt" text-anchor="middle">대기 큐에서 sleep (CPU를 내줌)</text>
+  <rect x="566" y="148" width="80" height="48" rx="8" class="hold"/>
+  <text x="606" y="168" class="op" text-anchor="middle">깨어남</text>
+  <text x="606" y="187" class="val" text-anchor="middle">전환 비용</text>
+  <rect x="654" y="148" width="76" height="48" rx="8" class="ok"/>
+  <text x="692" y="177" class="okt" text-anchor="middle">진입</text>
+
+  <!-- unlock → 깨움 -->
+  <line x1="540" y1="134" x2="580" y2="146" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+
+  <!-- 다른 스레드 -->
+  <text x="30" y="232" class="lane">다른 스레드</text>
+  <text x="30" y="250" class="sub">CPU를 넘겨받음</text>
+  <rect x="150" y="208" width="585" height="56" rx="6" class="track"/>
+  <rect x="250" y="212" width="308" height="48" rx="8" class="box"/>
+  <text x="404" y="232" class="op" text-anchor="middle">B가 내준 CPU로 자기 일</text>
+  <text x="404" y="251" class="val" text-anchor="middle">CPU가 놀지 않음</text>
+
+  <!-- CPU -->
+  <text x="30" y="297" class="db">B의 CPU</text>
+  <rect x="162" y="278" width="80" height="30" rx="6" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="202" y="298" class="val" text-anchor="middle">확인</text>
+  <rect x="250" y="278" width="308" height="30" rx="6" class="ok"/>
+  <text x="404" y="298" class="gnote" text-anchor="middle" font-weight="700">기다리는 동안 CPU를 안 씀</text>
+  <rect x="566" y="278" width="80" height="30" rx="6" class="bad"/>
+  <text x="606" y="298" class="badt" text-anchor="middle">전환</text>
+  <rect x="654" y="278" width="76" height="30" rx="6" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="692" y="298" class="val" text-anchor="middle">실행</text>
+
+  <text x="30" y="340" class="sub">소유권: 잠근 A만 unlock할 수 있습니다. 밖에서 기다리는 B가 대신 문을 열 수는 없습니다.</text>
+
+  <!-- ===== JVM synchronized ===== -->
+  <rect x="10" y="378" width="740" height="222" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="410" class="h">JVM의 synchronized — 적응형 스핀 (둘을 섞어 씀)</text>
+
+  <rect x="30" y="484" width="110" height="44" rx="10" class="box"/>
+  <text x="85" y="511" class="op" text-anchor="middle">락 요청</text>
+  <line x1="142" y1="506" x2="164" y2="506" class="flow" marker-end="url(#ag)"/>
+
+  <rect x="168" y="476" width="130" height="60" rx="10" class="box"/>
+  <text x="233" y="501" class="op" text-anchor="middle">잠깐 스핀</text>
+  <text x="233" y="521" class="sub" text-anchor="middle">금방 풀릴 수도 있으니</text>
+  <line x1="300" y1="506" x2="320" y2="506" class="flow" marker-end="url(#ag)"/>
+
+  <path d="M324,506 L384,474 L444,506 L384,538 Z" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="384" y="511" class="op" text-anchor="middle">풀렸나?</text>
+
+  <path d="M384,474 L384,452 L476,452" class="flow" marker-end="url(#ag)"/>
+  <text x="394" y="466" class="lbl">예</text>
+  <rect x="480" y="430" width="250" height="44" rx="10" class="ok"/>
+  <text x="605" y="457" class="okt" text-anchor="middle">바로 진입 (스핀락처럼)</text>
+
+  <path d="M384,538 L384,562 L476,562" class="flow" marker-end="url(#ag)"/>
+  <text x="394" y="556" class="lbl">아니오</text>
+  <rect x="480" y="540" width="130" height="44" rx="10" class="box"/>
+  <text x="545" y="567" class="op" text-anchor="middle">대기실로 sleep</text>
+  <line x1="612" y1="562" x2="632" y2="562" class="flow" marker-end="url(#ag)"/>
+  <rect x="636" y="540" width="94" height="44" rx="10" class="ok"/>
+  <text x="683" y="567" class="okt" text-anchor="middle">깨우면 진입</text>
+</svg>

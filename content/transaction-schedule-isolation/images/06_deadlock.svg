@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>데드락: 서로 상대가 쥔 락을 기다리는 순환과 DB의 롤백 처리</title>
+  <style>
+    .h { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .tx { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .txs { font-size: 12.5px; fill: #6b7280; }
+    .res { font-size: 16px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .rbox { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { stroke: #4b5563; stroke-width: 2; fill: none; }
+    .waitl { stroke: #dc2626; stroke-width: 2; stroke-dasharray: 6 4; fill: none; }
+    .lh { font-size: 12.5px; fill: #374151; }
+    .lw { font-size: 12.5px; fill: #b91c1c; }
+    .cyc { font-size: 15px; font-weight: 700; fill: #b91c1c; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4b5563"/>
+    </marker>
+    <marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="430" fill="#ffffff"/>
+
+  <!-- ===== 순환 ===== -->
+  <rect x="10" y="10" width="740" height="250" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+
+  <!-- 자원 -->
+  <rect x="330" y="36" width="100" height="50" rx="10" class="rbox"/>
+  <text x="380" y="67" class="res" text-anchor="middle">계좌 A</text>
+  <rect x="330" y="186" width="100" height="50" rx="10" class="rbox"/>
+  <text x="380" y="217" class="res" text-anchor="middle">계좌 B</text>
+
+  <!-- 트랜잭션 -->
+  <rect x="50" y="108" width="160" height="58" rx="10" class="box"/>
+  <text x="130" y="132" class="tx" text-anchor="middle">T1</text>
+  <text x="130" y="153" class="txs" text-anchor="middle">A를 쥐고 B를 기다림</text>
+  <rect x="550" y="108" width="160" height="58" rx="10" class="box"/>
+  <text x="630" y="132" class="tx" text-anchor="middle">T2</text>
+  <text x="630" y="153" class="txs" text-anchor="middle">B를 쥐고 A를 기다림</text>
+
+  <!-- 쥐고 있음: 자원 → 트랜잭션 -->
+  <line x1="328" y1="66" x2="196" y2="106" class="hold" marker-end="url(#ah)"/>
+  <line x1="432" y1="214" x2="564" y2="168" class="hold" marker-end="url(#ah)"/>
+  <!-- 기다림: 트랜잭션 → 자원 -->
+  <line x1="196" y1="168" x2="326" y2="208" class="waitl" marker-end="url(#aw)"/>
+  <line x1="564" y1="106" x2="434" y2="64" class="waitl" marker-end="url(#aw)"/>
+
+  <text x="252" y="70" class="lh" text-anchor="end">① T1이 A에 씀 (X락)</text>
+  <text x="508" y="70" class="lw">④ T2가 A 요청 → 대기</text>
+  <text x="508" y="222" class="lh">② T2가 B에 씀 (X락)</text>
+  <text x="252" y="222" class="lw" text-anchor="end">③ T1이 B 요청 → 대기</text>
+
+  <text x="380" y="132" class="cyc" text-anchor="middle">순환 대기</text>
+  <text x="380" y="152" class="txs" text-anchor="middle">서로 상대가 쥔 락을 기다림</text>
+
+  <!-- ===== DB의 처리 ===== -->
+  <text x="20" y="292" class="h">DB의 처리</text>
+
+  <rect x="20" y="306" width="160" height="60" rx="10" class="box"/>
+  <text x="100" y="331" class="t" text-anchor="middle">순환 감지</text>
+  <text x="100" y="351" class="s" text-anchor="middle">기다림의 고리 발견</text>
+  <line x1="182" y1="336" x2="204" y2="336" class="flow" marker-end="url(#ag)"/>
+
+  <rect x="208" y="306" width="160" height="60" rx="10" class="bad"/>
+  <text x="288" y="331" class="badt" text-anchor="middle">한쪽을 롤백</text>
+  <text x="288" y="351" class="s" text-anchor="middle">예: T2를 돌려보냄</text>
+  <line x1="370" y1="336" x2="392" y2="336" class="flow" marker-end="url(#ag)"/>
+
+  <rect x="396" y="306" width="160" height="60" rx="10" class="box"/>
+  <text x="476" y="331" class="t" text-anchor="middle">T2의 락 해제</text>
+  <text x="476" y="351" class="s" text-anchor="middle">B가 풀림</text>
+  <line x1="558" y1="336" x2="580" y2="336" class="flow" marker-end="url(#ag)"/>
+
+  <rect x="584" y="306" width="160" height="60" rx="10" class="ok"/>
+  <text x="664" y="331" class="okt" text-anchor="middle">T1 진행</text>
+  <text x="664" y="351" class="s" text-anchor="middle">B를 얻고 커밋까지</text>
+
+  <text x="20" y="400" class="foot">"커밋 전엔 안 놓는다"는 규칙이 안전을 보장하는 대가입니다. 그래서 DB가 이것만큼은 따로 감지해 풉니다.</text>
+</svg>

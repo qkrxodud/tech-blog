@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 660" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>스케줄 ①과 ②의 실행 흐름 비교 — ②에서 T1의 쓰기가 덮어써지는 Lost Update</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="660" fill="#ffffff"/>
+
+  <!-- ===== 스케줄 ① ===== -->
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">스케줄 ① — T1이 끝나고 T2</text>
+  <text x="730" y="42" class="code" text-anchor="end">R1(A) W1(A) R2(A) W2(A)</text>
+
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+
+  <!-- T1 -->
+  <text x="30" y="108" class="lane">T1</text>
+  <text x="30" y="126" class="sub">A에서 100 출금</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="op" text-anchor="middle">R1(A)</text>
+  <text x="220" y="127" class="val" text-anchor="middle">1000 읽음</text>
+  <rect x="302" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="108" class="op" text-anchor="middle">W1(A)</text>
+  <text x="360" y="127" class="val" text-anchor="middle">900 씀</text>
+
+  <!-- T2 -->
+  <text x="30" y="168" class="lane">T2</text>
+  <text x="30" y="186" class="sub">A에서 50 출금</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="442" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="168" class="op" text-anchor="middle">R2(A)</text>
+  <text x="500" y="187" class="val" text-anchor="middle">900 읽음</text>
+  <rect x="582" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="168" class="op" text-anchor="middle">W2(A)</text>
+  <text x="640" y="187" class="val" text-anchor="middle">850 씀</text>
+
+  <!-- DB -->
+  <text x="30" y="235" class="db">DB의 A</text>
+  <rect x="180" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="220" y="235" class="db" text-anchor="middle">1000</text>
+  <rect x="320" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="360" y="235" class="db" text-anchor="middle">900</text>
+  <rect x="460" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="500" y="235" class="db" text-anchor="middle">900</text>
+  <rect x="600" y="214" width="80" height="32" rx="6" class="ok"/>
+  <text x="640" y="235" class="okt" text-anchor="middle">850</text>
+
+  <rect x="150" y="264" width="230" height="30" rx="15" class="ok"/>
+  <text x="265" y="284" class="okt" text-anchor="middle">결과 A = 850 (정상)</text>
+  <text x="396" y="284" class="sub">1000 − 100 − 50 = 850, 기대한 값과 같습니다</text>
+
+  <!-- ===== 스케줄 ② ===== -->
+  <rect x="10" y="326" width="740" height="324" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="358" class="h">스케줄 ② — 섞여서 실행</text>
+  <text x="730" y="358" class="code" text-anchor="end">R1(A) R2(A) W1(A) W2(A)</text>
+
+  <text x="220" y="384" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="384" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="384" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="384" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="392" x2="722" y2="392" class="axis" marker-end="url(#ar)"/>
+
+  <!-- T1 -->
+  <text x="30" y="424" class="lane">T1</text>
+  <text x="30" y="442" class="sub">A에서 100 출금</text>
+  <rect x="150" y="402" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="404" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="424" class="op" text-anchor="middle">R1(A)</text>
+  <text x="220" y="443" class="val" text-anchor="middle">1000 읽음</text>
+  <rect x="442" y="404" width="116" height="48" rx="8" class="bad"/>
+  <text x="500" y="424" class="op" text-anchor="middle">W1(A)</text>
+  <text x="500" y="443" class="val" text-anchor="middle">900 씀</text>
+
+  <!-- T2 -->
+  <text x="30" y="484" class="lane">T2</text>
+  <text x="30" y="502" class="sub">A에서 50 출금</text>
+  <rect x="150" y="462" width="585" height="52" rx="6" class="track"/>
+  <rect x="302" y="464" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="484" class="op" text-anchor="middle">R2(A)</text>
+  <text x="360" y="503" class="val" text-anchor="middle">1000 읽음</text>
+  <rect x="582" y="464" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="484" class="op" text-anchor="middle">W2(A)</text>
+  <text x="640" y="503" class="val" text-anchor="middle">950 씀</text>
+
+  <!-- DB -->
+  <text x="30" y="551" class="db">DB의 A</text>
+  <rect x="180" y="530" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="220" y="551" class="db" text-anchor="middle">1000</text>
+  <rect x="320" y="530" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="360" y="551" class="db" text-anchor="middle">1000</text>
+  <rect x="460" y="530" width="80" height="32" rx="6" class="bad"/>
+  <text x="500" y="551" class="badt" text-anchor="middle">900</text>
+  <line x1="480" y1="546" x2="520" y2="546" stroke="#dc2626" stroke-width="2"/>
+  <line x1="544" y1="546" x2="594" y2="546" stroke="#dc2626" stroke-width="1.8" marker-end="url(#arr)"/>
+  <rect x="600" y="530" width="80" height="32" rx="6" class="bad"/>
+  <text x="640" y="551" class="badt" text-anchor="middle">950</text>
+
+  <text x="570" y="584" class="note" text-anchor="middle">T1이 쓴 900이 T2의 950에 덮어써져 사라집니다</text>
+
+  <rect x="150" y="604" width="400" height="30" rx="15" class="bad"/>
+  <text x="350" y="624" class="badt" text-anchor="middle">결과 A = 950 (850이어야 함) → Lost Update</text>
+</svg>

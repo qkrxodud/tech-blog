@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 490" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>대기 시간이 짧을 때와 길 때 스핀락과 뮤텍스의 비용 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .lane { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .sw { fill: #f3f4f6; stroke: #6b7280; stroke-width: 1.4; }
+    .swt { font-size: 12.5px; font-weight: 700; fill: #374151; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 12.5px; font-weight: 700; fill: #b91c1c; }
+    .rel { stroke: #6b7280; stroke-width: 1.2; stroke-dasharray: 3 3; }
+    .relt { font-size: 12px; font-weight: 700; fill: #6b7280; }
+  </style>
+  <rect width="760" height="490" fill="#ffffff"/>
+
+  <!-- ===== 짧을 때 ===== -->
+  <rect x="10" y="10" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">대기가 짧을 때</text>
+  <text x="152" y="42" class="sub">락이 몇 마이크로초 만에 풀림</text>
+
+  <line x1="230" y1="76" x2="230" y2="176" class="rel"/>
+  <text x="230" y="70" class="relt" text-anchor="middle">락 풀림</text>
+
+  <text x="30" y="107" class="lane">스핀락</text>
+  <rect x="170" y="82" width="60" height="36" rx="6" class="bad"/>
+  <text x="200" y="105" class="badt" text-anchor="middle">스핀</text>
+  <rect x="234" y="82" width="66" height="36" rx="6" class="ok"/>
+  <text x="267" y="105" class="okt" text-anchor="middle">진입</text>
+  <text x="312" y="105" class="sub">거의 바로 들어감</text>
+
+  <text x="30" y="155" class="lane">뮤텍스</text>
+  <rect x="170" y="130" width="60" height="36" rx="6" class="wait"/>
+  <text x="200" y="153" class="waitt" text-anchor="middle">sleep</text>
+  <rect x="230" y="130" width="80" height="36" rx="6" class="sw"/>
+  <text x="270" y="153" class="swt" text-anchor="middle">전환 비용</text>
+  <rect x="314" y="130" width="66" height="36" rx="6" class="ok"/>
+  <text x="347" y="153" class="okt" text-anchor="middle">진입</text>
+  <text x="392" y="153" class="sub">앉았다 일어나는 시간이 기다린 시간보다 김</text>
+
+  <rect x="170" y="184" width="430" height="28" rx="14" class="ok"/>
+  <text x="385" y="203" class="okt" text-anchor="middle">스핀락이 유리 — 잠깐이면 그냥 서 있는 게 쌉니다</text>
+
+  <!-- ===== 길 때 ===== -->
+  <rect x="10" y="240" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="272" class="h">대기가 길 때</text>
+  <text x="138" y="272" class="sub">락을 쥔 쪽이 오래 걸림</text>
+
+  <line x1="560" y1="306" x2="560" y2="406" class="rel"/>
+  <text x="560" y="300" class="relt" text-anchor="middle">락 풀림</text>
+
+  <text x="30" y="337" class="lane">스핀락</text>
+  <rect x="170" y="312" width="390" height="36" rx="6" class="bad"/>
+  <text x="365" y="335" class="badt" text-anchor="middle">스핀 — 그동안 CPU를 계속 낭비</text>
+  <rect x="564" y="312" width="66" height="36" rx="6" class="ok"/>
+  <text x="597" y="335" class="okt" text-anchor="middle">진입</text>
+
+  <text x="30" y="385" class="lane">뮤텍스</text>
+  <rect x="170" y="360" width="390" height="36" rx="6" class="wait"/>
+  <text x="365" y="383" class="waitt" text-anchor="middle">sleep — 그동안 CPU는 다른 스레드가 씀</text>
+  <rect x="560" y="360" width="80" height="36" rx="6" class="sw"/>
+  <text x="600" y="383" class="swt" text-anchor="middle">전환 비용</text>
+  <rect x="644" y="360" width="66" height="36" rx="6" class="ok"/>
+  <text x="677" y="383" class="okt" text-anchor="middle">진입</text>
+
+  <rect x="170" y="414" width="430" height="28" rx="14" class="ok"/>
+  <text x="385" y="433" class="okt" text-anchor="middle">뮤텍스가 유리 — 전환 비용보다 아낀 CPU가 훨씬 큽니다</text>
+
+  <text x="30" y="478" class="sub">전환 비용은 대기 시간과 상관없이 거의 일정하고, 스핀 비용은 기다린 만큼 늘어납니다.</text>
+</svg>

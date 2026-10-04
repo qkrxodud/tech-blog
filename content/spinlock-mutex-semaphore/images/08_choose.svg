@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>스핀락, 뮤텍스, 세마포 중 무엇을 고를지 정하는 흐름도</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .dia { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 15px; font-weight: 700; fill: #15803d; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">무엇을 고를까</text>
+
+  <!-- 시작 -->
+  <rect x="30" y="70" width="150" height="56" rx="10" class="box"/>
+  <text x="105" y="94" class="t" text-anchor="middle">여러 스레드가</text>
+  <text x="105" y="113" class="t" text-anchor="middle">같은 자원을 건드림</text>
+  <line x1="182" y1="98" x2="196" y2="98" class="flow" marker-end="url(#ag)"/>
+
+  <!-- 질문 1 -->
+  <path d="M200,98 L290,56 L380,98 L290,140 Z" class="dia"/>
+  <text x="290" y="96" class="t" text-anchor="middle">한 번에</text>
+  <text x="290" y="114" class="t" text-anchor="middle">한 명만?</text>
+
+  <line x1="382" y1="98" x2="410" y2="98" class="flow" marker-end="url(#ag)"/>
+  <text x="396" y="88" class="lbl" text-anchor="middle">예</text>
+
+  <!-- 질문 2 -->
+  <path d="M414,98 L504,56 L594,98 L504,140 Z" class="dia"/>
+  <text x="504" y="96" class="t" text-anchor="middle">대기가</text>
+  <text x="504" y="114" class="t" text-anchor="middle">아주 짧나?</text>
+
+  <line x1="596" y1="98" x2="640" y2="98" class="flow" marker-end="url(#ag)"/>
+  <text x="617" y="88" class="lbl" text-anchor="middle">아니오</text>
+  <rect x="644" y="70" width="96" height="56" rx="10" class="ok"/>
+  <text x="692" y="95" class="okt" text-anchor="middle">뮤텍스</text>
+  <text x="692" y="114" class="s" text-anchor="middle">대부분 여기</text>
+
+  <line x1="504" y1="142" x2="504" y2="174" class="flow" marker-end="url(#ag)"/>
+  <text x="514" y="164" class="lbl">예</text>
+  <rect x="414" y="178" width="180" height="56" rx="10" class="ok"/>
+  <text x="504" y="203" class="okt" text-anchor="middle">스핀락</text>
+  <text x="504" y="222" class="s" text-anchor="middle">몇 μs, 멀티코어일 때</text>
+
+  <!-- 아니오 → 조율 -->
+  <line x1="290" y1="142" x2="290" y2="250" class="flow" marker-end="url(#ag)"/>
+  <text x="300" y="200" class="lbl">아니오</text>
+  <rect x="200" y="254" width="180" height="56" rx="10" class="box"/>
+  <text x="290" y="279" class="t" text-anchor="middle">순서나 개수를</text>
+  <text x="290" y="298" class="t" text-anchor="middle">조율해야 함</text>
+  <line x1="382" y1="282" x2="410" y2="282" class="flow" marker-end="url(#ag)"/>
+  <rect x="414" y="254" width="326" height="56" rx="10" class="ok"/>
+  <text x="577" y="279" class="okt" text-anchor="middle">세마포</text>
+  <text x="577" y="298" class="s" text-anchor="middle">N장: 동시 접근 수 제한 · 0장: 순서 신호</text>
+
+  <text x="30" y="346" class="note">세마포 1장으로 뮤텍스를 흉내 내는 건 권장하지 않습니다. 소유권이 없어 엉뚱한 스레드가 풀 수 있습니다.</text>
+</svg>
