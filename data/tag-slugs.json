@@ -86,5 +86,6 @@
   "백로그": "backlog",
   "오케스트레이션": "orchestration",
   "인덱스": "index",
-  "격리수준": "isolation-level"
+  "격리수준": "isolation-level",
+  "데드락": "deadlock"
 }

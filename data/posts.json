@@ -1383,5 +1383,10 @@
     "slug": "spinlock-mutex-semaphore",
     "category": "java-jvm",
     "date": "2026-10-04"
+  },
+  {
+    "slug": "deadlock",
+    "category": "java-jvm",
+    "date": "2026-10-05"
   }
 ]

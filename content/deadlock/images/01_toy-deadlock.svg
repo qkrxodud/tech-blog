@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>철수는 로봇을, 영희는 자동차를 먼저 쥔 뒤 서로 상대가 쥔 장난감을 요청해 둘 다 대기에 빠지는 순환 대기</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .waitl { stroke: #dc2626; stroke-width: 2; stroke-dasharray: 6 4; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="300" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="280" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">철수와 영희 — 서로 상대가 쥔 장난감을 기다림</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">철수</text>
+  <text x="30" y="126" class="sub">로봇 → 자동차</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="156" y="88" width="128" height="48" rx="8" class="hold"/>
+  <text x="220" y="108" class="t" text-anchor="middle">로봇 쥠</text>
+  <text x="220" y="127" class="val" text-anchor="middle">획득</text>
+  <rect x="436" y="88" width="128" height="48" rx="8" class="bad"/>
+  <text x="500" y="108" class="badt" text-anchor="middle">자동차 요청</text>
+  <text x="500" y="127" class="val" text-anchor="middle">영희가 쥠 → 대기</text>
+  <rect x="576" y="96" width="128" height="32" rx="6" class="wait"/>
+  <text x="640" y="117" class="waitt" text-anchor="middle">계속 대기</text>
+  <text x="30" y="168" class="lane">영희</text>
+  <text x="30" y="186" class="sub">자동차 → 로봇</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="296" y="148" width="128" height="48" rx="8" class="hold"/>
+  <text x="360" y="168" class="t" text-anchor="middle">자동차 쥠</text>
+  <text x="360" y="187" class="val" text-anchor="middle">획득</text>
+  <rect x="576" y="148" width="128" height="48" rx="8" class="bad"/>
+  <text x="640" y="168" class="badt" text-anchor="middle">로봇 요청</text>
+  <text x="640" y="187" class="val" text-anchor="middle">철수가 쥠 → 대기</text>
+  <rect x="436" y="156" width="128" height="32" rx="6" class="wait"/>
+  <text x="500" y="177" class="waitt" text-anchor="middle">자동차 쥔 채</text>
+  <rect x="150" y="214" width="585" height="32" rx="15" class="bad"/>
+  <text x="442.5" y="235" class="badt" text-anchor="middle">순환 대기 — 철수 → 영희 → 철수, 둘 다 끝나지 않음</text>
+  <text x="150" y="272" class="foot">각자는 정상적으로 요청했지만, 두 요청이 엇갈린 조합 때문에 멈춥니다.</text>
+</svg>

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 402" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>InnoDB가 wait-for 그래프에서 T1과 T2의 사이클을 찾아 희생자를 롤백하고 ERROR 1213을 돌려주면, 애플리케이션이 @Retryable로 재시도하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .waitl { stroke: #dc2626; stroke-width: 2; stroke-dasharray: 6 4; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="402" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">wait-for 그래프 — 누가 누구를 기다리는지</text>
+  <rect x="120" y="70" width="120" height="52" rx="8" class="box"/>
+  <text x="180" y="90" class="t" text-anchor="middle">T1</text>
+  <text x="180" y="109" class="val" text-anchor="middle">행 1을 쥠</text>
+  <rect x="520" y="70" width="120" height="52" rx="8" class="box"/>
+  <text x="580" y="90" class="t" text-anchor="middle">T2</text>
+  <text x="580" y="109" class="val" text-anchor="middle">행 2를 쥠</text>
+  <line x1="242" y1="86" x2="516" y2="86" class="waitl" marker-end="url(#arr)"/>
+  <text x="380" y="78" class="note" text-anchor="middle">T1은 T2가 쥔 행 2를 기다림</text>
+  <line x1="518" y1="106" x2="244" y2="106" class="waitl" marker-end="url(#arr)"/>
+  <text x="380" y="124" class="note" text-anchor="middle">T2는 T1이 쥔 행 1을 기다림</text>
+  <rect x="180" y="136" width="400" height="32" rx="15" class="bad"/>
+  <text x="380" y="157" class="badt" text-anchor="middle">사이클 발견 — 락 대기가 생길 때마다 확인</text>
+  <rect x="10" y="196" width="740" height="196" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="228" class="h">감지와 복구 — DB가 감지하고, 앱이 재시도</text>
+  <text x="197" y="256" class="lbl" text-anchor="middle">DB (InnoDB)</text>
+  <line x1="30" y1="264" x2="364" y2="264" class="flow"/>
+  <text x="557" y="256" class="lbl" text-anchor="middle">애플리케이션</text>
+  <line x1="390" y1="264" x2="724" y2="264" class="flow"/>
+  <rect x="28" y="276" width="158" height="60" rx="10" class="box"/>
+  <text x="107" y="301" class="t" text-anchor="middle">희생자 선택</text>
+  <text x="107" y="321" class="s" text-anchor="middle">비용이 작은 트랜잭션</text>
+  <rect x="208" y="276" width="158" height="60" rx="10" class="bad"/>
+  <text x="287" y="301" class="badt" text-anchor="middle">롤백</text>
+  <text x="287" y="321" class="s" text-anchor="middle">ERROR 1213 반환</text>
+  <rect x="390" y="276" width="158" height="60" rx="10" class="box"/>
+  <text x="469" y="301" class="op" text-anchor="middle">@Retryable</text>
+  <text x="469" y="321" class="s" text-anchor="middle">1213이면 다시 실행</text>
+  <rect x="570" y="276" width="158" height="60" rx="10" class="ok"/>
+  <text x="649" y="301" class="okt" text-anchor="middle">재시도 성공</text>
+  <text x="649" y="321" class="s" text-anchor="middle">락이 풀린 뒤 커밋</text>
+  <line x1="187" y1="306" x2="205" y2="306" class="flow" marker-end="url(#ag)"/>
+  <line x1="367" y1="306" x2="385" y2="306" class="flow" marker-end="url(#ag)"/>
+  <line x1="549" y1="306" x2="567" y2="306" class="flow" marker-end="url(#ag)"/>
+  <text x="30" y="368" class="foot">롤백된 트랜잭션의 락이 풀리면 남은 트랜잭션은 그대로 진행합니다. 롤백된 작업을 다시 실행하는 것은 앱의 몫입니다.</text>
+</svg>

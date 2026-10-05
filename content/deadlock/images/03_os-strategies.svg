@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>예방은 요청 전 규칙으로, 회피는 자원을 줄 때마다 계산으로, 감지 및 복구는 생긴 뒤 그래프로 판단하고, 무시는 판단하지 않는 네 전략과 대표 사례</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .waitl { stroke: #dc2626; stroke-width: 2; stroke-dasharray: 6 4; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="430" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="410" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">운영체제의 네 전략 — 언제 판단하는가</text>
+  <text x="36" y="72" class="colh">전략</text>
+  <text x="186" y="72" class="colh">언제 판단하나</text>
+  <text x="356" y="72" class="colh">방법</text>
+  <text x="566" y="72" class="colh">대표 사례</text>
+  <rect x="20" y="84" width="720" height="66" rx="10" class="box"/>
+  <text x="36" y="122" class="t">예방</text>
+  <line x1="176" y1="96" x2="176" y2="138" stroke="#e5e7eb"/>
+  <line x1="346" y1="96" x2="346" y2="138" stroke="#e5e7eb"/>
+  <line x1="556" y1="96" x2="556" y2="138" stroke="#e5e7eb"/>
+  <text x="186" y="112" class="val">요청 전</text>
+  <text x="186" y="132" class="s">규칙으로 막음</text>
+  <text x="356" y="112" class="val">한 번에 전부 받기</text>
+  <text x="356" y="132" class="val">작은 번호부터 받기</text>
+  <text x="566" y="112" class="t">락 순서 정렬</text>
+  <text x="566" y="132" class="s">tryLock 타임아웃</text>
+  <rect x="20" y="160" width="720" height="66" rx="10" class="box"/>
+  <text x="36" y="198" class="t">회피</text>
+  <line x1="176" y1="172" x2="176" y2="214" stroke="#e5e7eb"/>
+  <line x1="346" y1="172" x2="346" y2="214" stroke="#e5e7eb"/>
+  <line x1="556" y1="172" x2="556" y2="214" stroke="#e5e7eb"/>
+  <text x="186" y="188" class="val">자원을 줄 때마다</text>
+  <text x="186" y="208" class="s">위험한지 계산</text>
+  <text x="356" y="188" class="val">끝날 수 있는 순서가</text>
+  <text x="356" y="208" class="val">남는지 확인</text>
+  <text x="566" y="188" class="t">은행원 알고리즘</text>
+  <text x="566" y="208" class="s">범용 시스템엔 거의 못 씀</text>
+  <rect x="20" y="236" width="720" height="66" rx="10" class="box"/>
+  <text x="36" y="274" class="t">감지 및 복구</text>
+  <line x1="176" y1="248" x2="176" y2="290" stroke="#e5e7eb"/>
+  <line x1="346" y1="248" x2="346" y2="290" stroke="#e5e7eb"/>
+  <line x1="556" y1="248" x2="556" y2="290" stroke="#e5e7eb"/>
+  <text x="186" y="264" class="val">데드락이 생긴 뒤</text>
+  <text x="186" y="284" class="s">주기적으로 확인</text>
+  <text x="356" y="264" class="val">wait-for 그래프 사이클</text>
+  <text x="356" y="284" class="val">→ 하나를 롤백</text>
+  <text x="566" y="264" class="t">InnoDB</text>
+  <text x="566" y="284" class="s">ERROR 1213</text>
+  <rect x="20" y="312" width="720" height="66" rx="10" class="box"/>
+  <text x="36" y="350" class="t">무시</text>
+  <line x1="176" y1="324" x2="176" y2="366" stroke="#e5e7eb"/>
+  <line x1="346" y1="324" x2="346" y2="366" stroke="#e5e7eb"/>
+  <line x1="556" y1="324" x2="556" y2="366" stroke="#e5e7eb"/>
+  <text x="186" y="340" class="val">판단하지 않음</text>
+  <text x="186" y="360" class="s">생기면 재시작</text>
+  <text x="356" y="340" class="val">감지하지 않고 둠</text>
+  <text x="356" y="360" class="val">사후 진단만 제공</text>
+  <text x="566" y="340" class="t">Linux, JVM</text>
+  <text x="566" y="360" class="s">jstack으로 사후 진단</text>
+  <text x="30" y="406" class="foot">위로 갈수록 데드락이 생기기 전에 판단하고, 아래로 갈수록 판단을 미룹니다.</text>
+</svg>
