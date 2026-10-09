@@ -656,7 +656,7 @@ function homeTabs(rel, activeSlug) {
     tabs.push(`<a class="tab${activeSlug === c ? ' active' : ''}" href="${rel}category/${c}/">${esc(config.categories[c].name)}</a>`);
   }
   const rest = Object.keys(config.categories).length - config.homeTabs.length;
-  tabs.push(`<button class="tab tab-all" id="panel-toggle">모든 주제 +${rest} <span id="panel-arrow">▾</span></button>`);
+  tabs.push(`<button class="tab tab-all" id="panel-toggle" aria-expanded="true">모든 주제 +${rest} <span id="panel-arrow">▴</span></button>`);
   return `<div class="tabs">${tabs.join('\n')}</div>`;
 }
 
@@ -668,8 +668,9 @@ function topicPanel(rel) {
     }).join('\n');
     return `<div class="panel-col"><div class="panel-title">${esc(g.name)}</div><div class="panel-items">${items}</div></div>`;
   }).join('\n');
-  return `<div class="topic-panel" id="topic-panel" hidden><div class="panel-grid">${cols}</div></div>
-<script>document.addEventListener('DOMContentLoaded',function(){var t=document.getElementById('panel-toggle'),p=document.getElementById('topic-panel'),a=document.getElementById('panel-arrow');if(t)t.addEventListener('click',function(){p.hidden=!p.hidden;a.textContent=p.hidden?'▾':'▴';});});</script>`;
+  // 처음 온 사람이 어떤 주제가 있는지 바로 볼 수 있게 펼친 채로 둔다.
+  return `<div class="topic-panel" id="topic-panel"><div class="panel-grid">${cols}</div></div>
+<script>document.addEventListener('DOMContentLoaded',function(){var t=document.getElementById('panel-toggle'),p=document.getElementById('topic-panel'),a=document.getElementById('panel-arrow');if(t)t.addEventListener('click',function(){p.hidden=!p.hidden;a.textContent=p.hidden?'▾':'▴';t.setAttribute('aria-expanded',String(!p.hidden));});});</script>`;
 }
 
 // 최근 한 달 동안 많이 읽힌 글. 214편 가운데 처음 온 사람에게 무엇부터
@@ -724,8 +725,16 @@ const HOME_LIMIT = 24;
 function buildHome() {
   const rel = './';
   // 연재는 첫 편을 만났을 때 한 줄로 접고, 나머지 편은 건너뛴다.
+  // homePinnedSeries에 적은 연재는 날짜와 상관없이 목록 맨 앞에 둔다.
+  // 지금 이어 쓰고 있는 연재를 먼저 보여 주고 싶은데, 옛 글이라 날짜가 없어
+  // 정렬만으로는 뒤로 밀리기 때문이다.
   const folded = new Set();
   const items = [];
+  for (const name of config.homePinnedSeries || []) {
+    if (!seriesMap[name] || folded.has(name)) continue;
+    folded.add(name);
+    items.push(seriesRow(name, rel));
+  }
   for (const p of posts) {
     if (p.series) {
       if (folded.has(p.series)) continue;
