@@ -282,6 +282,9 @@ a { color: var(--ink); text-decoration: none; }
 .ser-card-when { font: 400 11px var(--mono); color: var(--faint); margin-top: auto; padding-top: 4px; }
 
 /* 연재 한 종 */
+.ser-intro { font-size: 15px; color: var(--body); line-height: 1.8; margin: 18px 0 4px; max-width: 760px; }
+.ser-intro p { margin: 0 0 12px; }
+.ser-intro a { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
 .ser-actions { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: baseline; margin-top: 14px; }
 .ser-start { font: 700 13px var(--mono); color: var(--accent-strong); border: 1px solid var(--accent); border-radius: 7px; padding: 7px 13px; }
 .ser-start:hover { background: var(--accent); color: var(--card); }

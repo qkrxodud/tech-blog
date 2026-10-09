@@ -800,6 +800,14 @@ function seriesBox(seriesName, rel, currentSlug, compact) {
 // ---------- 연재 ----------
 // 연재에 속한 글이 전체의 3분의 2라서, 연재마다 제 주소를 준다. 카테고리
 // 페이지는 여러 연재와 단편이 섞여 있어 "1편부터 읽기"의 입구가 되지 못한다.
+// 연재를 시작한 계기처럼 어느 한 편에 넣기 애매한 글은 data/series-intro/<연재 주소>.md에
+// 적어 두고 연재 페이지 머리에 싣는다. 파일이 없으면 이 칸은 나오지 않는다.
+function seriesIntro(name) {
+  const f = path.join(ROOT, 'data', 'series-intro', `${seriesSlug(name)}.md`);
+  if (!fs.existsSync(f)) return '';
+  return `<div class="ser-intro">${marked.parse(fs.readFileSync(f, 'utf8'))}</div>`;
+}
+
 function buildSeries() {
   for (const [name, list] of seriesEntries) {
     const rel = '../../';
@@ -817,6 +825,7 @@ function buildSeries() {
   <div class="crumbs"><a href="${rel}">홈</a> <span class="sep">/</span> <a href="${rel}series/">연재</a></div>
   <h1 class="cat-title">${esc(name)} <span class="cat-count">${list.length} posts</span></h1>
   <p class="cat-desc">${esc(info.span ? `${info.span} · ` : '')}${esc(info.catName)} · 다 읽는 데 약 ${info.minutes}분</p>
+  ${seriesIntro(name)}
   <div class="ser-actions"><a class="ser-start" href="${rel}${list[0].url}">1편부터 읽기 →</a><a class="ser-cat" href="${rel}category/${info.category}/">${esc(info.catName)} 주제의 다른 글</a></div>
 </div>
 <div class="ser-list">${items}</div>`;
