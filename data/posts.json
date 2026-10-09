@@ -1388,5 +1388,10 @@
     "slug": "deadlock",
     "category": "java-jvm",
     "date": "2026-10-05"
+  },
+  {
+    "slug": "mysql-datetime-timestamp",
+    "category": "database",
+    "date": "2026-10-09"
   }
 ]

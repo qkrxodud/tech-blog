@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>DATETIME과 TIMESTAMP의 저장 범위를 비교하고, 9999-12-31을 넣으면 DATETIME은 저장되고 TIMESTAMP는 범위를 벗어나 저장되지 않는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">저장 범위 — TIMESTAMP는 2038년까지</text>
+  <text x="170" y="68" class="step" text-anchor="middle">1000년</text>
+  <text x="330" y="68" class="step" text-anchor="middle">1970년</text>
+  <text x="470" y="68" class="step" text-anchor="middle">2038년</text>
+  <text x="692" y="68" class="step" text-anchor="middle">9999년</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <line x1="170" y1="72" x2="170" y2="80" class="axis"/>
+  <line x1="330" y1="72" x2="330" y2="80" class="axis"/>
+  <line x1="470" y1="72" x2="470" y2="80" class="axis"/>
+  <line x1="692" y1="72" x2="692" y2="80" class="axis"/>
+  <text x="30" y="112" class="lane">DATETIME</text>
+  <text x="30" y="130" class="sub">5바이트</text>
+  <rect x="150" y="90" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="102" width="522" height="28" rx="6" class="ok"/>
+  <text x="431" y="121" class="val" text-anchor="middle">1000-01-01 00:00:00 ~ 9999-12-31 23:59:59</text>
+  <text x="30" y="180" class="lane">TIMESTAMP</text>
+  <text x="30" y="198" class="sub">4바이트</text>
+  <rect x="150" y="158" width="585" height="52" rx="6" class="track"/>
+  <rect x="330" y="170" width="140" height="28" rx="6" class="hold"/>
+  <text x="400" y="189" class="val" text-anchor="middle">UTC</text>
+  <rect x="652" y="168" width="80" height="32" rx="6" class="bad"/>
+  <text x="692" y="189" class="badt" text-anchor="middle">범위 밖</text>
+  <text x="400" y="230" class="val" text-anchor="middle">1970-01-01 00:00:01 UTC ~ 2038-01-19 03:14:07 UTC</text>
+  <text x="730" y="230" class="note" text-anchor="end">'9999-12-31' (무기한)</text>
+  <rect x="30" y="252" width="330" height="30" rx="15" class="ok"/>
+  <text x="195" y="272" class="okt" text-anchor="middle">DATETIME에 '9999-12-31' — 저장됨</text>
+  <rect x="380" y="252" width="350" height="30" rx="15" class="bad"/>
+  <text x="555" y="272" class="badt" text-anchor="middle">TIMESTAMP에 '9999-12-31' — 저장 안 됨</text>
+  <text x="30" y="314" class="sub">축은 실제 비율이 아니라 구간만 나타냅니다. 구독 만료일·계약 종료일처럼 먼 미래 값도 같습니다</text>
+
+</svg>

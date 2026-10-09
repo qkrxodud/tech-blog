@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 424" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>DATETIME은 넣은 값을 그대로 저장하고, TIMESTAMP는 세션 타임존 값을 UTC 초로 바꿔 저장했다가 꺼낼 때 세션 타임존으로 바꾸는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="424" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="190" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">DATETIME — 넣은 값을 그대로 저장</text>
+  <text x="730" y="42" class="code" text-anchor="end">5바이트</text>
+  <text x="245" y="68" class="step" text-anchor="middle">넣는 값</text>
+  <text x="450" y="68" class="step" text-anchor="middle">저장되는 값</text>
+  <text x="655" y="68" class="step" text-anchor="middle">꺼낸 값</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">값</text>
+  <text x="30" y="128" class="sub">세션과 무관</text>
+  <rect x="150" y="88" width="585" height="52" rx="6" class="track"/>
+  <rect x="165" y="90" width="160" height="48" rx="8" class="box"/>
+  <text x="245" y="110" class="op" text-anchor="middle">14:00:00</text>
+  <text x="245" y="129" class="val" text-anchor="middle">2026-10-09</text>
+  <rect x="370" y="90" width="160" height="48" rx="8" class="hold"/>
+  <text x="450" y="110" class="op" text-anchor="middle">14:00:00</text>
+  <text x="450" y="129" class="val" text-anchor="middle">연·월·일·시·분·초 압축</text>
+  <rect x="575" y="90" width="160" height="48" rx="8" class="ok"/>
+  <text x="655" y="110" class="okc" text-anchor="middle">14:00:00</text>
+  <text x="655" y="129" class="val" text-anchor="middle">넣은 값 그대로</text>
+  <line x1="328" y1="114" x2="366" y2="114" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="533" y1="114" x2="571" y2="114" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="150" y="176" class="sub">타임존 개념이 없어서 세션 타임존이 무엇이든 넣은 값이 그대로 나옵니다</text>
+  <rect x="10" y="216" width="740" height="196" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="248" class="h">TIMESTAMP — UTC 초로 바꿔 저장</text>
+  <text x="730" y="248" class="code" text-anchor="end">4바이트</text>
+  <text x="222" y="274" class="step" text-anchor="middle">넣는 값</text>
+  <text x="366" y="274" class="step" text-anchor="middle">넣을 때 변환</text>
+  <text x="510" y="274" class="step" text-anchor="middle">저장되는 값</text>
+  <text x="654" y="274" class="step" text-anchor="middle">꺼낼 때 변환</text>
+  <line x1="160" y1="282" x2="722" y2="282" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="316" class="lane">값</text>
+  <text x="30" y="334" class="sub">세션 +09:00</text>
+  <rect x="150" y="294" width="585" height="52" rx="6" class="track"/>
+  <rect x="160" y="296" width="124" height="48" rx="8" class="box"/>
+  <text x="222" y="316" class="op" text-anchor="middle">14:00:00</text>
+  <text x="222" y="335" class="val" text-anchor="middle">세션 +09:00 기준</text>
+  <rect x="304" y="296" width="124" height="48" rx="8" class="hold"/>
+  <text x="366" y="316" class="op" text-anchor="middle">05:00:00</text>
+  <text x="366" y="335" class="val" text-anchor="middle">세션 → UTC</text>
+  <rect x="448" y="296" width="124" height="48" rx="8" class="hold"/>
+  <text x="510" y="316" class="op" text-anchor="middle">1791522000</text>
+  <text x="510" y="335" class="val" text-anchor="middle">1970년부터 초 수</text>
+  <rect x="592" y="296" width="124" height="48" rx="8" class="ok"/>
+  <text x="654" y="316" class="okc" text-anchor="middle">14:00:00</text>
+  <text x="654" y="335" class="val" text-anchor="middle">UTC → 세션</text>
+  <line x1="287" y1="320" x2="300" y2="320" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="431" y1="320" x2="444" y2="320" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="575" y1="320" x2="588" y2="320" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="150" y="382" class="sub">같은 초를 +00:00 세션에서 꺼내면 05:00:00으로 보입니다</text>
+  <text x="150" y="400" class="sub">넣을 때와 꺼낼 때 두 번 타임존 변환을 거칩니다</text>
+
+</svg>

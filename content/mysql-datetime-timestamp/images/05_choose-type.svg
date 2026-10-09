@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>2038년 이후 값을 넣는지, 여러 타임존 사용자에게 현지 시각으로 보여 줘야 하는지에 따라 DATETIME 또는 DATETIME에 UTC로 저장하고 애플리케이션에서 변환하는 방식을 고르는 흐름도</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="450" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">어떤 타입을 고를까 — 기본은 DATETIME</text>
+  <rect x="40" y="70" width="400" height="60" rx="10" class="box"/>
+  <text x="240" y="96" class="lane" style="font-size:15px" text-anchor="middle">2038년 이후 값을 넣는가?</text>
+  <text x="240" y="116" class="sub" text-anchor="middle">구독 만료일, 9999-12-31 무기한 등</text>
+  <rect x="500" y="70" width="230" height="60" rx="10" class="ok"/>
+  <text x="615" y="96" class="okt" text-anchor="middle">DATETIME</text>
+  <text x="615" y="116" class="val" text-anchor="middle">TIMESTAMP 범위 밖</text>
+  <line x1="442" y1="100" x2="496" y2="100" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="469" y="92" class="gnote" text-anchor="middle">예</text>
+  <line x1="240" y1="132" x2="240" y2="184" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="254" y="162" class="sub">아니오</text>
+  <rect x="40" y="186" width="400" height="60" rx="10" class="box"/>
+  <text x="240" y="212" class="lane" style="font-size:15px" text-anchor="middle">여러 타임존 사용자에게 현지 시각으로?</text>
+  <text x="240" y="232" class="sub" text-anchor="middle">같은 순간을 각자의 시각으로 보여 줘야 하는가</text>
+  <rect x="500" y="186" width="230" height="60" rx="10" class="ok"/>
+  <text x="615" y="212" class="okt" text-anchor="middle">DATETIME</text>
+  <text x="615" y="232" class="val" text-anchor="middle">단일 타임존, 변환 필요 없음</text>
+  <line x1="442" y1="216" x2="496" y2="216" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="469" y="208" class="gnote" text-anchor="middle">아니오</text>
+  <line x1="240" y1="248" x2="240" y2="300" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="254" y="278" class="sub">예</text>
+  <rect x="40" y="302" width="400" height="64" rx="10" class="ok"/>
+  <text x="240" y="328" class="okt" text-anchor="middle">DATETIME에 UTC로 통일해서 저장</text>
+  <text x="240" y="348" class="val" text-anchor="middle">변환은 애플리케이션에서 (많은 팀의 선택)</text>
+  <rect x="500" y="302" width="230" height="64" rx="10" class="box"/>
+  <text x="615" y="328" class="db" text-anchor="middle">TIMESTAMP도 가능</text>
+  <text x="615" y="348" class="val" text-anchor="middle">세션·JDBC 타임존 고정 필요</text>
+  <line x1="442" y1="334" x2="496" y2="334" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="469" y="326" class="sub" text-anchor="middle">또는</text>
+  <text x="40" y="404" class="sub">DATETIME은 범위 제약이 없고, 세션 설정에 따라 값이 다르게 보이는 일이 없어서 예측 가능합니다</text>
+  <text x="40" y="424" class="sub">DB 세션 설정이라는 눈에 보이지 않는 값에 의존하지 않기 위해 변환은 애플리케이션에 둡니다</text>
+
+</svg>

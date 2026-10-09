@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>서버 이전 전에는 +09:00 세션에서 14:00으로 보이던 TIMESTAMP 값이, 이전 후 컨테이너 기본 UTC나 JDBC 설정 때문에 05:00으로 보이는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">서버 이전 — 같은 데이터가 9시간 밀려 보임</text>
+  <text x="730" y="42" class="code" text-anchor="end">TIMESTAMP</text>
+  <text x="245" y="68" class="step" text-anchor="middle">이전 서버에서 조회</text>
+  <text x="450" y="68" class="step" text-anchor="middle">서버 이전</text>
+  <text x="655" y="68" class="step" text-anchor="middle">새 서버에서 조회</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">이전 서버</text>
+  <text x="30" y="126" class="sub">세션 +09:00</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="165" y="88" width="160" height="48" rx="8" class="ok"/>
+  <text x="245" y="108" class="okc" text-anchor="middle">14:00:00</text>
+  <text x="245" y="127" class="val" text-anchor="middle">정상으로 보임</text>
+  <text x="30" y="168" class="lane">새 서버</text>
+  <text x="30" y="186" class="sub">세션 +00:00</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="370" y="148" width="160" height="48" rx="8" class="hold"/>
+  <text x="450" y="168" class="db" text-anchor="middle">UTC 기본값</text>
+  <text x="450" y="187" class="val" text-anchor="middle">컨테이너·JDBC 설정</text>
+  <rect x="575" y="148" width="160" height="48" rx="8" class="bad"/>
+  <text x="655" y="168" class="badc" text-anchor="middle">05:00:00</text>
+  <text x="655" y="187" class="val" text-anchor="middle">전부 05:00으로 보임</text>
+  <text x="30" y="240" class="db">DB의 ts</text>
+  <rect x="165" y="218" width="570" height="34" rx="6" class="dbbox"/>
+  <text x="450" y="240" class="db" text-anchor="middle">저장된 UTC 초는 그대로 (1791522000)</text>
+  <line x1="245" y1="216" x2="245" y2="140" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="655" y1="216" x2="655" y2="200" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="150" y="284" class="sub">데이터는 멀쩡하고 값을 꺼내는 세션의 타임존만 바뀌어서, 처음 겪으면 데이터가 깨진 것으로 오해하기 쉽습니다</text>
+
+</svg>
