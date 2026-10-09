@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 512" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>JVM 힙을 Young(Eden, Survivor)과 Old로 나누고, 새 객체가 Eden에 할당된 뒤 대부분은 Minor GC로 회수되고 살아남은 객체만 age가 늘어 Old로 승격되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="512" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="176" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">JVM 힙의 세대 — Young Generation과 Old Generation</text>
+  <rect x="30" y="58" width="700" height="116" rx="10" class="dbbox"/>
+  <text x="720" y="164" class="sub" text-anchor="end">Virtual address space</text>
+  <rect x="44" y="68" width="540" height="96" rx="8" class="box"/>
+  <text x="56" y="86" class="sub">Young Generation</text>
+  <text x="318" y="86" class="sub">Old Generation</text>
+  <rect x="56" y="96" width="140" height="56" rx="8" class="hold"/>
+  <text x="126.0" y="120.0" class="op" text-anchor="middle">Eden</text>
+  <text x="126.0" y="139.0" class="val" text-anchor="middle">새 객체 할당</text>
+  <rect x="204" y="96" width="48" height="56" rx="8" class="hold"/>
+  <text x="228.0" y="129.0" class="op" text-anchor="middle">S0</text>
+  <rect x="258" y="96" width="48" height="56" rx="8" class="hold"/>
+  <text x="282.0" y="129.0" class="op" text-anchor="middle">S1</text>
+  <rect x="318" y="96" width="254" height="56" rx="8" class="hold"/>
+  <text x="445.0" y="120.0" class="op" text-anchor="middle">Old</text>
+  <text x="445.0" y="139.0" class="val" text-anchor="middle">오래 살아남은 객체</text>
+  <text x="572" y="86" class="op" text-anchor="end">JVM Heap</text>
+  <text x="657" y="120" class="sub" text-anchor="middle">힙 밖의 영역</text>
+  <rect x="10" y="202" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="234" class="h">객체의 이동 — 대부분은 Young에서 회수</text>
+  <text x="730" y="234" class="code" text-anchor="end">weak generational hypothesis</text>
+  <text x="220" y="260" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="260" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="260" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="260" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="268" x2="722" y2="268" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="300" class="lane">살아남는</text>
+  <text x="30" y="318" class="sub">객체</text>
+  <rect x="150" y="276" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="278" width="116" height="48" rx="8" class="box"/>
+  <text x="220.0" y="298.0" class="op" text-anchor="middle">Eden 할당</text>
+  <text x="220.0" y="317.0" class="val" text-anchor="middle">new로 생성</text>
+  <rect x="302" y="278" width="116" height="48" rx="8" class="box"/>
+  <text x="360.0" y="298.0" class="op" text-anchor="middle">Minor GC</text>
+  <text x="360.0" y="317.0" class="val" text-anchor="middle">Young만 수집</text>
+  <rect x="442" y="278" width="116" height="48" rx="8" class="box"/>
+  <text x="500.0" y="298.0" class="op" text-anchor="middle">Survivor</text>
+  <text x="500.0" y="317.0" class="val" text-anchor="middle">살아남아 age+1</text>
+  <rect x="582" y="278" width="116" height="48" rx="8" class="hold"/>
+  <text x="640.0" y="298.0" class="op" text-anchor="middle">Old로 승격</text>
+  <text x="640.0" y="317.0" class="val" text-anchor="middle">age가 기준 넘음</text>
+  <line x1="278" y1="302" x2="300" y2="302" class="al" marker-end="url(#ar)"/>
+  <line x1="418" y1="302" x2="440" y2="302" class="al" marker-end="url(#ar)"/>
+  <line x1="558" y1="302" x2="580" y2="302" class="al" marker-end="url(#ar)"/>
+  <text x="30" y="370" class="lane">대부분의</text>
+  <text x="30" y="388" class="sub">객체</text>
+  <rect x="150" y="346" width="585" height="52" rx="6" class="track"/>
+  <rect x="302" y="348" width="116" height="48" rx="8" class="ok"/>
+  <text x="360.0" y="368.0" class="okt" text-anchor="middle">회수</text>
+  <text x="360.0" y="387.0" class="val" text-anchor="middle">금방 쓰지 않게 됨</text>
+  <line x1="360" y1="326" x2="360" y2="346" class="gl" marker-end="url(#agr)"/>
+  <text x="442" y="370" class="gnote">Young에는 죽은 객체가 많아</text>
+  <text x="442" y="388" class="gnote">Minor GC는 짧게 끝납니다</text>
+  <rect x="150" y="420" width="585" height="34" rx="8" class="bad"/>
+  <text x="442" y="442" class="badt" text-anchor="middle">Old가 가득 차면 Major GC — 힙 전체를 수집해 오래 걸립니다</text>
+  <text x="150" y="478" class="sub">Survivor 두 칸(S0·S1)을 오가며 살아남을 때마다 age가 1씩 늘어납니다 (aging)</text>
+</svg>

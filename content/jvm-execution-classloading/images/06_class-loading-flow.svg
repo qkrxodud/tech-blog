@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>JAR의 클래스가 ClassLoader로 읽혀 Metaspace의 Klass와 Heap의 Class 객체가 되는 순서와, OrderService가 new를 처음 만나는 순간 로딩되는 시점</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .link { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .brk { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .lblc { font-size: 12px; font-weight: 700; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="172" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">클래스 로딩 — JAR에서 RAM까지</text>
+  <rect x="30" y="66" width="128" height="58" rx="8" class="box"/>
+  <text x="94" y="91" class="t" text-anchor="middle">JAR 파일</text>
+  <text x="94" y="110" class="val" text-anchor="middle">디스크에 있음</text>
+  <rect x="173" y="66" width="128" height="58" rx="8" class="box"/>
+  <text x="237" y="91" class="t" text-anchor="middle">ClassLoader</text>
+  <text x="237" y="110" class="val" text-anchor="middle">필요한 시점에 읽기</text>
+  <rect x="316" y="66" width="128" height="58" rx="8" class="hold"/>
+  <text x="380" y="91" class="t" text-anchor="middle">Klass 생성</text>
+  <text x="380" y="110" class="val" text-anchor="middle">Metaspace (RAM)</text>
+  <rect x="459" y="66" width="128" height="58" rx="8" class="hold"/>
+  <text x="523" y="91" class="t" text-anchor="middle">Class 객체 생성</text>
+  <text x="523" y="110" class="val" text-anchor="middle">Java Heap (RAM)</text>
+  <rect x="602" y="66" width="128" height="58" rx="8" class="ok"/>
+  <text x="666" y="91" class="okt" text-anchor="middle">실행 가능</text>
+  <text x="666" y="110" class="val" text-anchor="middle">바이트코드 실행</text>
+  <line x1="160" y1="95" x2="171" y2="95" class="flow" marker-end="url(#ag)"/>
+  <line x1="303" y1="95" x2="314" y2="95" class="flow" marker-end="url(#ag)"/>
+  <line x1="446" y1="95" x2="457" y2="95" class="flow" marker-end="url(#ag)"/>
+  <line x1="589" y1="95" x2="600" y2="95" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="150" class="sub">읽은 뒤에는 바이트코드 검증 등 링크 단계를 거치고, 클래스가 처음 사용될 때 static 초기화가 실행됩니다.</text>
+  <rect x="10" y="198" width="740" height="262" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="230" class="h">로딩 시점 — 코드가 그 클래스를 처음 쓸 때</text>
+  <text x="225" y="256" class="step" text-anchor="middle">main() 시작</text>
+  <text x="365" y="256" class="step" text-anchor="middle">processOrder() 호출</text>
+  <text x="505" y="256" class="step" text-anchor="middle">new OrderService()</text>
+  <text x="645" y="256" class="step" text-anchor="middle">다음 호출</text>
+  <line x1="160" y1="264" x2="722" y2="264" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="296" class="lane">실행 코드</text>
+  <text x="30" y="314" class="sub">지금 도는 메서드</text>
+  <rect x="150" y="274" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="358" class="lane">Metaspace</text>
+  <text x="30" y="376" class="sub">로딩된 클래스</text>
+  <rect x="150" y="336" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="420" class="lane">JAR (디스크)</text>
+  <text x="30" y="438" class="sub">아직 안 읽음</text>
+  <rect x="150" y="398" width="585" height="52" rx="6" class="track"/>
+  <rect x="160" y="276" width="130" height="48" rx="8" class="box"/>
+  <text x="225" y="305" class="ops" text-anchor="middle">main()</text>
+  <rect x="300" y="276" width="130" height="48" rx="8" class="box"/>
+  <text x="365" y="305" class="ops" text-anchor="middle">processOrder()</text>
+  <rect x="440" y="276" width="130" height="48" rx="8" class="box"/>
+  <text x="505" y="296" class="ops" text-anchor="middle">new</text>
+  <text x="505" y="315" class="ops" text-anchor="middle">OrderService()</text>
+  <rect x="580" y="276" width="130" height="48" rx="8" class="box"/>
+  <text x="645" y="296" class="ops" text-anchor="middle">processOrder()</text>
+  <text x="645" y="315" class="val" text-anchor="middle">다시 호출</text>
+  <rect x="160" y="338" width="130" height="48" rx="8" class="dbbox"/>
+  <text x="225" y="367" class="ops" text-anchor="middle">Application</text>
+  <rect x="300" y="338" width="130" height="48" rx="8" class="dbbox"/>
+  <text x="365" y="367" class="ops" text-anchor="middle">Application</text>
+  <rect x="440" y="338" width="130" height="48" rx="8" class="ok"/>
+  <text x="505" y="358" class="okc" text-anchor="middle">OrderService</text>
+  <text x="505" y="377" class="val" text-anchor="middle">새로 로딩</text>
+  <rect x="580" y="338" width="130" height="48" rx="8" class="dbbox"/>
+  <text x="645" y="358" class="ops" text-anchor="middle">OrderService</text>
+  <text x="645" y="377" class="val" text-anchor="middle">이미 있음, 재사용</text>
+  <rect x="166" y="408" width="258" height="32" rx="6" class="wait"/>
+  <text x="295" y="429" class="waitt" text-anchor="middle">OrderService.class — 디스크에만 있음</text>
+  <line x1="505" y1="408" x2="505" y2="388" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="517" y="430" class="lbl">이 순간 읽음</text>
+</svg>

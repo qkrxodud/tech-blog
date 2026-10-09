@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>LOAD, LOAD, ADD, store 네 명령어로 RAM의 b와 c를 레지스터에 읽어 더한 뒤 a에 101을 쓰는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .seg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dia { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">명령어 실행 — 값을 레지스터로 읽어 계산하고 RAM에 다시 씀</text>
+  <text x="730" y="42" class="code" text-anchor="end">a = b + c</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1. LOAD</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2. LOAD</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3. ADD</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4. store</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">IR</text>
+  <text x="30" y="126" class="sub">실행 중인 명령어</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="168" class="lane">레지스터</text>
+  <text x="30" y="186" class="sub">CPU 안의 저장소</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="228" class="lane">RAM</text>
+  <text x="30" y="246" class="sub">a, b, c가 있는 곳</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="op" text-anchor="middle">LOAD R1</text>
+  <text x="220" y="127" class="val" text-anchor="middle">from b</text>
+  <rect x="302" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="108" class="op" text-anchor="middle">LOAD R2</text>
+  <text x="360" y="127" class="val" text-anchor="middle">from c</text>
+  <rect x="442" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="108" class="op" text-anchor="middle">ADD R3</text>
+  <text x="500" y="127" class="val" text-anchor="middle">R1, R2</text>
+  <rect x="582" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="108" class="op" text-anchor="middle">store R3</text>
+  <text x="640" y="127" class="val" text-anchor="middle">to a</text>
+  <rect x="162" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="168" class="op" text-anchor="middle">R1 = 1</text>
+  <text x="220" y="187" class="val" text-anchor="middle">b 값을 복사</text>
+  <rect x="302" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="168" class="op" text-anchor="middle">R2 = 100</text>
+  <text x="360" y="187" class="val" text-anchor="middle">c 값을 복사</text>
+  <rect x="442" y="148" width="116" height="48" rx="8" class="ok"/>
+  <text x="500" y="168" class="okc" text-anchor="middle">R3 = 101</text>
+  <text x="500" y="187" class="val" text-anchor="middle">R1 + R2 계산</text>
+  <rect x="582" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="168" class="op" text-anchor="middle">R3 = 101</text>
+  <text x="640" y="187" class="val" text-anchor="middle">그대로</text>
+  <rect x="162" y="208" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="228" class="op" text-anchor="middle">b = 1</text>
+  <text x="220" y="247" class="val" text-anchor="middle">읽힘</text>
+  <rect x="302" y="208" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="228" class="op" text-anchor="middle">c = 100</text>
+  <text x="360" y="247" class="val" text-anchor="middle">읽힘</text>
+  <rect x="450" y="220" width="100" height="26" rx="6" class="wait"/>
+  <text x="500" y="238" class="waitt" text-anchor="middle">접근 없음</text>
+  <rect x="582" y="208" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="228" class="okc" text-anchor="middle">a = 101</text>
+  <text x="640" y="247" class="val" text-anchor="middle">R3 값을 씀</text>
+  <line x1="220" y1="208" x2="220" y2="197" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="360" y1="208" x2="360" y2="197" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="640" y1="196" x2="640" y2="207" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="286" class="sub">명령어도 RAM에 있으며, CPU는 명령어를 하나씩 IR로 가져와 해석한 뒤 실행합니다.</text>
+  <text x="30" y="306" class="sub">계산(ADD)은 레지스터끼리 하고, 결과는 store로 RAM에 다시 씁니다.</text>
+</svg>

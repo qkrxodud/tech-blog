@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 310" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Eden 안에 Thread-1, Thread-2, Thread-3의 TLAB이 따로 있고, 각 TLAB은 start부터 top까지 할당된 부분과 top부터 end까지 빈 부분으로 나뉘며, 나머지는 TLAB 밖 할당에 쓰이는 공유 영역인 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="310" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Eden 안의 TLAB — 스레드마다 할당 전용 구간</text>
+  <rect x="30" y="62" width="700" height="166" rx="10" class="dbbox"/>
+  <text x="44" y="84" class="op">Eden</text>
+  <rect x="44" y="96" width="186" height="118" rx="8" class="box"/>
+  <text x="137.0" y="118" class="op" text-anchor="middle">Thread-1 TLAB</text>
+  <rect x="52" y="130" width="98" height="44" rx="6" class="hold"/>
+  <text x="101.0" y="157" class="val" text-anchor="middle">할당됨</text>
+  <rect x="152" y="130" width="70" height="44" rx="6" class="wait"/>
+  <text x="188.0" y="157" class="waitt" text-anchor="middle">빈 공간</text>
+  <line x1="150" y1="124" x2="150" y2="180" stroke="#16a34a" stroke-width="2"/>
+  <text x="52" y="200" class="mono">start</text>
+  <text x="150" y="200" class="monob" text-anchor="middle">top</text>
+  <text x="222" y="200" class="mono" text-anchor="end">end</text>
+  <rect x="242" y="96" width="186" height="118" rx="8" class="box"/>
+  <text x="335.0" y="118" class="op" text-anchor="middle">Thread-2 TLAB</text>
+  <rect x="250" y="130" width="110" height="44" rx="6" class="hold"/>
+  <text x="305.0" y="157" class="val" text-anchor="middle">할당됨</text>
+  <rect x="362" y="130" width="58" height="44" rx="6" class="wait"/>
+  <text x="392.0" y="157" class="waitt" text-anchor="middle">빈 공간</text>
+  <line x1="360" y1="124" x2="360" y2="180" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="200" class="mono">start</text>
+  <text x="360" y="200" class="monob" text-anchor="middle">top</text>
+  <text x="420" y="200" class="mono" text-anchor="end">end</text>
+  <rect x="440" y="96" width="158" height="118" rx="8" class="box"/>
+  <text x="519.0" y="118" class="op" text-anchor="middle">Thread-3 TLAB</text>
+  <rect x="448" y="130" width="74" height="44" rx="6" class="hold"/>
+  <text x="485.0" y="157" class="val" text-anchor="middle">할당됨</text>
+  <rect x="524" y="130" width="66" height="44" rx="6" class="wait"/>
+  <text x="558.0" y="157" class="waitt" text-anchor="middle">빈 공간</text>
+  <line x1="522" y1="124" x2="522" y2="180" stroke="#16a34a" stroke-width="2"/>
+  <text x="448" y="200" class="mono">start</text>
+  <text x="522" y="200" class="monob" text-anchor="middle">top</text>
+  <text x="590" y="200" class="mono" text-anchor="end">end</text>
+  <rect x="610" y="96" width="108" height="118" rx="8" class="wait"/>
+  <text x="664" y="150" class="waitt" text-anchor="middle">공유 영역</text>
+  <text x="664" y="169" class="val" text-anchor="middle">TLAB 밖 할당</text>
+  <text x="30" y="254" class="gnote">각 스레드는 자기 TLAB의 top만 옮기므로, 할당할 때 다른 스레드와 경합하지 않습니다</text>
+  <text x="30" y="276" class="sub">TLAB이 전용인 것은 할당뿐입니다. 만들어진 객체는 힙의 일부라서 다른 스레드도 참조할 수 있습니다</text>
+</svg>

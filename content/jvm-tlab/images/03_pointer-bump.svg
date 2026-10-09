@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 392" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>TLAB에서 객체 A(16B), B(24B)를 할당할 때마다 top 포인터가 크기만큼 오른쪽으로 이동하고, 남은 공간보다 큰 객체 C는 top + size가 end를 넘어 slow path로 넘어가는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="392" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="372" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Pointer bump 할당 — top에 크기를 더하면 할당이 끝남</text>
+  <text x="730" y="42" class="code" text-anchor="end">tlab.top += size</text>
+  <text x="160" y="72" class="mono">start</text>
+  <text x="720" y="72" class="mono" text-anchor="end">end</text>
+  <text x="30" y="104" class="lane">할당 전</text>
+  <text x="30" y="122" class="sub">top = start</text>
+  <rect x="150" y="82" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="558" height="40" rx="6" class="wait"/>
+  <text x="460.0" y="113" class="waitt" text-anchor="middle">빈 공간</text>
+  <line x1="160" y1="84" x2="160" y2="132" stroke="#16a34a" stroke-width="2"/>
+  <text x="168" y="104" class="monob">top</text>
+  <text x="30" y="164" class="lane">new A</text>
+  <text x="30" y="182" class="sub">16B</text>
+  <rect x="150" y="142" width="585" height="52" rx="6" class="track"/>
+  <rect x="160" y="148" width="78" height="40" rx="6" class="ok"/>
+  <text x="199.0" y="173" class="okt" text-anchor="middle">A</text>
+  <rect x="242" y="148" width="478" height="40" rx="6" class="wait"/>
+  <text x="500.0" y="173" class="waitt" text-anchor="middle">빈 공간</text>
+  <line x1="240" y1="144" x2="240" y2="192" stroke="#16a34a" stroke-width="2"/>
+  <text x="248" y="164" class="monob">top</text>
+  <text x="30" y="224" class="lane">new B</text>
+  <text x="30" y="242" class="sub">24B</text>
+  <rect x="150" y="202" width="585" height="52" rx="6" class="track"/>
+  <rect x="160" y="208" width="78" height="40" rx="6" class="hold"/>
+  <text x="199.0" y="233" class="op" text-anchor="middle">A</text>
+  <rect x="240" y="208" width="118" height="40" rx="6" class="ok"/>
+  <text x="299.0" y="233" class="okt" text-anchor="middle">B</text>
+  <rect x="362" y="208" width="358" height="40" rx="6" class="wait"/>
+  <text x="560.0" y="233" class="waitt" text-anchor="middle">빈 공간</text>
+  <line x1="360" y1="204" x2="360" y2="252" stroke="#16a34a" stroke-width="2"/>
+  <text x="368" y="224" class="monob">top</text>
+  <text x="30" y="284" class="lane">new C</text>
+  <text x="30" y="302" class="sub">남은 공간보다 큼</text>
+  <rect x="150" y="262" width="585" height="52" rx="6" class="track"/>
+  <rect x="160" y="268" width="78" height="40" rx="6" class="hold"/>
+  <text x="199.0" y="293" class="op" text-anchor="middle">A</text>
+  <rect x="240" y="268" width="118" height="40" rx="6" class="hold"/>
+  <text x="299.0" y="293" class="op" text-anchor="middle">B</text>
+  <rect x="362" y="268" width="358" height="40" rx="6" class="wait"/>
+  <text x="560.0" y="293" class="note" text-anchor="middle">top + size > end</text>
+  <line x1="360" y1="264" x2="360" y2="312" stroke="#16a34a" stroke-width="2"/>
+  <text x="368" y="284" class="monob">top</text>
+  <text x="150" y="338" class="gnote">A, B는 top + size가 end를 넘지 않으므로 top만 옮겨서 할당합니다 (동기화 없음)</text>
+  <text x="150" y="360" class="note">C는 남은 공간에 들어가지 않아 TLAB 밖 처리(slow path)로 넘어갑니다</text>
+</svg>

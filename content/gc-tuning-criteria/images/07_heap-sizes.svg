@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 410" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>가상 주소 공간 안에서 초기 힙 512MB, 최대 힙 8GB, 최소 힙 8MB가 차지하는 크기를 최대 힙 기준 비율로 비교한 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="410" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">세 가지 힙 크기 — 가상 주소 공간 안의 JVM 힙</text>
+  <text x="30" y="80" class="opm">-XX:InitialHeapSize=536870912</text>
+  <text x="300" y="80" class="okt">→ 512MB</text>
+  <text x="730" y="80" class="sub" text-anchor="end">시작할 때 바로 확보</text>
+  <rect x="30" y="90" width="700" height="60" rx="10" class="dbbox"/>
+  <text x="720" y="142" class="sub" text-anchor="end">Virtual address space</text>
+  <rect x="60" y="98" width="32.5" height="44" rx="6" class="hold"/>
+  <text x="102.5" y="125" class="op">JVM Heap 512MB</text>
+  <text x="30" y="188" class="opm">-XX:MaxHeapSize=8589934592</text>
+  <text x="300" y="188" class="okt">→ 8GB</text>
+  <text x="730" y="188" class="sub" text-anchor="end">늘어날 수 있는 최대 크기</text>
+  <rect x="30" y="198" width="700" height="60" rx="10" class="dbbox"/>
+  <text x="720" y="250" class="sub" text-anchor="end">Virtual address space</text>
+  <rect x="60" y="206" width="520.0" height="44" rx="6" class="hold"/>
+  <text x="320.0" y="233" class="op" text-anchor="middle">JVM Heap 8GB</text>
+  <text x="30" y="296" class="opm">-XX:MinHeapSize=8388608</text>
+  <text x="300" y="296" class="okt">→ 8MB</text>
+  <text x="730" y="296" class="sub" text-anchor="end">줄어들 수 있는 최소 크기</text>
+  <rect x="30" y="306" width="700" height="60" rx="10" class="dbbox"/>
+  <text x="720" y="358" class="sub" text-anchor="end">Virtual address space</text>
+  <rect x="60" y="314" width="5.0" height="44" rx="6" class="hold"/>
+  <text x="75" y="341" class="op">JVM Heap 8MB</text>
+  <text x="30" y="394" class="sub">막대 길이는 최대 힙 8GB를 기준으로 한 비율입니다. 8MB는 너무 작아 최소 두께로 그렸습니다</text>
+</svg>

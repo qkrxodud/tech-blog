@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>여러 프로그램이 system call과 표준 라이브러리를 통해 OS 커널에 요청하고, OS가 CPU·RAM·NIC·보조 기억장치를 다루는 계층 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .seg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dia { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="450" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">OS의 위치 — 프로그램은 OS를 거쳐 하드웨어를 사용</text>
+  <rect x="80" y="62" width="160" height="46" rx="8" class="box"/>
+  <text x="160" y="90" class="t" text-anchor="middle">프로그램</text>
+  <line x1="160" y1="108" x2="160" y2="128" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="300" y="62" width="160" height="46" rx="8" class="box"/>
+  <text x="380" y="90" class="t" text-anchor="middle">프로그램</text>
+  <line x1="380" y1="108" x2="380" y2="128" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="520" y="62" width="160" height="46" rx="8" class="box"/>
+  <text x="600" y="90" class="t" text-anchor="middle">프로그램</text>
+  <line x1="600" y1="108" x2="600" y2="128" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="60" y="130" width="640" height="34" rx="8" class="ok"/>
+  <text x="380" y="152" class="okt" text-anchor="middle">system call · OS 표준 라이브러리 (API)</text>
+  <rect x="40" y="180" width="680" height="98" rx="12" class="hold"/>
+  <text x="60" y="204" class="t">운영체제 (OS)</text>
+  <rect x="80" y="220" width="600" height="40" rx="8" class="box"/>
+  <text x="380" y="245" class="opk" text-anchor="middle">kernel — 스케줄링 · 가상 메모리 · 동기화</text>
+  <line x1="380" y1="278" x2="380" y2="298" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="40" y="300" width="680" height="120" rx="12" class="track"/>
+  <text x="60" y="324" class="t">컴퓨터 (하드웨어)</text>
+  <rect x="70" y="338" width="150" height="62" rx="8" class="dbbox"/>
+  <text x="145" y="364" class="t" text-anchor="middle">CPU</text>
+  <text x="145" y="384" class="s" text-anchor="middle">IR · 레지스터</text>
+  <rect x="240" y="338" width="130" height="62" rx="8" class="dbbox"/>
+  <text x="305" y="364" class="t" text-anchor="middle">RAM</text>
+  <text x="305" y="384" class="s" text-anchor="middle">실행 중인 데이터</text>
+  <rect x="390" y="338" width="140" height="62" rx="8" class="dbbox"/>
+  <text x="460" y="364" class="t" text-anchor="middle">NIC</text>
+  <text x="460" y="384" class="s" text-anchor="middle">네트워크 카드</text>
+  <rect x="550" y="338" width="150" height="62" rx="8" class="dbbox"/>
+  <text x="625" y="364" class="t" text-anchor="middle">보조 기억장치</text>
+  <text x="625" y="384" class="s" text-anchor="middle">디스크 · 실행 파일</text>
+  <text x="30" y="446" class="sub">프로그램이 하드웨어를 직접 다루면 시스템 전체가 위험해지므로, OS가 가운데에서 자원을 중재합니다.</text>
+</svg>

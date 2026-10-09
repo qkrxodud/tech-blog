@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>자바 소스가 javac로 class 파일이 되고 jar로 묶인 뒤, 같은 jar를 리눅스·윈도우·macOS의 JVM이 각각 실행하는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .link { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .brk { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .lblc { font-size: 12px; font-weight: 700; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">빌드 — 소스 코드가 jar 파일이 되기까지</text>
+  <text x="730" y="42" class="code" text-anchor="end">Gradle · Maven</text>
+  <rect x="40" y="70" width="150" height="56" rx="8" class="box"/>
+  <text x="115" y="94" class="op" text-anchor="middle">.java</text>
+  <text x="115" y="113" class="val" text-anchor="middle">소스 코드</text>
+  <rect x="305" y="70" width="150" height="56" rx="8" class="box"/>
+  <text x="380" y="94" class="op" text-anchor="middle">.class</text>
+  <text x="380" y="113" class="val" text-anchor="middle">바이트코드</text>
+  <rect x="570" y="70" width="150" height="56" rx="8" class="hold"/>
+  <text x="645" y="94" class="op" text-anchor="middle">.jar</text>
+  <text x="645" y="113" class="val" text-anchor="middle">class 파일을 묶은 압축 파일</text>
+  <line x1="192" y1="98" x2="301" y2="98" class="flow" marker-end="url(#ag)"/>
+  <text x="247" y="88" class="lbl" text-anchor="middle">컴파일</text>
+  <text x="247" y="117" class="lblc" text-anchor="middle">javac</text>
+  <line x1="457" y1="98" x2="566" y2="98" class="flow" marker-end="url(#ag)"/>
+  <text x="512" y="88" class="lbl" text-anchor="middle">압축</text>
+  <text x="512" y="117" class="lblc" text-anchor="middle">jar</text>
+  <text x="30" y="154" class="sub">빌드 도구(Gradle, Maven)가 컴파일과 jar 패키징을 관리합니다.</text>
+  <rect x="10" y="186" width="740" height="244" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="218" class="h">실행 — 같은 jar를 각 OS의 JVM이 실행</text>
+  <text x="730" y="218" class="code" text-anchor="end">java -jar app.jar</text>
+  <rect x="300" y="234" width="160" height="44" rx="8" class="hold"/>
+  <text x="380" y="261" class="op" text-anchor="middle">app.jar</text>
+  <line x1="330" y1="280" x2="130" y2="316" class="flow" marker-end="url(#ag)"/>
+  <line x1="380" y1="280" x2="380" y2="316" class="flow" marker-end="url(#ag)"/>
+  <line x1="430" y1="280" x2="630" y2="316" class="flow" marker-end="url(#ag)"/>
+  <rect x="40" y="320" width="180" height="92" rx="10" class="box"/>
+  <text x="130" y="344" class="lane" text-anchor="middle">리눅스</text>
+  <rect x="52" y="358" width="72" height="42" rx="6" class="dbbox"/>
+  <text x="88" y="375" class="sub" text-anchor="middle">CPU</text>
+  <text x="88" y="394" class="db" text-anchor="middle">Intel</text>
+  <rect x="136" y="358" width="72" height="42" rx="6" class="ok"/>
+  <text x="172" y="384" class="okt" text-anchor="middle">JVM</text>
+  <rect x="290" y="320" width="180" height="92" rx="10" class="box"/>
+  <text x="380" y="344" class="lane" text-anchor="middle">윈도우</text>
+  <rect x="302" y="358" width="72" height="42" rx="6" class="dbbox"/>
+  <text x="338" y="375" class="sub" text-anchor="middle">CPU</text>
+  <text x="338" y="394" class="db" text-anchor="middle">AMD</text>
+  <rect x="386" y="358" width="72" height="42" rx="6" class="ok"/>
+  <text x="422" y="384" class="okt" text-anchor="middle">JVM</text>
+  <rect x="540" y="320" width="180" height="92" rx="10" class="box"/>
+  <text x="630" y="344" class="lane" text-anchor="middle">macOS</text>
+  <rect x="552" y="358" width="72" height="42" rx="6" class="dbbox"/>
+  <text x="588" y="375" class="sub" text-anchor="middle">CPU</text>
+  <text x="588" y="394" class="db" text-anchor="middle">ARM</text>
+  <rect x="636" y="358" width="72" height="42" rx="6" class="ok"/>
+  <text x="672" y="384" class="okt" text-anchor="middle">JVM</text>
+</svg>

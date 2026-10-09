@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 432" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>new OrderService()가 실행될 때 JAR의 class 파일이 Metaspace의 Klass, Heap의 Class 객체와 인스턴스로 만들어지는 순서</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .link { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .brk { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .lblc { font-size: 12px; font-weight: 700; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="432" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="412" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Metaspace와 Heap — new OrderService() 한 줄이 남기는 것</text>
+  <rect x="30" y="70" width="140" height="150" rx="10" class="dbbox"/>
+  <text x="100" y="94" class="lane" text-anchor="middle">myapp.jar</text>
+  <text x="100" y="112" class="sub" text-anchor="middle">디스크</text>
+  <rect x="42" y="128" width="116" height="44" rx="8" class="box"/>
+  <text x="100" y="146" class="ops" text-anchor="middle">OrderService</text>
+  <text x="100" y="165" class="val" text-anchor="middle">.class</text>
+  <rect x="196" y="70" width="250" height="250" rx="10" class="dbbox"/>
+  <text x="212" y="94" class="lane">Metaspace</text>
+  <text x="212" y="112" class="sub">Native Memory</text>
+  <rect x="212" y="128" width="218" height="140" rx="8" class="hold"/>
+  <text x="226" y="152" class="t">Klass 객체</text>
+  <text x="306" y="152" class="sub">클래스 메타데이터</text>
+  <text x="234" y="180" class="val">- 필드 정보</text>
+  <text x="234" y="204" class="val">- 메서드 정보</text>
+  <text x="234" y="228" class="val">- 바이트코드</text>
+  <text x="226" y="256" class="sub">OrderService의 Klass</text>
+  <rect x="472" y="70" width="258" height="312" rx="10" class="dbbox"/>
+  <text x="488" y="94" class="lane">Java Heap</text>
+  <text x="488" y="112" class="sub">JVM이 관리, GC 대상</text>
+  <rect x="488" y="128" width="226" height="76" rx="8" class="box"/>
+  <text x="502" y="152" class="t">Class 객체</text>
+  <text x="502" y="172" class="val">java.lang.Class 인스턴스</text>
+  <text x="502" y="188" class="sub">리플렉션에서 사용</text>
+  <text x="502" y="234" class="t">실제 객체 인스턴스들</text>
+  <rect x="488" y="246" width="226" height="40" rx="8" class="ok"/>
+  <text x="601" y="271" class="okc" text-anchor="middle">new OrderService()</text>
+  <rect x="488" y="296" width="226" height="40" rx="8" class="box"/>
+  <text x="601" y="321" class="ops" text-anchor="middle">new ArrayList&lt;&gt;()</text>
+  <line x1="160" y1="150" x2="208" y2="150" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="184" y="140" class="gnote" text-anchor="middle">①②</text>
+  <line x1="446" y1="162" x2="484" y2="162" class="flow" marker-end="url(#ag)"/>
+  <text x="465" y="154" class="lbl" text-anchor="middle">③</text>
+  <line x1="690" y1="208" x2="690" y2="242" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="680" y="230" class="gnote" text-anchor="end">④</text>
+  <text x="30" y="368" class="sub">① ClassLoader가 JAR에서 OrderService.class를 읽음</text>
+  <text x="30" y="388" class="sub">② Metaspace에 Klass 생성 ③ Heap에 Class 객체 생성</text>
+  <text x="30" y="408" class="sub">④ Heap에 인스턴스 생성 (service 변수가 가리킴)</text>
+</svg>

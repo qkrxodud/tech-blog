@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>TLAB 크기 491KB에서 refill waste 한도가 약 7.7KB일 때, 남은 공간 3KB는 한도보다 작아 TLAB을 retire하고 새 TLAB을 받고, 남은 공간 100KB는 한도보다 커서 TLAB을 유지한 채 객체를 TLAB 밖에 할당하는 두 경우</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="340" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">TLAB retire — 남은 공간과 refill waste 한도 비교</text>
+  <text x="730" y="42" class="code" text-anchor="end">491KB / 64 ≈ 7.7KB</text>
+  <text x="216" y="68" class="step" text-anchor="middle">남은 공간</text>
+  <text x="358" y="68" class="step" text-anchor="middle">할당할 객체</text>
+  <text x="500" y="68" class="step" text-anchor="middle">한도와 비교</text>
+  <text x="655" y="68" class="step" text-anchor="middle">결과</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">경우 1</text>
+  <text x="30" y="126" class="sub">조금 남음</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="152.0" y="88" width="128" height="48" rx="8" class="box"/>
+  <text x="216.0" y="108.0" class="op" text-anchor="middle">3KB</text>
+  <text x="216.0" y="127.0" class="val" text-anchor="middle">TLAB 끝부분</text>
+  <rect x="294.0" y="88" width="128" height="48" rx="8" class="box"/>
+  <text x="358.0" y="108.0" class="op" text-anchor="middle">10KB</text>
+  <text x="358.0" y="127.0" class="val" text-anchor="middle">들어가지 않음</text>
+  <rect x="436.0" y="88" width="128" height="48" rx="8" class="box"/>
+  <text x="500.0" y="108.0" class="opm" text-anchor="middle">3KB ≤ 7.7KB</text>
+  <text x="500.0" y="127.0" class="val" text-anchor="middle">버려도 손해 적음</text>
+  <rect x="580.0" y="88" width="150" height="48" rx="8" class="ok"/>
+  <text x="655.0" y="108.0" class="okt" text-anchor="middle">retire + 새 TLAB</text>
+  <text x="655.0" y="127.0" class="val" text-anchor="middle">남은 3KB는 filler</text>
+  <text x="30" y="168" class="lane">경우 2</text>
+  <text x="30" y="186" class="sub">많이 남음</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="152.0" y="148" width="128" height="48" rx="8" class="box"/>
+  <text x="216.0" y="168.0" class="op" text-anchor="middle">100KB</text>
+  <text x="216.0" y="187.0" class="val" text-anchor="middle">TLAB 중간쯤</text>
+  <rect x="294.0" y="148" width="128" height="48" rx="8" class="box"/>
+  <text x="358.0" y="168.0" class="op" text-anchor="middle">200KB</text>
+  <text x="358.0" y="187.0" class="val" text-anchor="middle">들어가지 않음</text>
+  <rect x="436.0" y="148" width="128" height="48" rx="8" class="box"/>
+  <text x="500.0" y="168.0" class="opm" text-anchor="middle">100KB &gt; 7.7KB</text>
+  <text x="500.0" y="187.0" class="val" text-anchor="middle">버리기 아까움</text>
+  <rect x="580.0" y="148" width="150" height="48" rx="8" class="hold"/>
+  <text x="655.0" y="168.0" class="op" text-anchor="middle">TLAB 밖에 할당</text>
+  <text x="655.0" y="187.0" class="val" text-anchor="middle">한도 +4 words</text>
+  <text x="30" y="232" class="gnote">경우 1: 남은 3KB를 버려도 손해가 적으므로 TLAB을 retire하고 새 TLAB을 받습니다</text>
+  <text x="30" y="254" class="sub">경우 2: 100KB를 버리기에는 아까우므로 TLAB은 그대로 두고, 이 객체만 TLAB 밖(공유 Eden)에 할당합니다</text>
+  <text x="30" y="276" class="sub">경우 2가 반복될 때마다 한도가 4 words(64비트에서 32B)씩 커지고, 새 TLAB을 받으면 다시 TLAB 크기 / 64로 돌아갑니다</text>
+  <text x="30" y="316" class="step">491KB는 로그 예시의 desired_size입니다. 3KB·10KB·100KB·200KB는 설명을 위한 예시 값입니다</text>
+</svg>

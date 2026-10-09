@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 472" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>thread.start() 한 번에 java.lang.Thread, JavaThread, OS Thread, Kernel Thread가 하나씩 1:1로 만들어지는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .link { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .brk { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .lblc { font-size: 12px; font-weight: 700; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="472" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="452" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">스레드 하나가 만들어질 때 — 네 계층이 1:1로 대응</text>
+  <text x="730" y="42" class="code" text-anchor="end">thread.start()</text>
+  <text x="30" y="96" class="lane">Java 레벨</text>
+  <text x="30" y="114" class="sub">자바 코드</text>
+  <rect x="150" y="68" width="585" height="60" rx="6" class="track"/>
+  <rect x="170" y="74" width="230" height="52" rx="8" class="box"/>
+  <text x="285" y="105" class="op" text-anchor="middle">java.lang.Thread</text>
+  <text x="420" y="96" class="val">개발자가 다루는 자바 객체</text>
+  <text x="420" y="115" class="val">eetop 필드에 JavaThread 주소</text>
+  <line x1="285" y1="128" x2="285" y2="164" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="297" y="150" class="lblc">thread.start()</text>
+  <text x="273" y="150" class="lbl" text-anchor="end">1 : 1</text>
+  <text x="30" y="188" class="lane">JVM 레벨</text>
+  <text x="30" y="206" class="sub">C++</text>
+  <rect x="150" y="160" width="585" height="60" rx="6" class="track"/>
+  <rect x="170" y="166" width="230" height="52" rx="8" class="box"/>
+  <text x="285" y="197" class="op" text-anchor="middle">JavaThread</text>
+  <text x="420" y="188" class="val">JVM 내부 C++ 객체</text>
+  <text x="420" y="207" class="val">Java 스택, PC 레지스터 등을 관리</text>
+  <line x1="285" y1="220" x2="285" y2="256" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="297" y="242" class="lblc">os::create_thread()</text>
+  <text x="273" y="242" class="lbl" text-anchor="end">1 : 1</text>
+  <text x="30" y="280" class="lane">OS 레벨</text>
+  <text x="30" y="298" class="sub">스레드 API</text>
+  <rect x="150" y="252" width="585" height="60" rx="6" class="track"/>
+  <rect x="170" y="258" width="230" height="52" rx="8" class="box"/>
+  <text x="285" y="289" class="op" text-anchor="middle">OS Thread</text>
+  <text x="420" y="280" class="val">pthread_create() — Linux·macOS</text>
+  <text x="420" y="299" class="val">CreateThread() — Windows</text>
+  <line x1="285" y1="312" x2="285" y2="348" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="297" y="334" class="lblc">clone() 시스템 콜 (Linux)</text>
+  <text x="273" y="334" class="lbl" text-anchor="end">1 : 1</text>
+  <text x="30" y="372" class="lane">Kernel 레벨</text>
+  <text x="30" y="390" class="sub">스케줄링 단위</text>
+  <rect x="150" y="344" width="585" height="60" rx="6" class="track"/>
+  <rect x="170" y="350" width="230" height="52" rx="8" class="ok"/>
+  <text x="285" y="381" class="okt" text-anchor="middle">Kernel Thread (LWP)</text>
+  <text x="420" y="372" class="val">CPU 스케줄러가 코어에 할당하는</text>
+  <text x="420" y="391" class="val">실행 단위 (Context Switching 대상)</text>
+  <text x="30" y="432" class="sub">플랫폼 스레드 기준입니다. 가상 스레드(JDK 21)는 여러 개가 적은 수의 플랫폼 스레드(캐리어) 위에 번갈아 올라가므로 1:1이 아닙니다.</text>
+</svg>

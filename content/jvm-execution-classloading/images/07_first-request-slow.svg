@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 466" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>CPU 캐시, RAM, SSD, HDD의 접근 속도 차이와, 첫 요청에 클래스 로딩과 JIT 비용이 더해져 350ms, 이후 요청은 50ms가 걸리는 예시</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .link { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .brk { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .lblc { font-size: 12px; font-weight: 700; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="466" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">저장 장치별 접근 속도 — 디스크는 RAM보다 수천 배 느리다</text>
+  <text x="730" y="42" class="sub" text-anchor="end">막대 길이는 로그 눈금</text>
+  <text x="30" y="84" class="lane">CPU Cache</text>
+  <rect x="150" y="66" width="40" height="26" rx="5" class="hold"/>
+  <text x="202" y="84" class="op">~1 ns</text>
+  <text x="30" y="122" class="lane">RAM</text>
+  <rect x="150" y="104" width="120" height="26" rx="5" class="hold"/>
+  <text x="282" y="122" class="op">~100 ns</text>
+  <text x="30" y="160" class="lane">SSD</text>
+  <rect x="150" y="142" width="240" height="26" rx="5" class="bad"/>
+  <text x="402" y="160" class="badc">~100,000 ns</text>
+  <text x="735" y="160" class="note" text-anchor="end">RAM의 1,000배</text>
+  <text x="30" y="198" class="lane">HDD</text>
+  <rect x="150" y="180" width="320" height="26" rx="5" class="bad"/>
+  <text x="482" y="198" class="badc">~10,000,000 ns</text>
+  <text x="735" y="198" class="note" text-anchor="end">RAM의 100,000배</text>
+  <rect x="10" y="240" width="740" height="216" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="272" class="h">첫 요청과 그 이후 — 예시 수치</text>
+  <text x="30" y="314" class="lane">첫 요청</text>
+  <text x="30" y="332" class="sub">Cold Start</text>
+  <rect x="150" y="296" width="240" height="40" rx="5" class="bad"/>
+  <text x="270" y="321" class="badt" text-anchor="middle">클래스 로딩 200ms</text>
+  <rect x="390" y="296" width="120" height="40" rx="5" class="bad"/>
+  <text x="450" y="321" class="badt" text-anchor="middle">JIT 100ms</text>
+  <rect x="510" y="296" width="60" height="40" rx="5" class="hold"/>
+  <text x="540" y="321" class="t" text-anchor="middle">로직 50</text>
+  <text x="582" y="322" class="badc">350ms</text>
+  <text x="30" y="392" class="lane">두 번째 이후</text>
+  <text x="30" y="410" class="sub">Warm</text>
+  <rect x="150" y="374" width="60" height="40" rx="5" class="ok"/>
+  <text x="180" y="399" class="okt" text-anchor="middle">로직 50</text>
+  <text x="222" y="400" class="okc">50ms</text>
+  <text x="30" y="440" class="sub">첫 요청에서만 클래스를 디스크에서 읽고 검증·초기화하는 비용과, 아직 컴파일되지 않은 코드의 비용이 더해집니다.</text>
+</svg>

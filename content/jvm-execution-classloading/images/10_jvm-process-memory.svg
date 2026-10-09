@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 690" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>JVM 프로세스의 가상 주소 공간을 kernel space, stack, native library, metaspace, JVM heap, code cache, heap, data, code 영역으로 나누고 각 영역에 무엇이 있는지 적은 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .link { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .brk { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .lblc { font-size: 12px; font-weight: 700; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="690" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="670" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">JVM 프로세스의 가상 주소 공간</text>
+  <text x="30" y="62" class="sub">JVM 프로세스 하나가 가상 주소 공간 하나를 가집니다. 위가 높은 주소이고, 실제 배치는 OS마다 다릅니다.</text>
+  <rect x="110" y="74" width="160" height="566" rx="10" class="track"/>
+  <rect x="120" y="82" width="140" height="56" rx="6" class="dbbox"/>
+  <text x="190" y="115" class="lane" text-anchor="middle">kernel space</text>
+  <rect x="120" y="146" width="140" height="30" rx="6" class="box"/>
+  <text x="190" y="166" class="t" text-anchor="middle">stack</text>
+  <rect x="120" y="180" width="140" height="30" rx="6" class="box"/>
+  <text x="190" y="200" class="t" text-anchor="middle">stack</text>
+  <rect x="120" y="218" width="140" height="30" rx="6" class="box"/>
+  <text x="190" y="238" class="t" text-anchor="middle">native library</text>
+  <rect x="120" y="252" width="140" height="30" rx="6" class="box"/>
+  <text x="190" y="272" class="t" text-anchor="middle">native library</text>
+  <rect x="120" y="292" width="140" height="38" rx="6" class="hold"/>
+  <text x="190" y="316" class="t" text-anchor="middle">metaspace</text>
+  <rect x="120" y="334" width="140" height="38" rx="6" class="hold"/>
+  <text x="190" y="358" class="t" text-anchor="middle">metaspace</text>
+  <rect x="120" y="384" width="140" height="96" rx="6" class="ok"/>
+  <text x="190" y="437" class="okt" text-anchor="middle">JVM Heap</text>
+  <rect x="120" y="488" width="140" height="30" rx="6" class="hold"/>
+  <text x="190" y="508" class="t" text-anchor="middle">code cache</text>
+  <rect x="120" y="530" width="140" height="30" rx="6" class="box"/>
+  <text x="190" y="550" class="t" text-anchor="middle">heap</text>
+  <rect x="120" y="564" width="140" height="30" rx="6" class="box"/>
+  <text x="190" y="584" class="t" text-anchor="middle">data</text>
+  <rect x="120" y="598" width="140" height="30" rx="6" class="box"/>
+  <text x="190" y="618" class="t" text-anchor="middle">code (text)</text>
+  <text x="190" y="662" class="lbl" text-anchor="middle">가상 주소 공간</text>
+  <path d="M282,148 h8 V208 h-8" class="brk"/>
+  <text x="304" y="160" class="t">JVM stack</text>
+  <text x="312" y="178" class="val">· OS 스레드마다 할당되는 stack 영역을 자바 스레드가 그대로 사용</text>
+  <text x="312" y="195" class="val">· HotSpot은 Java 스택과 native 스택을 합쳐서 사용 (명세는 구분)</text>
+  <path d="M282,220 h8 V280 h-8" class="brk"/>
+  <text x="304" y="232" class="t">native library</text>
+  <text x="312" y="250" class="val">· libjvm.so, libnet.so, libjava.so 등</text>
+  <text x="312" y="267" class="val">· 이를 통해 OS의 시스템 콜을 호출</text>
+  <path d="M282,294 h8 V370 h-8" class="brk"/>
+  <text x="304" y="306" class="t">Metaspace (method area)</text>
+  <text x="312" y="324" class="val">· klass 객체: 클래스 메타 정보 (필드, 메서드 정보, 상속 관계)</text>
+  <text x="312" y="341" class="val">· 메서드 바이트코드</text>
+  <text x="312" y="358" class="val">· Runtime constant pool</text>
+  <text x="312" y="375" class="val">· 드물게 GC 대상이 됨 (클래스 언로딩, Full GC 때)</text>
+  <path d="M282,386 h8 V478 h-8" class="brk"/>
+  <text x="304" y="398" class="t">JVM heap</text>
+  <text x="312" y="416" class="val">· 자바 객체와 자바 배열이 여기에 상주</text>
+  <text x="312" y="433" class="val">· java.lang.Thread 객체, java.lang.Class 객체도 여기</text>
+  <text x="312" y="450" class="val">· String pool도 여기</text>
+  <path d="M282,490 h8 V516 h-8" class="brk"/>
+  <text x="304" y="508" class="t">code cache</text>
+  <text x="392" y="508" class="val">JIT 컴파일러가 최적화해 기계어로 바꾼 코드가 상주</text>
+  <path d="M282,532 h8 V626 h-8" class="brk"/>
+  <text x="304" y="544" class="t">heap · data · code (text)</text>
+  <text x="312" y="562" class="val">· JVM 내부 로직(C++로 작성된 코드)이 사용하는 영역</text>
+  <text x="312" y="579" class="val">· 이 heap에 C++로 정의된 JavaThread 객체가 있음</text>
+  <path d="M118,410 C96,400 96,330 118,318" class="link" marker-end="url(#ag)"/>
+  <text x="18" y="362" class="sub">Class 객체</text>
+  <text x="18" y="378" class="sub">→ klass</text>
+  <path d="M118,460 C96,480 96,530 118,545" class="link" marker-end="url(#ag)"/>
+  <text x="18" y="500" class="sub">Thread 객체</text>
+  <text x="18" y="516" class="sub">→ JavaThread</text>
+</svg>

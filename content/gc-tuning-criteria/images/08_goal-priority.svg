@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>GC가 끝날 때마다 Pause-Time 목표, Throughput 목표 순으로 확인해 힙을 줄이거나 늘리고, 두 목표를 모두 만족하면 Footprint를 위해 힙을 조금씩 줄이는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="540" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="520" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">목표의 우선순위 — Pause-Time → Throughput → Footprint</text>
+  <rect x="60" y="62" width="360" height="50" rx="8" class="hold"/>
+  <text x="240.0" y="83.0" class="op" text-anchor="middle">GC가 끝날 때마다 통계 갱신</text>
+  <text x="240.0" y="102.0" class="val" text-anchor="middle">pause time의 평균·분산, GC 시간 비율</text>
+  <line x1="240" y1="112" x2="240" y2="136" class="al" marker-end="url(#ar)"/>
+  <rect x="60" y="138" width="360" height="60" rx="8" class="box"/>
+  <text x="240.0" y="164.0" class="op" text-anchor="middle">① Pause-Time 목표를 만족하는가?</text>
+  <text x="240.0" y="183.0" class="val" text-anchor="middle">평균 + 분산 ≤ MaxGCPauseMillis</text>
+  <line x1="420" y1="168" x2="466" y2="168" class="rl" marker-end="url(#arr)"/>
+  <text x="443" y="160" class="note" text-anchor="middle">아니오</text>
+  <rect x="468" y="138" width="262" height="60" rx="8" class="bad"/>
+  <text x="599.0" y="164.0" class="badt" text-anchor="middle">세대(힙) 크기를 줄임</text>
+  <text x="599.0" y="183.0" class="val" text-anchor="middle">pause는 짧아지고 GC는 잦아짐</text>
+  <line x1="240" y1="198" x2="240" y2="226" class="gl" marker-end="url(#agr)"/>
+  <text x="252" y="217" class="gnote">예</text>
+  <rect x="60" y="228" width="360" height="60" rx="8" class="box"/>
+  <text x="240.0" y="254.0" class="op" text-anchor="middle">② Throughput 목표를 만족하는가?</text>
+  <text x="240.0" y="273.0" class="val" text-anchor="middle">GC 시간 비율 ≤ 1 / (1 + GCTimeRatio)</text>
+  <line x1="420" y1="258" x2="466" y2="258" class="rl" marker-end="url(#arr)"/>
+  <text x="443" y="250" class="note" text-anchor="middle">아니오</text>
+  <rect x="468" y="228" width="262" height="60" rx="8" class="bad"/>
+  <text x="599.0" y="254.0" class="badt" text-anchor="middle">힙 크기를 늘림</text>
+  <text x="599.0" y="273.0" class="val" text-anchor="middle">GC가 덜 자주 일어남</text>
+  <line x1="240" y1="288" x2="240" y2="316" class="gl" marker-end="url(#agr)"/>
+  <text x="252" y="307" class="gnote">예</text>
+  <rect x="60" y="318" width="360" height="60" rx="8" class="ok"/>
+  <text x="240.0" y="344.0" class="okt" text-anchor="middle">③ Footprint: 힙 크기를 조금씩 줄임</text>
+  <text x="240.0" y="363.0" class="val" text-anchor="middle">두 목표 중 하나가 깨질 때까지</text>
+  <path d="M 60 348 L 52 348 L 52 87 L 58 87" class="al" marker-end="url(#ar)"/>
+  <text x="42" y="230" class="sub" transform="rotate(-90 42 230)" text-anchor="middle">다음 GC에서 다시 확인</text>
+  <rect x="60" y="398" width="670" height="108" rx="8" class="dbbox"/>
+  <text x="76" y="422" class="op">정리</text>
+  <text x="76" y="448" class="val">앞 목표를 만족해야 다음 목표를 봅니다. 두 목표를 다 만족하면 메모리를 덜 쓰는 쪽으로 갑니다</text>
+  <text x="76" y="470" class="val">Pause-Time을 맞추려면 힙을 줄이고, Throughput을 맞추려면 힙을 늘립니다 (서로 반대 방향)</text>
+  <text x="76" y="492" class="val">Parallel 기준 한 번에 20%씩 늘리고 5%씩 줄입니다 (YoungGenerationSizeIncrement 등)</text>
+</svg>

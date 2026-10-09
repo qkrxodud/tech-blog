@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 412" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>같은 프로세스의 스레드 간 전환은 레지스터만 바꾸고, 프로세스 간 전환은 페이지 테이블 교체와 TLB·캐시 재적재가 더해지는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .seg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dia { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="412" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="172" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">스레드 간 전환 — 같은 프로세스 안</text>
+  <rect x="30" y="66" width="160" height="58" rx="10" class="box"/>
+  <text x="110" y="91" class="t" text-anchor="middle">① 레지스터 저장</text>
+  <text x="110" y="110" class="s" text-anchor="middle">스레드 1의 PC·SP 등</text>
+  <line x1="192" y1="95" x2="208" y2="95" class="flow" marker-end="url(#ag)"/>
+  <rect x="210" y="66" width="160" height="58" rx="10" class="box"/>
+  <text x="290" y="91" class="t" text-anchor="middle">② 레지스터 복원</text>
+  <text x="290" y="110" class="s" text-anchor="middle">스레드 2의 값</text>
+  <line x1="372" y1="95" x2="388" y2="95" class="flow" marker-end="url(#ag)"/>
+  <rect x="390" y="66" width="160" height="58" rx="10" class="ok"/>
+  <text x="470" y="91" class="okt" text-anchor="middle">③ 주소 공간 그대로</text>
+  <text x="470" y="110" class="s" text-anchor="middle">페이지 테이블 교체 없음</text>
+  <line x1="552" y1="95" x2="568" y2="95" class="flow" marker-end="url(#ag)"/>
+  <rect x="570" y="66" width="160" height="58" rx="10" class="ok"/>
+  <text x="650" y="91" class="okt" text-anchor="middle">④ 바로 실행</text>
+  <text x="650" y="110" class="s" text-anchor="middle">TLB·캐시 내용 활용</text>
+  <text x="30" y="162" class="sub">바꾸는 것은 CPU 레지스터(실행 위치, 스택 위치 등)뿐입니다.</text>
+  <rect x="10" y="198" width="740" height="204" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="230" class="h">프로세스 간 전환 — 다른 프로세스로</text>
+  <rect x="30" y="254" width="160" height="58" rx="10" class="box"/>
+  <text x="110" y="279" class="t" text-anchor="middle">① 레지스터 저장</text>
+  <text x="110" y="298" class="s" text-anchor="middle">프로세스 A의 값</text>
+  <line x1="192" y1="283" x2="208" y2="283" class="flow" marker-end="url(#ag)"/>
+  <rect x="210" y="254" width="160" height="58" rx="10" class="bad"/>
+  <text x="290" y="279" class="badt" text-anchor="middle">② 페이지 테이블 교체</text>
+  <text x="290" y="298" class="s" text-anchor="middle">MMU가 볼 테이블을 B로</text>
+  <line x1="372" y1="283" x2="388" y2="283" class="flow" marker-end="url(#ag)"/>
+  <rect x="390" y="254" width="160" height="58" rx="10" class="bad"/>
+  <text x="470" y="279" class="badt" text-anchor="middle">③ TLB·캐시 다시 채움</text>
+  <text x="470" y="298" class="s" text-anchor="middle">A의 변환 정보는 못 씀</text>
+  <line x1="552" y1="283" x2="568" y2="283" class="flow" marker-end="url(#ag)"/>
+  <rect x="570" y="254" width="160" height="58" rx="10" class="box"/>
+  <text x="650" y="279" class="t" text-anchor="middle">④ 복원 후 실행</text>
+  <text x="650" y="298" class="s" text-anchor="middle">프로세스 B의 값</text>
+  <text x="30" y="350" class="note">주소 공간이 통째로 바뀌므로 테이블 교체와 TLB·캐시 미스 비용이 더해집니다.</text>
+  <text x="30" y="372" class="sub">TLB: MMU가 최근 주소 변환 결과를 담아 두는 캐시</text>
+</svg>

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>RAM에 빈 프레임이 없을 때 내보낼 페이지가 파일에 원본이 없으면 swap에 쓰고, 원본이 있고 바뀌지 않았으면 버리고, 바뀌었으면 write-back하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .seg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dia { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="520" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="500" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">RAM이 꽉 찼을 때 — 내보낼 페이지의 종류에 따라 처리</text>
+  <rect x="30" y="66" width="300" height="58" rx="10" class="box"/>
+  <text x="180" y="91" class="t" text-anchor="middle">빈 프레임이 없음</text>
+  <text x="180" y="111" class="s" text-anchor="middle">교체 알고리즘이 내보낼 페이지를 고름</text>
+  <line x1="130" y1="124" x2="130" y2="154" class="flow" marker-end="url(#ag)"/>
+  <path d="M30,200 L130,156 L230,200 L130,244 Z" class="dia"/>
+  <text x="130" y="196" class="t" text-anchor="middle">파일에 원본이</text>
+  <text x="130" y="214" class="t" text-anchor="middle">있는 페이지?</text>
+  <line x1="232" y1="200" x2="286" y2="200" class="flow" marker-end="url(#ag)"/>
+  <text x="258" y="190" class="lbl" text-anchor="middle">아니오</text>
+  <rect x="290" y="172" width="450" height="56" rx="10" class="bad"/>
+  <text x="310" y="196" class="badt">② swap space에 씀</text>
+  <text x="310" y="215" class="s">heap·stack처럼 파일에 원본이 없는 데이터 — 다시 필요하면 swap에서 읽어 옴</text>
+  <line x1="130" y1="246" x2="130" y2="284" class="flow" marker-end="url(#ag)"/>
+  <text x="140" y="270" class="lbl">예</text>
+  <path d="M30,330 L130,286 L230,330 L130,374 Z" class="dia"/>
+  <text x="130" y="326" class="t" text-anchor="middle">올라온 뒤</text>
+  <text x="130" y="344" class="t" text-anchor="middle">수정됐나?</text>
+  <line x1="232" y1="330" x2="286" y2="330" class="flow" marker-end="url(#ag)"/>
+  <text x="258" y="320" class="lbl" text-anchor="middle">아니오</text>
+  <rect x="290" y="302" width="450" height="56" rx="10" class="ok"/>
+  <text x="310" y="326" class="okt">① 버림</text>
+  <text x="310" y="345" class="s">code처럼 바뀌지 않은 페이지 — 다시 필요하면 실행 파일에서 읽어 옴</text>
+  <path d="M130,376 L130,438 L286,438" class="flow" marker-end="url(#ag)"/>
+  <text x="140" y="404" class="lbl">예</text>
+  <rect x="290" y="410" width="450" height="56" rx="10" class="ok"/>
+  <text x="310" y="434" class="okt">③ write-back</text>
+  <text x="310" y="453" class="s">파일에서 읽었지만 수정된 페이지 — 원래 파일에 써 준 뒤 비움</text>
+  <text x="30" y="494" class="note">swap space는 디스크라 느립니다. swap 읽기·쓰기가 잦다면 RAM이 부족하다는 신호이므로 모니터링합니다.</text>
+</svg>

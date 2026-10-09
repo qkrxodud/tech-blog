@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 634" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>java 명령의 main 함수가 JLI_Launch, 새 스레드의 JavaMain, JVM 초기화, Main 클래스 로딩을 거쳐 main 메서드를 호출하는 순서</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .link { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .brk { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .lblc { font-size: 12px; font-weight: 700; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="634" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="614" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">java 실행 파일 — main()에서 Main.main()까지</text>
+  <text x="730" y="42" class="code" text-anchor="end">java -jar myapp.jar</text>
+  <rect x="24" y="60" width="140" height="138" rx="8" class="dbbox"/>
+  <text x="36" y="84" class="lane">런처</text>
+  <text x="36" y="102" class="sub">프로세스의 첫 스레드</text>
+  <rect x="24" y="198" width="140" height="368" rx="8" class="dbbox"/>
+  <text x="36" y="222" class="lane">새 스레드</text>
+  <text x="36" y="240" class="sub">JavaMain 실행</text>
+  <text x="36" y="318" class="sub">HotSpot(libjvm) 안</text>
+  <rect x="186" y="66" width="250" height="34" rx="7" class="box"/>
+  <text x="200" y="88" class="ops">main()</text>
+  <text x="456" y="88" class="val">java 명령의 진입점</text>
+  <line x1="230" y1="100" x2="230" y2="110" class="flow" marker-end="url(#ag)"/>
+  <rect x="186" y="112" width="250" height="34" rx="7" class="box"/>
+  <text x="200" y="134" class="ops">JLI_Launch()</text>
+  <text x="456" y="134" class="val">옵션 해석, JVM 라이브러리(libjvm) 로드</text>
+  <line x1="230" y1="146" x2="230" y2="156" class="flow" marker-end="url(#ag)"/>
+  <rect x="186" y="158" width="250" height="34" rx="7" class="box"/>
+  <text x="200" y="180" class="ops">CallJavaMainInNewThread()</text>
+  <text x="456" y="180" class="val">pthread_create로 새 스레드 생성 후 join</text>
+  <line x1="230" y1="192" x2="230" y2="202" class="flow" marker-end="url(#ag)"/>
+  <rect x="186" y="204" width="250" height="34" rx="7" class="box"/>
+  <text x="200" y="226" class="ops">JavaMain()</text>
+  <text x="456" y="226" class="val">새 스레드에서 실행 (생성 실패 시 현재 스레드에서)</text>
+  <line x1="230" y1="238" x2="230" y2="248" class="flow" marker-end="url(#ag)"/>
+  <rect x="186" y="250" width="250" height="34" rx="7" class="box"/>
+  <text x="200" y="272" class="ops">① InitializeJVM()</text>
+  <text x="456" y="272" class="val">JVM 초기화</text>
+  <line x1="230" y1="284" x2="230" y2="294" class="flow" marker-end="url(#ag)"/>
+  <rect x="216" y="296" width="220" height="34" rx="7" class="hold"/>
+  <text x="230" y="318" class="ops">JNI_CreateJavaVM()</text>
+  <text x="456" y="318" class="val">hotspot/share/prims/jni.cpp</text>
+  <line x1="230" y1="330" x2="230" y2="340" class="flow" marker-end="url(#ag)"/>
+  <rect x="216" y="342" width="220" height="34" rx="7" class="hold"/>
+  <text x="230" y="364" class="ops">Threads::create_vm()</text>
+  <text x="456" y="364" class="val">main JavaThread 생성</text>
+  <line x1="230" y1="376" x2="230" y2="386" class="flow" marker-end="url(#ag)"/>
+  <rect x="186" y="388" width="250" height="34" rx="7" class="box"/>
+  <text x="200" y="410" class="ops">② LoadMainClass()</text>
+  <text x="456" y="410" class="val">Main 클래스 로딩 (예: Application)</text>
+  <line x1="230" y1="422" x2="230" y2="432" class="flow" marker-end="url(#ag)"/>
+  <rect x="186" y="434" width="250" height="34" rx="7" class="box"/>
+  <text x="200" y="456" class="ops">③ GetStaticMethodID()</text>
+  <text x="456" y="456" class="val">main 메서드 ID 조회</text>
+  <line x1="230" y1="468" x2="230" y2="478" class="flow" marker-end="url(#ag)"/>
+  <rect x="186" y="480" width="250" height="34" rx="7" class="box"/>
+  <text x="200" y="502" class="ops">④ CallStaticVoidMethod()</text>
+  <text x="456" y="502" class="val">main 메서드 호출</text>
+  <line x1="230" y1="514" x2="230" y2="524" class="flow" marker-end="url(#ag)"/>
+  <rect x="186" y="526" width="250" height="40" rx="8" class="ok"/>
+  <text x="311" y="551" class="okc" text-anchor="middle">Main.main(String[] args)</text>
+  <text x="456" y="551" class="gnote">여기서부터 우리가 작성한 코드</text>
+</svg>

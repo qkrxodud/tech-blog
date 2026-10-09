@@ -153,6 +153,8 @@
     "dir": "24_JVM-TLAB-(Thread-Local-Allocation-Buffer)",
     "slug": "jvm-tlab",
     "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 4,
     "order": "2026-01-01#00785"
   },
   {

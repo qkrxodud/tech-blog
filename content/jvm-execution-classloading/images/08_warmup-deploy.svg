@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 356" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>새 Pod가 바로 트래픽을 받으면 첫 요청이 느리고, warm-up 요청으로 주요 클래스를 먼저 로딩한 뒤 트래픽을 받으면 처음부터 빠른 두 흐름 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .link { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .brk { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .lblc { font-size: 12px; font-weight: 700; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="356" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="150" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">바로 트래픽을 받으면 — 첫 요청들이 느림</text>
+  <text x="30" y="92" class="lane">배포 직후</text>
+  <text x="30" y="110" class="sub">Warm-up 없음</text>
+  <rect x="150" y="66" width="104" height="58" rx="8" class="box"/>
+  <text x="202" y="91" class="t" text-anchor="middle">rollout</text>
+  <text x="202" y="110" class="val" text-anchor="middle">새 Pod 배포</text>
+  <line x1="255" y1="95" x2="266" y2="95" class="flow" marker-end="url(#ag)"/>
+  <rect x="268" y="66" width="104" height="58" rx="8" class="box"/>
+  <text x="320" y="91" class="t" text-anchor="middle">Pod 시작</text>
+  <text x="320" y="110" class="val" text-anchor="middle">클래스 거의 없음</text>
+  <line x1="373" y1="95" x2="384" y2="95" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="386" y="66" width="104" height="58" rx="8" class="bad"/>
+  <text x="438" y="91" class="badt" text-anchor="middle">실제 트래픽</text>
+  <text x="438" y="110" class="val" text-anchor="middle">바로 받음</text>
+  <line x1="491" y1="95" x2="502" y2="95" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="504" y="66" width="104" height="58" rx="8" class="bad"/>
+  <text x="556" y="91" class="badt" text-anchor="middle">첫 요청 느림</text>
+  <text x="556" y="110" class="val" text-anchor="middle">고객 불만</text>
+  <text x="150" y="146" class="note">사용자 요청이 클래스 로딩·초기화 비용을 그대로 떠안습니다.</text>
+  <rect x="10" y="176" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="208" class="h">Warm-up 후 받으면 — 미리 한 번씩 호출</text>
+  <text x="730" y="208" class="code" text-anchor="end">curl /actuator/health ...</text>
+  <text x="30" y="258" class="lane">배포 직후</text>
+  <text x="30" y="276" class="sub">Warm-up 실행</text>
+  <rect x="150" y="232" width="104" height="58" rx="8" class="box"/>
+  <text x="202" y="257" class="t" text-anchor="middle">rollout</text>
+  <text x="202" y="276" class="val" text-anchor="middle">새 Pod 배포</text>
+  <line x1="255" y1="261" x2="266" y2="261" class="flow" marker-end="url(#ag)"/>
+  <rect x="268" y="232" width="104" height="58" rx="8" class="box"/>
+  <text x="320" y="257" class="t" text-anchor="middle">Pod 시작</text>
+  <text x="320" y="276" class="val" text-anchor="middle">클래스 거의 없음</text>
+  <line x1="373" y1="261" x2="384" y2="261" class="flow" marker-end="url(#ag)"/>
+  <rect x="386" y="232" width="104" height="58" rx="8" class="hold"/>
+  <text x="438" y="257" class="t" text-anchor="middle">Warm-up</text>
+  <text x="438" y="276" class="val" text-anchor="middle">주요 API 호출</text>
+  <line x1="491" y1="261" x2="502" y2="261" class="flow" marker-end="url(#ag)"/>
+  <rect x="504" y="232" width="104" height="58" rx="8" class="hold"/>
+  <text x="556" y="257" class="t" text-anchor="middle">로딩 완료</text>
+  <text x="556" y="276" class="val" text-anchor="middle">RAM에 올라감</text>
+  <line x1="609" y1="261" x2="620" y2="261" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="622" y="232" width="104" height="58" rx="8" class="ok"/>
+  <text x="674" y="257" class="okt" text-anchor="middle">트래픽 받기</text>
+  <text x="674" y="276" class="val" text-anchor="middle">이미 빠름</text>
+  <text x="150" y="316" class="sub">Kubernetes라면 warm-up이 끝난 뒤 readinessProbe가 성공하도록 두어,</text>
+  <text x="150" y="334" class="sub">그 전에는 Service가 이 Pod로 요청을 보내지 않게 합니다.</text>
+</svg>

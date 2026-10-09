@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 354" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Epsilon GC에서 객체 5천만 개를 할당할 때 스레드 1개는 TLAB 사용 시 2,636MB/s, TLAB을 끄면 581MB/s이고, 스레드 2개는 4,191MB/s와 423MB/s로 차이가 더 커지는 막대 그래프</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="354" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="334" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">TLAB 유무에 따른 할당 속도 — Epsilon GC, 객체 5천만 개</text>
+  <text x="730" y="42" class="code" text-anchor="end">MB/sec</text>
+  <text x="30" y="84" class="lane">스레드 1개</text>
+  <text x="30" y="116" class="val">TLAB 256KB</text>
+  <rect x="160" y="96" width="264.17254042909605" height="28" rx="5" class="ok"/>
+  <text x="434.17254042909605" y="115" class="okt">2,636 MB/s</text>
+  <text x="30" y="154" class="mono">-XX:-UseTLAB</text>
+  <rect x="160" y="134" width="58.182548375319456" height="28" rx="5" class="bad"/>
+  <text x="228.18254837531947" y="153" class="badt">581 MB/s</text>
+  <text x="160" y="180" class="sub">실행 시간 223 ms → 2,785 ms</text>
+  <text x="30" y="210" class="lane">스레드 2개</text>
+  <text x="30" y="242" class="val">TLAB 4MB</text>
+  <rect x="160" y="222" width="420.0" height="28" rx="5" class="ok"/>
+  <text x="590.0" y="241" class="okt">4,191 MB/s</text>
+  <text x="30" y="280" class="mono">-XX:-UseTLAB</text>
+  <rect x="160" y="260" width="42.39016672751612" height="28" rx="5" class="bad"/>
+  <text x="212.39016672751612" y="279" class="badt">423 MB/s</text>
+  <text x="160" y="306" class="sub">실행 시간 408 ms → 8,491 ms</text>
+  <text x="30" y="332" class="step">출처: Aleksey Shipilëv, JVM Anatomy Quark #4: TLAB allocation (JMH SingleShot, 할당만 하는 Epsilon GC)</text>
+</svg>

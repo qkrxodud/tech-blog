@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 616" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Pause-Time 목표 1초를 맞추려고 힙을 줄이면 pause가 짧고 잦아지고, Throughput 목표 5%를 맞추려고 힙을 늘리면 GC 횟수가 줄어 GC 시간 비율이 10%에서 5%로 내려가는 예</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="616" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Pause-Time 목표 1초 — 힙을 줄여 한 번의 pause를 짧게</text>
+  <text x="730" y="42" class="code" text-anchor="end">-XX:MaxGCPauseMillis=1000</text>
+  <text x="150" y="70" class="sub">회색: 애플리케이션 실행, 색 블록: GC pause(stop-the-world), 30초 구간</text>
+  <text x="30" y="106" class="lane">조정 전</text>
+  <text x="30" y="124" class="sub">힙이 큼</text>
+  <rect x="150" y="84" width="570" height="48" rx="6" class="track"/>
+  <rect x="150" y="98" width="570" height="20" rx="4" class="dbbox"/>
+  <rect x="264.0" y="90" width="28.5" height="36" rx="3" class="bad"/>
+  <rect x="530.0" y="90" width="28.5" height="36" rx="3" class="bad"/>
+  <text x="720" y="146" class="note" text-anchor="end">pause 1.5초 × 2회 → 목표 1초 초과</text>
+  <text x="30" y="192" class="lane">조정 후</text>
+  <text x="30" y="210" class="sub">힙을 줄임</text>
+  <rect x="150" y="170" width="570" height="48" rx="6" class="track"/>
+  <rect x="150" y="184" width="570" height="20" rx="4" class="dbbox"/>
+  <rect x="207.0" y="176" width="17.1" height="36" rx="3" class="ok"/>
+  <rect x="349.5" y="176" width="17.1" height="36" rx="3" class="ok"/>
+  <rect x="492.0" y="176" width="17.1" height="36" rx="3" class="ok"/>
+  <rect x="634.5" y="176" width="17.1" height="36" rx="3" class="ok"/>
+  <text x="720" y="232" class="gnote" text-anchor="end">pause 1초 이하 × 4회 → 목표 충족, 대신 GC가 더 자주</text>
+  <text x="150" y="280" class="sub">한 번에 수집할 영역이 작아져 pause가 짧아지고, 그만큼 공간이 빨리 차서 GC 횟수가 늘어납니다</text>
+  <rect x="10" y="316" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="348" class="h">Throughput 목표 5% — 힙을 늘려 GC 횟수를 줄이기</text>
+  <text x="730" y="348" class="code" text-anchor="end">-XX:GCTimeRatio=19</text>
+  <text x="150" y="376" class="sub">GC 시간 비율 = 전체 시간 중 pause 시간의 합, 목표 1 / (1 + 19) = 5%</text>
+  <text x="30" y="412" class="lane">조정 전</text>
+  <text x="30" y="430" class="sub">힙이 작음</text>
+  <rect x="150" y="390" width="570" height="48" rx="6" class="track"/>
+  <rect x="150" y="404" width="570" height="20" rx="4" class="dbbox"/>
+  <rect x="169.0" y="396" width="9.5" height="36" rx="3" class="bad"/>
+  <rect x="264.0" y="396" width="9.5" height="36" rx="3" class="bad"/>
+  <rect x="359.0" y="396" width="9.5" height="36" rx="3" class="bad"/>
+  <rect x="454.0" y="396" width="9.5" height="36" rx="3" class="bad"/>
+  <rect x="549.0" y="396" width="9.5" height="36" rx="3" class="bad"/>
+  <rect x="644.0" y="396" width="9.5" height="36" rx="3" class="bad"/>
+  <text x="720" y="452" class="note" text-anchor="end">pause 0.5초 × 6회 = 3초 → 30초 중 10%</text>
+  <text x="30" y="498" class="lane">조정 후</text>
+  <text x="30" y="516" class="sub">힙을 늘림</text>
+  <rect x="150" y="476" width="570" height="48" rx="6" class="track"/>
+  <rect x="150" y="490" width="570" height="20" rx="4" class="dbbox"/>
+  <rect x="226.0" y="482" width="9.5" height="36" rx="3" class="ok"/>
+  <rect x="416.0" y="482" width="9.5" height="36" rx="3" class="ok"/>
+  <rect x="606.0" y="482" width="9.5" height="36" rx="3" class="ok"/>
+  <text x="720" y="538" class="gnote" text-anchor="end">pause 0.5초 × 3회 = 1.5초 → 30초 중 5%</text>
+  <text x="150" y="586" class="sub">GC 사이에 애플리케이션이 일하는 시간이 길어져 GC 시간 비율이 내려갑니다 (pause 길이는 같다고 단순화)</text>
+</svg>

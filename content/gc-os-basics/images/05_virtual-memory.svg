@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 490" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>프로세스의 가상 주소 공간 중 code 페이지 2번이 페이지 테이블을 통해 RAM의 프레임에 연결되고, 그 내용은 보조 기억장치의 실행 파일에서 올라오는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .seg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dia { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="490" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="470" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">가상 메모리 구조 — 페이지 테이블이 가상 주소를 RAM 주소로 연결</text>
+  <rect x="30" y="150" width="120" height="170" rx="14" class="hold"/>
+  <text x="90" y="178" class="t" text-anchor="middle">CPU</text>
+  <rect x="42" y="192" width="96" height="40" rx="8" class="box"/>
+  <text x="90" y="217" class="s" text-anchor="middle">IR · 레지스터</text>
+  <rect x="42" y="246" width="96" height="40" rx="8" class="box"/>
+  <text x="90" y="271" class="opk" text-anchor="middle">MMU</text>
+  <text x="90" y="306" class="s" text-anchor="middle">메모리 관리 장치</text>
+  <text x="230" y="68" class="t" text-anchor="middle">가상 주소 공간</text>
+  <rect x="170" y="78" width="120" height="352" rx="12" class="box"/>
+  <rect x="178" y="86" width="104" height="50" rx="6" class="hold"/>
+  <text x="230" y="116" class="seg" text-anchor="middle">kernel</text>
+  <rect x="178" y="146" width="104" height="40" rx="6" class="hold"/>
+  <text x="230" y="171" class="seg" text-anchor="middle">stack</text>
+  <rect x="178" y="250" width="104" height="40" rx="6" class="hold"/>
+  <text x="230" y="275" class="seg" text-anchor="middle">heap</text>
+  <rect x="178" y="298" width="104" height="40" rx="6" class="hold"/>
+  <text x="230" y="323" class="seg" text-anchor="middle">data</text>
+  <rect x="178" y="346" width="104" height="70" rx="6" class="ok"/>
+  <text x="230" y="386" class="okt" text-anchor="middle">code</text>
+  <text x="230" y="406" class="s" text-anchor="middle">페이지 2번</text>
+  <text x="405" y="112" class="t" text-anchor="middle">페이지 테이블</text>
+  <text x="345" y="136" class="s" text-anchor="middle">페이지</text>
+  <text x="435" y="136" class="s" text-anchor="middle">프레임</text>
+  <rect x="320" y="144" width="50" height="28" class="box"/>
+  <rect x="370" y="144" width="120" height="28" class="box"/>
+  <rect x="320" y="172" width="50" height="28" class="box"/>
+  <rect x="370" y="172" width="120" height="28" class="box"/>
+  <rect x="320" y="200" width="50" height="28" class="box"/>
+  <rect x="370" y="200" width="120" height="28" class="box"/>
+  <rect x="320" y="228" width="50" height="28" class="box"/>
+  <rect x="370" y="228" width="120" height="28" class="box"/>
+  <rect x="320" y="256" width="50" height="28" class="box"/>
+  <rect x="370" y="256" width="120" height="28" class="box"/>
+  <rect x="370" y="144" width="120" height="28" class="ok"/>
+  <text x="345" y="163" class="seg" text-anchor="middle">2</text>
+  <text x="430" y="163" class="okt" text-anchor="middle">RAM의 주소</text>
+  <text x="570" y="68" class="t" text-anchor="middle">RAM</text>
+  <rect x="520" y="78" width="100" height="352" rx="12" class="box"/>
+  <rect x="528" y="110" width="84" height="30" rx="4" class="ok"/>
+  <text x="570" y="130" class="gnote" text-anchor="middle">code 2번</text>
+  <rect x="528" y="150" width="84" height="30" rx="4" class="dbbox"/>
+  <rect x="528" y="190" width="84" height="30" rx="4" class="dbbox"/>
+  <rect x="528" y="230" width="84" height="30" rx="4" class="dbbox"/>
+  <rect x="528" y="340" width="84" height="80" rx="6" class="hold"/>
+  <text x="570" y="385" class="seg" text-anchor="middle">kernel</text>
+  <rect x="650" y="78" width="90" height="120" rx="12" class="dbbox"/>
+  <text x="695" y="104" class="t" text-anchor="middle">보조</text>
+  <text x="695" y="122" class="t" text-anchor="middle">기억장치</text>
+  <rect x="660" y="140" width="70" height="46" rx="6" class="box"/>
+  <text x="695" y="160" class="s" text-anchor="middle">실행 파일</text>
+  <text x="695" y="177" class="s" text-anchor="middle">code·data</text>
+  <line x1="658" y1="125" x2="615" y2="125" stroke="#16a34a" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#agr)"/>
+  <text x="695" y="222" class="s" text-anchor="middle">필요할 때</text>
+  <text x="695" y="239" class="s" text-anchor="middle">RAM으로 적재</text>
+  <line x1="284" y1="372" x2="318" y2="166" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="490" y1="158" x2="526" y2="128" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="405" y="310" class="s" text-anchor="middle">MMU가 이 테이블을 보고</text>
+  <text x="405" y="328" class="s" text-anchor="middle">가상 주소를 RAM 주소로 변환</text>
+  <text x="30" y="456" class="sub">프로세스는 자기만의 가상 주소 공간을 갖고, 실제 데이터는 RAM의 프레임에 있습니다. MMU가 페이지 테이블을 보고 둘을 잇습니다.</text>
+</svg>

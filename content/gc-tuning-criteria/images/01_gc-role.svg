@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>GC가 OS의 가상 주소 공간에서 JVM 힙을 확보하고, 객체에 메모리를 나눠 준 뒤 쓰지 않는 객체를 회수하는 역할</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">GC의 역할 — OS에서 받은 메모리를 객체에 나눠 주고 회수</text>
+  <text x="30" y="110" class="lane">OS</text>
+  <text x="30" y="128" class="sub">가상 주소 공간</text>
+  <rect x="150" y="70" width="585" height="128" rx="10" class="dbbox"/>
+  <text x="725" y="188" class="sub" text-anchor="end">Virtual address space</text>
+  <rect x="166" y="82" width="400" height="104" rx="8" class="box"/>
+  <text x="180" y="102" class="op">JVM Heap</text>
+  <text x="556" y="102" class="sub" text-anchor="end">GC가 OS에서 확보한 영역</text>
+  <rect x="180" y="114" width="80" height="58" rx="8" class="ok"/>
+  <text x="220" y="140" class="okt" text-anchor="middle">Obj</text>
+  <text x="220" y="159" class="val" text-anchor="middle">사용 중</text>
+  <rect x="272" y="114" width="80" height="58" rx="8" class="ok"/>
+  <text x="312" y="140" class="okt" text-anchor="middle">Obj</text>
+  <text x="312" y="159" class="val" text-anchor="middle">사용 중</text>
+  <rect x="364" y="114" width="80" height="58" rx="8" class="ok"/>
+  <text x="404" y="140" class="okt" text-anchor="middle">Obj</text>
+  <text x="404" y="159" class="val" text-anchor="middle">사용 중</text>
+  <rect x="456" y="114" width="80" height="58" rx="8" class="bad"/>
+  <text x="496" y="140" class="badt" text-anchor="middle">Obj</text>
+  <text x="496" y="159" class="val" text-anchor="middle">쓰지 않음</text>
+  <text x="152" y="230" class="op">①</text>
+  <text x="176" y="230" class="val">OS로부터 메모리 영역을 확보하고, 남으면 돌려줍니다</text>
+  <text x="152" y="256" class="op">②</text>
+  <text x="176" y="256" class="val">객체를 만들 때 확보한 영역에서 메모리를 나눠 줍니다</text>
+  <text x="152" y="282" class="op">③</text>
+  <text x="176" y="282" class="val">어떤 객체가 아직 사용 중인지 판단합니다</text>
+  <text x="152" y="308" class="op">④</text>
+  <text x="176" y="308" class="val">쓰지 않는 객체의 메모리를 회수해 다시 사용합니다</text>
+  <text x="150" y="334" class="sub">초록은 아직 참조되는 객체, 빨강은 더 이상 참조되지 않아 회수될 객체입니다</text>
+</svg>

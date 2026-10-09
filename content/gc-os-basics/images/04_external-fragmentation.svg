@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>RAM의 빈 공간 합계는 35MB지만 15MB, 10MB, 10MB로 흩어져 있어 25MB 프로그램을 올리지 못하는 외부 단편화 예시</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .seg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dia { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="300" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="280" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">외부 단편화 — 빈 공간은 있지만 이어져 있지 않음</text>
+  <text x="730" y="42" class="code" text-anchor="end">예: RAM 100MB</text>
+  <rect x="40" y="76" width="102" height="52" rx="4" class="hold"/>
+  <text x="91" y="107" class="seg" text-anchor="middle">OS</text>
+  <rect x="142" y="76" width="136" height="52" rx="4" class="box"/>
+  <text x="210" y="107" class="seg" text-anchor="middle">A</text>
+  <rect x="278" y="76" width="102" height="52" rx="4" class="wait"/>
+  <text x="329" y="107" class="waitt" text-anchor="middle">빈 15</text>
+  <rect x="380" y="76" width="102" height="52" rx="4" class="box"/>
+  <text x="431" y="107" class="seg" text-anchor="middle">B</text>
+  <rect x="482" y="76" width="68" height="52" rx="4" class="wait"/>
+  <text x="516" y="107" class="waitt" text-anchor="middle">빈 10</text>
+  <rect x="550" y="76" width="102" height="52" rx="4" class="box"/>
+  <text x="601" y="107" class="seg" text-anchor="middle">C</text>
+  <rect x="652" y="76" width="68" height="52" rx="4" class="wait"/>
+  <text x="686" y="107" class="waitt" text-anchor="middle">빈 10</text>
+  <text x="40" y="148" class="sub">사용 중</text>
+  <text x="731" y="148" class="sub" text-anchor="end">단위: MB</text>
+  <rect x="278" y="172" width="170" height="48" rx="8" class="bad"/>
+  <text x="363" y="201" class="badt" text-anchor="middle">새 프로그램 D (25MB)</text>
+  <line x1="329" y1="172" x2="329" y2="132" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="466" y="192" class="note">가장 큰 빈칸이 15MB라 들어가지 못함</text>
+  <text x="466" y="212" class="sub">빈 공간 합계는 15 + 10 + 10 = 35MB</text>
+  <text x="30" y="260" class="sub">가상 메모리는 프로그램을 페이지 단위로 잘라 흩어진 빈 프레임에 나눠 올리므로 이 문제를 피할 수 있습니다.</text>
+</svg>

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 620" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>GC를 지정하지 않으면 JVM이 서버급 머신 여부로 G1과 Serial 중 하나를 고르고, 힙 크기·GC 스레드·JIT 기본값을 정한 뒤 실행 중 목표에 맞춰 힙을 조정하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="620" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="600" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Ergonomics — JVM이 기본값을 고르는 흐름</text>
+  <rect x="130" y="66" width="260" height="40" rx="8" class="hold"/>
+  <text x="260.0" y="91.0" class="op" text-anchor="middle">JVM 시작</text>
+  <line x1="260" y1="106" x2="260" y2="126" class="al" marker-end="url(#ar)"/>
+  <rect x="100" y="128" width="320" height="52" rx="8" class="box"/>
+  <text x="260.0" y="150.0" class="op" text-anchor="middle">GC를 옵션으로 지정했는가?</text>
+  <text x="260.0" y="169.0" class="val" text-anchor="middle">-XX:+UseG1GC, -XX:+UseParallelGC 등</text>
+  <line x1="420" y1="154" x2="478" y2="154" class="al" marker-end="url(#ar)"/>
+  <text x="449" y="147" class="sub" text-anchor="middle">예</text>
+  <rect x="480" y="128" width="250" height="52" rx="8" class="box"/>
+  <text x="605.0" y="150.0" class="op" text-anchor="middle">지정한 GC 사용</text>
+  <text x="605.0" y="169.0" class="val" text-anchor="middle">지정하지 않은 항목만 JVM이 고름</text>
+  <line x1="260" y1="180" x2="260" y2="206" class="al" marker-end="url(#ar)"/>
+  <text x="272" y="198" class="sub">아니오</text>
+  <rect x="100" y="208" width="320" height="52" rx="8" class="box"/>
+  <text x="260.0" y="230.0" class="op" text-anchor="middle">서버급 머신인가?</text>
+  <text x="260.0" y="249.0" class="val" text-anchor="middle">CPU 2개 이상, 메모리 1792MB 이상</text>
+  <path d="M 200 260 L 200 280 L 140 280 L 140 298" class="gl" marker-end="url(#agr)"/>
+  <path d="M 320 260 L 320 280 L 380 280 L 380 298" class="al" marker-end="url(#ar)"/>
+  <text x="186" y="276" class="gnote" text-anchor="end">예</text>
+  <text x="334" y="276" class="sub">아니오</text>
+  <rect x="70" y="300" width="150" height="50" rx="8" class="ok"/>
+  <text x="145.0" y="321.0" class="okt" text-anchor="middle">G1 GC</text>
+  <text x="145.0" y="340.0" class="val" text-anchor="middle">JDK 9부터</text>
+  <rect x="300" y="300" width="150" height="50" rx="8" class="hold"/>
+  <text x="375.0" y="321.0" class="op" text-anchor="middle">Serial GC</text>
+  <text x="375.0" y="340.0" class="val" text-anchor="middle">단일 스레드 GC</text>
+  <path d="M 145 350 L 145 372 L 260 372 L 260 390" class="al" marker-end="url(#ar)"/>
+  <path d="M 375 350 L 375 372 L 260 372" class="al"/>
+  <rect x="70" y="392" width="380" height="116" rx="8" class="box"/>
+  <text x="260" y="414" class="op" text-anchor="middle">나머지 기본값</text>
+  <text x="90" y="438" class="val">초기 힙(InitialHeapSize): 물리 메모리의 1/64</text>
+  <text x="90" y="457" class="val">최대 힙(MaxHeapSize): 물리 메모리의 1/4</text>
+  <text x="90" y="476" class="val">GC 스레드 수: CPU 수와 힙 크기에 맞춰</text>
+  <text x="90" y="495" class="val">JIT 컴파일러: C1 + C2 (Tiered)</text>
+  <line x1="260" y1="508" x2="260" y2="528" class="al" marker-end="url(#ar)"/>
+  <rect x="70" y="530" width="380" height="56" rx="8" class="ok"/>
+  <text x="260.0" y="554.0" class="okt" text-anchor="middle">실행 중: 목표에 맞춰 힙 크기 조정</text>
+  <text x="260.0" y="573.0" class="val" text-anchor="middle">Pause-Time → Throughput → Footprint</text>
+  <rect x="480" y="208" width="250" height="178" rx="8" class="dbbox"/>
+  <text x="496" y="232" class="op">버전별 기본 GC</text>
+  <text x="496" y="258" class="val">JDK 5 ~ 8 서버급: Parallel</text>
+  <text x="496" y="279" class="val">JDK 9 ~ 26 서버급: G1</text>
+  <text x="496" y="300" class="sub">(JEP 248)</text>
+  <text x="496" y="321" class="val">서버급이 아니면: Serial (JDK 26까지)</text>
+  <text x="496" y="342" class="val">JDK 27부터: 환경과 관계없이 G1</text>
+  <text x="496" y="363" class="sub">(JEP 523)</text>
+</svg>

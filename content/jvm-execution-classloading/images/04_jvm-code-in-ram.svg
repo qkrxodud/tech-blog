@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>java로 jar를 실행하면 JVM 프로세스가 가상 메모리에 만들어지고, 그 안의 인터프리터와 JIT 컴파일러 코드가 RAM의 JVM 코드 영역에 올라가는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .link { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .brk { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .lblc { font-size: 12px; font-weight: 700; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">JVM도 하나의 프로그램 — 실행 엔진 코드도 RAM에 올라간다</text>
+  <rect x="30" y="66" width="300" height="270" rx="12" class="dbbox"/>
+  <text x="46" y="90" class="lane">가상 메모리</text>
+  <text x="46" y="108" class="sub">java 프로세스</text>
+  <rect x="70" y="120" width="220" height="196" rx="10" class="box"/>
+  <text x="180" y="146" class="lane" text-anchor="middle">JVM</text>
+  <rect x="92" y="164" width="176" height="56" rx="8" class="hold"/>
+  <text x="180" y="188" class="op" text-anchor="middle">Interpreter</text>
+  <text x="180" y="207" class="val" text-anchor="middle">바이트코드를 해석해 실행</text>
+  <rect x="92" y="240" width="176" height="56" rx="8" class="ok"/>
+  <text x="180" y="264" class="okc" text-anchor="middle">JIT Compiler</text>
+  <text x="180" y="283" class="val" text-anchor="middle">자주 쓰는 코드를 기계어로</text>
+  <rect x="110" y="368" width="120" height="44" rx="8" class="box"/>
+  <text x="170" y="395" class="op" text-anchor="middle">.jar</text>
+  <line x1="170" y1="366" x2="170" y2="320" class="flow" marker-end="url(#ag)"/>
+  <text x="182" y="352" class="lblc">실행 (java)</text>
+  <rect x="440" y="66" width="290" height="270" rx="12" class="dbbox"/>
+  <text x="585" y="92" class="lane" text-anchor="middle">RAM</text>
+  <rect x="460" y="112" width="250" height="122" rx="10" class="box"/>
+  <text x="476" y="136" class="t">JVM 프로세스 메모리 공간</text>
+  <text x="476" y="162" class="val">① JVM 코드 영역</text>
+  <text x="492" y="184" class="val">- 인터프리터 코드 (C++)</text>
+  <text x="492" y="206" class="val">- JIT 컴파일러 코드</text>
+  <line x1="292" y1="200" x2="456" y2="172" class="flow" marker-end="url(#ag)"/>
+  <text x="374" y="176" class="lbl" text-anchor="middle">적재</text>
+  <text x="460" y="262" class="sub">인터프리터와 JIT 컴파일러는 JVM(libjvm)의</text>
+  <text x="460" y="280" class="sub">일부라서, 프로세스가 시작되면 이 코드도</text>
+  <text x="460" y="298" class="sub">JVM 코드 영역으로 RAM에 올라갑니다.</text>
+</svg>

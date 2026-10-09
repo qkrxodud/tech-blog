@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 630" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>객체가 TLAB에 들어가면 pointer bump로 할당하고, 들어가지 않으면 남은 공간과 refill waste 한도를 비교해 TLAB을 retire하고 새 TLAB을 받거나, TLAB을 유지한 채 공유 Eden에 할당하며, 공간이 없으면 GC를 거쳐 그래도 없을 때 OutOfMemoryError가 나는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="630" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="620" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">TLAB 공간이 부족할 때 — 네 가지 선택지</text>
+  <text x="730" y="42" class="code" text-anchor="end">MemAllocator::mem_allocate</text>
+  <rect x="130" y="62" width="260" height="40" rx="8" class="hold"/>
+  <text x="260.0" y="87.0" class="op" text-anchor="middle">객체 할당 요청</text>
+  <line x1="260" y1="102" x2="260" y2="126" class="al" marker-end="url(#ar)"/>
+  <rect x="100" y="128" width="320" height="52" rx="8" class="box"/>
+  <text x="260.0" y="150.0" class="op" text-anchor="middle">TLAB에 들어가는가?</text>
+  <text x="260.0" y="169.0" class="val" text-anchor="middle">top + size &lt;= end</text>
+  <line x1="420" y1="154" x2="478" y2="154" class="gl" marker-end="url(#agr)"/>
+  <text x="449" y="147" class="gnote" text-anchor="middle">예</text>
+  <rect x="480" y="128" width="250" height="52" rx="8" class="ok"/>
+  <text x="605.0" y="150.0" class="okt" text-anchor="middle">TLAB에 할당</text>
+  <text x="605.0" y="169.0" class="val" text-anchor="middle">pointer bump, 동기화 없음</text>
+  <line x1="260" y1="180" x2="260" y2="206" class="al" marker-end="url(#ar)"/>
+  <text x="272" y="198" class="sub">아니오</text>
+  <rect x="100" y="208" width="320" height="52" rx="8" class="box"/>
+  <text x="260.0" y="230.0" class="op" text-anchor="middle">남은 공간 &gt; refill waste 한도?</text>
+  <text x="260.0" y="249.0" class="val" text-anchor="middle">한도 = TLAB 크기 / 64 (기본)</text>
+  <path d="M 420 234 L 600 234 L 600 366" class="al" marker-end="url(#ar)"/>
+  <text x="510" y="227" class="sub" text-anchor="middle">예 (많이 남음)</text>
+  <text x="610" y="296" class="sub">TLAB은 그대로 두고</text>
+  <text x="610" y="314" class="sub">한도 += 4 words</text>
+  <line x1="260" y1="260" x2="260" y2="286" class="al" marker-end="url(#ar)"/>
+  <text x="272" y="278" class="sub">아니오 (조금 남음)</text>
+  <rect x="100" y="288" width="320" height="52" rx="8" class="hold"/>
+  <text x="260.0" y="310.0" class="op" text-anchor="middle">TLAB retire</text>
+  <text x="260.0" y="329.0" class="val" text-anchor="middle">남은 공간은 filler 객체로 채움</text>
+  <line x1="260" y1="340" x2="260" y2="366" class="al" marker-end="url(#ar)"/>
+  <rect x="100" y="368" width="320" height="52" rx="8" class="box"/>
+  <text x="260.0" y="390.0" class="op" text-anchor="middle">① 새 TLAB을 받았는가?</text>
+  <text x="260.0" y="409.0" class="val" text-anchor="middle">Eden에서 새 구간 할당</text>
+  <line x1="420" y1="394" x2="468" y2="394" class="rl" marker-end="url(#arr)"/>
+  <text x="444" y="387" class="note" text-anchor="middle">실패</text>
+  <rect x="470" y="368" width="260" height="52" rx="8" class="hold"/>
+  <text x="600.0" y="390.0" class="op" text-anchor="middle">② TLAB 밖(공유 Eden)에 할당</text>
+  <text x="600.0" y="409.0" class="val" text-anchor="middle">공유 영역이라 CAS 등 동기화 필요</text>
+  <line x1="260" y1="420" x2="260" y2="446" class="gl" marker-end="url(#agr)"/>
+  <text x="272" y="438" class="gnote">성공</text>
+  <rect x="100" y="448" width="320" height="52" rx="8" class="ok"/>
+  <text x="260.0" y="470.0" class="okt" text-anchor="middle">새 TLAB에 할당</text>
+  <text x="260.0" y="489.0" class="val" text-anchor="middle">새 TLAB에서 다시 pointer bump</text>
+  <line x1="600" y1="420" x2="600" y2="446" class="al" marker-end="url(#ar)"/>
+  <text x="612" y="438" class="sub">공간이 없으면</text>
+  <rect x="470" y="448" width="260" height="52" rx="8" class="hold"/>
+  <text x="600.0" y="470.0" class="op" text-anchor="middle">③ GC로 메모리 회수</text>
+  <text x="600.0" y="489.0" class="val" text-anchor="middle">회수한 뒤 다시 할당 시도</text>
+  <line x1="600" y1="500" x2="600" y2="526" class="rl" marker-end="url(#arr)"/>
+  <text x="588" y="518" class="note" text-anchor="end">GC 뒤에도 공간이 없으면</text>
+  <rect x="470" y="528" width="260" height="52" rx="8" class="bad"/>
+  <text x="600.0" y="550.0" class="badt" text-anchor="middle">④ OutOfMemoryError</text>
+  <text x="600.0" y="569.0" class="val" text-anchor="middle">할당 실패 — JVM이 가장 피하려는 경우</text>
+  <text x="30" y="556" class="sub">①~④: 새 TLAB, TLAB 밖 할당, GC, 에러</text>
+  <text x="30" y="576" class="sub">대부분은 맨 위 TLAB 할당이나 ①에서 끝납니다</text>
+  <text x="30" y="606" class="sub">한도 64는 TLABRefillWasteFraction, 4 words는 TLABWasteIncrement의 기본값입니다 (HotSpot JDK 17·21)</text>
+</svg>

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>GC가 Mark 단계에서 살아 있는 객체 A·C·F를 표시하고, Sweep에서 B·D·E를 지운 뒤, Compact에서 살아 있는 객체를 모아 연속된 빈 공간을 만드는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="450" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="430" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Mark → Sweep → Compact — 살아 있는 객체를 찾고, 지우고, 모으기</text>
+  <text x="30" y="92" class="lane">GC 전</text>
+  <text x="30" y="110" class="sub">객체가 섞여 있음</text>
+  <rect x="150" y="68" width="585" height="50" rx="6" class="track"/>
+  <rect x="158" y="70" width="64" height="46" rx="8" class="box"/>
+  <text x="190" y="98" class="op" text-anchor="middle">A</text>
+  <rect x="230" y="70" width="64" height="46" rx="8" class="box"/>
+  <text x="262" y="98" class="op" text-anchor="middle">B</text>
+  <rect x="302" y="70" width="64" height="46" rx="8" class="box"/>
+  <text x="334" y="98" class="op" text-anchor="middle">C</text>
+  <rect x="374" y="70" width="64" height="46" rx="8" class="box"/>
+  <text x="406" y="98" class="op" text-anchor="middle">D</text>
+  <rect x="446" y="70" width="64" height="46" rx="8" class="box"/>
+  <text x="478" y="98" class="op" text-anchor="middle">E</text>
+  <rect x="518" y="70" width="64" height="46" rx="8" class="box"/>
+  <text x="550" y="98" class="op" text-anchor="middle">F</text>
+  <rect x="590" y="70" width="64" height="46" rx="8" class="wait"/>
+  <text x="622" y="98" class="waitt" text-anchor="middle">빈 공간</text>
+  <rect x="662" y="70" width="64" height="46" rx="8" class="wait"/>
+  <text x="694" y="98" class="waitt" text-anchor="middle">빈 공간</text>
+  <text x="150" y="136" class="sub">힙에 객체 A~F가 할당되어 있습니다. 어떤 객체가 아직 쓰이는지는 아직 모릅니다</text>
+  <text x="30" y="180" class="lane">Mark</text>
+  <text x="30" y="198" class="sub">도달 가능한 객체 표시</text>
+  <rect x="150" y="156" width="585" height="50" rx="6" class="track"/>
+  <rect x="158" y="158" width="64" height="46" rx="8" class="ok"/>
+  <text x="190" y="186" class="okt" text-anchor="middle">A</text>
+  <rect x="230" y="158" width="64" height="46" rx="8" class="bad"/>
+  <text x="262" y="186" class="badt" text-anchor="middle">B</text>
+  <rect x="302" y="158" width="64" height="46" rx="8" class="ok"/>
+  <text x="334" y="186" class="okt" text-anchor="middle">C</text>
+  <rect x="374" y="158" width="64" height="46" rx="8" class="bad"/>
+  <text x="406" y="186" class="badt" text-anchor="middle">D</text>
+  <rect x="446" y="158" width="64" height="46" rx="8" class="bad"/>
+  <text x="478" y="186" class="badt" text-anchor="middle">E</text>
+  <rect x="518" y="158" width="64" height="46" rx="8" class="ok"/>
+  <text x="550" y="186" class="okt" text-anchor="middle">F</text>
+  <rect x="590" y="158" width="64" height="46" rx="8" class="wait"/>
+  <text x="622" y="186" class="waitt" text-anchor="middle">빈 공간</text>
+  <rect x="662" y="158" width="64" height="46" rx="8" class="wait"/>
+  <text x="694" y="186" class="waitt" text-anchor="middle">빈 공간</text>
+  <text x="150" y="224" class="sub">GC Root에서 참조를 따라가 닿는 A·C·F를 표시합니다. B·D·E는 닿지 않습니다</text>
+  <text x="30" y="268" class="lane">Sweep</text>
+  <text x="30" y="286" class="sub">표시 안 된 객체 제거</text>
+  <rect x="150" y="244" width="585" height="50" rx="6" class="track"/>
+  <rect x="158" y="246" width="64" height="46" rx="8" class="ok"/>
+  <text x="190" y="274" class="okt" text-anchor="middle">A</text>
+  <rect x="230" y="246" width="64" height="46" rx="8" class="wait"/>
+  <text x="262" y="274" class="waitt" text-anchor="middle">빈 공간</text>
+  <rect x="302" y="246" width="64" height="46" rx="8" class="ok"/>
+  <text x="334" y="274" class="okt" text-anchor="middle">C</text>
+  <rect x="374" y="246" width="64" height="46" rx="8" class="wait"/>
+  <text x="406" y="274" class="waitt" text-anchor="middle">빈 공간</text>
+  <rect x="446" y="246" width="64" height="46" rx="8" class="wait"/>
+  <text x="478" y="274" class="waitt" text-anchor="middle">빈 공간</text>
+  <rect x="518" y="246" width="64" height="46" rx="8" class="ok"/>
+  <text x="550" y="274" class="okt" text-anchor="middle">F</text>
+  <rect x="590" y="246" width="64" height="46" rx="8" class="wait"/>
+  <text x="622" y="274" class="waitt" text-anchor="middle">빈 공간</text>
+  <rect x="662" y="246" width="64" height="46" rx="8" class="wait"/>
+  <text x="694" y="274" class="waitt" text-anchor="middle">빈 공간</text>
+  <text x="150" y="312" class="note">표시되지 않은 B·D·E를 회수합니다. 빈 공간이 여기저기 흩어집니다 (단편화)</text>
+  <text x="30" y="356" class="lane">Compact</text>
+  <text x="30" y="374" class="sub">살아 있는 객체 모으기</text>
+  <rect x="150" y="332" width="585" height="50" rx="6" class="track"/>
+  <rect x="158" y="334" width="64" height="46" rx="8" class="ok"/>
+  <text x="190" y="362" class="okt" text-anchor="middle">A</text>
+  <rect x="230" y="334" width="64" height="46" rx="8" class="ok"/>
+  <text x="262" y="362" class="okt" text-anchor="middle">C</text>
+  <rect x="302" y="334" width="64" height="46" rx="8" class="ok"/>
+  <text x="334" y="362" class="okt" text-anchor="middle">F</text>
+  <rect x="374" y="334" width="352" height="46" rx="8" class="wait"/>
+  <text x="550" y="362" class="gnote" text-anchor="middle">연속된 빈 공간 — 큰 객체도 바로 할당</text>
+  <text x="150" y="400" class="gnote">A·C·F를 한쪽으로 모아 연속된 빈 공간을 만듭니다</text>
+</svg>
