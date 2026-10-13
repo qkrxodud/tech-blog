@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>예제 쿼리의 세 조건을 게시글 1, 2, 3에 적용하면 게시글 1만 조회된다</title>
+    <style>
+      .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+      .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+      .step { font-size: 12px; fill: #9ca3af; }
+      .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+      .sub { font-size: 12px; fill: #6b7280; }
+      .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+      .val { font-size: 12.5px; fill: #4b5563; }
+      .db { font-size: 14px; font-weight: 700; fill: #374151; }
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+      .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+      .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+      .track { fill: #ffffff; stroke: #eceef1; }
+      .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+      .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .waitt { font-size: 12.5px; fill: #6b7280; }
+      .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+      .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+      .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+      .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+      .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+      .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+      .note { font-size: 12.5px; fill: #b91c1c; }
+      .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    </style>
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+      </marker>
+      <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+      </marker>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+      </marker>
+    </defs>
+  <rect width="760" height="340" fill="#ffffff"/>
+
+  <rect x="10" y="10" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">예제 쿼리 — 게시글마다 세 조건을 확인</text>
+  <text x="730" y="42" class="code" text-anchor="end">GET /boards/_search</text>
+
+  <text x="256" y="72" class="step" text-anchor="middle">must: title 검색엔진</text>
+  <text x="410" y="72" class="step" text-anchor="middle">must_not: 광고 게시판</text>
+  <text x="564" y="72" class="step" text-anchor="middle">공지 글 제외</text>
+  <text x="692" y="72" class="step" text-anchor="middle">결과</text>
+
+  <text x="30" y="108" class="lane">게시글 1</text>
+  <text x="30" y="126" class="sub">자유 · 공지 아님</text>
+  <rect x="176" y="80" width="564" height="64" rx="6" class="track"/>
+  <rect x="186" y="88" width="140" height="48" rx="8" class="ok"/>
+  <text x="256" y="108" class="okt" text-anchor="middle">일치</text>
+  <text x="256" y="127" class="val" text-anchor="middle">검색엔진이에요</text>
+  <rect x="340" y="88" width="140" height="48" rx="8" class="ok"/>
+  <text x="410" y="108" class="okt" text-anchor="middle">해당 없음</text>
+  <text x="410" y="127" class="val" text-anchor="middle">자유 게시판</text>
+  <rect x="494" y="88" width="140" height="48" rx="8" class="ok"/>
+  <text x="564" y="108" class="okt" text-anchor="middle">해당 없음</text>
+  <text x="564" y="127" class="val" text-anchor="middle">is_notice false</text>
+  <rect x="648" y="88" width="84" height="48" rx="8" class="ok"/>
+  <text x="690" y="117" class="okt" text-anchor="middle">조회</text>
+
+  <text x="30" y="180" class="lane">게시글 2</text>
+  <text x="30" y="198" class="sub">광고 · 공지 아님</text>
+  <rect x="176" y="152" width="564" height="64" rx="6" class="track"/>
+  <rect x="186" y="160" width="140" height="48" rx="8" class="bad"/>
+  <text x="256" y="180" class="badt" text-anchor="middle">불일치</text>
+  <text x="256" y="199" class="val" text-anchor="middle">이벤트 참여 방법…</text>
+  <rect x="340" y="160" width="140" height="48" rx="8" class="bad"/>
+  <text x="410" y="180" class="badt" text-anchor="middle">해당</text>
+  <text x="410" y="199" class="val" text-anchor="middle">광고 게시판</text>
+  <rect x="494" y="160" width="140" height="48" rx="8" class="ok"/>
+  <text x="564" y="180" class="okt" text-anchor="middle">해당 없음</text>
+  <text x="564" y="199" class="val" text-anchor="middle">is_notice false</text>
+  <rect x="648" y="160" width="84" height="48" rx="8" class="bad"/>
+  <text x="690" y="189" class="badt" text-anchor="middle">제외</text>
+
+  <text x="30" y="252" class="lane">게시글 3</text>
+  <text x="30" y="270" class="sub">익명 · 공지</text>
+  <rect x="176" y="224" width="564" height="64" rx="6" class="track"/>
+  <rect x="186" y="232" width="140" height="48" rx="8" class="bad"/>
+  <text x="256" y="252" class="badt" text-anchor="middle">불일치</text>
+  <text x="256" y="271" class="val" text-anchor="middle">익명으로 질문…</text>
+  <rect x="340" y="232" width="140" height="48" rx="8" class="ok"/>
+  <text x="410" y="252" class="okt" text-anchor="middle">해당 없음</text>
+  <text x="410" y="271" class="val" text-anchor="middle">익명 게시판</text>
+  <rect x="494" y="232" width="140" height="48" rx="8" class="bad"/>
+  <text x="564" y="252" class="badt" text-anchor="middle">해당</text>
+  <text x="564" y="271" class="val" text-anchor="middle">is_notice true</text>
+  <rect x="648" y="232" width="84" height="48" rx="8" class="bad"/>
+  <text x="690" y="261" class="badt" text-anchor="middle">제외</text>
+
+  <text x="30" y="314" class="sub">초록은 조회에 남는 쪽, 빨강은 걸러지는 쪽입니다. 세 조건을 모두 통과한 게시글 1만 조회됩니다.</text>
+</svg>

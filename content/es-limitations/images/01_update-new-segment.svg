@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>stock을 100에서 99로 고치면 문서 전체를 새 세그먼트에 다시 색인하고, 기존 문서는 사용 안 함으로 표기했다가 Merge에서 정리하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .chip { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; }
+    .chipt { font-size: 13px; font-weight: 600; fill: #1f2937; }
+    .idt { font-size: 13px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .empty { fill: none; stroke: #e5e7eb; stroke-width: 1.2; stroke-dasharray: 3 3; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">stock 100 → 99 — 새 세그먼트에 쓰고, 기존 것은 표기만</text>
+  <text x="730" y="42" class="code" text-anchor="end">"stock": 99</text>
+  <text x="220" y="68" class="step" text-anchor="middle">수정 요청</text>
+  <text x="360" y="68" class="step" text-anchor="middle">새 세그먼트</text>
+  <text x="500" y="68" class="step" text-anchor="middle">기존 표기</text>
+  <text x="640" y="68" class="step" text-anchor="middle">Merge</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">요청</text>
+  <text x="30" y="128" class="sub">stock만 바꿈</text>
+  <rect x="150" y="86" width="585" height="56" rx="6" class="track"/>
+  <text x="30" y="174" class="lane">새 세그먼트</text>
+  <text x="30" y="192" class="sub">다시 색인한 문서</text>
+  <rect x="150" y="150" width="585" height="56" rx="6" class="track"/>
+  <text x="30" y="238" class="lane">기존 세그먼트</text>
+  <text x="30" y="256" class="sub">원래 문서</text>
+  <rect x="150" y="214" width="585" height="56" rx="6" class="track"/>
+  <rect x="160.0" y="90" width="120" height="48" rx="8" class="box"/>
+  <text x="220" y="110" class="op" text-anchor="middle">UPDATE</text>
+  <text x="220" y="129" class="val" text-anchor="middle">stock: 99</text>
+  <rect x="298" y="154" width="124" height="48" rx="8" class="bad"/>
+  <text x="360" y="174" class="badt" text-anchor="middle">토큰 200개</text>
+  <text x="360" y="193" class="val" text-anchor="middle">문서 전체 재색인</text>
+  <line x1="250" y1="138" x2="330" y2="152" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="440.0" y="218" width="120" height="48" rx="8" class="hold"/>
+  <text x="500" y="238" class="db" text-anchor="middle">사용 안 함</text>
+  <text x="500" y="257" class="val" text-anchor="middle">삭제 표기</text>
+  <line x1="390" y1="204" x2="470" y2="216" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="582" y="154" width="116" height="112" rx="8" class="ok"/>
+  <text x="640" y="200" class="okt" text-anchor="middle">Merge</text>
+  <text x="640" y="220" class="val" text-anchor="middle">세그먼트 정리</text>
+  <line x1="564" y1="242" x2="578" y2="242" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="316" class="db">문서의 stock</text>
+  <rect x="170" y="296" width="100" height="32" rx="6" class="dbbox"/>
+  <text x="220" y="317" class="db" text-anchor="middle">100</text>
+  <rect x="310" y="296" width="100" height="32" rx="6" class="dbbox"/>
+  <text x="360" y="317" class="db" text-anchor="middle">99 (새)</text>
+  <rect x="450" y="296" width="100" height="32" rx="6" class="dbbox"/>
+  <text x="500" y="317" class="db" text-anchor="middle">100 (옛)</text>
+  <rect x="590" y="296" width="100" height="32" rx="6" class="ok"/>
+  <text x="640" y="317" class="okt" text-anchor="middle">99</text>
+  <text x="150" y="362" class="note">stock 하나만 바뀌어도 토큰 200개짜리 문서를 통째로 새로 색인합니다</text>
+  <text x="150" y="386" class="sub">기존 문서는 바로 지우지 않고 표기만 해 두었다가 Merge에서 정리합니다</text>
+</svg>

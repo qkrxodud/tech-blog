@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 626" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>색인 요청이 버퍼 색인, translog 기록, fsync를 거쳐 200 OK로 응답되는 순서와 응답 시점의 상태</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opn { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="626" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="324" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">translog — 성공 응답 전에 디스크로 간다</text>
+  <text x="730" y="42" class="code" text-anchor="end">durability: request</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4</text>
+  <line x1="160" y1="76" x2="722" y2="76" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="114" class="lane">Lucene</text>
+  <text x="30" y="132" class="sub">인메모리 버퍼</text>
+  <rect x="150" y="86" width="585" height="64" rx="6" class="track"/>
+  <text x="30" y="186" class="lane">translog</text>
+  <text x="30" y="204" class="sub">디스크</text>
+  <rect x="150" y="158" width="585" height="64" rx="6" class="track"/>
+  <text x="30" y="258" class="lane">클라이언트</text>
+  <text x="30" y="276" class="sub">요청한 쪽</text>
+  <rect x="150" y="230" width="585" height="64" rx="6" class="track"/>
+  <rect x="162" y="94" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="113" class="t" text-anchor="middle">색인</text>
+  <text x="220" y="132" class="val" text-anchor="middle">문서 A → 버퍼</text>
+  <rect x="302" y="166" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="185" class="t" text-anchor="middle">기록</text>
+  <text x="360" y="204" class="val" text-anchor="middle">같은 작업</text>
+  <rect x="442" y="166" width="116" height="48" rx="8" class="hold"/>
+  <text x="500" y="185" class="op" text-anchor="middle">fsync()</text>
+  <text x="500" y="204" class="val" text-anchor="middle">레플리카까지</text>
+  <rect x="582" y="238" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="257" class="okc" text-anchor="middle">200 OK</text>
+  <text x="640" y="276" class="val" text-anchor="middle">성공 응답</text>
+  <line x1="278" y1="138" x2="302" y2="168" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="418" y1="190" x2="440" y2="190" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="558" y1="210" x2="582" y2="240" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="318" class="sub">프라이머리와 할당된 모든 레플리카에서 translog가 fsync된 뒤에야 성공을 응답합니다.</text>
+  <rect x="10" y="348" width="740" height="268" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="380" class="h">성공 응답을 받은 시점의 상태</text>
+  <text x="30" y="425" class="lane">JVM Heap</text>
+  <rect x="160" y="398" width="266" height="42" rx="8" class="hold"/>
+  <text x="293" y="424" class="t" text-anchor="middle">buffer: [문서 A]</text>
+  <text x="30" y="479" class="lane">Page Cache</text>
+  <rect x="160" y="452" width="266" height="42" rx="8" class="wait"/>
+  <text x="293" y="478" class="waitt" text-anchor="middle">(없음)</text>
+  <rect x="450" y="455" width="280" height="36" rx="15" class="bad"/>
+  <text x="590" y="478" class="badt" text-anchor="middle">세그먼트가 없어 검색되지 않음</text>
+  <text x="30" y="533" class="lane">Disk</text>
+  <rect x="160" y="506" width="266" height="42" rx="8" class="hold"/>
+  <text x="293" y="532" class="t" text-anchor="middle">translog: [문서 A 색인 작업]</text>
+  <rect x="450" y="509" width="280" height="36" rx="15" class="ok"/>
+  <text x="590" y="532" class="okt" text-anchor="middle">translog에 있어 유실되지 않음</text>
+  <text x="30" y="578" class="sub">노드가 죽었다 살아나면 샤드 복구 과정에서 translog를 재생(replay)해</text>
+  <text x="30" y="596" class="sub">Lucene commit에 포함되지 않았던 작업들을 되살립니다.</text>
+</svg>

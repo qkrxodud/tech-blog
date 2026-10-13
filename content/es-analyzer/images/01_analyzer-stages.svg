@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>애널라이저가 캐릭터 필터, 토크나이저, 토큰 필터 세 단계를 거쳐 문자열을 토큰으로 만드는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .ko { font-size: 13px; fill: #374151; }
+    .kocode { font-size: 13px; fill: #6b7280; }
+    .kob { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .okk { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .badk { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .brk { stroke: #9ca3af; stroke-width: 1.2; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">애널라이저 — 문자열이 토큰이 되기까지 세 단계</text>
+  <text x="730" y="42" class="code" text-anchor="end">char_filter → tokenizer → filter</text>
+  <text x="30" y="92" class="lane">캐릭터 필터</text>
+  <text x="30" y="110" class="sub">html_strip</text>
+  <rect x="150" y="66" width="585" height="64" rx="6" class="track"/>
+  <rect x="164" y="83" width="209.64" height="30" rx="6" class="box"/>
+  <text x="268.82" y="102.5" class="ko" text-anchor="middle">&lt;h1&gt;아이폰 15 사용 후기&lt;/h1&gt;</text>
+  <line x1="379.64" y1="98" x2="427.64" y2="98" class="flow" marker-end="url(#ag)"/>
+  <text x="403.64" y="88" class="sub" text-anchor="middle">태그 제거</text>
+  <rect x="433.64" y="83" width="150.84" height="30" rx="6" class="ok"/>
+  <text x="509.06" y="102.5" class="okk" text-anchor="middle">아이폰 15 사용 후기</text>
+  <text x="30" y="152" class="sub">자르기 전에 문자열을 다듬습니다</text>
+  <text x="30" y="196" class="lane">토크나이저</text>
+  <text x="30" y="214" class="sub">standard</text>
+  <rect x="150" y="170" width="585" height="104" rx="6" class="track"/>
+  <rect x="241.74" y="182" width="320.92" height="30" rx="6" class="box"/>
+  <text x="402.2" y="201.5" class="mono" text-anchor="middle">The Brown-Foxes jumped over the roof.</text>
+  <rect x="164" y="232" width="50.04" height="30" rx="6" class="box"/>
+  <text x="189.02" y="251.5" class="monob" text-anchor="middle">The</text>
+  <rect x="222.04" y="232" width="67.4" height="30" rx="6" class="box"/>
+  <text x="255.74" y="251.5" class="monob" text-anchor="middle">Brown</text>
+  <rect x="297.44" y="232" width="67.4" height="30" rx="6" class="box"/>
+  <text x="331.14" y="251.5" class="monob" text-anchor="middle">Foxes</text>
+  <rect x="372.84" y="232" width="76.08" height="30" rx="6" class="box"/>
+  <text x="410.88" y="251.5" class="monob" text-anchor="middle">jumped</text>
+  <rect x="456.92" y="232" width="58.72" height="30" rx="6" class="box"/>
+  <text x="486.28" y="251.5" class="monob" text-anchor="middle">over</text>
+  <rect x="523.64" y="232" width="50.04" height="30" rx="6" class="box"/>
+  <text x="548.66" y="251.5" class="monob" text-anchor="middle">the</text>
+  <rect x="581.68" y="232" width="58.72" height="30" rx="6" class="box"/>
+  <text x="611.04" y="251.5" class="monob" text-anchor="middle">roof</text>
+  <path d="M166,229 V224 H638.4 V229" class="brk"/>
+  <line x1="402.2" y1="213" x2="402.2" y2="222" class="flow" marker-end="url(#ag)"/>
+  <path d="M166,265 V269 H638.4 V265" class="brk"/>
+  <text x="30" y="294" class="sub">문자열을 토큰으로 자릅니다 (standard는 공백·문장 부호 기준)</text>
+  <text x="30" y="340" class="lane">토큰 필터</text>
+  <text x="30" y="357" class="sub">lowercase, stop,</text>
+  <text x="30" y="372" class="sub">stemmer</text>
+  <rect x="150" y="312" width="585" height="64" rx="6" class="track"/>
+  <rect x="272.76" y="338" width="67.4" height="30" rx="6" class="ok"/>
+  <text x="306.46" y="357.5" class="okm" text-anchor="middle">brown</text>
+  <rect x="348.16" y="338" width="50.04" height="30" rx="6" class="ok"/>
+  <text x="373.18" y="357.5" class="okm" text-anchor="middle">fox</text>
+  <rect x="406.2" y="338" width="58.72" height="30" rx="6" class="ok"/>
+  <text x="435.56" y="357.5" class="okm" text-anchor="middle">jump</text>
+  <rect x="472.92" y="338" width="58.72" height="30" rx="6" class="ok"/>
+  <text x="502.28" y="357.5" class="okm" text-anchor="middle">roof</text>
+  <path d="M274.76,335 V330 H529.64 V335" class="brk"/>
+  <line x1="402.2" y1="269" x2="402.2" y2="328" class="flow" marker-end="url(#ag)"/>
+  <text x="30" y="398" class="sub">잘린 토큰을 최종적으로 다듬습니다 (소문자 변환 → 불용어 제거 → 원래 형태로 변환)</text>
+</svg>

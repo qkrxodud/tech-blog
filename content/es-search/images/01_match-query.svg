@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>match 쿼리가 검색어 편의점 후기를 토큰으로 나눠 도큐먼트의 토큰과 비교하는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .ko { font-size: 13px; fill: #374151; }
+    .kocode { font-size: 13px; fill: #6b7280; }
+    .kob { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .okk { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .badk { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .brk { stroke: #9ca3af; stroke-width: 1.2; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">match — 검색어도 토큰으로 나눠 찾기</text>
+  <text x="730" y="42" class="kocode" text-anchor="end">"match": { "title": "편의점 후기" }</text>
+  <text x="30" y="92" class="lane">도큐먼트</text>
+  <text x="30" y="110" class="sub">title (text)</text>
+  <rect x="150" y="66" width="585" height="64" rx="6" class="track"/>
+  <rect x="164" y="83" width="193.78" height="30" rx="6" class="box"/>
+  <text x="260.89" y="102.5" class="ko" text-anchor="middle">"편의점 과자 내돈내산 후기"</text>
+  <line x1="363.78" y1="98" x2="397.78" y2="98" class="flow" marker-end="url(#ag)"/>
+  <rect x="403.78" y="83" width="66" height="30" rx="6" class="ok"/>
+  <text x="436.78" y="102.5" class="okk" text-anchor="middle">편의점</text>
+  <rect x="477.78" y="83" width="52" height="30" rx="6" class="box"/>
+  <text x="503.78" y="102.5" class="kob" text-anchor="middle">과자</text>
+  <rect x="537.78" y="83" width="80" height="30" rx="6" class="box"/>
+  <text x="577.78" y="102.5" class="kob" text-anchor="middle">내돈내산</text>
+  <rect x="625.78" y="83" width="52" height="30" rx="6" class="ok"/>
+  <text x="651.78" y="102.5" class="okk" text-anchor="middle">후기</text>
+  <text x="30" y="152" class="sub">색인할 때 애널라이저가 문자열을 토큰으로 나눠 역인덱스에 저장합니다</text>
+  <text x="30" y="226" class="lane">검색어</text>
+  <text x="30" y="244" class="sub">match 쿼리</text>
+  <rect x="150" y="200" width="585" height="64" rx="6" class="track"/>
+  <rect x="164" y="217" width="107.98" height="30" rx="6" class="box"/>
+  <text x="217.99" y="236.5" class="ko" text-anchor="middle">"편의점 후기"</text>
+  <line x1="277.98" y1="232" x2="311.98" y2="232" class="flow" marker-end="url(#ag)"/>
+  <rect x="317.98" y="217" width="66" height="30" rx="6" class="ok"/>
+  <text x="350.98" y="236.5" class="okk" text-anchor="middle">편의점</text>
+  <line x1="350.98" y1="215" x2="436.78" y2="115" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="391.98" y="217" width="52" height="30" rx="6" class="ok"/>
+  <text x="417.98" y="236.5" class="okk" text-anchor="middle">후기</text>
+  <line x1="417.98" y1="215" x2="651.78" y2="115" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="560" y="216" width="160" height="32" rx="15" class="ok"/>
+  <text x="640" y="237" class="okt" text-anchor="middle">도큐먼트 조회</text>
+  <text x="30" y="300" class="sub">검색어 "편의점 후기"도 같은 방식으로 나뉘고, 나뉜 토큰이 역인덱스의 토큰과 일치해 도큐먼트가 조회됩니다</text>
+</svg>

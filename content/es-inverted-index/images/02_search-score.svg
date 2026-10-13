@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Apple 2024 아이패드로 검색하면 토큰마다 역인덱스에서 도큐먼트를 찾고, 일치한 단어가 3개인 doc 3, 2개인 doc 2, 1개인 doc 1 순으로 조회하는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .chip { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; }
+    .chipt { font-size: 13px; font-weight: 600; fill: #1f2937; }
+    .idt { font-size: 13px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .empty { fill: none; stroke: #e5e7eb; stroke-width: 1.2; stroke-dasharray: 3 3; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">검색 — 일치하는 토큰이 많은 도큐먼트부터</text>
+  <text x="730" y="42" class="code" text-anchor="end">"Apple 2024 아이패드"</text>
+  <text x="30" y="84" class="step">검색어 토큰</text>
+  <text x="190" y="84" class="step">역인덱스에서 찾은 도큐먼트</text>
+  <text x="400" y="84" class="lane" text-anchor="middle">doc 1</text>
+  <text x="520" y="84" class="lane" text-anchor="middle">doc 2</text>
+  <text x="640" y="84" class="lane" text-anchor="middle">doc 3</text>
+  <line x1="30" y1="96" x2="730" y2="96" class="axis"/>
+  <rect x="30" y="108" width="120" height="36" rx="6" class="hold"/>
+  <text x="90" y="131" class="chipt" text-anchor="middle">Apple</text>
+  <text x="190" y="131" class="idt">[1, 2, 3]</text>
+  <rect x="360" y="108" width="80" height="36" rx="6" class="ok"/>
+  <text x="400" y="131" class="okt" text-anchor="middle">일치</text>
+  <rect x="480" y="108" width="80" height="36" rx="6" class="ok"/>
+  <text x="520" y="131" class="okt" text-anchor="middle">일치</text>
+  <rect x="600" y="108" width="80" height="36" rx="6" class="ok"/>
+  <text x="640" y="131" class="okt" text-anchor="middle">일치</text>
+  <rect x="30" y="160" width="120" height="36" rx="6" class="hold"/>
+  <text x="90" y="183" class="chipt" text-anchor="middle">2024</text>
+  <text x="190" y="183" class="idt">[2, 3]</text>
+  <rect x="360" y="160" width="80" height="36" rx="6" class="empty"/>
+  <rect x="480" y="160" width="80" height="36" rx="6" class="ok"/>
+  <text x="520" y="183" class="okt" text-anchor="middle">일치</text>
+  <rect x="600" y="160" width="80" height="36" rx="6" class="ok"/>
+  <text x="640" y="183" class="okt" text-anchor="middle">일치</text>
+  <rect x="30" y="212" width="120" height="36" rx="6" class="hold"/>
+  <text x="90" y="235" class="chipt" text-anchor="middle">아이패드</text>
+  <text x="190" y="235" class="idt">[3]</text>
+  <rect x="360" y="212" width="80" height="36" rx="6" class="empty"/>
+  <rect x="480" y="212" width="80" height="36" rx="6" class="empty"/>
+  <rect x="600" y="212" width="80" height="36" rx="6" class="ok"/>
+  <text x="640" y="235" class="okt" text-anchor="middle">일치</text>
+  <line x1="30" y1="268" x2="730" y2="268" class="axis"/>
+  <text x="30" y="300" class="lane">일치한 단어 수</text>
+  <text x="400" y="300" class="db" text-anchor="middle">1개</text>
+  <text x="520" y="300" class="db" text-anchor="middle">2개</text>
+  <text x="640" y="300" class="db" text-anchor="middle">3개</text>
+  <text x="30" y="352" class="lane">조회 순서</text>
+  <rect x="190" y="330" width="140" height="36" rx="18" class="ok"/>
+  <text x="260" y="353" class="okt" text-anchor="middle">doc 3 · 3개 일치</text>
+  <line x1="336" y1="348" x2="366" y2="348" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="374" y="330" width="140" height="36" rx="18" class="box"/>
+  <text x="444" y="353" class="chipt" text-anchor="middle">doc 2 · 2개 일치</text>
+  <line x1="520" y1="348" x2="550" y2="348" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="558" y="330" width="140" height="36" rx="18" class="box"/>
+  <text x="628" y="353" class="chipt" text-anchor="middle">doc 1 · 1개 일치</text>
+  <text x="190" y="394" class="sub">Score가 높은 순으로 조회하며, 실제 점수는 TF·IDF·필드 길이로 계산합니다</text>
+</svg>

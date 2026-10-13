@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>users 인덱스를 PUT으로 생성하고 GET으로 확인한 뒤, _mappings로 매핑을 정의하고 _doc으로 도큐먼트를 삽입하는 순서와 MySQL 기준 대응</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .cell { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .codek { font-size: 13px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">users 인덱스 — 명령어를 실행하는 순서</text>
+  <text x="88" y="74" class="step">단계</text>
+  <text x="250" y="74" class="step">ES 명령어</text>
+  <text x="605" y="74" class="step" text-anchor="middle">MySQL 기준</text>
+  <rect x="40" y="86" width="430" height="46" rx="10" class="box"/>
+  <circle cx="66" cy="109" r="12" fill="#6b7280"/>
+  <text x="66" y="114" class="num" text-anchor="middle">1</text>
+  <text x="88" y="114" class="t">인덱스 생성</text>
+  <text x="250" y="114" class="op">PUT /users</text>
+  <rect x="490" y="86" width="230" height="46" rx="10" class="hold"/>
+  <text x="605" y="114" class="val" text-anchor="middle">테이블 생성</text>
+  <line x1="472" y1="109" x2="486" y2="109" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="150" y1="134" x2="150" y2="148" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="40" y="150" width="430" height="46" rx="10" class="box"/>
+  <circle cx="66" cy="173" r="12" fill="#6b7280"/>
+  <text x="66" y="178" class="num" text-anchor="middle">2</text>
+  <text x="88" y="178" class="t">인덱스 확인</text>
+  <text x="250" y="178" class="op">GET /users</text>
+  <line x1="150" y1="198" x2="150" y2="212" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="40" y="214" width="430" height="46" rx="10" class="box"/>
+  <circle cx="66" cy="237" r="12" fill="#6b7280"/>
+  <text x="66" y="242" class="num" text-anchor="middle">3</text>
+  <text x="88" y="242" class="t">매핑 정의</text>
+  <text x="250" y="242" class="op">PUT /users/_mappings</text>
+  <rect x="490" y="214" width="230" height="46" rx="10" class="hold"/>
+  <text x="605" y="242" class="val" text-anchor="middle">테이블 스키마 정의</text>
+  <line x1="472" y1="237" x2="486" y2="237" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="150" y1="262" x2="150" y2="276" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="40" y="278" width="430" height="46" rx="10" class="box"/>
+  <circle cx="66" cy="301" r="12" fill="#6b7280"/>
+  <text x="66" y="306" class="num" text-anchor="middle">4</text>
+  <text x="88" y="306" class="t">도큐먼트 삽입</text>
+  <text x="250" y="306" class="op">POST /users/_doc</text>
+  <rect x="490" y="278" width="230" height="46" rx="10" class="hold"/>
+  <text x="605" y="306" class="val" text-anchor="middle">레코드 삽입</text>
+  <line x1="472" y1="301" x2="486" y2="301" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+</svg>

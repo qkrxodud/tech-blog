@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>물리 메모리 64GB 데이터 노드에서 힙 31GB·페이지 캐시 33GB 배분과 힙 60GB 배분 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opn { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="186" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">물리 메모리 64GB 데이터 노드 — 권장 배분</text>
+  <text x="730" y="42" class="code" text-anchor="end">힙 ≤ 물리 메모리의 절반</text>
+  <rect x="30" y="62" width="339" height="70" rx="8" class="hold"/>
+  <text x="199.5" y="92" class="t" text-anchor="middle">JVM Heap 31GB</text>
+  <text x="199.5" y="111" class="val" text-anchor="middle">ES가 직접 쓰는 버퍼, 캐시 영역</text>
+  <rect x="369" y="62" width="361" height="70" rx="8" class="ok"/>
+  <text x="549.5" y="92" class="okt" text-anchor="middle">OS page cache 33GB</text>
+  <text x="549.5" y="111" class="val" text-anchor="middle">세그먼트가 캐싱되는 검색의 실제 대상</text>
+  <text x="30" y="156" class="step">0</text>
+  <text x="369" y="156" class="step" text-anchor="middle">31GB</text>
+  <text x="730" y="156" class="step" text-anchor="end">64GB</text>
+  <text x="30" y="180" class="gnote">나머지 절반은 노는 메모리가 아니라, 세그먼트를 올려 두고 검색하는 영역입니다.</text>
+  <rect x="10" y="212" width="740" height="198" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="244" class="h">힙을 60GB로 잡은 경우 — 검색이 오히려 느려짐</text>
+  <rect x="30" y="264" width="656" height="70" rx="8" class="hold"/>
+  <text x="205" y="304" class="t" text-anchor="middle">JVM Heap 60GB</text>
+  <rect x="686" y="264" width="44" height="70" rx="8" class="bad"/>
+  <text x="708" y="304" class="badt" text-anchor="middle">4GB</text>
+  <line x1="380" y1="258" x2="380" y2="340" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text x="390" y="292" class="note">32GB 이상: compressed oops 비활성화</text>
+  <text x="390" y="312" class="note">포인터가 커져 실질 저장 용량이 줄어듦</text>
+  <text x="30" y="358" class="step">0</text>
+  <text x="380" y="358" class="step" text-anchor="middle">32GB</text>
+  <text x="730" y="358" class="step" text-anchor="end">64GB</text>
+  <text x="30" y="386" class="note">페이지 캐시가 4GB만 남아 매 검색마다 디스크를 읽습니다. 그래서 힙은 보통 30~31GB로 잡습니다.</text>
+</svg>

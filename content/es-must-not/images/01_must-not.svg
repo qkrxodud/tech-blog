@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 310" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>must_not에 category 광고 게시판 조건을 두면 게시글 2만 결과에서 빠지고 게시글 1과 3은 남는다</title>
+    <style>
+      .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+      .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+      .step { font-size: 12px; fill: #9ca3af; }
+      .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+      .sub { font-size: 12px; fill: #6b7280; }
+      .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+      .val { font-size: 12.5px; fill: #4b5563; }
+      .db { font-size: 14px; font-weight: 700; fill: #374151; }
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+      .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+      .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+      .track { fill: #ffffff; stroke: #eceef1; }
+      .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+      .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .waitt { font-size: 12.5px; fill: #6b7280; }
+      .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+      .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+      .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+      .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+      .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+      .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+      .note { font-size: 12.5px; fill: #b91c1c; }
+      .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    </style>
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+      </marker>
+      <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+      </marker>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+      </marker>
+    </defs>
+  <rect width="760" height="310" fill="#ffffff"/>
+
+  <rect x="10" y="10" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">must_not — 조건에 해당하는 문서를 결과에서 제외</text>
+  <text x="730" y="42" class="code" text-anchor="end">bool.must_not</text>
+
+  <text x="130" y="72" class="step" text-anchor="middle">게시글</text>
+  <text x="380" y="72" class="step" text-anchor="middle">must_not 조건</text>
+  <text x="630" y="72" class="step" text-anchor="middle">결과</text>
+
+  <rect x="30" y="84" width="200" height="48" rx="8" class="box"/>
+  <text x="130" y="104" class="t" text-anchor="middle">게시글 1</text>
+  <text x="130" y="123" class="val" text-anchor="middle">자유 게시판</text>
+  <rect x="30" y="148" width="200" height="48" rx="8" class="box"/>
+  <text x="130" y="168" class="t" text-anchor="middle">게시글 2</text>
+  <text x="130" y="187" class="val" text-anchor="middle">광고 게시판</text>
+  <rect x="30" y="212" width="200" height="48" rx="8" class="box"/>
+  <text x="130" y="232" class="t" text-anchor="middle">게시글 3</text>
+  <text x="130" y="251" class="val" text-anchor="middle">익명 게시판</text>
+
+  <line x1="231" y1="108" x2="288" y2="150" class="axis" marker-end="url(#ar)"/>
+  <line x1="231" y1="172" x2="288" y2="172" class="axis" marker-end="url(#ar)"/>
+  <line x1="231" y1="236" x2="288" y2="194" class="axis" marker-end="url(#ar)"/>
+
+  <rect x="290" y="136" width="180" height="72" rx="8" class="hold"/>
+  <text x="380" y="160" class="op" text-anchor="middle">term category</text>
+  <text x="380" y="180" class="val" text-anchor="middle">"광고 게시판"</text>
+  <text x="380" y="198" class="val" text-anchor="middle">에 해당하면 제외</text>
+
+  <line x1="471" y1="150" x2="528" y2="110" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="471" y1="172" x2="528" y2="172" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <line x1="471" y1="194" x2="528" y2="234" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+
+  <rect x="530" y="84" width="200" height="48" rx="8" class="ok"/>
+  <text x="630" y="104" class="okt" text-anchor="middle">게시글 1</text>
+  <text x="630" y="123" class="val" text-anchor="middle">해당 없음 → 남음</text>
+  <rect x="530" y="148" width="200" height="48" rx="8" class="bad"/>
+  <text x="630" y="168" class="badt" text-anchor="middle">게시글 2</text>
+  <text x="630" y="187" class="val" text-anchor="middle">해당 → 제외</text>
+  <rect x="530" y="212" width="200" height="48" rx="8" class="ok"/>
+  <text x="630" y="232" class="okt" text-anchor="middle">게시글 3</text>
+  <text x="630" y="251" class="val" text-anchor="middle">해당 없음 → 남음</text>
+
+  <text x="30" y="284" class="sub">must_not은 SQL의 NOT 역할을 합니다. 이 조건 하나만 보면 category가 광고 게시판인 게시글 2만 빠집니다.</text>
+</svg>

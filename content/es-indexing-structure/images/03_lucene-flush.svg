@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>문서를 분석기에 통과시켜 인메모리 버퍼에 쌓고, Lucene flush로 세그먼트를 만들어 페이지 캐시에 write()하는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opn { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="340" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Lucene의 flush — 버퍼에서 세그먼트로</text>
+  <text x="730" y="42" class="code" text-anchor="end">write()</text>
+  <text x="30" y="92" class="lane">JVM Heap</text>
+  <text x="30" y="110" class="sub">ES 프로세스 메모리</text>
+  <rect x="150" y="68" width="585" height="64" rx="6" class="track"/>
+  <rect x="160" y="76" width="104" height="48" rx="8" class="box"/>
+  <text x="212" y="95" class="t" text-anchor="middle">색인 요청</text>
+  <text x="212" y="114" class="val" text-anchor="middle">문서 A, B, C</text>
+  <line x1="266" y1="100" x2="288" y2="100" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="290" y="76" width="104" height="48" rx="8" class="box"/>
+  <text x="342" y="95" class="t" text-anchor="middle">분석기</text>
+  <text x="342" y="114" class="val" text-anchor="middle">역색인 생성</text>
+  <line x1="396" y1="100" x2="418" y2="100" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="420" y="76" width="190" height="48" rx="8" class="hold"/>
+  <text x="515" y="95" class="op" text-anchor="middle">buffer</text>
+  <text x="515" y="114" class="val" text-anchor="middle">[문서 A, 문서 B, 문서 C]</text>
+  <rect x="622" y="82" width="104" height="36" rx="15" class="bad"/>
+  <text x="674" y="105" class="badt" text-anchor="middle">검색 안 됨</text>
+  <text x="30" y="222" class="lane">Page Cache</text>
+  <text x="30" y="240" class="sub">커널 메모리</text>
+  <rect x="150" y="198" width="585" height="64" rx="6" class="track"/>
+  <rect x="420" y="206" width="190" height="48" rx="8" class="ok"/>
+  <text x="515" y="225" class="okc" text-anchor="middle">Segment_0</text>
+  <text x="515" y="244" class="val" text-anchor="middle">[문서 A, 문서 B, 문서 C]</text>
+  <rect x="622" y="212" width="104" height="36" rx="15" class="ok"/>
+  <text x="674" y="235" class="okt" text-anchor="middle">검색 대상</text>
+  <line x1="515" y1="126" x2="515" y2="202" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="500" y="160" class="op" text-anchor="end">Lucene flush</text>
+  <text x="500" y="178" class="val" text-anchor="end">세그먼트 파일을 write()</text>
+  <text x="30" y="292" class="sub">파일은 만들어졌지만 아직 메모리에만 데이터가 있습니다.</text>
+  <text x="30" y="312" class="note">검색은 존재하는 모든 세그먼트를 순회하므로, 버퍼에만 있는 문서는 검색되지 않습니다.</text>
+</svg>

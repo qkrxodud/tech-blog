@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 508" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>1페이지는 샤드 5개에서 10개씩 50건을 모아 상위 10개를 정하지만, 10001페이지는 샤드마다 100,010개씩 500,050건을 coordinating 노드로 모아 정렬한 뒤 10개만 잘라내는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .chip { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; }
+    .chipt { font-size: 13px; font-weight: 600; fill: #1f2937; }
+    .idt { font-size: 13px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .empty { fill: none; stroke: #e5e7eb; stroke-width: 1.2; stroke-dasharray: 3 3; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="508" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">1페이지 — 샤드마다 10개씩</text>
+  <text x="730" y="42" class="code" text-anchor="end">from: 0, size: 10</text>
+  <rect x="40" y="62" width="120" height="48" rx="8" class="box"/>
+  <text x="100" y="82" class="lane" text-anchor="middle" style="font-size:14px">샤드1</text>
+  <text x="100" y="101" class="val" text-anchor="middle">상위 10개</text>
+  <line x1="100" y1="112" x2="310.0" y2="146" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="180" y="62" width="120" height="48" rx="8" class="box"/>
+  <text x="240" y="82" class="lane" text-anchor="middle" style="font-size:14px">샤드2</text>
+  <text x="240" y="101" class="val" text-anchor="middle">상위 10개</text>
+  <line x1="240" y1="112" x2="345.0" y2="146" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="320" y="62" width="120" height="48" rx="8" class="box"/>
+  <text x="380" y="82" class="lane" text-anchor="middle" style="font-size:14px">샤드3</text>
+  <text x="380" y="101" class="val" text-anchor="middle">상위 10개</text>
+  <line x1="380" y1="112" x2="380.0" y2="146" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="460" y="62" width="120" height="48" rx="8" class="box"/>
+  <text x="520" y="82" class="lane" text-anchor="middle" style="font-size:14px">샤드4</text>
+  <text x="520" y="101" class="val" text-anchor="middle">상위 10개</text>
+  <line x1="520" y1="112" x2="415.0" y2="146" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="600" y="62" width="120" height="48" rx="8" class="box"/>
+  <text x="660" y="82" class="lane" text-anchor="middle" style="font-size:14px">샤드5</text>
+  <text x="660" y="101" class="val" text-anchor="middle">상위 10개</text>
+  <line x1="660" y1="112" x2="450.0" y2="146" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="145.0" y="150" width="470" height="48" rx="8" class="ok"/>
+  <text x="380" y="170" class="okt" text-anchor="middle">coordinating: 50개 병합·정렬</text>
+  <text x="380" y="189" class="val" text-anchor="middle">상위 10개 확정</text>
+  <text x="40" y="228" class="gnote">샤드 5개 × 10 = 50건만 모으면 됨</text>
+  <rect x="10" y="262" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="294" class="h">10001페이지 — 샤드마다 from + size개씩</text>
+  <text x="730" y="294" class="code" text-anchor="end">from: 100000, size: 10</text>
+  <rect x="40" y="314" width="120" height="48" rx="8" class="bad"/>
+  <text x="100" y="334" class="badt" text-anchor="middle" style="font-size:14px">샤드1</text>
+  <text x="100" y="353" class="val" text-anchor="middle">상위 100,010개</text>
+  <line x1="100" y1="364" x2="310.0" y2="398" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="180" y="314" width="120" height="48" rx="8" class="bad"/>
+  <text x="240" y="334" class="badt" text-anchor="middle" style="font-size:14px">샤드2</text>
+  <text x="240" y="353" class="val" text-anchor="middle">상위 100,010개</text>
+  <line x1="240" y1="364" x2="345.0" y2="398" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="320" y="314" width="120" height="48" rx="8" class="bad"/>
+  <text x="380" y="334" class="badt" text-anchor="middle" style="font-size:14px">샤드3</text>
+  <text x="380" y="353" class="val" text-anchor="middle">상위 100,010개</text>
+  <line x1="380" y1="364" x2="380.0" y2="398" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="460" y="314" width="120" height="48" rx="8" class="bad"/>
+  <text x="520" y="334" class="badt" text-anchor="middle" style="font-size:14px">샤드4</text>
+  <text x="520" y="353" class="val" text-anchor="middle">상위 100,010개</text>
+  <line x1="520" y1="364" x2="415.0" y2="398" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="600" y="314" width="120" height="48" rx="8" class="bad"/>
+  <text x="660" y="334" class="badt" text-anchor="middle" style="font-size:14px">샤드5</text>
+  <text x="660" y="353" class="val" text-anchor="middle">상위 100,010개</text>
+  <line x1="660" y1="364" x2="450.0" y2="398" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="145.0" y="402" width="470" height="48" rx="8" class="bad"/>
+  <text x="380" y="422" class="badt" text-anchor="middle">coordinating: 500,050개 병합·정렬</text>
+  <text x="380" y="441" class="val" text-anchor="middle">100,001~100,010번째만 잘라내고 나머지는 버림</text>
+  <text x="40" y="480" class="note">샤드 5개 × 100,010 = 500,050건을 한 노드 힙에 올려 정렬</text>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>문장이 character filter, tokenizer, token filter를 차례로 거쳐 term 목록으로 바뀌는 색인 시점의 분석 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .cell { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .codek { font-size: 13px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="450" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="430" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">색인 시점의 분석 — 저장할 때 문장을 term으로 바꿔 둠</text>
+  <text x="730" y="42" class="code" text-anchor="end">Analysis</text>
+  <rect x="40" y="66" width="680" height="46" rx="10" class="hold"/>
+  <text x="380" y="94" class="t" text-anchor="middle">"Kafka를 사용한 Spring Boot 애플리케이션"</text>
+  <text x="56" y="94" class="sub">원문</text>
+  <line x1="380" y1="114" x2="380" y2="130" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="40" y="134" width="680" height="46" rx="10" class="box"/>
+  <circle cx="68" cy="157" r="12" fill="#6b7280"/>
+  <text x="68" y="162" class="num" text-anchor="middle">1</text>
+  <text x="92" y="162" class="op">character filter</text>
+  <text x="300" y="162" class="val">HTML 제거 등</text>
+  <line x1="380" y1="182" x2="380" y2="198" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="40" y="202" width="680" height="46" rx="10" class="box"/>
+  <circle cx="68" cy="225" r="12" fill="#6b7280"/>
+  <text x="68" y="230" class="num" text-anchor="middle">2</text>
+  <text x="92" y="230" class="op">tokenizer</text>
+  <text x="300" y="230" class="val">형태소 분석 / standard / nori 등</text>
+  <line x1="380" y1="250" x2="380" y2="266" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="40" y="270" width="680" height="46" rx="10" class="box"/>
+  <circle cx="68" cy="293" r="12" fill="#6b7280"/>
+  <text x="68" y="298" class="num" text-anchor="middle">3</text>
+  <text x="92" y="298" class="op">token filter</text>
+  <text x="300" y="298" class="val">소문자화, 불용어 제거, 어간 추출, 동의어</text>
+  <line x1="380" y1="318" x2="380" y2="334" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="40" y="338" width="680" height="46" rx="10" class="ok"/>
+  <text x="380" y="366" class="okt" text-anchor="middle">[kafka, 사용, spring, boot, 애플리케이션]</text>
+  <text x="56" y="366" class="sub">결과</text>
+  <text x="40" y="420" class="sub">대소문자 무시, 어미 변형("running" → "run"), 동의어("노트북" = "랩탑")가 이 단계에서 처리됨</text>
+</svg>

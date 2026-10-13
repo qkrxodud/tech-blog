@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 462" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>강아지, 강물, 강당을 그대로 저장하면 강을 세 번 쓰지만 FST는 강을 한 번만 저장해 공유하고, 작아진 덕분에 힙에 올려 디스크 seek 없이 오프셋을 얻는다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .cell { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .codek { font-size: 13px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="462" fill="#ffffff"/>
+  <rect x="10" y="10" width="362" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">그대로 저장한 목록</text>
+  <text x="30" y="64" class="sub">단어마다 처음부터 끝까지 저장</text>
+  <rect x="50" y="92" width="44" height="40" rx="6" class="bad"/>
+  <text x="72" y="118" class="badt" text-anchor="middle">강</text>
+  <rect x="100" y="92" width="44" height="40" rx="6" class="box"/>
+  <text x="122" y="118" class="cell" text-anchor="middle">아</text>
+  <rect x="150" y="92" width="44" height="40" rx="6" class="box"/>
+  <text x="172" y="118" class="cell" text-anchor="middle">지</text>
+  <text x="220" y="118" class="sub">강아지</text>
+  <rect x="50" y="148" width="44" height="40" rx="6" class="bad"/>
+  <text x="72" y="174" class="badt" text-anchor="middle">강</text>
+  <rect x="100" y="148" width="44" height="40" rx="6" class="box"/>
+  <text x="122" y="174" class="cell" text-anchor="middle">물</text>
+  <text x="220" y="174" class="sub">강물</text>
+  <rect x="50" y="204" width="44" height="40" rx="6" class="bad"/>
+  <text x="72" y="230" class="badt" text-anchor="middle">강</text>
+  <rect x="100" y="204" width="44" height="40" rx="6" class="box"/>
+  <text x="122" y="230" class="cell" text-anchor="middle">당</text>
+  <text x="220" y="230" class="sub">강당</text>
+  <text x="50" y="272" class="note">‘강’을 세 번 반복해서 저장</text>
+  <rect x="388" y="10" width="362" height="290" rx="12" fill="#fafafa" stroke="#16a34a"/>
+  <text x="408" y="42" class="h">FST — 공통 접두사 공유</text>
+  <text x="408" y="64" class="sub">겹치는 앞부분은 한 번만 저장</text>
+  <rect x="420" y="148" width="56" height="40" rx="6" class="ok"/>
+  <text x="448" y="174" class="okt" text-anchor="middle">강</text>
+  <line x1="476" y1="168" x2="576" y2="112" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="580" y="92" width="72" height="40" rx="6" class="box"/>
+  <text x="616" y="118" class="cell" text-anchor="middle">아지</text>
+  <text x="666" y="118" class="sub">강아지</text>
+  <line x1="476" y1="168" x2="576" y2="168" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="580" y="148" width="72" height="40" rx="6" class="box"/>
+  <text x="616" y="174" class="cell" text-anchor="middle">물</text>
+  <text x="666" y="174" class="sub">강물</text>
+  <line x1="476" y1="168" x2="576" y2="224" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="580" y="204" width="72" height="40" rx="6" class="box"/>
+  <text x="616" y="230" class="cell" text-anchor="middle">당</text>
+  <text x="666" y="230" class="sub">강당</text>
+  <text x="408" y="272" class="gnote">‘강’은 한 번만 저장하고 세 단어가 함께 사용</text>
+  <rect x="10" y="316" width="740" height="136" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="348" class="h">크기가 줄어든 결과</text>
+  <rect x="40" y="368" width="210" height="46" rx="10" class="box"/>
+  <text x="145" y="396" class="t" text-anchor="middle">압축되어 크기가 작아짐</text>
+  <line x1="252" y1="391" x2="274" y2="391" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="276" y="368" width="210" height="46" rx="10" class="box"/>
+  <text x="381" y="396" class="t" text-anchor="middle">메모리(힙)에 올려 둠</text>
+  <line x1="488" y1="391" x2="510" y2="391" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="512" y="368" width="210" height="46" rx="10" class="ok"/>
+  <text x="617" y="396" class="okt" text-anchor="middle">디스크 seek 없이 오프셋 획득</text>
+  <text x="40" y="438" class="sub">단어가 많아질수록 겹치는 접두사도 많아져 절약되는 양도 커짐</text>
+</svg>

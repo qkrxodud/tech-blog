@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>lowercase, stop, stemmer 필터를 차례로 거치며 토큰이 소문자로 바뀌고 불용어가 빠지고 원래 형태로 바뀌는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .ko { font-size: 13px; fill: #374151; }
+    .kocode { font-size: 13px; fill: #6b7280; }
+    .kob { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .okk { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .badk { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .brk { stroke: #9ca3af; stroke-width: 1.2; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">토큰 필터 — 잘린 토큰을 차례로 다듬기</text>
+  <text x="730" y="42" class="code" text-anchor="end">"filter": ["lowercase", "stop", "stemmer"]</text>
+  <text x="30" y="88" class="lane">토크나이저</text>
+  <text x="30" y="106" class="sub">standard</text>
+  <rect x="150" y="64" width="585" height="54" rx="6" class="track"/>
+  <rect x="165.91" y="76" width="48.18" height="30" rx="6" class="box"/>
+  <text x="190" y="95.5" class="monob" text-anchor="middle">The</text>
+  <rect x="235.85" y="76" width="64.3" height="30" rx="6" class="box"/>
+  <text x="268" y="95.5" class="monob" text-anchor="middle">Brown</text>
+  <rect x="313.85" y="76" width="64.3" height="30" rx="6" class="box"/>
+  <text x="346" y="95.5" class="monob" text-anchor="middle">Foxes</text>
+  <rect x="401.82" y="76" width="72.36" height="30" rx="6" class="box"/>
+  <text x="438" y="95.5" class="monob" text-anchor="middle">jumped</text>
+  <rect x="501.88" y="76" width="56.24" height="30" rx="6" class="box"/>
+  <text x="530" y="95.5" class="monob" text-anchor="middle">over</text>
+  <rect x="583.91" y="76" width="48.18" height="30" rx="6" class="box"/>
+  <text x="608" y="95.5" class="monob" text-anchor="middle">the</text>
+  <rect x="657.88" y="76" width="56.24" height="30" rx="6" class="box"/>
+  <text x="686" y="95.5" class="monob" text-anchor="middle">roof</text>
+  <line x1="160" y1="118" x2="160" y2="136" class="flow" marker-end="url(#ag)"/>
+  <text x="30" y="160" class="lane">lowercase</text>
+  <text x="30" y="178" class="sub">소문자로 변환</text>
+  <rect x="150" y="136" width="585" height="54" rx="6" class="track"/>
+  <rect x="165.91" y="148" width="48.18" height="30" rx="6" class="ok"/>
+  <text x="190" y="167.5" class="okm" text-anchor="middle">the</text>
+  <rect x="235.85" y="148" width="64.3" height="30" rx="6" class="ok"/>
+  <text x="268" y="167.5" class="okm" text-anchor="middle">brown</text>
+  <rect x="313.85" y="148" width="64.3" height="30" rx="6" class="ok"/>
+  <text x="346" y="167.5" class="okm" text-anchor="middle">foxes</text>
+  <rect x="401.82" y="148" width="72.36" height="30" rx="6" class="box"/>
+  <text x="438" y="167.5" class="monob" text-anchor="middle">jumped</text>
+  <rect x="501.88" y="148" width="56.24" height="30" rx="6" class="box"/>
+  <text x="530" y="167.5" class="monob" text-anchor="middle">over</text>
+  <rect x="583.91" y="148" width="48.18" height="30" rx="6" class="box"/>
+  <text x="608" y="167.5" class="monob" text-anchor="middle">the</text>
+  <rect x="657.88" y="148" width="56.24" height="30" rx="6" class="box"/>
+  <text x="686" y="167.5" class="monob" text-anchor="middle">roof</text>
+  <line x1="160" y1="190" x2="160" y2="208" class="flow" marker-end="url(#ag)"/>
+  <text x="30" y="232" class="lane">stop</text>
+  <text x="30" y="250" class="sub">불용어 제거</text>
+  <rect x="150" y="208" width="585" height="54" rx="6" class="track"/>
+  <rect x="165.91" y="220" width="48.18" height="30" rx="6" class="bad"/>
+  <text x="190" y="239.5" class="badm" text-anchor="middle">the</text>
+  <line x1="173.91" y1="235" x2="206.09" y2="235" stroke="#dc2626" stroke-width="1.4"/>
+  <rect x="235.85" y="220" width="64.3" height="30" rx="6" class="box"/>
+  <text x="268" y="239.5" class="monob" text-anchor="middle">brown</text>
+  <rect x="313.85" y="220" width="64.3" height="30" rx="6" class="box"/>
+  <text x="346" y="239.5" class="monob" text-anchor="middle">foxes</text>
+  <rect x="401.82" y="220" width="72.36" height="30" rx="6" class="box"/>
+  <text x="438" y="239.5" class="monob" text-anchor="middle">jumped</text>
+  <rect x="501.88" y="220" width="56.24" height="30" rx="6" class="bad"/>
+  <text x="530" y="239.5" class="badm" text-anchor="middle">over</text>
+  <line x1="509.88" y1="235" x2="550.12" y2="235" stroke="#dc2626" stroke-width="1.4"/>
+  <rect x="583.91" y="220" width="48.18" height="30" rx="6" class="bad"/>
+  <text x="608" y="239.5" class="badm" text-anchor="middle">the</text>
+  <line x1="591.91" y1="235" x2="624.09" y2="235" stroke="#dc2626" stroke-width="1.4"/>
+  <rect x="657.88" y="220" width="56.24" height="30" rx="6" class="box"/>
+  <text x="686" y="239.5" class="monob" text-anchor="middle">roof</text>
+  <line x1="160" y1="262" x2="160" y2="280" class="flow" marker-end="url(#ag)"/>
+  <text x="30" y="304" class="lane">stemmer</text>
+  <text x="30" y="322" class="sub">원래 형태로 변환</text>
+  <rect x="150" y="280" width="585" height="54" rx="6" class="track"/>
+  <rect x="235.85" y="292" width="64.3" height="30" rx="6" class="box"/>
+  <text x="268" y="311.5" class="monob" text-anchor="middle">brown</text>
+  <rect x="321.91" y="292" width="48.18" height="30" rx="6" class="ok"/>
+  <text x="346" y="311.5" class="okm" text-anchor="middle">fox</text>
+  <rect x="409.88" y="292" width="56.24" height="30" rx="6" class="ok"/>
+  <text x="438" y="311.5" class="okm" text-anchor="middle">jump</text>
+  <rect x="657.88" y="292" width="56.24" height="30" rx="6" class="box"/>
+  <text x="686" y="311.5" class="monob" text-anchor="middle">roof</text>
+  <rect x="150" y="352" width="14" height="14" rx="3" class="ok"/>
+  <text x="170" y="363" class="sub">바뀐 토큰</text>
+  <rect x="250" y="352" width="14" height="14" rx="3" class="bad"/>
+  <text x="270" y="363" class="sub">제거되는 토큰</text>
+  <text x="390" y="363" class="sub">결과: brown · fox · jump · roof</text>
+</svg>

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>공지 글 제외 조건을 filter의 is_notice false로 두는 방법 1과 must_not의 is_notice true로 두는 방법 2 모두 게시글 1을 조회한다</title>
+    <style>
+      .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+      .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+      .step { font-size: 12px; fill: #9ca3af; }
+      .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+      .sub { font-size: 12px; fill: #6b7280; }
+      .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+      .val { font-size: 12.5px; fill: #4b5563; }
+      .db { font-size: 14px; font-weight: 700; fill: #374151; }
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+      .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+      .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+      .track { fill: #ffffff; stroke: #eceef1; }
+      .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+      .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .waitt { font-size: 12.5px; fill: #6b7280; }
+      .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+      .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+      .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+      .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+      .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+      .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+      .note { font-size: 12.5px; fill: #b91c1c; }
+      .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    </style>
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+      </marker>
+      <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+      </marker>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+      </marker>
+    </defs>
+  <rect width="760" height="370" fill="#ffffff"/>
+
+  <rect x="10" y="10" width="740" height="150" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">방법 1 — 공지 글이 아닌 조건을 filter에 둠</text>
+  <text x="105" y="72" class="code" text-anchor="middle">must</text>
+  <text x="271" y="72" class="code" text-anchor="middle">filter</text>
+  <text x="437" y="72" class="code" text-anchor="middle">must_not</text>
+  <rect x="30" y="82" width="150" height="52" rx="8" class="box"/>
+  <text x="105" y="104" class="op" text-anchor="middle">match title</text>
+  <text x="105" y="123" class="val" text-anchor="middle">"검색엔진"</text>
+  <rect x="196" y="82" width="150" height="52" rx="8" class="hold"/>
+  <text x="271" y="104" class="op" text-anchor="middle">term is_notice</text>
+  <text x="271" y="123" class="val" text-anchor="middle">false</text>
+  <rect x="362" y="82" width="150" height="52" rx="8" class="box"/>
+  <text x="437" y="104" class="op" text-anchor="middle">term category</text>
+  <text x="437" y="123" class="val" text-anchor="middle">"광고 게시판"</text>
+  <line x1="518" y1="108" x2="572" y2="108" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="578" y="82" width="150" height="52" rx="8" class="ok"/>
+  <text x="653" y="104" class="okt" text-anchor="middle">게시글 1</text>
+  <text x="653" y="123" class="val" text-anchor="middle">조회</text>
+
+  <rect x="10" y="176" width="740" height="150" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="208" class="h">방법 2 — 공지 글인 조건을 must_not에 둠</text>
+  <text x="105" y="238" class="code" text-anchor="middle">must</text>
+  <text x="271" y="238" class="code" text-anchor="middle">must_not</text>
+  <text x="437" y="238" class="code" text-anchor="middle">must_not</text>
+  <rect x="30" y="248" width="150" height="52" rx="8" class="box"/>
+  <text x="105" y="270" class="op" text-anchor="middle">match title</text>
+  <text x="105" y="289" class="val" text-anchor="middle">"검색엔진"</text>
+  <rect x="196" y="248" width="150" height="52" rx="8" class="box"/>
+  <text x="271" y="270" class="op" text-anchor="middle">term category</text>
+  <text x="271" y="289" class="val" text-anchor="middle">"광고 게시판"</text>
+  <rect x="362" y="248" width="150" height="52" rx="8" class="hold"/>
+  <text x="437" y="270" class="op" text-anchor="middle">term is_notice</text>
+  <text x="437" y="289" class="val" text-anchor="middle">true</text>
+  <line x1="518" y1="274" x2="572" y2="274" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="578" y="248" width="150" height="52" rx="8" class="ok"/>
+  <text x="653" y="270" class="okt" text-anchor="middle">게시글 1</text>
+  <text x="653" y="289" class="val" text-anchor="middle">조회</text>
+
+  <text x="30" y="354" class="sub">회색 칸이 두 방법에서 다른 부분입니다. 예제 데이터에서는 두 방법 모두 게시글 1만 조회됩니다.</text>
+</svg>

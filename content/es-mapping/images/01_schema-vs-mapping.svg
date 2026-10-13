@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>MySQL 테이블 스키마와 Elasticsearch 인덱스 매핑이 각 필드의 데이터 타입을 정의하는 같은 역할을 한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opn { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">스키마와 매핑 — 필드마다 데이터 타입을 정한다</text>
+  <text x="730" y="42" class="code" text-anchor="end">PUT /users/_mappings</text>
+  <text x="30" y="80" class="lane">MySQL</text>
+  <text x="30" y="98" class="sub">테이블(table) users의 스키마(schema)</text>
+  <rect x="30" y="110" width="300" height="34" rx="6" class="hold"/>
+  <text x="46" y="132" class="t">컬럼</text>
+  <text x="200" y="132" class="t">타입</text>
+  <rect x="30" y="144" width="300" height="36" rx="0" class="box"/>
+  <text x="46" y="167" class="opn">name</text>
+  <text x="200" y="167" class="op">VARCHAR</text>
+  <rect x="30" y="180" width="300" height="36" rx="0" class="box"/>
+  <text x="46" y="203" class="opn">age</text>
+  <text x="200" y="203" class="op">INT</text>
+  <rect x="30" y="216" width="300" height="36" rx="0" class="box"/>
+  <text x="46" y="239" class="opn">is_active</text>
+  <text x="200" y="239" class="op">BOOLEAN</text>
+  <text x="430" y="80" class="lane">Elasticsearch</text>
+  <text x="430" y="98" class="sub">인덱스(index) users의 매핑(mapping)</text>
+  <rect x="430" y="110" width="300" height="34" rx="6" class="hold"/>
+  <text x="446" y="132" class="t">필드</text>
+  <text x="600" y="132" class="t">타입</text>
+  <rect x="430" y="144" width="300" height="36" rx="0" class="box"/>
+  <text x="446" y="167" class="opn">name</text>
+  <text x="600" y="167" class="okc">keyword</text>
+  <rect x="430" y="180" width="300" height="36" rx="0" class="box"/>
+  <text x="446" y="203" class="opn">age</text>
+  <text x="600" y="203" class="okc">integer</text>
+  <rect x="430" y="216" width="300" height="36" rx="0" class="box"/>
+  <text x="446" y="239" class="opn">is_active</text>
+  <text x="600" y="239" class="okc">boolean</text>
+  <line x1="340" y1="198" x2="420" y2="198" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="380" y="188" class="lbl" text-anchor="middle">같은 역할</text>
+  <text x="30" y="284" class="sub">인덱스를 만들 때 도큐먼트(document)의 각 필드에 어떤 유형의 데이터를 넣을지 매핑으로 정의합니다.</text>
+</svg>

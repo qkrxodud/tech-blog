@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 444" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>색인 요청 직후와 refresh 발생 후의 버퍼, 페이지 캐시, translog 상태와 검색 가능 여부</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opn { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="444" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="424" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">ElasticSearch의 refresh — 세그먼트가 생겨야 검색된다</text>
+  <text x="730" y="42" class="code" text-anchor="end">refresh_interval: 1s</text>
+  <rect x="160" y="62" width="258" height="34" rx="6" class="hold"/>
+  <text x="289" y="84" class="t" text-anchor="middle">색인 요청 직후</text>
+  <rect x="472" y="62" width="258" height="34" rx="6" class="hold"/>
+  <text x="601" y="84" class="t" text-anchor="middle">refresh 발생 후</text>
+  <text x="30" y="134.0" class="lane">JVM Heap</text>
+  <text x="30" y="152.0" class="sub">buffer</text>
+  <rect x="150" y="100" width="590" height="72" rx="6" class="track"/>
+  <rect x="160" y="108" width="258" height="56" rx="8" class="hold"/>
+  <text x="289" y="131" class="t" text-anchor="middle">buffer: [문서 A]</text>
+  <text x="289" y="150" class="val" text-anchor="middle">데이터 있음</text>
+  <rect x="472" y="108" width="258" height="56" rx="8" class="wait"/>
+  <text x="601" y="141" class="t2" text-anchor="middle">buffer: (비워짐)</text>
+  <text x="30" y="214.0" class="lane">Page Cache</text>
+  <text x="30" y="232.0" class="sub">세그먼트</text>
+  <rect x="150" y="180" width="590" height="72" rx="6" class="track"/>
+  <rect x="160" y="188" width="258" height="56" rx="8" class="wait"/>
+  <text x="289" y="221" class="waitt" text-anchor="middle">(없음)</text>
+  <rect x="472" y="188" width="258" height="56" rx="8" class="ok"/>
+  <text x="601" y="211" class="okt" text-anchor="middle">Segment_0: [문서 A]</text>
+  <text x="601" y="230" class="val" text-anchor="middle">데이터 있음</text>
+  <text x="30" y="294.0" class="lane">Disk</text>
+  <text x="30" y="312.0" class="sub">translog</text>
+  <rect x="150" y="260" width="590" height="72" rx="6" class="track"/>
+  <rect x="160" y="268" width="258" height="56" rx="8" class="hold"/>
+  <text x="289" y="291" class="t" text-anchor="middle">translog: [문서 A 색인 작업]</text>
+  <text x="289" y="310" class="val" text-anchor="middle">데이터 있음</text>
+  <rect x="472" y="268" width="258" height="56" rx="8" class="hold"/>
+  <text x="601" y="291" class="t" text-anchor="middle">translog: [문서 A 색인 작업]</text>
+  <text x="601" y="310" class="val" text-anchor="middle">아직 남아 있음</text>
+  <line x1="420" y1="79" x2="468" y2="79" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="374" class="op">_search</text>
+  <rect x="160" y="352" width="258" height="36" rx="15" class="bad"/>
+  <text x="289" y="375" class="badt" text-anchor="middle">검색되지 않음</text>
+  <rect x="472" y="352" width="258" height="36" rx="15" class="ok"/>
+  <text x="601" y="375" class="okt" text-anchor="middle">검색 가능 (near real-time)</text>
+  <text x="30" y="422" class="sub">세그먼트가 페이지 캐시에 올라간 순간부터 검색됩니다. 디스크에 도달하는 것은 기다리지 않습니다.</text>
+</svg>

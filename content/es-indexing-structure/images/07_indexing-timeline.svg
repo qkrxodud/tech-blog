@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>색인 요청부터 refresh, flush, merge까지 전체 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opn { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .lbl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="560" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="540" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">색인 요청부터 merge까지 — 전체 흐름</text>
+  <line x1="50" y1="62" x2="50" y2="532" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="66" y="68" width="89" height="30" rx="15" class="hold"/>
+  <text x="110.5" y="88" class="t" text-anchor="middle">색인 요청</text>
+  <line x1="50" y1="83" x2="66" y2="83" stroke="#9ca3af" stroke-width="1.6"/>
+  <rect x="110" y="108" width="480" height="38" rx="8" class="box"/>
+  <text x="126" y="132" class="t2">Lucene 인메모리 버퍼에 역색인 저장</text>
+  <line x1="52" y1="127" x2="106" y2="127" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="110" y="156" width="480" height="38" rx="8" class="box"/>
+  <text x="126" y="180" class="t2">translog 기록 + fsync (디스크)</text>
+  <line x1="52" y1="175" x2="106" y2="175" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="110" y="204" width="480" height="38" rx="8" class="box"/>
+  <text x="126" y="228" class="t2">200 OK 응답</text>
+  <line x1="52" y1="223" x2="106" y2="223" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="66" y="256" width="199" height="30" rx="15" class="hold"/>
+  <text x="165.5" y="276" class="t" text-anchor="middle">refresh (기본 1초)</text>
+  <line x1="50" y1="271" x2="66" y2="271" stroke="#9ca3af" stroke-width="1.6"/>
+  <rect x="110" y="296" width="480" height="38" rx="8" class="box"/>
+  <text x="126" y="320" class="t2">버퍼 → 세그먼트 생성 → write(), 페이지 캐시에 안착</text>
+  <line x1="52" y1="315" x2="106" y2="315" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="606" y="298" width="124" height="34" rx="15" class="ok"/>
+  <text x="668" y="320" class="okt" text-anchor="middle">검색 가능</text>
+  <rect x="66" y="348" width="309" height="30" rx="15" class="hold"/>
+  <text x="220.5" y="368" class="t" text-anchor="middle">flush (translog 임계값 도달 시)</text>
+  <line x1="50" y1="363" x2="66" y2="363" stroke="#9ca3af" stroke-width="1.6"/>
+  <rect x="110" y="388" width="480" height="38" rx="8" class="box"/>
+  <text x="126" y="412" class="t2">fsync() → 세그먼트 디스크 영속화 + translog 비움</text>
+  <line x1="52" y1="407" x2="106" y2="407" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="606" y="390" width="124" height="34" rx="15" class="ok"/>
+  <text x="668" y="412" class="okt" text-anchor="middle">영속성 확보</text>
+  <rect x="66" y="440" width="177" height="30" rx="15" class="hold"/>
+  <text x="154.5" y="460" class="t" text-anchor="middle">merge (백그라운드)</text>
+  <line x1="50" y1="455" x2="66" y2="455" stroke="#9ca3af" stroke-width="1.6"/>
+  <rect x="110" y="480" width="480" height="38" rx="8" class="box"/>
+  <text x="126" y="504" class="t2">작은 세그먼트들 → 큰 세그먼트로 병합 + 삭제 문서 실제 제거</text>
+  <line x1="52" y1="499" x2="106" y2="499" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+</svg>

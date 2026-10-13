@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 270" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>bool 쿼리 안에서 쓰는 must, filter, must_not, should 4가지 기능과 각각의 역할</title>
+    <style>
+      .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+      .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+      .step { font-size: 12px; fill: #9ca3af; }
+      .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+      .sub { font-size: 12px; fill: #6b7280; }
+      .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+      .val { font-size: 12.5px; fill: #4b5563; }
+      .db { font-size: 14px; font-weight: 700; fill: #374151; }
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+      .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+      .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+      .track { fill: #ffffff; stroke: #eceef1; }
+      .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+      .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .waitt { font-size: 12.5px; fill: #6b7280; }
+      .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+      .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+      .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+      .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+      .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+      .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+      .note { font-size: 12.5px; fill: #b91c1c; }
+      .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    </style>
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+      </marker>
+      <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+      </marker>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+      </marker>
+    </defs>
+  <rect width="760" height="270" fill="#ffffff"/>
+
+  <rect x="10" y="10" width="740" height="250" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">bool 쿼리 — 여러 쿼리를 조합하는 4가지 기능</text>
+  <text x="730" y="42" class="code" text-anchor="end">"bool": { }</text>
+
+  <rect x="30" y="62" width="700" height="156" rx="10" fill="#ffffff" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="48" y="90" class="op">bool</text>
+  <text x="96" y="90" class="sub">여러 쿼리를 조합하기 위해 사용</text>
+
+  <rect x="48" y="106" width="154" height="64" rx="8" class="ok"/>
+  <text x="125" y="132" class="okc" text-anchor="middle">must</text>
+  <text x="125" y="154" class="val" text-anchor="middle">SQL의 AND</text>
+  <text x="125" y="196" class="sub" text-anchor="middle">score에 영향을 줌</text>
+
+  <rect x="218" y="106" width="154" height="64" rx="8" class="ok"/>
+  <text x="295" y="132" class="okc" text-anchor="middle">filter</text>
+  <text x="295" y="154" class="val" text-anchor="middle">SQL의 AND</text>
+  <text x="295" y="196" class="sub" text-anchor="middle">score에 영향을 주지 않음</text>
+
+  <rect x="388" y="106" width="154" height="64" rx="8" class="box"/>
+  <text x="465" y="132" class="op" text-anchor="middle">must_not</text>
+  <text x="465" y="154" class="val" text-anchor="middle">SQL의 NOT</text>
+  <text x="465" y="196" class="sub" text-anchor="middle">해당하는 문서를 제외</text>
+
+  <rect x="558" y="106" width="154" height="64" rx="8" class="box"/>
+  <text x="635" y="132" class="op" text-anchor="middle">should</text>
+  <text x="635" y="154" class="val" text-anchor="middle">필수 아님</text>
+  <text x="635" y="196" class="sub" text-anchor="middle">만족하면 좋고, 아니면 말고</text>
+
+  <text x="30" y="246" class="gnote">초록 칸: 이 글에서 다루는 must와 filter — 2가지 조건을 전부 만족시키는 데이터를 조회할 때 사용</text>
+</svg>

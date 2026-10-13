@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 444" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>stemmer 필터를 넣은 애널라이저로 색인하고 검색하면 jumped로 검색해도 jump로 바뀌어 조회되는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .ko { font-size: 13px; fill: #374151; }
+    .kocode { font-size: 13px; fill: #6b7280; }
+    .kob { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .okk { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .badk { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .brk { stroke: #9ca3af; stroke-width: 1.2; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="444" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="204" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <rect x="10" y="230" width="740" height="204" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">색인할 때 — 토큰을 원래 형태로 바꿔 저장</text>
+  <rect x="24" y="76" width="92" height="64" rx="8" class="box"/>
+  <text x="70" y="103" class="t" text-anchor="middle">문자열</text>
+  <text x="70" y="122" class="sub" text-anchor="middle">(text)</text>
+  <line x1="118" y1="108" x2="136" y2="108" class="flow" marker-end="url(#ag)"/>
+  <rect x="140" y="62" width="340" height="92" rx="10" class="grp"/>
+  <text x="310" y="78" class="sub" text-anchor="middle">애널라이저</text>
+  <rect x="150" y="86" width="96" height="60" rx="8" class="wait"/>
+  <text x="198" y="103" class="sub" text-anchor="middle">캐릭터 필터</text>
+  <text x="198" y="126" class="waitt" text-anchor="middle">적용 안 함</text>
+  <line x1="248" y1="116" x2="259" y2="116" class="flow" marker-end="url(#ag)"/>
+  <rect x="262" y="86" width="96" height="60" rx="8" class="ok"/>
+  <text x="310" y="103" class="sub" text-anchor="middle">토크나이저</text>
+  <text x="310" y="126" class="okc" text-anchor="middle">standard</text>
+  <line x1="360" y1="116" x2="371" y2="116" class="flow" marker-end="url(#ag)"/>
+  <rect x="374" y="86" width="96" height="60" rx="8" class="ok"/>
+  <text x="422" y="103" class="sub" text-anchor="middle">토큰 필터</text>
+  <text x="422" y="121" class="okc" text-anchor="middle">lowercase</text>
+  <text x="422" y="138" class="okc" text-anchor="middle">stemmer</text>
+  <line x1="482" y1="108" x2="500" y2="108" class="flow" marker-end="url(#ag)"/>
+  <rect x="504" y="76" width="100" height="64" rx="8" class="box"/>
+  <text x="554" y="103" class="t" text-anchor="middle">토큰</text>
+  <text x="554" y="122" class="sub" text-anchor="middle">(token)</text>
+  <line x1="606" y1="108" x2="624" y2="108" class="flow" marker-end="url(#ag)"/>
+  <rect x="628" y="76" width="108" height="64" rx="8" class="box"/>
+  <text x="682" y="103" class="t" text-anchor="middle">역인덱스에</text>
+  <text x="682" y="122" class="t" text-anchor="middle">저장</text>
+  <text x="30" y="188" class="sub">예</text>
+  <rect x="56" y="168" width="330.18" height="30" rx="6" class="box"/>
+  <text x="221.09" y="187.5" class="val" text-anchor="middle">도큐먼트의 단어도 stemmer를 거쳐 원래 형태로 저장</text>
+  <text x="30" y="262" class="h">검색할 때 — 검색어도 stemmer를 거쳐 원래 형태로</text>
+  <rect x="24" y="296" width="92" height="64" rx="8" class="box"/>
+  <text x="70" y="323" class="t" text-anchor="middle">검색어</text>
+  <text x="70" y="342" class="sub" text-anchor="middle">(text)</text>
+  <line x1="118" y1="328" x2="136" y2="328" class="flow" marker-end="url(#ag)"/>
+  <rect x="140" y="282" width="340" height="92" rx="10" class="grp"/>
+  <text x="310" y="298" class="sub" text-anchor="middle">애널라이저</text>
+  <rect x="150" y="306" width="96" height="60" rx="8" class="wait"/>
+  <text x="198" y="323" class="sub" text-anchor="middle">캐릭터 필터</text>
+  <text x="198" y="346" class="waitt" text-anchor="middle">적용 안 함</text>
+  <line x1="248" y1="336" x2="259" y2="336" class="flow" marker-end="url(#ag)"/>
+  <rect x="262" y="306" width="96" height="60" rx="8" class="ok"/>
+  <text x="310" y="323" class="sub" text-anchor="middle">토크나이저</text>
+  <text x="310" y="346" class="okc" text-anchor="middle">standard</text>
+  <line x1="360" y1="336" x2="371" y2="336" class="flow" marker-end="url(#ag)"/>
+  <rect x="374" y="306" width="96" height="60" rx="8" class="ok"/>
+  <text x="422" y="323" class="sub" text-anchor="middle">토큰 필터</text>
+  <text x="422" y="341" class="okc" text-anchor="middle">lowercase</text>
+  <text x="422" y="358" class="okc" text-anchor="middle">stemmer</text>
+  <line x1="482" y1="328" x2="500" y2="328" class="flow" marker-end="url(#ag)"/>
+  <rect x="504" y="296" width="100" height="64" rx="8" class="box"/>
+  <text x="554" y="323" class="t" text-anchor="middle">토큰</text>
+  <text x="554" y="342" class="sub" text-anchor="middle">(token)</text>
+  <line x1="606" y1="328" x2="624" y2="328" class="flow" marker-end="url(#ag)"/>
+  <rect x="628" y="296" width="108" height="64" rx="8" class="box"/>
+  <text x="682" y="323" class="t" text-anchor="middle">토큰으로</text>
+  <text x="682" y="342" class="t" text-anchor="middle">검색</text>
+  <text x="30" y="408" class="sub">예</text>
+  <rect x="56" y="388" width="84.48" height="30" rx="6" class="box"/>
+  <text x="98.24" y="407.5" class="mono" text-anchor="middle">"jumped"</text>
+  <line x1="150.48" y1="403" x2="170.48" y2="403" class="flow" marker-end="url(#ag)"/>
+  <rect x="178.48" y="388" width="54.72" height="30" rx="6" class="ok"/>
+  <text x="205.84" y="407.5" class="okm" text-anchor="middle">jump</text>
+  <line x1="243.2" y1="403" x2="263.2" y2="403" class="flow" marker-end="url(#ag)"/>
+  <rect x="271.2" y="388" width="259.2" height="30" rx="6" class="ok"/>
+  <text x="400.8" y="407.5" class="okt" text-anchor="middle">역인덱스의 jump와 일치 → 도큐먼트 조회</text>
+</svg>
