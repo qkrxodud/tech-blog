@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>getService가 service가 null이면 MyServiceImpl을 생성해 반환하고, null이 아니면 바로 반환하는 두 실행 경로</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="370" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="350" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">초기화 지연 — getService의 두 실행 경로</text>
+  <text x="730" y="42" class="code" text-anchor="end">getService()</text>
+  <rect x="30" y="150" width="140" height="56" rx="8" class="box"/>
+  <text x="100" y="174" class="op" text-anchor="middle">getService()</text>
+  <text x="100" y="194" class="val" text-anchor="middle">호출</text>
+  <line x1="170" y1="178" x2="196" y2="178" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="200" y="150" width="170" height="56" rx="8" class="hold"/>
+  <text x="285" y="174" class="op" text-anchor="middle">service == null</text>
+  <text x="285" y="194" class="val" text-anchor="middle">확인</text>
+  <path d="M285,150 L285,114 L391,114" fill="none" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="293" y="105" class="note">null이면</text>
+  <rect x="395" y="86" width="210" height="56" rx="8" class="bad"/>
+  <text x="500" y="110" class="badc" text-anchor="middle">new MyServiceImpl(...)</text>
+  <text x="500" y="130" class="val" text-anchor="middle">객체 생성 (첫 호출)</text>
+  <path d="M605,114 L680,114 L680,146" fill="none" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="620" y="150" width="120" height="56" rx="8" class="ok"/>
+  <text x="680" y="174" class="okc" text-anchor="middle">return</text>
+  <text x="680" y="194" class="val" text-anchor="middle">service 반환</text>
+  <path d="M285,206 L285,242 L680,242 L680,210" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="300" y="262" class="gnote">null이 아니면 생성 없이 바로 반환</text>
+  <text x="30" y="302" class="note">경로 1 — null이면 MyServiceImpl을 생성한 뒤 반환 (객체 생성 로직)</text>
+  <text x="30" y="324" class="gnote">경로 2 — null이 아니면 이미 만든 객체를 반환 (런타임 로직)</text>
+  <text x="30" y="346" class="sub">한 메서드에 두 책임이 섞여 있어 두 경로를 모두 테스트해야 합니다.</text>
+</svg>

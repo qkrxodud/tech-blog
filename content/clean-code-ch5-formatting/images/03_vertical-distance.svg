@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 490" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>인스턴스 변수는 클래스 맨 처음, 지역 변수는 함수 맨 처음, 호출되는 함수는 호출하는 함수 바로 아래, 비슷한 assert 함수는 서로 가까이 둔다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .ttl { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ttls { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .cs { font-family: Menlo, Consolas, monospace; font-size: 11.5px; fill: #374151; }
+    .csb { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .grid { stroke: #e5e7eb; stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="490" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="470" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">수직 거리 — 서로 밀접한 코드는 세로로 가까이</text>
+  <rect x="30" y="60" width="440" height="404" rx="10" class="box"/>
+  <text x="46" y="82" class="sub">클래스</text>
+  <rect x="46" y="94" width="408" height="44" rx="8" class="hold"/>
+  <text x="62" y="121" class="ttl">인스턴스 변수</text>
+  <rect x="46" y="152" width="408" height="98" rx="8" class="box"/>
+  <text x="62" y="176" class="ttl">호출하는 함수</text>
+  <rect x="62" y="190" width="376" height="46" rx="6" class="wait"/>
+  <text x="78" y="210" class="ttls">지역 변수 선언</text>
+  <text x="78" y="227" class="sub">함수 맨 처음, 사용하는 위치 가까이</text>
+  <line x1="250" y1="250" x2="250" y2="270" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="262" y="264" class="gnote">호출</text>
+  <rect x="46" y="272" width="408" height="44" rx="8" class="box"/>
+  <text x="62" y="299" class="ttl">호출되는 함수</text>
+  <rect x="46" y="332" width="408" height="118" rx="8" class="wait"/>
+  <text x="62" y="352" class="sub">비슷한 작업을 수행하는 함수</text>
+  <text x="62" y="376" class="cs">assertTrue(String message, boolean condition)</text>
+  <text x="62" y="397" class="cs">assertTrue(boolean condition)</text>
+  <text x="62" y="418" class="cs">assertFalse(String message, boolean condition)</text>
+  <text x="62" y="439" class="cs">assertFalse(boolean condition)</text>
+  <line x1="472" y1="114" x2="492" y2="114" class="axis"/>
+  <text x="500" y="108" class="ttl">인스턴스 변수</text>
+  <text x="500" y="127" class="sub">클래스 맨 처음에 선언</text>
+  <line x1="472" y1="212" x2="492" y2="212" class="axis"/>
+  <text x="500" y="206" class="ttl">변수 선언</text>
+  <text x="500" y="225" class="sub">사용하는 위치에 최대한 가까이</text>
+  <line x1="472" y1="291" x2="492" y2="291" class="axis"/>
+  <text x="500" y="285" class="ttl">종속 함수</text>
+  <text x="500" y="304" class="sub">호출하는 함수를 먼저, 가까이</text>
+  <line x1="472" y1="388" x2="492" y2="388" class="axis"/>
+  <text x="500" y="382" class="ttl">개념적 유사성</text>
+  <text x="500" y="401" class="sub">친화도가 높을수록 가까이</text>
+</svg>

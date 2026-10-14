@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 526" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Portfolio가 TokyoStockExchange를 직접 호출하면 테스트가 시세에 영향을 받지만, StockExchange 인터페이스에 의존하면 테스트에서는 주가를 100으로 고정한 FixedStockExchangeStub을 넘겨 MSFT 5주의 값이 항상 500이 되는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .hd { font-size: 10.5px; fill: #374151; }
+    .gmsg { font-size: 11.5px; fill: #15803d; }
+    .rmsg { font-size: 11.5px; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .act { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L9,5 L1,9" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="760" height="526" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">직접 의존할 때 — 테스트가 시세에 따라 달라진다</text>
+  <rect x="40" y="66" width="170" height="56" rx="8" class="box"/>
+  <text x="125" y="99" class="op" text-anchor="middle">Portfolio</text>
+  <rect x="290" y="66" width="240" height="56" rx="8" class="box"/>
+  <text x="410" y="89" class="op" text-anchor="middle">TokyoStockExchange</text>
+  <text x="410" y="110" class="s" text-anchor="middle">API를 직접 호출</text>
+  <rect x="600" y="66" width="130" height="56" rx="8" class="bad"/>
+  <text x="665" y="89" class="badt" text-anchor="middle">시세</text>
+  <text x="665" y="110" class="note" text-anchor="middle">계속 변함</text>
+  <line x1="212" y1="94" x2="286" y2="94" stroke="#6b7280" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="532" y1="94" x2="596" y2="94" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="30" y="158" class="note">상세한 구현에 의존하므로 Portfolio 테스트 결과가 시세 변화에 영향을 받습니다.</text>
+
+  <rect x="10" y="196" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="228" class="h">인터페이스에 의존할 때 — 테스트에서는 고정 주가를 넘긴다</text>
+  <rect x="40" y="250" width="190" height="56" rx="8" class="box"/>
+  <text x="135" y="273" class="op" text-anchor="middle">Portfolio</text>
+  <text x="135" y="294" class="s" text-anchor="middle">생성자로 참조자를 받음</text>
+  <rect x="300" y="250" width="250" height="56" rx="8" class="hold"/>
+  <text x="425" y="273" class="op" text-anchor="middle">StockExchange</text>
+  <text x="425" y="294" class="s" text-anchor="middle">인터페이스 — <tspan font-family="Menlo, Consolas, monospace">currentPrice()</tspan></text>
+  <line x1="232" y1="278" x2="296" y2="278" stroke="#6b7280" stroke-width="1.4" marker-end="url(#ag)"/>
+  <rect x="40" y="356" width="190" height="56" rx="8" class="box"/>
+  <text x="135" y="379" class="op" text-anchor="middle">PortfolioTest</text>
+  <text x="135" y="400" class="ms" text-anchor="middle">fix("MSFT", 100)</text>
+  <rect x="260" y="356" width="250" height="56" rx="8" class="ok"/>
+  <text x="385" y="379" class="okm" text-anchor="middle">FixedStockExchangeStub</text>
+  <text x="385" y="400" class="gmsg" text-anchor="middle">테스트용 — 고정된 주가 반환</text>
+  <rect x="530" y="356" width="200" height="56" rx="8" class="box"/>
+  <text x="630" y="379" class="op" text-anchor="middle">TokyoStockExchange</text>
+  <text x="630" y="400" class="s" text-anchor="middle">실제 API로 주가 조회</text>
+  <line x1="385" y1="356" x2="405" y2="312" stroke="#6b7280" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#tri)"/>
+  <line x1="630" y1="356" x2="500" y2="312" stroke="#6b7280" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#tri)"/>
+  <line x1="232" y1="384" x2="256" y2="384" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="566" y="283" class="s">두 클래스가 구현</text>
+  <rect x="40" y="430" width="470" height="34" rx="17" class="ok"/>
+  <text x="275" y="452" class="okt" text-anchor="middle">MSFT 5주 × 100 = <tspan font-family="Menlo, Consolas, monospace">500</tspan> — 항상 같은 결과</text>
+  <text x="30" y="494" class="gnote">Portfolio는 StockExchange 인터페이스에만 의존하므로 주가의 출처와 얻어 오는 방식이 숨겨집니다(DIP).</text>
+</svg>

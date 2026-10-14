@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 416" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>자바 행 길이 분포 모식도 — 10자 미만이 약 30%, 20자에서 60자 사이는 각 약 1%로 평평하고, 80자 이후로 행 수가 급격히 줄어든다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .ttl { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ttls { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .cs { font-family: Menlo, Consolas, monospace; font-size: 11.5px; fill: #374151; }
+    .csb { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .grid { stroke: #e5e7eb; stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="416" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="396" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">자바 행 길이 분포 — 원고 설명을 모식도로 나타냄</text>
+  <rect x="120" y="80" width="110" height="250" fill="#f3f4f6"/>
+  <rect x="300" y="80" width="200" height="250" fill="#dcfce7" opacity="0.6"/>
+  <rect x="590" y="80" width="130" height="250" fill="#fee2e2" opacity="0.55"/>
+  <line x1="120" y1="330" x2="730" y2="330" class="axis" marker-end="url(#ar)"/>
+  <line x1="120" y1="330" x2="120" y2="70" class="axis" marker-end="url(#ar)"/>
+  <line x1="230" y1="80" x2="230" y2="330" class="grid" stroke-dasharray="4 4"/>
+  <text x="230" y="348" class="step" text-anchor="middle">10자</text>
+  <line x1="300" y1="80" x2="300" y2="330" class="grid" stroke-dasharray="4 4"/>
+  <text x="300" y="348" class="step" text-anchor="middle">20자</text>
+  <line x1="500" y1="80" x2="500" y2="330" class="grid" stroke-dasharray="4 4"/>
+  <text x="500" y="348" class="step" text-anchor="middle">60자</text>
+  <line x1="590" y1="80" x2="590" y2="330" class="grid" stroke-dasharray="4 4"/>
+  <text x="590" y="348" class="step" text-anchor="middle">80자</text>
+  <path d="M 120 140 C 175 120, 244 190, 265 196 S 286 176, 300 176 L 500 176 C 536 182, 567.5 190, 590 196 C 627.143 230, 682.857 290, 716.286 318" fill="none" stroke="#4b5563" stroke-width="2.2"/>
+  <text x="175" y="100" class="ttls" text-anchor="middle">10자 미만</text>
+  <text x="175" y="118" class="sub" text-anchor="middle">약 30%</text>
+  <text x="400" y="100" class="gnote" text-anchor="middle">20~60자: 각 약 1%</text>
+  <text x="655" y="100" class="note" text-anchor="middle">80자 이후 급격히 감소</text>
+  <text x="420" y="372" class="sub" text-anchor="middle">행 길이(글자 수)</text>
+  <text x="80" y="205" class="sub" text-anchor="middle" transform="rotate(-90 80 205)">행 수 (로그 스케일)</text>
+  <text x="120" y="396" class="sub">수치 눈금이 없는 모식도입니다. 로그 스케일이라 완만해 보여도 80자 이후로 행 수가 급격히 줄어듭니다.</text>
+</svg>

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Main이 CarFactory를 만들어 CarProcessing에 넘기고, CarProcessing이 createCar를 호출하는 시점에 CarFactory가 CarType에 맞는 Car를 생성하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">추상 팩토리 — 시점은 CarProcessing, 방법은 CarFactory</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1. 팩토리 생성</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2. 팩토리 전달</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3. 생성 요청</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4. 객체 생성</text>
+  <line x1="160" y1="76" x2="722" y2="76" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">Main</text>
+  <text x="30" y="126" class="sub">생성 담당</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="154" y="88" width="132" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="op" text-anchor="middle">CarFactory</text>
+  <text x="220" y="127" class="val" text-anchor="middle">생성</text>
+  <rect x="294" y="88" width="132" height="48" rx="8" class="box"/>
+  <text x="360" y="108" class="op" text-anchor="middle">CarProcessing</text>
+  <text x="360" y="127" class="val" text-anchor="middle">생성하며 팩토리 넘김</text>
+  <text x="30" y="172" class="lane" style="font-size:14.5px">CarProcessing</text>
+  <text x="30" y="190" class="sub">애플리케이션</text>
+  <rect x="150" y="150" width="585" height="52" rx="6" class="track"/>
+  <rect x="294" y="152" width="132" height="48" rx="8" class="hold"/>
+  <text x="360" y="172" class="op" text-anchor="middle">carFactory</text>
+  <text x="360" y="191" class="val" text-anchor="middle">전달받음</text>
+  <rect x="434" y="152" width="132" height="48" rx="8" class="ok"/>
+  <text x="500" y="172" class="okc" text-anchor="middle">createCar</text>
+  <text x="500" y="191" class="val" text-anchor="middle">CarType.SPORTS</text>
+  <text x="30" y="236" class="lane">CarFactory</text>
+  <text x="30" y="254" class="sub">main 쪽 팩토리</text>
+  <rect x="150" y="214" width="585" height="52" rx="6" class="track"/>
+  <rect x="574" y="216" width="132" height="48" rx="8" class="hold"/>
+  <text x="640" y="236" class="op" text-anchor="middle">switch(type)</text>
+  <text x="640" y="255" class="val" text-anchor="middle">new SportsCar()</text>
+  <line x1="360" y1="136" x2="360" y2="148" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="530" y1="200" x2="606" y2="214" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="296" class="sub">CarType에 따라 SPORTS는 SportsCar, SUV는 SUVCar를 생성해 Car로 반환합니다.</text>
+  <text x="150" y="322" class="gnote">CarProcessing — Car 인스턴스를 만드는 시점을 결정</text>
+  <text x="150" y="344" class="sub">CarFactory — Car 인스턴스를 만드는 구체적인 방법을 앎</text>
+</svg>

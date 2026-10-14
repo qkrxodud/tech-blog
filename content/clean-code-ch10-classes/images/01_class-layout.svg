@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>클래스 안에서 정적 공개 상수, 정적 비공개 변수, 비공개 인스턴스 변수가 먼저 나오고, 공개 함수 뒤에 그 함수가 호출하는 비공개 함수가 놓여 추상화 단계가 위에서 아래로 내려가는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .hd { font-size: 10.5px; fill: #374151; }
+    .gmsg { font-size: 11.5px; fill: #15803d; }
+    .rmsg { font-size: 11.5px; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .act { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L9,5 L1,9" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="760" height="520" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="500" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">클래스 체계 — 변수 목록 다음에 함수가 온다</text>
+  <rect x="40" y="70" width="460" height="40" rx="8" class="dbbox"/>
+  <text x="56" y="95" class="t">정적 공개 상수</text>
+  <text x="484" y="95" class="m" text-anchor="end">public static final</text>
+  <rect x="40" y="118" width="460" height="40" rx="8" class="dbbox"/>
+  <text x="56" y="143" class="t">정적 비공개 변수</text>
+  <text x="484" y="143" class="m" text-anchor="end">private static</text>
+  <rect x="40" y="166" width="460" height="40" rx="8" class="dbbox"/>
+  <text x="56" y="191" class="t">비공개 인스턴스 변수</text>
+  <text x="484" y="191" class="m" text-anchor="end">private</text>
+  <rect x="40" y="226" width="460" height="40" rx="8" class="box"/>
+  <text x="56" y="251" class="t">공개 함수 A</text>
+  <text x="484" y="251" class="m" text-anchor="end">public</text>
+  <rect x="80" y="274" width="420" height="40" rx="8" class="hold"/>
+  <text x="96" y="299" class="t">비공개 함수 — A가 호출</text>
+  <text x="484" y="299" class="m" text-anchor="end">private</text>
+  <rect x="40" y="322" width="460" height="40" rx="8" class="box"/>
+  <text x="56" y="347" class="t">공개 함수 B</text>
+  <text x="484" y="347" class="m" text-anchor="end">public</text>
+  <rect x="80" y="370" width="420" height="40" rx="8" class="hold"/>
+  <text x="96" y="395" class="t">비공개 함수 — B가 호출</text>
+  <text x="484" y="395" class="m" text-anchor="end">private</text>
+  <path d="M512,70 L522,70 L522,206 L512,206" fill="none" stroke="#9ca3af" stroke-width="1.4"/>
+  <text x="534" y="143" class="t">변수 목록</text>
+  <path d="M512,226 L522,226 L522,410 L512,410" fill="none" stroke="#9ca3af" stroke-width="1.4"/>
+  <text x="534" y="323" class="t">함수 목록</text>
+  <text x="690" y="82" class="s" text-anchor="middle">추상화 단계</text>
+  <line x1="690" y1="94" x2="690" y2="392" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="690" y="412" class="s" text-anchor="middle">순차적으로 내려감</text>
+  <text x="30" y="456" class="gnote">비공개 함수는 자신을 호출하는 공개 함수 바로 뒤에 놓입니다.</text>
+  <text x="30" y="480" class="gnote">위에서 아래로 추상화 단계가 내려가므로 프로그램이 신문 기사처럼 읽힙니다.</text>
+</svg>

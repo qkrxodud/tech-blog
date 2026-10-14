@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>SuperDashboard의 메서드가 스윙 컴포넌트 관리와 버전 정보 추적이라는 두 가지 변경 이유로 나뉘고, 버전 정보 메서드 세 개를 Version 클래스로 분리해 클래스마다 변경 이유가 하나가 되는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .hd { font-size: 10.5px; fill: #374151; }
+    .gmsg { font-size: 11.5px; fill: #15803d; }
+    .rmsg { font-size: 11.5px; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .act { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L9,5 L1,9" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="760" height="520" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="250" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">나누기 전 — SuperDashboard를 변경할 이유가 두 가지</text>
+  <rect x="40" y="60" width="380" height="180" rx="10" class="pkg"/>
+  <text x="230" y="84" class="op" text-anchor="middle">SuperDashboard</text>
+  <rect x="56" y="98" width="348" height="58" rx="8" class="box"/>
+  <text x="230" y="122" class="m" text-anchor="middle">getLastFocusedComponent()</text>
+  <text x="230" y="142" class="m" text-anchor="middle">setLastFocused(lastFocused)</text>
+  <rect x="56" y="164" width="348" height="66" rx="8" class="bad"/>
+  <text x="230" y="184" class="m" text-anchor="middle" fill="#b91c1c">getMajorVersionNumber()</text>
+  <text x="230" y="202" class="m" text-anchor="middle" fill="#b91c1c">getMinorVersionNumber()</text>
+  <text x="230" y="220" class="m" text-anchor="middle" fill="#b91c1c">getBuildNumber()</text>
+  <line x1="406" y1="127" x2="456" y2="127" stroke="#9ca3af" stroke-width="1.4"/>
+  <text x="464" y="122" class="t">변경 이유 1</text>
+  <text x="464" y="141" class="s">자바 스윙 컴포넌트 관리</text>
+  <line x1="406" y1="197" x2="456" y2="197" stroke="#dc2626" stroke-width="1.4"/>
+  <text x="464" y="192" class="badt">변경 이유 2</text>
+  <text x="464" y="211" class="note">버전 정보 추적 — 출시할 때마다 바뀜</text>
+
+  <rect x="10" y="276" width="740" height="234" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="308" class="h">Version 분리 — 클래스마다 변경 이유가 하나</text>
+  <rect x="40" y="328" width="330" height="116" rx="10" class="ok"/>
+  <text x="205" y="356" class="okc" text-anchor="middle">SuperDashboard</text>
+  <text x="205" y="388" class="m" text-anchor="middle">getLastFocusedComponent()</text>
+  <text x="205" y="408" class="m" text-anchor="middle">setLastFocused(lastFocused)</text>
+  <rect x="400" y="328" width="330" height="116" rx="10" class="ok"/>
+  <text x="565" y="356" class="okc" text-anchor="middle">Version</text>
+  <text x="565" y="384" class="m" text-anchor="middle">getMajorVersionNumber()</text>
+  <text x="565" y="404" class="m" text-anchor="middle">getMinorVersionNumber()</text>
+  <text x="565" y="424" class="m" text-anchor="middle">getBuildNumber()</text>
+  <text x="205" y="470" class="gmsg" text-anchor="middle">스윙 코드가 바뀔 때만 변경</text>
+  <text x="565" y="470" class="gmsg" text-anchor="middle">소프트웨어를 출시할 때만 변경</text>
+  <text x="30" y="496" class="s">버전 정보를 다루는 메서드 세 개를 Version 클래스로 빼냅니다.</text>
+</svg>

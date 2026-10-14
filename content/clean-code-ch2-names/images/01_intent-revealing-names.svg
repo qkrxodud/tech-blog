@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>getThem의 theList, x[0] == 4, list1을 gameBoard, cell.isFlagged(), flaggedCells로 바꾸면 의도가 드러나는 변경 전후 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 12.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="340" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">의도를 드러내는 이름 — 변경 전과 후</text>
+  <text x="730" y="42" class="code" text-anchor="end">getThem()</text>
+  <text x="180" y="74" class="step" text-anchor="middle">변경 전</text>
+  <text x="580" y="74" class="step" text-anchor="middle">변경 후</text>
+  <rect x="30" y="86" width="300" height="60" rx="8" class="bad"/>
+  <text x="180" y="111" class="badm" text-anchor="middle">theList</text>
+  <text x="180" y="132" class="note" text-anchor="middle">무엇이 들었는지 알 수 없음</text>
+  <line x1="336" y1="116" x2="424" y2="116" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="430" y="86" width="300" height="60" rx="8" class="ok"/>
+  <text x="580" y="111" class="okm" text-anchor="middle">gameBoard</text>
+  <text x="580" y="132" class="gnote" text-anchor="middle">게임판의 셀 목록</text>
+  <rect x="30" y="158" width="300" height="60" rx="8" class="bad"/>
+  <text x="180" y="183" class="badm" text-anchor="middle">x[0] == 4</text>
+  <text x="180" y="204" class="note" text-anchor="middle">0번째 값과 4의 의미를 알 수 없음</text>
+  <line x1="336" y1="188" x2="424" y2="188" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="430" y="158" width="300" height="60" rx="8" class="ok"/>
+  <text x="580" y="183" class="okm" text-anchor="middle">cell.isFlagged()</text>
+  <text x="580" y="204" class="gnote" text-anchor="middle">깃발이 꽂힌 셀인지 확인</text>
+  <rect x="30" y="230" width="300" height="60" rx="8" class="bad"/>
+  <text x="180" y="255" class="badm" text-anchor="middle">list1</text>
+  <text x="180" y="276" class="note" text-anchor="middle">반환 리스트를 어떻게 쓰는지 알 수 없음</text>
+  <line x1="336" y1="260" x2="424" y2="260" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="430" y="230" width="300" height="60" rx="8" class="ok"/>
+  <text x="580" y="255" class="okm" text-anchor="middle">flaggedCells</text>
+  <text x="580" y="276" class="gnote" text-anchor="middle">깃발이 꽂힌 셀 목록</text>
+  <text x="30" y="312" class="foot">이름만 바꿔도 게임판에서 깃발이 꽂힌 셀을 모으는 코드라는 의도가 드러납니다.</text>
+</svg>

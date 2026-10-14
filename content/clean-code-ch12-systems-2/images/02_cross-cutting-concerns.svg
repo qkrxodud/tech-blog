@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Class A, B, C에 부가 기능 X, Y, Z가 핵심 기능과 섞여 흩어져 있다가, Aspect X, Y, Z로 모듈화되어 각 클래스에는 핵심 기능만 남는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="450" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="204" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">횡단 관심사 — 부가 기능이 여러 클래스에 흩어짐</text>
+  <rect x="40" y="60" width="160" height="28" class="hold" rx="0"/>
+  <text x="120" y="80" class="db" text-anchor="middle">Class A</text>
+  <rect x="40" y="88" width="160" height="26" class="bad" rx="0"/>
+  <text x="120" y="106" class="note" text-anchor="middle">부가 기능 X</text>
+  <rect x="40" y="114" width="160" height="26" class="bad" rx="0"/>
+  <text x="120" y="132" class="note" text-anchor="middle">부가 기능 Y</text>
+  <rect x="40" y="140" width="160" height="26" class="bad" rx="0"/>
+  <text x="120" y="158" class="note" text-anchor="middle">부가 기능 Z</text>
+  <rect x="40" y="166" width="160" height="26" class="box" rx="0"/>
+  <text x="120" y="184" class="val" text-anchor="middle">핵심 기능</text>
+  <rect x="230" y="60" width="160" height="28" class="hold" rx="0"/>
+  <text x="310" y="80" class="db" text-anchor="middle">Class B</text>
+  <rect x="230" y="88" width="160" height="26" class="bad" rx="0"/>
+  <text x="310" y="106" class="note" text-anchor="middle">부가 기능 X</text>
+  <rect x="230" y="114" width="160" height="26" class="box" rx="0"/>
+  <text x="310" y="132" class="val" text-anchor="middle">핵심 기능</text>
+  <rect x="230" y="140" width="160" height="26" class="bad" rx="0"/>
+  <text x="310" y="158" class="note" text-anchor="middle">부가 기능 Z</text>
+  <rect x="230" y="166" width="160" height="26" class="box" rx="0"/>
+  <rect x="420" y="60" width="160" height="28" class="hold" rx="0"/>
+  <text x="500" y="80" class="db" text-anchor="middle">Class C</text>
+  <rect x="420" y="88" width="160" height="26" class="bad" rx="0"/>
+  <text x="500" y="106" class="note" text-anchor="middle">부가 기능 Z</text>
+  <rect x="420" y="114" width="160" height="26" class="box" rx="0"/>
+  <text x="500" y="132" class="val" text-anchor="middle">핵심 기능</text>
+  <rect x="420" y="140" width="160" height="26" class="bad" rx="0"/>
+  <text x="500" y="158" class="note" text-anchor="middle">부가 기능 Y</text>
+  <rect x="420" y="166" width="160" height="26" class="box" rx="0"/>
+  <rect x="30" y="84" width="560" height="84" rx="4" fill="none" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="606" y="122" class="note">횡단 관심사</text>
+  <text x="606" y="140" class="note">발생</text>
+  <rect x="10" y="230" width="740" height="210" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="262" class="h">AOP — 부가 기능을 Aspect로 모듈화</text>
+  <rect x="40" y="282" width="160" height="52" rx="8" class="ok"/>
+  <text x="120" y="304" class="okt" text-anchor="middle">Aspect X</text>
+  <text x="120" y="323" class="val" text-anchor="middle">Class A, B에서 실행</text>
+  <rect x="230" y="282" width="160" height="52" rx="8" class="ok"/>
+  <text x="310" y="304" class="okt" text-anchor="middle">Aspect Y</text>
+  <text x="310" y="323" class="val" text-anchor="middle">Class A, C에서 실행</text>
+  <rect x="420" y="282" width="160" height="52" rx="8" class="ok"/>
+  <text x="500" y="304" class="okt" text-anchor="middle">Aspect Z</text>
+  <text x="500" y="323" class="val" text-anchor="middle">Class A, B, C에서 실행</text>
+  <rect x="40" y="350" width="160" height="28" class="hold" rx="0"/>
+  <text x="120" y="370" class="db" text-anchor="middle">Class A</text>
+  <rect x="40" y="378" width="160" height="26" class="box" rx="0"/>
+  <text x="120" y="396" class="val" text-anchor="middle">핵심 기능</text>
+  <rect x="230" y="350" width="160" height="28" class="hold" rx="0"/>
+  <text x="310" y="370" class="db" text-anchor="middle">Class B</text>
+  <rect x="230" y="378" width="160" height="26" class="box" rx="0"/>
+  <text x="310" y="396" class="val" text-anchor="middle">핵심 기능</text>
+  <rect x="420" y="350" width="160" height="28" class="hold" rx="0"/>
+  <text x="500" y="370" class="db" text-anchor="middle">Class C</text>
+  <rect x="420" y="378" width="160" height="26" class="box" rx="0"/>
+  <text x="500" y="396" class="val" text-anchor="middle">핵심 기능</text>
+  <text x="606" y="312" class="gnote">중복 최소화</text>
+  <text x="606" y="334" class="sub">클래스에는</text>
+  <text x="606" y="352" class="sub">핵심 기능만 남음</text>
+</svg>

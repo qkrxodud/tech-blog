@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 480" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>기차 충돌과 나누어 쓴 코드는 ctxt에서 Options와 File을 차례로 탐색하고, createScratchFileStream은 ctxt에게 바로 일을 시켜 내부 구조를 드러내지 않는다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .ttl { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ttls { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .cs { font-family: Menlo, Consolas, monospace; font-size: 11.5px; fill: #374151; }
+    .csb { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .grid { stroke: #e5e7eb; stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="480" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="136" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">기차 충돌 — 한 줄에서 객체를 연달아 탐색</text>
+  <rect x="30" y="72" width="90" height="40" rx="8" class="box"/>
+  <text x="75" y="97" class="csb" text-anchor="middle">ctxt</text>
+  <rect x="235" y="72" width="90" height="40" rx="8" class="hold"/>
+  <text x="280" y="97" class="csb" text-anchor="middle">Options</text>
+  <rect x="440" y="72" width="90" height="40" rx="8" class="hold"/>
+  <text x="485" y="97" class="csb" text-anchor="middle">File</text>
+  <rect x="645" y="72" width="90" height="40" rx="8" class="box"/>
+  <text x="690" y="97" class="csb" text-anchor="middle">String</text>
+  <line x1="120" y1="92" x2="233" y2="92" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="177.5" y="66" class="cs" text-anchor="middle">getOptions()</text>
+  <line x1="325" y1="92" x2="438" y2="92" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="382.5" y="66" class="cs" text-anchor="middle">getScratchDir()</text>
+  <line x1="530" y1="92" x2="643" y2="92" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="587.5" y="66" class="cs" text-anchor="middle">getAbsolutePath()</text>
+  <text x="30" y="132" class="note">모듈이 Options와 File의 내부 구조를 알아야 합니다</text>
+  <rect x="10" y="162" width="740" height="156" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="194" class="h">나누어 쓴 코드 — 같은 탐색을 변수로 나눔</text>
+  <rect x="30" y="224" width="90" height="40" rx="8" class="box"/>
+  <text x="75" y="249" class="csb" text-anchor="middle">ctxt</text>
+  <rect x="235" y="224" width="90" height="40" rx="8" class="hold"/>
+  <text x="280" y="249" class="csb" text-anchor="middle">Options</text>
+  <rect x="440" y="224" width="90" height="40" rx="8" class="hold"/>
+  <text x="485" y="249" class="csb" text-anchor="middle">File</text>
+  <rect x="645" y="224" width="90" height="40" rx="8" class="box"/>
+  <text x="690" y="249" class="csb" text-anchor="middle">String</text>
+  <line x1="120" y1="244" x2="233" y2="244" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="177.5" y="218" class="cs" text-anchor="middle">getOptions()</text>
+  <line x1="325" y1="244" x2="438" y2="244" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="382.5" y="218" class="cs" text-anchor="middle">getScratchDir()</text>
+  <line x1="530" y1="244" x2="643" y2="244" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="587.5" y="218" class="cs" text-anchor="middle">getAbsolutePath()</text>
+  <text x="280" y="282" class="step" text-anchor="middle">opts</text>
+  <text x="485" y="282" class="step" text-anchor="middle">scratchDir</text>
+  <text x="690" y="282" class="step" text-anchor="middle">outputDir</text>
+  <text x="30" y="304" class="note">ctxt, opts, scratchDir이 객체라면 여전히 디미터 법칙을 위반합니다</text>
+  <rect x="10" y="334" width="740" height="136" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="366" class="h">객체에게 일을 시킴 — 내부 구조를 드러내지 않음</text>
+  <rect x="30" y="396" width="90" height="40" rx="8" class="box"/>
+  <text x="75" y="421" class="csb" text-anchor="middle">ctxt</text>
+  <rect x="480" y="396" width="230" height="40" rx="8" class="ok"/>
+  <text x="595" y="421" class="csb" text-anchor="middle">BufferedOutputStream</text>
+  <line x1="120" y1="416" x2="478" y2="416" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="300" y="390" class="cs" text-anchor="middle">createScratchFileStream(classFileName)</text>
+  <text x="30" y="456" class="gnote">모듈은 ctxt만 알면 되고, 여러 객체를 탐색할 필요가 없습니다</text>
+</svg>

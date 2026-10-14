@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 488" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>절차적 코드는 새 함수를 추가할 때 Geometry만 고치고 새 도형을 추가할 때 Geometry의 함수를 모두 고치며, 객체지향 코드는 새 도형 추가가 쉽고 새 함수 추가 때 도형 클래스 전부를 고친다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .ttl { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ttls { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .cs { font-family: Menlo, Consolas, monospace; font-size: 11.5px; fill: #374151; }
+    .csb { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .grid { stroke: #e5e7eb; stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="488" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="226" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">절차적 코드 — 자료 구조와 Geometry 함수</text>
+  <rect x="30" y="84" width="190" height="74" rx="8" class="hold"/>
+  <text x="125" y="114" class="op" text-anchor="middle">Geometry</text>
+  <text x="125" y="138" class="cs" text-anchor="middle">area(Object shape)</text>
+  <rect x="270" y="62" width="150" height="42" rx="8" class="box"/>
+  <text x="345" y="80" class="csb" text-anchor="middle">Square</text>
+  <text x="345" y="96" class="sub" text-anchor="middle">공개 필드만 가짐</text>
+  <line x1="220" y1="121" x2="268" y2="83" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="270" y="114" width="150" height="42" rx="8" class="box"/>
+  <text x="345" y="132" class="csb" text-anchor="middle">Rectangle</text>
+  <text x="345" y="148" class="sub" text-anchor="middle">공개 필드만 가짐</text>
+  <line x1="220" y1="121" x2="268" y2="135" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="270" y="166" width="150" height="42" rx="8" class="box"/>
+  <text x="345" y="184" class="csb" text-anchor="middle">Circle</text>
+  <text x="345" y="200" class="sub" text-anchor="middle">공개 필드만 가짐</text>
+  <line x1="220" y1="121" x2="268" y2="187" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="450" y="68" width="285" height="62" rx="8" class="ok"/>
+  <text x="466" y="93" class="okt">새 함수 추가 <tspan font-family="Menlo, Consolas, monospace">perimeter()</tspan></text>
+  <text x="466" y="114" class="val">Geometry만 고침, 도형 클래스는 영향 없음</text>
+  <rect x="450" y="144" width="285" height="62" rx="8" class="bad"/>
+  <text x="466" y="169" class="badt">새 도형 추가</text>
+  <text x="466" y="190" class="val">Geometry에 속한 함수를 모두 고침</text>
+  <rect x="10" y="252" width="740" height="226" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="284" class="h">객체지향 코드 — 다형 메서드 area()</text>
+  <rect x="30" y="326" width="190" height="74" rx="8" class="hold"/>
+  <text x="125" y="356" class="op" text-anchor="middle">Shape</text>
+  <text x="125" y="380" class="cs" text-anchor="middle">area()</text>
+  <rect x="270" y="304" width="150" height="42" rx="8" class="box"/>
+  <text x="345" y="322" class="csb" text-anchor="middle">Square</text>
+  <text x="345" y="338" class="sub" text-anchor="middle">area() 구현</text>
+  <line x1="270" y1="325" x2="222" y2="363" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="270" y="356" width="150" height="42" rx="8" class="box"/>
+  <text x="345" y="374" class="csb" text-anchor="middle">Rectangle</text>
+  <text x="345" y="390" class="sub" text-anchor="middle">area() 구현</text>
+  <line x1="270" y1="377" x2="222" y2="363" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="270" y="408" width="150" height="42" rx="8" class="box"/>
+  <text x="345" y="426" class="csb" text-anchor="middle">Circle</text>
+  <text x="345" y="442" class="sub" text-anchor="middle">area() 구현</text>
+  <line x1="270" y1="429" x2="222" y2="363" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="450" y="310" width="285" height="62" rx="8" class="bad"/>
+  <text x="466" y="335" class="badt">새 함수 추가</text>
+  <text x="466" y="356" class="val">도형 클래스 전부를 고침</text>
+  <rect x="450" y="386" width="285" height="62" rx="8" class="ok"/>
+  <text x="466" y="411" class="okt">새 도형 추가</text>
+  <text x="466" y="432" class="val">클래스 하나 추가, 기존 함수는 영향 없음</text>
+</svg>

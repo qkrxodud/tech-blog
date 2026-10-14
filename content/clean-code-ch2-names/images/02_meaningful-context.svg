@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 310" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>street 변수 하나만으로는 주소인지 알기 어렵고, addrStreet 접두어나 Address 객체의 getStreet()로 맥락을 더하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 12.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="310" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">의미 있는 맥락 — 접두어와 객체</text>
+  <rect x="30" y="62" width="700" height="52" rx="8" class="hold"/>
+  <rect x="46" y="74" width="100" height="28" rx="6" class="box"/>
+  <text x="96" y="93" class="m" text-anchor="middle">firstName</text>
+  <rect x="156" y="74" width="100" height="28" rx="6" class="box"/>
+  <text x="206" y="93" class="m" text-anchor="middle">lastName</text>
+  <rect x="266" y="74" width="100" height="28" rx="6" class="box"/>
+  <text x="316" y="93" class="m" text-anchor="middle">street</text>
+  <text x="390" y="93" class="t2">함께 있으면 주소라는 것을 바로 알 수 있음</text>
+  <rect x="30" y="134" width="210" height="116" rx="8" class="bad"/>
+  <text x="135" y="160" class="badt" text-anchor="middle">변수 하나만</text>
+  <text x="135" y="194" class="badc" text-anchor="middle">street</text>
+  <text x="135" y="230" class="note" text-anchor="middle">주소의 일부인지 알기 어려움</text>
+  <line x1="244" y1="192" x2="271" y2="192" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="275" y="134" width="210" height="116" rx="8" class="ok"/>
+  <text x="380" y="160" class="okt" text-anchor="middle">접두어 추가</text>
+  <text x="380" y="194" class="okc" text-anchor="middle">addrStreet</text>
+  <text x="380" y="230" class="gnote" text-anchor="middle">접두어로 주소임을 알림</text>
+  <line x1="489" y1="192" x2="516" y2="192" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="520" y="134" width="210" height="116" rx="8" class="ok"/>
+  <text x="625" y="160" class="okt" text-anchor="middle">객체로 묶기</text>
+  <text x="625" y="184" class="okc" text-anchor="middle">Address</text>
+  <text x="625" y="204" class="okm" text-anchor="middle">getStreet()</text>
+  <text x="625" y="230" class="gnote" text-anchor="middle">맥락이 클래스 이름에 담김</text>
+  <text x="30" y="282" class="foot">접두어는 마지막 수단이고, Address 객체로 묶으면 읽는 사람이 더 쉽게 이해할 수 있습니다.</text>
+</svg>

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 484" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Car 생성자가 SportsCarWheel을 직접 생성하는 경우와, CarOwner가 SportsCarWheel을 만들어 Car 생성자로 주입하고 changeWheel로 교체하는 경우의 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="484" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="196" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">내부에서 생성 — Car가 바퀴를 직접 만듦</text>
+  <text x="730" y="42" class="code" text-anchor="end">new SportsCarWheel()</text>
+  <rect x="40" y="66" width="260" height="92" rx="8" class="box"/>
+  <text x="60" y="92" class="lane">Car</text>
+  <rect x="60" y="108" width="220" height="36" rx="6" class="bad"/>
+  <text x="170" y="131" class="badc" text-anchor="middle">new SportsCarWheel()</text>
+  <line x1="280" y1="126" x2="446" y2="126" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="363" y="116" class="note" text-anchor="middle">직접 생성</text>
+  <rect x="450" y="98" width="200" height="56" rx="8" class="hold"/>
+  <text x="550" y="122" class="op" text-anchor="middle">SportsCarWheel</text>
+  <text x="550" y="142" class="val" text-anchor="middle">구체 클래스</text>
+  <text x="40" y="188" class="note">다른 바퀴로 바꾸려면 Car 내부 코드를 변경해야 합니다.</text>
+  <rect x="10" y="222" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="254" class="h">외부에서 주입 — CarOwner가 바퀴를 만들어 넘김</text>
+  <rect x="40" y="290" width="200" height="70" rx="8" class="box"/>
+  <text x="140" y="318" class="op" text-anchor="middle">CarOwner</text>
+  <text x="140" y="340" class="val" text-anchor="middle">SportsCarWheel 생성</text>
+  <line x1="240" y1="314" x2="296" y2="314" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="268" y="306" class="sub" text-anchor="middle">주입</text>
+  <line x1="240" y1="350" x2="296" y2="350" stroke="#16a34a" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#agr)"/>
+  <text x="268" y="342" class="sub" text-anchor="middle">교체</text>
+  <rect x="300" y="290" width="200" height="70" rx="8" class="ok"/>
+  <text x="400" y="318" class="okc" text-anchor="middle">Car(CarWheel)</text>
+  <text x="400" y="340" class="val" text-anchor="middle">넘겨받은 바퀴 사용</text>
+  <line x1="500" y1="325" x2="556" y2="325" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="528" y="317" class="sub" text-anchor="middle">의존</text>
+  <rect x="560" y="290" width="170" height="70" rx="8" class="hold"/>
+  <text x="645" y="318" class="op" text-anchor="middle">CarWheel</text>
+  <text x="645" y="340" class="val" text-anchor="middle">인터페이스</text>
+  <rect x="465" y="396" width="132" height="40" rx="6" class="box"/>
+  <text x="531" y="421" class="code" text-anchor="middle">SportsCarWheel</text>
+  <rect x="603" y="396" width="132" height="40" rx="6" class="box"/>
+  <text x="669" y="421" class="code" text-anchor="middle">SuvCarWheel</text>
+  <line x1="560" y1="396" x2="620" y2="364" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="669" y1="396" x2="655" y2="364" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="452" y="421" class="sub" text-anchor="end">구현 클래스는 바꿔 끼울 수 있음</text>
+  <text x="40" y="458" class="gnote">changeWheel(carWheel)로 Car 코드를 바꾸지 않고 바퀴를 교체할 수 있습니다.</text>
+</svg>

@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 550" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Sql 한 클래스에 모든 SQL문이 있어 새 SQL문마다 Sql을 고쳐야 하는 구조와, Sql을 상속한 파생 클래스로 나눠 update문은 새 클래스를 추가하고 기존 클래스는 그대로 두는 구조 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .hd { font-size: 10.5px; fill: #374151; }
+    .gmsg { font-size: 11.5px; fill: #15803d; }
+    .rmsg { font-size: 11.5px; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .act { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L9,5 L1,9" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="760" height="550" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">나누기 전 — 모든 SQL문이 Sql 한 클래스에</text>
+  <rect x="40" y="60" width="330" height="144" rx="10" class="pkg"/>
+  <text x="205" y="86" class="op" text-anchor="middle">Sql</text>
+  <text x="205" y="114" class="m" text-anchor="middle">create() · insert() · selectAll()</text>
+  <text x="205" y="136" class="m" text-anchor="middle">findByKey() · select() · select()</text>
+  <text x="205" y="158" class="m" text-anchor="middle">preparedInsert()</text>
+  <text x="205" y="186" class="s" text-anchor="middle">비공개 함수 네 개도 함께 있음</text>
+  <rect x="470" y="66" width="260" height="40" rx="8" class="bad"/>
+  <text x="600" y="91" class="note" text-anchor="middle">새로운 SQL문 지원</text>
+  <rect x="470" y="122" width="260" height="40" rx="8" class="bad"/>
+  <text x="600" y="147" class="note" text-anchor="middle">select문에 내장된 select문 지원</text>
+  <line x1="468" y1="86" x2="374" y2="118" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="468" y1="142" x2="374" y2="136" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="470" y="194" class="note">두 경우 모두 Sql 클래스를 고쳐야 합니다.</text>
+
+  <rect x="10" y="240" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="272" class="h">나눈 뒤 — 파생 클래스를 추가하고 기존 클래스는 그대로</text>
+  <rect x="270" y="288" width="220" height="52" rx="8" class="box"/>
+  <text x="380" y="309" class="op" text-anchor="middle">abstract Sql</text>
+  <text x="380" y="328" class="m" text-anchor="middle">generate()</text>
+  <line x1="380" y1="372" x2="380" y2="344" stroke="#6b7280" stroke-width="1.3" marker-end="url(#tri)"/>
+  <rect x="30" y="372" width="706" height="128" rx="10" class="scope"/>
+  <text x="42" y="392" class="s"><tspan font-family="Menlo, Consolas, monospace">Sql</tspan>을 상속하고 각자 <tspan font-family="Menlo, Consolas, monospace">generate()</tspan>를 재정의</text>
+  <rect x="40" y="402" width="166" height="36" rx="8" class="box"/>
+  <text x="123" y="425" class="ms" text-anchor="middle">CreateSql</text>
+  <rect x="214" y="402" width="166" height="36" rx="8" class="box"/>
+  <text x="297" y="425" class="ms" text-anchor="middle">SelectSql</text>
+  <rect x="388" y="402" width="166" height="36" rx="8" class="box"/>
+  <text x="471" y="425" class="ms" text-anchor="middle">InsertSql</text>
+  <rect x="562" y="402" width="166" height="36" rx="8" class="box"/>
+  <text x="645" y="425" class="ms" text-anchor="middle">SelectWithCriteriaSql</text>
+  <rect x="40" y="450" width="166" height="36" rx="8" class="box"/>
+  <text x="123" y="473" class="ms" text-anchor="middle">SelectWithMatchSql</text>
+  <rect x="214" y="450" width="166" height="36" rx="8" class="box"/>
+  <text x="297" y="473" class="ms" text-anchor="middle">FindByKeySql</text>
+  <rect x="388" y="450" width="166" height="36" rx="8" class="box"/>
+  <text x="471" y="473" class="ms" text-anchor="middle">PreparedInsertSql</text>
+  <rect x="562" y="450" width="166" height="36" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="645" y="473" class="gmsg" text-anchor="middle" font-weight="700">update문은 새로 추가</text>
+  <text x="30" y="524" class="gnote">새 SQL문은 파생 클래스를 추가해 지원하고(확장에 개방), 기존 클래스는 고치지 않습니다(수정에 폐쇄).</text>
+</svg>

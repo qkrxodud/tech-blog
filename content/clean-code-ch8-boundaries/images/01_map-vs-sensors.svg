@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Map을 그대로 여러 클래스에 넘기면 클래스마다 형 변환을 하고 누구나 clear를 호출할 수 있지만, Sensors 클래스로 감싸면 다른 클래스는 getById만 사용하는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .hd { font-size: 10.5px; fill: #374151; }
+    .gmsg { font-size: 11.5px; fill: #15803d; }
+    .rmsg { font-size: 11.5px; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .act { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L9,5 L1,9" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="760" height="560" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="262" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Map을 그대로 넘길 때 — 받는 쪽 모두가 모든 기능을 쓴다</text>
+  <text x="730" y="42" class="code" text-anchor="end">Map sensors</text>
+  <rect x="40" y="86" width="220" height="130" rx="10" class="pkg"/>
+  <text x="150" y="116" class="op" text-anchor="middle">Map</text>
+  <text x="150" y="138" class="s" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">HashMap</tspan> 인스턴스</text>
+  <text x="150" y="170" class="ms" text-anchor="middle">clear() · put() · remove()</text>
+  <text x="150" y="192" class="ms" text-anchor="middle">get() · keySet() · values()</text>
+  <text x="363" y="76" class="s" text-anchor="middle">Map을 그대로 전달</text>
+  <rect x="470" y="72" width="260" height="46" rx="8" class="box"/>
+  <text x="600" y="91" class="ts" text-anchor="middle">클래스 A</text>
+  <text x="600" y="109" class="ms" text-anchor="middle">(Sensor) sensors.get(id)</text>
+  <rect x="470" y="128" width="260" height="46" rx="8" class="box"/>
+  <text x="600" y="147" class="ts" text-anchor="middle">클래스 B</text>
+  <text x="600" y="165" class="ms" text-anchor="middle">(Sensor) sensors.get(id)</text>
+  <rect x="470" y="184" width="260" height="46" rx="8" class="bad"/>
+  <text x="600" y="203" class="ts" text-anchor="middle" fill="#b91c1c">클래스 C</text>
+  <text x="600" y="221" class="ms" text-anchor="middle" fill="#b91c1c">sensors.clear()</text>
+  <line x1="262" y1="151" x2="466" y2="96" stroke="#6b7280" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="262" y1="151" x2="466" y2="151" stroke="#6b7280" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="262" y1="151" x2="466" y2="206" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="30" y="256" class="note">형 변환은 클래스마다 반복되고, Map을 받은 클래스라면 누구나 clear()로 내용을 지울 수 있습니다.</text>
+
+  <rect x="10" y="288" width="740" height="262" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="320" class="h">Sensors로 감쌀 때 — 필요한 기능만 보인다</text>
+  <text x="730" y="320" class="code" text-anchor="end">Sensors.getById()</text>
+  <rect x="40" y="350" width="260" height="160" rx="10" class="pkg"/>
+  <text x="170" y="378" class="op" text-anchor="middle">Sensors</text>
+  <rect x="58" y="392" width="224" height="46" rx="8" class="hold"/>
+  <text x="170" y="420" class="m" text-anchor="middle">private Map sensors</text>
+  <text x="170" y="466" class="s" text-anchor="middle">형 변환은 Sensors 안에서 처리</text>
+  <text x="170" y="488" class="s" text-anchor="middle">Map은 밖으로 노출되지 않음</text>
+  <text x="385" y="356" class="s" text-anchor="middle">getById()만 호출</text>
+  <rect x="470" y="350" width="260" height="46" rx="8" class="ok"/>
+  <text x="600" y="369" class="ts" text-anchor="middle">클래스 A</text>
+  <text x="600" y="387" class="ms" text-anchor="middle" fill="#15803d">sensors.getById(id)</text>
+  <rect x="470" y="406" width="260" height="46" rx="8" class="ok"/>
+  <text x="600" y="425" class="ts" text-anchor="middle">클래스 B</text>
+  <text x="600" y="443" class="ms" text-anchor="middle" fill="#15803d">sensors.getById(id)</text>
+  <rect x="470" y="462" width="260" height="46" rx="8" class="ok"/>
+  <text x="600" y="481" class="ts" text-anchor="middle">클래스 C</text>
+  <text x="600" y="499" class="ms" text-anchor="middle" fill="#15803d">sensors.getById(id)</text>
+  <line x1="468" y1="373" x2="304" y2="418" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="468" y1="429" x2="304" y2="430" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="468" y1="485" x2="304" y2="442" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="534" class="gnote">다른 클래스는 Sensors가 제공하는 getById()만 사용하고, Map의 다른 기능은 보이지 않습니다.</text>
+</svg>

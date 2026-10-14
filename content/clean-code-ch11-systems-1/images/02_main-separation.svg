@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 346" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>main 쪽에서 객체를 생성하고 의존성을 연결한 뒤 애플리케이션 쪽으로 넘기고, 애플리케이션은 만들어진 객체를 사용하기만 하는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="346" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="326" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Main 분리 — 생성은 main에서, 사용은 애플리케이션에서</text>
+  <rect x="30" y="60" width="320" height="220" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="410" y="60" width="320" height="220" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="50" y="88" class="lane">main</text>
+  <text x="50" y="108" class="sub">main 또는 main이 호출하는 모듈</text>
+  <text x="430" y="88" class="lane">애플리케이션</text>
+  <text x="430" y="108" class="sub">나머지 시스템</text>
+  <rect x="50" y="124" width="280" height="56" rx="8" class="hold"/>
+  <text x="190" y="148" class="db" text-anchor="middle">1. 객체 생성</text>
+  <text x="190" y="168" class="val" text-anchor="middle">애플리케이션 객체를 제작</text>
+  <line x1="190" y1="180" x2="190" y2="200" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="50" y="204" width="280" height="56" rx="8" class="hold"/>
+  <text x="190" y="228" class="db" text-anchor="middle">2. 의존성 연결</text>
+  <text x="190" y="248" class="val" text-anchor="middle">객체끼리 서로 연결</text>
+  <rect x="430" y="128" width="280" height="48" rx="6" class="wait"/>
+  <text x="570" y="157" class="waitt" text-anchor="middle">객체를 직접 생성하지 않음</text>
+  <rect x="430" y="204" width="280" height="56" rx="8" class="ok"/>
+  <text x="570" y="228" class="okt" text-anchor="middle">3. 런타임 로직 실행</text>
+  <text x="570" y="248" class="val" text-anchor="middle">생성·연결이 끝났다고 가정하고 사용</text>
+  <line x1="330" y1="232" x2="426" y2="232" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="312" class="sub">준비 과정(생성·연결)은 main 쪽에서 끝내고, 애플리케이션은 만들어진 객체를 사용합니다.</text>
+</svg>

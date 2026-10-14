@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Main이 Proxy의 createEvent를 호출하면 Proxy가 시작 시각을 기록하고 UseEventService의 createEvent를 호출한 뒤 경과 시간을 출력하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">자바 프록시 — Proxy가 원래 객체 호출을 감쌈</text>
+  <text x="730" y="42" class="code" text-anchor="end">new Proxy(new UseEventService())</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1. 호출</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2. 시작 시각</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3. 원래 기능</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4. 경과 시간</text>
+  <line x1="160" y1="76" x2="722" y2="76" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">Main</text>
+  <text x="30" y="126" class="sub">EventService로 사용</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="154" y="88" width="132" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="op" text-anchor="middle">createEvent()</text>
+  <text x="220" y="127" class="val" text-anchor="middle">프록시에 호출</text>
+  <text x="30" y="172" class="lane">Proxy</text>
+  <text x="30" y="190" class="sub">새로 추가한 기능</text>
+  <rect x="150" y="150" width="585" height="52" rx="6" class="track"/>
+  <rect x="294" y="152" width="132" height="48" rx="8" class="ok"/>
+  <text x="360" y="172" class="okc" text-anchor="middle">begin</text>
+  <text x="360" y="191" class="val" text-anchor="middle">시작 시각 기록</text>
+  <rect x="574" y="152" width="132" height="48" rx="8" class="ok"/>
+  <text x="640" y="172" class="okc" text-anchor="middle">println</text>
+  <text x="640" y="191" class="val" text-anchor="middle">경과 시간 출력</text>
+  <text x="30" y="236" class="lane" style="font-size:13px">UseEventService</text>
+  <text x="30" y="254" class="sub">부모 객체의 기능</text>
+  <rect x="150" y="214" width="585" height="52" rx="6" class="track"/>
+  <rect x="434" y="216" width="132" height="48" rx="8" class="hold"/>
+  <text x="500" y="236" class="op" text-anchor="middle">createEvent()</text>
+  <text x="500" y="255" class="val" text-anchor="middle">create event 출력</text>
+  <line x1="250" y1="136" x2="330" y2="152" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="390" y1="200" x2="470" y2="216" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="530" y1="216" x2="610" y2="200" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="150" y="294" class="sub">Main은 EventService 타입으로 Proxy를 사용하고, Proxy가 UseEventService를 대신 호출합니다.</text>
+  <text x="150" y="318" class="gnote">시간 측정 코드는 Proxy에만 있고 UseEventService는 원래 기능만 가집니다.</text>
+</svg>

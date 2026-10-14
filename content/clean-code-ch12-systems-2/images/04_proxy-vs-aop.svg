@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 282" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>자바 프록시는 부가 기능을 메서드마다 프록시 클래스에 작성하고 실행 지점을 명시하는 메커니즘이 없으며, 스프링 AOP는 부가 기능을 PerfAspect 한 곳에 두고 execution 표현식으로 적용 지점을 지정하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="282" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="262" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">자바 프록시와 스프링 AOP — 부가 기능을 두는 위치</text>
+  <rect x="30" y="62" width="345" height="194" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="44" y="74" width="317" height="40" rx="6" class="bad"/>
+  <text x="202" y="100" class="badt" text-anchor="middle">자바 프록시</text>
+  <text x="54" y="144" class="val">· 부가 기능을 Proxy 클래스에 직접 작성</text>
+  <text x="54" y="174" class="val">· 메서드마다 시간 측정 코드를 반복</text>
+  <text x="54" y="204" class="val">· 코드의 양이 많고 제법 복잡함</text>
+  <text x="54" y="234" class="val">· 시스템 단위로 실행 지점을 명시할 수 없음</text>
+  <rect x="390" y="62" width="345" height="194" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="404" y="74" width="317" height="40" rx="6" class="ok"/>
+  <text x="562" y="100" class="okt" text-anchor="middle">스프링 AOP (PerfAspect)</text>
+  <text x="414" y="144" class="val">· 부가 기능을 PerfAspect 한 곳에 작성</text>
+  <text x="414" y="174" class="val">· execution 표현식으로 적용 지점을 지정</text>
+  <text x="414" y="204" class="val">· UseEventService에는 원래 기능만 남음</text>
+  <text x="414" y="234" class="val">· 상세 정보는 애너테이션 안에 모임</text>
+</svg>
