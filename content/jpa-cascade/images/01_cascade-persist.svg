@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>em.persist(parent)를 한 번 호출하면 CASCADE 설정에 따라 childList에 들어 있는 child1, child2에도 영속화가 전이되어, parent와 child 2개가 함께 insert되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 12px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">영속성 전이 — persist가 자식에게 전이</text>
+  <text x="730" y="42" class="code" text-anchor="end">cascade = CascadeType.ALL</text>
+  <text x="130" y="68" class="step" text-anchor="middle">1. 호출</text>
+  <text x="380" y="68" class="step" text-anchor="middle">2. 전이</text>
+  <text x="635" y="68" class="step" text-anchor="middle">3. 커밋</text>
+  <rect x="30" y="80" width="200" height="44" rx="8" class="box"/>
+  <text x="130" y="107" class="opm" text-anchor="middle">em.persist(parent)</text>
+  <line x1="130" y1="125" x2="130" y2="159" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="30" y="162" width="200" height="56" rx="8" class="hold"/>
+  <text x="130" y="186" class="op" text-anchor="middle">parent</text>
+  <text x="130" y="205" class="val" text-anchor="middle">영속 상태</text>
+  <rect x="300" y="120" width="160" height="50" rx="8" class="ok"/>
+  <text x="380" y="142" class="okc" text-anchor="middle">child1</text>
+  <text x="380" y="161" class="val" text-anchor="middle">전이되어 영속</text>
+  <rect x="300" y="192" width="160" height="50" rx="8" class="ok"/>
+  <text x="380" y="214" class="okc" text-anchor="middle">child2</text>
+  <text x="380" y="233" class="val" text-anchor="middle">전이되어 영속</text>
+  <line x1="232" y1="180" x2="297" y2="150" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="232" y1="200" x2="297" y2="214" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="266" y="194" class="s" text-anchor="middle">CASCADE</text>
+  <rect x="540" y="92" width="190" height="160" rx="10" class="dbbox"/>
+  <text x="635" y="118" class="db" text-anchor="middle">DB</text>
+  <rect x="556" y="132" width="158" height="30" rx="6" class="box"/>
+  <text x="635" y="152" class="m" text-anchor="middle">INSERT PARENT</text>
+  <rect x="556" y="170" width="158" height="30" rx="6" class="ok"/>
+  <text x="635" y="190" class="m" text-anchor="middle">INSERT CHILD</text>
+  <rect x="556" y="208" width="158" height="30" rx="6" class="ok"/>
+  <text x="635" y="228" class="m" text-anchor="middle">INSERT CHILD</text>
+  <line x1="462" y1="181" x2="537" y2="181" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="290" class="foot"><tspan font-family="Menlo, Consolas, monospace">em.persist()</tspan>는 parent에 한 번만 호출했지만, child1과 child2도 함께 저장됩니다.</text>
+</svg>

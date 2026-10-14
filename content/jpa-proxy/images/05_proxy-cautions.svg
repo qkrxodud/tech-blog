@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>영속성 컨텍스트에 Member가 이미 있으면 em.getReference()도 실제 엔티티를 반환하고, 준영속 상태에서 프록시를 초기화하면 LazyInitializationException이 발생하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 12px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="186" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">영속성 컨텍스트에 이미 있을 때 — 실제 엔티티 반환</text>
+  <rect x="30" y="76" width="190" height="56" rx="8" class="box"/>
+  <text x="125" y="100" class="op" text-anchor="middle">em.find()</text>
+  <text x="125" y="119" class="val" text-anchor="middle">Member를 영속 상태로</text>
+  <line x1="222" y1="104" x2="282" y2="104" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="285" y="76" width="190" height="56" rx="8" class="hold"/>
+  <text x="380" y="100" class="t" text-anchor="middle">영속성 컨텍스트</text>
+  <text x="380" y="119" class="val" text-anchor="middle">Member 보관 중</text>
+  <line x1="477" y1="104" x2="537" y2="104" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="540" y="76" width="190" height="56" rx="8" class="ok"/>
+  <text x="635" y="100" class="okc" text-anchor="middle">em.getReference()</text>
+  <text x="635" y="119" class="val" text-anchor="middle">실제 Member 반환</text>
+  <text x="30" y="172" class="foot">찾는 엔티티가 이미 영속성 컨텍스트에 있으면 <tspan font-family="Menlo, Consolas, monospace">em.getReference()</tspan>를 호출해도 프록시가 아닌 실제 엔티티가 돌아옵니다.</text>
+  <rect x="10" y="212" width="740" height="198" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="244" class="h">준영속 상태에서 초기화 — 예외 발생</text>
+  <rect x="30" y="278" width="190" height="56" rx="8" class="box"/>
+  <text x="125" y="302" class="op" text-anchor="middle">em.getReference()</text>
+  <text x="125" y="321" class="val" text-anchor="middle">프록시 조회</text>
+  <line x1="222" y1="306" x2="282" y2="306" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="285" y="278" width="190" height="56" rx="8" class="wait"/>
+  <text x="380" y="302" class="t" text-anchor="middle">준영속 상태</text>
+  <text x="380" y="321" class="val" text-anchor="middle">영속성 컨텍스트 도움 없음</text>
+  <line x1="477" y1="306" x2="537" y2="306" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="540" y="278" width="190" height="56" rx="8" class="bad"/>
+  <text x="635" y="302" class="badc" text-anchor="middle">getName()</text>
+  <text x="635" y="321" class="val" text-anchor="middle">초기화 실패</text>
+  <rect x="380" y="352" width="350" height="32" rx="15" class="bad"/>
+  <text x="555" y="373" class="badm" text-anchor="middle">org.hibernate.LazyInitializationException</text>
+  <text x="30" y="373" class="note">하이버네이트가 던지는 예외</text>
+</svg>

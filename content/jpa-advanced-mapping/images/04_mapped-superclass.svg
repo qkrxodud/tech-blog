@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 364" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>BaseEntity는 테이블이 없고, BaseEntity를 상속한 Member의 MEMBER 테이블에 INSERT_MEMBER, createDate, UPDATE_MEMBER, lastModifiedDate 컬럼이 Member 자체 컬럼과 함께 생기는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agb" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M10,0 L0,5 L10,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="364" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="344" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">@MappedSuperclass — 매핑 정보만 자식에게 물려준다</text>
+  <rect x="30" y="66" width="230" height="132" rx="6" class="box"/>
+  <rect x="30" y="66" width="230" height="28" rx="6" class="thead"/>
+  <text x="145.0" y="85" class="mb" text-anchor="middle">BaseEntity</text>
+  <text x="42" y="111.5" class="m">createBy</text>
+  <text x="42" y="137.5" class="m">createDate</text>
+  <text x="42" y="163.5" class="m">lastModifiedBy</text>
+  <text x="42" y="189.5" class="m">lastModifiedDate</text>
+  <text x="30" y="222" class="code">@MappedSuperclass</text>
+  <text x="30" y="240" class="waitt">엔티티가 아니고, 테이블도 없습니다.</text>
+  <rect x="30" y="262" width="230" height="54" rx="6" class="box"/>
+  <rect x="30" y="262" width="230" height="28" rx="6" class="thead"/>
+  <text x="145.0" y="281" class="mb" text-anchor="middle">Member extends BaseEntity</text>
+  <text x="42" y="307.5" class="s">Member 자체 필드</text>
+  <line x1="240" y1="260" x2="240" y2="201" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="248" y="236" class="sub">상속</text>
+  <rect x="470" y="66" width="260" height="158" rx="6" class="box"/>
+  <rect x="470" y="66" width="260" height="28" rx="6" class="thead"/>
+  <text x="600.0" y="85" class="mb" text-anchor="middle">MEMBER</text>
+  <text x="482" y="111.5" class="s">Member 자체 컬럼</text>
+  <rect x="474" y="123" width="252" height="20" rx="4" class="ok"/>
+  <text x="482" y="137.5" class="okm">INSERT_MEMBER</text>
+  <rect x="474" y="149" width="252" height="20" rx="4" class="ok"/>
+  <text x="482" y="163.5" class="okm">createDate</text>
+  <rect x="474" y="175" width="252" height="20" rx="4" class="ok"/>
+  <text x="482" y="189.5" class="okm">UPDATE_MEMBER</text>
+  <rect x="474" y="201" width="252" height="20" rx="4" class="ok"/>
+  <text x="482" y="215.5" class="okm">lastModifiedDate</text>
+  <line x1="264" y1="107.0" x2="466" y2="133.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="264" y1="133.0" x2="466" y2="159.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="264" y1="159.0" x2="466" y2="185.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="264" y1="185.0" x2="466" y2="211.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="470" y="262" class="gnote">@Column(name = "INSERT_MEMBER")처럼</text>
+  <text x="470" y="280" class="gnote">바꾼 이름은 그대로 컬럼 이름이 됩니다.</text>
+  <text x="30" y="340" class="foot">BaseEntity의 필드는 상속받은 MEMBER 테이블의 컬럼으로 매핑됩니다.</text>
+</svg>

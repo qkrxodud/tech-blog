@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 464" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>주 테이블 MEMBER에 LOCKER_ID 외래 키를 두는 방식과 대상 테이블 LOCKER에 MEMBER_ID 외래 키를 두는 방식의 테이블 구조와 장단점 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agb" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M10,0 L0,5 L10,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="464" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">주 테이블에 외래 키</text>
+  <text x="730" y="42" class="code" text-anchor="end">MEMBER.LOCKER_ID</text>
+  <rect x="30" y="66" width="170" height="106" rx="6" class="box"/>
+  <rect x="30" y="66" width="170" height="28" rx="6" class="thead"/>
+  <text x="115.0" y="85" class="mb" text-anchor="middle">MEMBER</text>
+  <text x="42" y="111.5" class="m">MEMBER_ID (PK)</text>
+  <text x="42" y="137.5" class="m">USERNAME</text>
+  <rect x="34" y="149" width="162" height="20" rx="4" class="ok"/>
+  <text x="42" y="163.5" class="okm">LOCKER_ID (FK, UNI)</text>
+  <rect x="270" y="66" width="170" height="80" rx="6" class="box"/>
+  <rect x="270" y="66" width="170" height="28" rx="6" class="thead"/>
+  <text x="355.0" y="85" class="mb" text-anchor="middle">LOCKER</text>
+  <rect x="274" y="97" width="162" height="20" rx="4" class="ok"/>
+  <text x="282" y="111.5" class="okm">ID (PK)</text>
+  <text x="282" y="137.5" class="m">NAME</text>
+  <line x1="204" y1="159.0" x2="266" y2="107.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="470" y="66" width="260" height="52" rx="8" class="ok"/>
+  <text x="484" y="87" class="okt">장점</text>
+  <text x="484" y="107" class="gnote">주 테이블만 조회해도 대상 데이터 확인</text>
+  <rect x="470" y="128" width="260" height="52" rx="8" class="bad"/>
+  <text x="484" y="149" class="badt">단점</text>
+  <text x="484" y="169" class="note">값이 없으면 외래 키에 null 허용</text>
+  <text x="30" y="214" class="foot">객체지향 개발자가 선호하고 JPA 매핑이 편리합니다.</text>
+  <rect x="10" y="240" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="272" class="h">대상 테이블에 외래 키</text>
+  <text x="730" y="272" class="code" text-anchor="end">LOCKER.MEMBER_ID</text>
+  <rect x="30" y="296" width="170" height="80" rx="6" class="box"/>
+  <rect x="30" y="296" width="170" height="28" rx="6" class="thead"/>
+  <text x="115.0" y="315" class="mb" text-anchor="middle">MEMBER</text>
+  <rect x="34" y="327" width="162" height="20" rx="4" class="ok"/>
+  <text x="42" y="341.5" class="okm">MEMBER_ID (PK)</text>
+  <text x="42" y="367.5" class="m">USERNAME</text>
+  <rect x="270" y="296" width="170" height="106" rx="6" class="box"/>
+  <rect x="270" y="296" width="170" height="28" rx="6" class="thead"/>
+  <text x="355.0" y="315" class="mb" text-anchor="middle">LOCKER</text>
+  <text x="282" y="341.5" class="m">ID (PK)</text>
+  <text x="282" y="367.5" class="m">NAME</text>
+  <rect x="274" y="379" width="162" height="20" rx="4" class="ok"/>
+  <text x="282" y="393.5" class="okm">MEMBER_ID (FK, UNI)</text>
+  <line x1="266" y1="389.0" x2="204" y2="337.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="470" y="296" width="260" height="52" rx="8" class="ok"/>
+  <text x="484" y="317" class="okt">장점</text>
+  <text x="484" y="337" class="gnote">일대다로 바꿔도 테이블 구조 유지</text>
+  <rect x="470" y="358" width="260" height="52" rx="8" class="bad"/>
+  <text x="484" y="379" class="badt">단점</text>
+  <text x="484" y="399" class="note">지연 로딩으로 설정해도 항상 즉시 로딩</text>
+  <text x="30" y="444" class="foot">전통적인 데이터베이스 개발자가 선호합니다.</text>
+</svg>

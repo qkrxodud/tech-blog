@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>MemberProxy는 Member를 상속받아 겉모양이 같고, 실제 Member 객체를 가리키는 target을 보관하며, getName()을 호출하면 target.getName()을 대신 호출하는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 12px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">프록시 구조 — 실제 클래스를 상속하고 target을 보관</text>
+  <rect x="60" y="70" width="220" height="112" rx="8" class="box"/>
+  <text x="170" y="96" class="op" text-anchor="middle">Member</text>
+  <line x1="60" y1="108" x2="280" y2="108" stroke="#d1d5db" stroke-width="1.2"/>
+  <text x="80" y="134" class="m">getId()</text>
+  <text x="80" y="160" class="m">getName()</text>
+  <rect x="440" y="70" width="260" height="112" rx="8" class="hold"/>
+  <text x="570" y="96" class="op" text-anchor="middle">MemberProxy</text>
+  <line x1="440" y1="108" x2="700" y2="108" stroke="#d1d5db" stroke-width="1.2"/>
+  <text x="460" y="130" class="m">Member target</text>
+  <text x="460" y="151" class="m">getId()</text>
+  <text x="460" y="172" class="m">getName()</text>
+  <line x1="438" y1="126" x2="284" y2="126" stroke="#6b7280" stroke-width="1.6" marker-end="url(#tri)"/>
+  <text x="361" y="116" class="s" text-anchor="middle">상속</text>
+  <rect x="440" y="222" width="260" height="48" rx="8" class="ok"/>
+  <text x="570" y="251" class="okt" text-anchor="middle">실제 Member 객체</text>
+  <line x1="570" y1="184" x2="570" y2="219" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="580" y="206" class="s">참조</text>
+  <text x="60" y="218" class="val">사용하는 쪽은 진짜 객체인지</text>
+  <text x="60" y="238" class="val">프록시 객체인지 구분하지 않고 사용</text>
+  <text x="30" y="302" class="foot">프록시의 <tspan font-family="Menlo, Consolas, monospace">getName()</tspan>을 호출하면 프록시는 <tspan font-family="Menlo, Consolas, monospace">target.getName()</tspan>으로 실제 객체의 메서드를 호출합니다.</text>
+</svg>

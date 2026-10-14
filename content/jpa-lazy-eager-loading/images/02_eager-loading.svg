@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>즉시 로딩에서는 em.find()를 호출할 때 MEMBER와 TEAM을 함께 조회해 Team 자리에 실제 엔티티를 두므로, team.getName()을 호출할 때 SQL이 실행되지 않는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 12px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">즉시 로딩 — Member와 Team을 함께 조회</text>
+  <text x="730" y="42" class="code" text-anchor="end">FetchType.EAGER</text>
+  <text x="300" y="68" class="step" text-anchor="middle">1. Member 조회</text>
+  <text x="590" y="68" class="step" text-anchor="middle">2. Team 사용</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">코드</text>
+  <text x="30" y="128" class="sub">실행한 코드</text>
+  <rect x="150" y="86" width="585" height="56" rx="6" class="track"/>
+  <text x="30" y="174" class="lane">영속성</text>
+  <text x="30" y="192" class="lane">컨텍스트</text>
+  <rect x="150" y="150" width="585" height="56" rx="6" class="track"/>
+  <text x="30" y="238" class="lane">DB</text>
+  <text x="30" y="256" class="sub">실행된 SQL</text>
+  <rect x="150" y="214" width="585" height="56" rx="6" class="track"/>
+  <rect x="180" y="90" width="240" height="48" rx="8" class="box"/>
+  <text x="300" y="119" class="opm" text-anchor="middle">em.find(Member.class, 1L)</text>
+  <rect x="480" y="90" width="220" height="48" rx="8" class="box"/>
+  <text x="590" y="119" class="opm" text-anchor="middle">team.getName()</text>
+  <rect x="180" y="154" width="240" height="48" rx="8" class="ok"/>
+  <text x="300" y="174" class="okt" text-anchor="middle">Member, Team 저장</text>
+  <text x="300" y="193" class="val" text-anchor="middle">Team은 실제 엔티티</text>
+  <rect x="480" y="154" width="220" height="48" rx="8" class="box"/>
+  <text x="590" y="174" class="t" text-anchor="middle">실제 Team 사용</text>
+  <text x="590" y="193" class="val" text-anchor="middle">이미 조회한 값</text>
+  <rect x="180" y="218" width="240" height="48" rx="8" class="dbbox"/>
+  <text x="300" y="247" class="opm" text-anchor="middle">SELECT MEMBER + TEAM</text>
+  <rect x="480" y="222" width="220" height="40" rx="6" class="wait"/>
+  <text x="590" y="247" class="waitt" text-anchor="middle">추가 SQL 없음</text>
+  <line x1="300" y1="139" x2="300" y2="151" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="590" y1="139" x2="590" y2="151" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="300" y1="203" x2="300" y2="215" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="312" class="foot">Member를 조회하는 시점에 Team까지 함께 조회하므로, Team을 사용할 때는 SQL이 실행되지 않습니다.</text>
+</svg>

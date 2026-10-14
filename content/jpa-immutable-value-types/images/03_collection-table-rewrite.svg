@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 556" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>값 타입 컬렉션 테이블은 회원 ID와 값 컬럼을 모두 묶어 기본키로 쓰고, 컬렉션에 변경이 생기면 주인 엔티티와 연관된 행을 모두 삭제한 뒤 현재 값을 모두 다시 저장하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="556" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="232" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">값 타입 컬렉션 테이블 — 모든 컬럼을 묶어 기본키</text>
+  <text x="730" y="42" class="code" text-anchor="end">@ElementCollection</text>
+  <text x="30" y="82" class="db" text-anchor="start">MEMBER 테이블</text>
+  <rect x="30" y="90" width="250" height="28" rx="4" class="hold"/>
+  <text x="85.0" y="109" class="ts" text-anchor="middle">ID (PK)</text>
+  <text x="210.0" y="109" class="ts" text-anchor="middle">name</text>
+  <rect x="30" y="118" width="250" height="28" rx="0" class="box"/>
+  <text x="85.0" y="137" class="val" text-anchor="middle">1</text>
+  <text x="210.0" y="137" class="val" text-anchor="middle">member1</text>
+  <line x1="140" y1="90" x2="140" y2="146" stroke="#d1d5db" stroke-width="1"/>
+  <text x="360" y="82" class="db" text-anchor="start">컬렉션 테이블</text>
+  <rect x="360" y="90" width="360" height="28" rx="4" class="hold"/>
+  <text x="445.0" y="109" class="ts" text-anchor="middle">회원 ID (PK, FK)</text>
+  <text x="625.0" y="109" class="ts" text-anchor="middle">값 (PK)</text>
+  <rect x="360" y="118" width="360" height="28" rx="0" class="box"/>
+  <text x="445.0" y="137" class="val" text-anchor="middle">1</text>
+  <text x="625.0" y="137" class="val" text-anchor="middle">치킨</text>
+  <rect x="360" y="146" width="360" height="28" rx="0" class="box"/>
+  <text x="445.0" y="165" class="val" text-anchor="middle">1</text>
+  <text x="625.0" y="165" class="val" text-anchor="middle">족발</text>
+  <rect x="360" y="174" width="360" height="28" rx="0" class="box"/>
+  <text x="445.0" y="193" class="val" text-anchor="middle">1</text>
+  <text x="625.0" y="193" class="val" text-anchor="middle">피자</text>
+  <line x1="530" y1="90" x2="530" y2="202" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="282" y1="132" x2="354" y2="132" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="360" y="224" class="sub" text-anchor="start">식별자 없음 — null 입력 불가, 중복 저장 불가</text>
+  <rect x="10" y="258" width="740" height="288" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="290" class="h">컬렉션에 변경이 생기면 — 전부 지우고 다시 저장</text>
+  <rect x="30" y="310" width="150" height="64" rx="8" class="box"/>
+  <text x="105" y="334" class="t" text-anchor="middle">컬렉션 변경</text>
+  <text x="105" y="354" class="val" text-anchor="middle">값 추가·삭제·수정</text>
+  <rect x="210" y="310" width="160" height="64" rx="8" class="bad"/>
+  <text x="290" y="334" class="badc" text-anchor="middle">DELETE</text>
+  <text x="290" y="354" class="val" text-anchor="middle">주인 엔티티의 행 전부</text>
+  <rect x="400" y="310" width="150" height="64" rx="8" class="box"/>
+  <text x="475" y="334" class="op" text-anchor="middle">INSERT</text>
+  <text x="475" y="354" class="val" text-anchor="middle">현재 값을 모두 다시</text>
+  <rect x="580" y="310" width="150" height="64" rx="8" class="ok"/>
+  <text x="655" y="334" class="okt" text-anchor="middle">다시 저장된 행</text>
+  <text x="655" y="354" class="val" text-anchor="middle">현재 컬렉션과 같음</text>
+  <line x1="180" y1="342" x2="206" y2="342" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="370" y1="342" x2="396" y2="342" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="550" y1="342" x2="576" y2="342" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="210" y="414" class="sub" text-anchor="start">삭제되는 행</text>
+  <rect x="210" y="422" width="160" height="24" rx="4" class="hold"/>
+  <text x="250.0" y="441" class="ts" text-anchor="middle">회원 ID</text>
+  <text x="330.0" y="441" class="ts" text-anchor="middle">값</text>
+  <rect x="210" y="446" width="160" height="24" rx="0" class="bad"/>
+  <text x="250.0" y="465" class="val" text-anchor="middle">1</text>
+  <text x="330.0" y="465" class="val" text-anchor="middle">치킨</text>
+  <rect x="210" y="470" width="160" height="24" rx="0" class="bad"/>
+  <text x="250.0" y="489" class="val" text-anchor="middle">1</text>
+  <text x="330.0" y="489" class="val" text-anchor="middle">족발</text>
+  <rect x="210" y="494" width="160" height="24" rx="0" class="bad"/>
+  <text x="250.0" y="513" class="val" text-anchor="middle">1</text>
+  <text x="330.0" y="513" class="val" text-anchor="middle">피자</text>
+  <line x1="290" y1="422" x2="290" y2="518" stroke="#d1d5db" stroke-width="1"/>
+  <text x="400" y="446" class="val" text-anchor="start">어떤 행이 바뀌었는지 식별자로</text>
+  <text x="400" y="466" class="val" text-anchor="start">추적할 수 없으므로 회원 1과 연관된</text>
+  <text x="400" y="486" class="val" text-anchor="start">데이터를 모두 지우고 다시 넣습니다</text>
+</svg>

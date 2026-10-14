@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>새로 만든 비영속 엔티티가 persist로 영속 상태가 되고, 영속 엔티티는 detach·clear·close로 준영속, remove로 삭제 상태가 되는 엔티티 생명주기</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="300" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="280" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">엔티티의 생명주기 — 네 가지 상태와 상태를 바꾸는 메서드</text>
+  <rect x="30" y="128" width="160" height="60" rx="8" class="box"/>
+  <text x="110" y="154" class="t" text-anchor="middle">비영속</text>
+  <text x="110" y="173" class="val" text-anchor="middle">new / transient</text>
+  <rect x="270" y="70" width="210" height="176" rx="10" class="scope"/>
+  <text x="375" y="92" class="sub" text-anchor="middle">영속성 컨텍스트</text>
+  <rect x="300" y="128" width="150" height="60" rx="8" class="ok"/>
+  <text x="375" y="154" class="okt" text-anchor="middle">영속</text>
+  <text x="375" y="173" class="val" text-anchor="middle">managed</text>
+  <rect x="560" y="70" width="170" height="60" rx="8" class="hold"/>
+  <text x="645" y="96" class="t" text-anchor="middle">준영속</text>
+  <text x="645" y="115" class="val" text-anchor="middle">detached</text>
+  <rect x="560" y="186" width="170" height="60" rx="8" class="bad"/>
+  <text x="645" y="212" class="badt" text-anchor="middle">삭제</text>
+  <text x="645" y="231" class="val" text-anchor="middle">removed</text>
+  <line x1="190" y1="158" x2="294" y2="158" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="232" y="148" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">persist()</tspan></text>
+  <path d="M450,146 L505,100 L554,100" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <path d="M450,170 L505,216 L554,216" fill="none" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="505" y="62" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">detach()</tspan> <tspan font-family="Menlo, Consolas, monospace">clear()</tspan> <tspan font-family="Menlo, Consolas, monospace">close()</tspan></text>
+  <text x="505" y="266" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">remove()</tspan></text>
+</svg>

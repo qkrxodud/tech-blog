@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 510" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>member.getName()을 호출하면 target이 비어 있는 프록시가 영속성 컨텍스트에 초기화를 요청하고, 영속성 컨텍스트가 DB를 조회해 실제 Member 엔티티를 만든 뒤 프록시의 target이 그 엔티티를 가리키는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 12px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="510" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="490" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">프록시 초기화 — 처음 사용할 때 영속성 컨텍스트에 요청</text>
+  <rect x="35.0" y="62" width="150" height="36" rx="8" class="box"/>
+  <text x="110" y="85" class="ts" text-anchor="middle">클라이언트</text>
+  <line x1="110" y1="98" x2="110" y2="462" class="life"/>
+  <rect x="225.0" y="62" width="150" height="36" rx="8" class="hold"/>
+  <text x="300" y="85" class="opm" text-anchor="middle">MemberProxy</text>
+  <line x1="300" y1="98" x2="300" y2="462" class="life"/>
+  <rect x="415.0" y="62" width="150" height="36" rx="8" class="box"/>
+  <text x="490" y="85" class="ts" text-anchor="middle">영속성 컨텍스트</text>
+  <line x1="490" y1="98" x2="490" y2="462" class="life"/>
+  <rect x="590.0" y="62" width="140" height="36" rx="8" class="dbbox"/>
+  <text x="660" y="85" class="ts" text-anchor="middle">DB</text>
+  <line x1="660" y1="98" x2="660" y2="462" class="life"/>
+  <line x1="298" y1="140" x2="114" y2="140" stroke="#9ca3af" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ag)"/>
+  <text x="205" y="131" class="msg" text-anchor="middle">1. <tspan font-family="Menlo, Consolas, monospace">getReference()</tspan></text>
+  <rect x="310" y="128" width="112" height="24" rx="6" class="box"/>
+  <text x="366" y="144.5" class="msg" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">target = null</tspan></text>
+  <line x1="112" y1="196" x2="296" y2="196" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="205" y="187" class="msg" text-anchor="middle">2. <tspan font-family="Menlo, Consolas, monospace">getName()</tspan></text>
+  <line x1="302" y1="250" x2="486" y2="250" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="395" y="241" class="msg" text-anchor="middle">3. 초기화 요청</text>
+  <line x1="492" y1="304" x2="656" y2="304" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="575" y="295" class="msg" text-anchor="middle">4. DB 조회</text>
+  <rect x="400" y="324" width="180" height="30" rx="6" class="hold"/>
+  <text x="490" y="344" class="msg" text-anchor="middle">실제 Member 엔티티 생성</text>
+  <line x1="488" y1="398" x2="304" y2="398" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="395" y="389" class="msg" text-anchor="middle">5. target에 참조 연결</text>
+  <rect x="210" y="418" width="180" height="30" rx="6" class="ok"/>
+  <text x="300" y="438" class="gnote" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">target</tspan> → 실제 Member</text>
+  <text x="30" y="488" class="foot">초기화가 끝나면 프록시는 <tspan font-family="Menlo, Consolas, monospace">target.getName()</tspan>을 호출해 값을 돌려줍니다.</text>
+</svg>

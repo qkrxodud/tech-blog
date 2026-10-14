@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Member 엔티티는 workPeriod(Period)와 homeAddress(Address)를 가지지만, MEMBER 테이블에는 startDate, endDate, city, street, zipcode 컬럼이 그대로 들어가 테이블 구조가 바뀌지 않는 매핑</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 12px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="340" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">임베디드 타입과 테이블 매핑 — 테이블 구조는 그대로</text>
+  <text x="730" y="42" class="code" text-anchor="end">@Embedded</text>
+  <rect x="30" y="66" width="320" height="222" rx="8" class="box"/>
+  <text x="190" y="90" class="t" text-anchor="middle">Member 엔티티</text>
+  <line x1="30" y1="102" x2="350" y2="102" stroke="#d1d5db" stroke-width="1.2"/>
+  <text x="50" y="124" class="m">Long id</text>
+  <text x="50" y="146" class="m">String name</text>
+  <rect x="46" y="158" width="288" height="52" rx="6" class="ok"/>
+  <text x="60" y="178" class="okm">Period workPeriod</text>
+  <text x="60" y="199" class="m">startDate, endDate</text>
+  <rect x="46" y="220" width="288" height="52" rx="6" class="ok"/>
+  <text x="60" y="240" class="okm">Address homeAddress</text>
+  <text x="60" y="261" class="m">city, street, zipcode</text>
+  <line x1="356" y1="177" x2="424" y2="177" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="390" y="167" class="s" text-anchor="middle">매핑</text>
+  <rect x="430" y="66" width="300" height="222" rx="8" class="dbbox"/>
+  <text x="580" y="90" class="db" text-anchor="middle">MEMBER 테이블</text>
+  <line x1="430" y1="102" x2="730" y2="102" stroke="#d1d5db" stroke-width="1.2"/>
+  <text x="450" y="124" class="m">MEMBER_ID</text>
+  <text x="450" y="148" class="m">USERNAME</text>
+  <text x="450" y="172" class="m">startDate</text>
+  <text x="450" y="196" class="m">endDate</text>
+  <text x="450" y="220" class="m">city</text>
+  <text x="450" y="244" class="m">street</text>
+  <text x="450" y="268" class="m">zipcode</text>
+  <text x="30" y="318" class="foot">임베디드 타입의 필드는 소유한 엔티티의 테이블 컬럼으로 매핑됩니다. (<tspan font-family="Menlo, Consolas, monospace">BaseEntity</tspan> 컬럼은 생략)</text>
+</svg>

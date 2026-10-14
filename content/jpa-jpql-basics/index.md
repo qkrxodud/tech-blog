@@ -4,6 +4,8 @@ tags: ["JPA","JPQL","프로젝션","페이징","서브쿼리"]
 summary: "JPQL의 기본 문법과 TypedQuery, 파라미터 바인딩, 프로젝션, 페이징, 조인, 서브쿼리, CASE 식 등 자주 쓰는 문법을 정리합니다."
 ---
 
+이전에 [값 타입 공유와 불변 객체](../jpa-immutable-value-types/)에 대해 작성하였습니다. 이번에는 엔티티 객체를 대상으로 쿼리하는 JPQL의 기본 문법과 결과 조회, 프로젝션, 페이징, 조인, 서브 쿼리, 조건식과 함수에 대해 정리하도록 하겠습니다.
+
 ## JPQL 소개
 
 - JPQL은 객체지향 쿼리 언어입니다. 따라서 테이블을 대상으로 쿼리하는 것이 아니라 엔티티 객체를 대상으로 쿼리합니다.
@@ -12,11 +14,17 @@ summary: "JPQL의 기본 문법과 TypedQuery, 파라미터 바인딩, 프로젝
 
 ## JPQL 문법
 
-- select m from Member as m where m.age > 18
+- `select m from Member as m where m.age > 18`
 - 엔티티와 속성은 대소문자를 구분해야 합니다(Member, age).
 - JPQL 키워드는 대소문자를 구분할 필요가 없습니다(SELECT, FROM, where).
-- 엔티티 이름을 사용합니다. 테이블 이름이 아닙니다(Member).
+- 테이블 이름이 아니라 엔티티 이름을 사용합니다(Member).
 - 별칭은 필수입니다(m). as는 생략할 수 있습니다.
+
+위 쿼리가 실행되는 흐름은 아래와 같습니다.
+
+![엔티티 Member와 속성 age를 대상으로 작성한 JPQL을 JPA가 데이터베이스에 맞는 SQL로 변환해 테이블에 실행하고, 결과를 엔티티로 돌려받는 흐름](images/01_jpql-to-sql.svg)
+
+JPQL에는 엔티티 이름과 속성을 적고, 테이블을 대상으로 하는 SQL은 JPA가 변환해서 실행합니다.
 
 ## TypedQuery, Query
 
@@ -29,13 +37,17 @@ TypedQuery<String> query2 = em.createQuery("select m.username from Member m", St
 Query query3 = em.createQuery("select m.username, m.age from Member m");
 ```
 
+엔티티 하나나 username 하나처럼 타입이 정해지면 TypedQuery를, username과 age처럼 타입이 섞이면 Query를 사용합니다.
+
 ## 결과 조회 API
 
-- query.getResultList(): 결과가 하나 이상일 때 리스트를 반환합니다.
+- `query.getResultList()`: 결과가 하나 이상일 때 리스트를 반환합니다.
     - 결과가 없으면 빈 리스트를 반환합니다.
-- query.getSingleResult(): 결과가 정확히 하나일 때 단일 객체를 반환합니다.
-    - 결과가 없으면 javax.persistence.NoResultException이 발생합니다.
-    - 둘 이상이면 javax.persistence.NonUniqueResultException이 발생합니다.
+- `query.getSingleResult()`: 결과가 정확히 하나일 때 단일 객체를 반환합니다.
+    - 결과가 없으면 `javax.persistence.NoResultException`이 발생합니다.
+    - 둘 이상이면 `javax.persistence.NonUniqueResultException`이 발생합니다.
+
+결과가 여러 건일 때는 아래와 같이 `getResultList()`로 조회합니다.
 
 ```java
 TypedQuery<Member> query1 = em.createQuery("select m from Member m", Member.class);
@@ -46,13 +58,17 @@ for (Member member1 : resultList) {
 
 ```
 
+결과가 한 건일 때는 `getSingleResult()`로 조회합니다.
+
 ```java
-TypedQuery<String> query2 = em.createQuery("select m from Member m where m.id = 10", String.class);
-Member singleResult = query1.getSingleResult();
+TypedQuery<Member> query = em.createQuery("select m from Member m where m.id = 10", Member.class);
+Member singleResult = query.getSingleResult();
 System.out.println("id : " + singleResult.getId());
 ```
 
 ## 파라미터 바인딩 - 이름 기준, 위치 기준
+
+이름 기준 파라미터는 `:username`처럼 콜론 뒤에 이름을 적고, `setParameter()`로 값을 넣습니다.
 
 ```java
 Member member = new Member();
@@ -69,22 +85,29 @@ System.out.println("SingleResult = " + memberResult.getUsername());
 
 - SELECT 절에 조회할 대상을 지정하는 것입니다.
 - 프로젝션 대상: 엔티티, 임베디드 타입, 스칼라 타입(숫자, 문자 등 기본 데이터 타입)
-- SELECT m FROM Member m: 엔티티 프로젝션
-- SELECT m.team FROM Member m: 엔티티 프로젝션
-- SELECT m.address FROM Member m: 임베디드 타입 프로젝션
-- SELECT m.username, m.age FROM Member m: 스칼라 타입 프로젝션
+- `SELECT m FROM Member m`: 엔티티 프로젝션
+- `SELECT m.team FROM Member m`: 엔티티 프로젝션
+- `SELECT m.address FROM Member m`: 임베디드 타입 프로젝션
+- `SELECT m.username, m.age FROM Member m`: 스칼라 타입 프로젝션
 - DISTINCT로 중복을 제거할 수 있습니다.
 
 ### 프로젝션 - 여러 값 조회
 
-- SELECT m.username, m.age FROM Member m
-- 1. Query 타입으로 조회
-- 2. Object[] 타입으로 조회
-- 3. new 명령어로 조회
+`SELECT m.username, m.age FROM Member m`처럼 여러 값을 조회할 때는 다음 세 가지 방법이 있습니다.
+
+1. Query 타입으로 조회
+2. `Object[]` 타입으로 조회
+3. new 명령어로 조회
     - 단순 값을 DTO로 바로 조회합니다.
-    - SELECT new jpabook.jpql.UserDTO(m.username, m.age) FROM Member m
+    - `SELECT new jpabook.jpql.UserDTO(m.username, m.age) FROM Member m`
     - 패키지명을 포함한 전체 클래스명을 입력합니다.
     - 순서와 타입이 일치하는 생성자가 필요합니다.
+
+![SELECT m.username, m.age 결과를 Query 타입, Object 배열, new 명령어로 받는 세 방법에서 각각 무엇이 돌아오는지 비교](images/02_projection-multi-value.svg)
+
+Query 타입과 `Object[]`로 받으면 값을 꺼낼 때 순서와 타입을 직접 맞춰야 하고, new 명령어를 쓰면 생성자를 통해 DTO로 바로 받을 수 있습니다.
+
+new 명령어로 `MemberDTO`를 조회하는 코드는 아래와 같습니다.
 
 ```java
 List<MemberDTO> resultList = em.createQuery("select new jpql.MemberDTO(m.username, m.age) from Member m ", MemberDTO.class)
@@ -94,6 +117,8 @@ MemberDTO memberDTO = resultList.get(0);
 System.out.println(memberDTO.getUsername());
 System.out.println(memberDTO.getAge());
 ```
+
+`MemberDTO`에는 쿼리와 순서·타입이 같은 생성자가 있어야 합니다.
 
 ```java
 package jpql;
@@ -130,11 +155,14 @@ public class MemberDTO {
 
 ## 페이징 API
 
-- JPA는 페이징을 다음 두 API로 추상화합니다.
-- setFirstResult(int startPosition): 조회 시작 위치(0부터 시작)
-- setMaxResults(int maxResult): 조회할 데이터 수
+JPA는 페이징을 다음 두 API로 추상화합니다.
+
+- `setFirstResult(int startPosition)`: 조회 시작 위치(0부터 시작)
+- `setMaxResults(int maxResult)`: 조회할 데이터 수
 
 ### 페이징 API 예시
+
+회원 100명을 저장한 뒤 나이 내림차순으로 처음 10명을 조회하는 코드입니다.
 
 ```java
 for( int i = 0; i < 100; i++) {
@@ -159,21 +187,26 @@ for (Member member1 : resultList) {
 tx.commit();
 ```
 
+![나이 0부터 99까지 저장한 회원 100명을 나이 내림차순으로 정렬한 뒤 setFirstResult(0)부터 setMaxResults(10)만큼, 나이 99부터 90까지 10명을 가져오는 페이징](images/03_paging-api.svg)
+
+정렬한 결과에서 0번째부터 10건을 가져오므로 나이 99부터 90까지의 회원 10명이 조회됩니다.
+
 ## 조인
 
-- 내부 조인: SELECT m FROM Member m [INNER] JOIN m.team t
-- 외부 조인: SELECT m FROM Member m LEFT [OUTER] JOIN m.team t
-- 세타 조인: select count(m) from Member m, Team t where m.username = t.name
+- 내부 조인: `SELECT m FROM Member m [INNER] JOIN m.team t`
+- 외부 조인: `SELECT m FROM Member m LEFT [OUTER] JOIN m.team t`
+- 세타 조인: `select count(m) from Member m, Team t where m.username = t.name`
 
 ### 조인 - ON 절
 
-- ON 절을 활용한 조인입니다(JPA 2.1부터 지원).
-    - 1. 조인 대상 필터링
-    - 2. 연관관계 없는 엔티티 외부 조인(하이버네이트 5.1부터)
+ON 절을 활용한 조인은 JPA 2.1부터 지원하며, 다음 두 가지에 사용합니다.
 
 1. 조인 대상 필터링
+2. 연관관계 없는 엔티티 외부 조인(하이버네이트 5.1부터)
 
-- 회원과 팀을 조인하면서, 팀 이름이 A인 팀만 조인합니다.
+#### 1. 조인 대상 필터링
+
+회원과 팀을 조인하면서, 팀 이름이 A인 팀만 조인하는 예시입니다.
 
 ```sql
 JPQL : SELECT m
@@ -189,15 +222,15 @@ SQL : SELECT m.*
         LEFT JOIN Team t ON m.TEAM_ID=t.id and t.name = 'A'
 ```
 
-2. 연관관계 없는 엔티티 외부 조인
+#### 2. 연관관계 없는 엔티티 외부 조인
 
-- 예) 회원의 이름과 팀의 이름이 같은 대상을 외부 조인합니다.
+회원의 이름과 팀의 이름이 같은 대상을 외부 조인하는 예시입니다.
 
 ```sql
 JPQL : SELECT m
             , t
          FROM Member m
-         LEFT JOIN m.team t on m.username = t.name
+         LEFT JOIN Team t on m.username = t.name
 ```
 
 ```sql
@@ -207,9 +240,15 @@ SQL : SELECT m.*
         LEFT JOIN Team t ON m.username = t.name
 ```
 
+두 경우의 ON 조건이 SQL에서 어떻게 달라지는지 비교하면 아래와 같습니다.
+
+![연관관계 경로 m.team으로 조인하면 SQL ON 절에 TEAM_ID 조인 조건과 t.name 필터가 함께 붙고, 연관관계 없는 엔티티 Team을 조인하면 ON 절에 m.username = t.name 조건만 붙는 비교](images/04_join-on-clause.svg)
+
+연관관계로 조인하면 외래 키 조건에 필터 조건이 더해지고, 연관관계 없는 엔티티를 조인하면 ON 절에 적은 조건만으로 조인합니다.
+
 ## 서브 쿼리
 
-- 나이가 평균보다 많은 회원
+나이가 평균보다 많은 회원은 아래와 같이 조회합니다.
 
 ```sql
 JPQL : select m
@@ -218,10 +257,10 @@ JPQL : select m
                           from Member m2 )
 ```
 
-- 한 건이라도 주문한 고객
+한 건이라도 주문한 고객은 아래와 같이 조회합니다.
 
 ```sql
-SQL : select m
+JPQL : select m
         from Member m
        where (select count(o)
                 from  Order o
@@ -230,24 +269,24 @@ SQL : select m
 
 ### 서브 쿼리 지원 함수
 
-- [NOT] EXISTS (subquery): 서브쿼리에 결과가 존재하면 참입니다.
-    - {ALL | ANY | SOME} (subquery)
+- `[NOT] EXISTS (subquery)`: 서브쿼리에 결과가 존재하면 참입니다.
+- `{ALL | ANY | SOME} (subquery)`
     - ALL: 모두 만족하면 참입니다.
     - ANY, SOME: 같은 의미이며, 조건을 하나라도 만족하면 참입니다.
-- [NOT] IN (subquery): 서브쿼리의 결과 중 하나라도 같은 것이 있으면 참입니다.
+- `[NOT] IN (subquery)`: 서브쿼리의 결과 중 하나라도 같은 것이 있으면 참입니다.
 
-서브 쿼리 - 예제
+### 서브 쿼리 예제
 
-- 팀A 소속인 회원
+팀A 소속인 회원은 아래와 같습니다.
 
 ```sql
 select m from Member m
  where exists ( select t
                   from m.team t
-                 where t.name = '팀')
+                 where t.name = '팀A')
 ```
 
-- 전체 상품 각각의 재고보다 주문량이 많은 주문들
+전체 상품 각각의 재고보다 주문량이 많은 주문들은 아래와 같습니다.
 
 ```sql
 select o
@@ -256,7 +295,7 @@ select o
                               from Product p)
 ```
 
-- 어떤 팀이든 팀에 소속된 회원
+어떤 팀이든 팀에 소속된 회원은 아래와 같습니다.
 
 ```sql
 select m from Member m
@@ -275,10 +314,12 @@ select m from Member m
 
 ### JPQL 타입 표현
 
-- 문자: 'HELLO', 'She''s'
-- 숫자: 10L(Long), 10D(Double), 10F(Float)
-- Boolean: TRUE, FALSE
-- ENUM: jpabook.MemberType.Admin
+- 문자: `'HELLO'`, `'She''s'`
+- 숫자: `10L`(Long), `10D`(Double), `10F`(Float)
+- Boolean: `TRUE`, `FALSE`
+- ENUM: `jpabook.MemberType.Admin`
+
+문자, Boolean, ENUM을 JPQL에 직접 적은 예시는 아래와 같습니다.
 
 ```java
 try {
@@ -315,7 +356,7 @@ try {
 
 ### 조건식 - CASE 식
 
-- 기본 CASE 식
+기본 CASE 식은 아래와 같습니다.
 
 ```sql
 select
@@ -326,7 +367,7 @@ select
   from Member m
 ```
 
-- 단순 CASE 식
+단순 CASE 식은 아래와 같습니다.
 
 ```sql
 select
@@ -341,7 +382,7 @@ select
 - COALESCE: 하나씩 조회해서 null이 아니면 반환합니다.
 - NULLIF: 두 값이 같으면 null을 반환하고, 다르면 첫 번째 값을 반환합니다.
 
-사용자 이름이 없으면 이름 없는 회원을 반환합니다.
+사용자 이름이 없으면 '이름 없는 회원'을 반환합니다.
 
 ```sql
 select
@@ -357,7 +398,7 @@ select
   from Member m
 ```
 
-JPQL 기본 함수
+### JPQL 기본 함수
 
 - CONCAT
 - SUBSTRING
@@ -368,10 +409,11 @@ JPQL 기본 함수
 - ABS, SQRT, MOD
 - SIZE, INDEX (JPA 용도)
 
-사용자 정의 함수 호출
+### 사용자 정의 함수 호출
 
-- 하이버네이트 사용 전 방언에 추가해야 합니다.
-    - 사용하는 DB 방언을 상속받고, 사용자 정의 함수를 등록합니다.
+하이버네이트는 사용 전에 방언에 함수를 추가해야 합니다. 사용하는 DB 방언을 상속받고, 사용자 정의 함수를 등록합니다.
+
+먼저 `persistence.xml`의 `hibernate.dialect`에 직접 만든 방언을 지정합니다.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -386,6 +428,8 @@ JPQL 기본 함수
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/test"/>
             <property name="hibernate.dialect" value="dialect.MyH2Dialect"/>
 ```
+
+`H2Dialect`를 상속받은 방언에서 `group_concat` 함수를 등록합니다.
 
 ```java
 package dialect;
@@ -402,10 +446,20 @@ public class MyH2Dialect  extends H2Dialect {
 
 ```
 
+등록한 함수는 `function()`으로 호출합니다.
+
 ```java
 String query = "select function('group_concat', m.username) FROM Member m";
 List<String> resultList = em.createQuery(query, String.class)
         .getResultList();
 ```
+
+## 마무리
+
+오늘은 JPQL의 기본 문법과 결과 조회 API, 파라미터 바인딩, 프로젝션, 페이징, 조인, 서브 쿼리, 조건식과 함수에 대해 정리하였습니다.
+
+JPQL은 SQL과 문법이 비슷하지만 테이블이 아니라 엔티티와 속성을 대상으로 작성한다는 점을 계속 의식해야 할 것 같습니다.
+
+다음 글에서는 [JPQL 경로 표현식과 페치 조인](../jpa-jpql-advanced/)에 대해 정리하도록 하겠습니다.
 
 > 이 글은 인프런 김영한 님의 [자바 ORM 표준 JPA 프로그래밍 — 기본편](https://www.inflearn.com/course/ORM-JPA-Basic)을 들으며 정리한 노트입니다.

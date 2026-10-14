@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 480" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>객체는 Member.team과 Team.members라는 단방향 참조 2개로 양방향을 만들고, 테이블은 MEMBER.TEAM_ID 외래 키 하나로 양쪽 조인이 가능한 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agb" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M10,0 L0,5 L10,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agrs" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M10,0 L0,5 L10,10 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+  <rect width="760" height="480" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="222" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">객체 연관관계 — 단방향 참조 2개</text>
+  <rect x="40" y="66" width="190" height="106" rx="6" class="box"/>
+  <rect x="40" y="66" width="190" height="28" rx="6" class="thead"/>
+  <text x="135.0" y="85" class="mb" text-anchor="middle">Member</text>
+  <text x="52" y="111.5" class="m">id</text>
+  <text x="52" y="137.5" class="m">name</text>
+  <rect x="44" y="149" width="182" height="20" rx="4" class="ok"/>
+  <text x="52" y="163.5" class="okm">team</text>
+  <rect x="530" y="66" width="190" height="106" rx="6" class="box"/>
+  <rect x="530" y="66" width="190" height="28" rx="6" class="thead"/>
+  <text x="625.0" y="85" class="mb" text-anchor="middle">Team</text>
+  <text x="542" y="111.5" class="m">id</text>
+  <rect x="534" y="123" width="182" height="20" rx="4" class="ok"/>
+  <text x="542" y="137.5" class="okm">members</text>
+  <text x="542" y="163.5" class="m">name</text>
+  <line x1="526" y1="133.0" x2="236" y2="133.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="380" y="125.0" class="gnote" text-anchor="middle">Team.members — 팀 → 회원</text>
+  <line x1="234" y1="159.0" x2="524" y2="159.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="380" y="179.0" class="gnote" text-anchor="middle">Member.team — 회원 → 팀</text>
+  <text x="30" y="218" class="foot">양방향처럼 보이지만 서로 다른 단방향 관계 2개입니다.</text>
+  <rect x="10" y="248" width="740" height="222" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="280" class="h">테이블 연관관계 — 외래 키 하나</text>
+  <rect x="40" y="304" width="190" height="106" rx="6" class="box"/>
+  <rect x="40" y="304" width="190" height="28" rx="6" class="thead"/>
+  <text x="135.0" y="323" class="mb" text-anchor="middle">MEMBER</text>
+  <text x="52" y="349.5" class="m">MEMBER_ID (PK)</text>
+  <text x="52" y="375.5" class="m">USERNAME</text>
+  <rect x="44" y="387" width="182" height="20" rx="4" class="ok"/>
+  <text x="52" y="401.5" class="okm">TEAM_ID (FK)</text>
+  <rect x="530" y="304" width="190" height="80" rx="6" class="box"/>
+  <rect x="530" y="304" width="190" height="28" rx="6" class="thead"/>
+  <text x="625.0" y="323" class="mb" text-anchor="middle">TEAM</text>
+  <rect x="534" y="335" width="182" height="20" rx="4" class="ok"/>
+  <text x="542" y="349.5" class="okm">TEAM_ID (PK)</text>
+  <text x="542" y="375.5" class="m">NAME</text>
+  <line x1="236" y1="397.0" x2="524" y2="345.0" stroke="#16a34a" stroke-width="1.6" marker-start="url(#agrs)" marker-end="url(#agr)"/>
+  <text x="380" y="352" class="okm" text-anchor="middle">M.TEAM_ID = T.TEAM_ID</text>
+  <text x="380" y="434" class="gnote" text-anchor="middle">어느 쪽에서든 조인할 수 있습니다.</text>
+  <text x="30" y="458" class="foot">TEAM_ID 외래 키 하나로 회원 → 팀, 팀 → 회원 조인이 모두 가능합니다.</text>
+</svg>

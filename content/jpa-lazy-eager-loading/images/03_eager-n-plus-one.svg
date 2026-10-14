@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>JPQL로 Member 목록을 조회하는 SQL이 한 번 실행된 뒤, 즉시 로딩 설정 때문에 조회된 회원1과 회원2가 참조하는 팀A와 팀B를 채우기 위해 TEAM 조회 SQL이 팀마다 추가로 실행되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 12px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">즉시 로딩과 JPQL — N+1 문제</text>
+  <text x="730" y="42" class="code" text-anchor="end">FetchType.EAGER</text>
+  <text x="240" y="68" class="step" text-anchor="middle">쿼리 1번</text>
+  <text x="540" y="68" class="step" text-anchor="middle">팀마다 추가 쿼리 (N번)</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">JPQL</text>
+  <text x="30" y="128" class="sub">실행한 쿼리</text>
+  <rect x="150" y="86" width="585" height="56" rx="6" class="track"/>
+  <rect x="165" y="90" width="150" height="48" rx="8" class="box"/>
+  <text x="240" y="119" class="t" text-anchor="middle">Member 목록 조회</text>
+  <rect x="345" y="98" width="375" height="32" rx="6" class="wait"/>
+  <text x="532" y="119" class="waitt" text-anchor="middle">즉시 로딩이라 Team을 채워야 함</text>
+  <text x="30" y="174" class="lane">SQL</text>
+  <text x="30" y="192" class="sub">DB로 나간 SQL</text>
+  <rect x="150" y="150" width="585" height="56" rx="6" class="track"/>
+  <rect x="165" y="154" width="150" height="48" rx="8" class="dbbox"/>
+  <text x="240" y="174" class="opm" text-anchor="middle">SELECT MEMBER</text>
+  <text x="240" y="193" class="val" text-anchor="middle">회원1, 회원2</text>
+  <rect x="375" y="154" width="150" height="48" rx="8" class="bad"/>
+  <text x="450" y="174" class="badm" text-anchor="middle">SELECT TEAM</text>
+  <text x="450" y="193" class="val" text-anchor="middle">팀A 조회</text>
+  <rect x="560" y="154" width="150" height="48" rx="8" class="bad"/>
+  <text x="635" y="174" class="badm" text-anchor="middle">SELECT TEAM</text>
+  <text x="635" y="193" class="val" text-anchor="middle">팀B 조회</text>
+  <line x1="240" y1="139" x2="240" y2="151" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="450" y1="131" x2="450" y2="151" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <line x1="635" y1="131" x2="635" y2="151" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="30" y="238" class="lane">결과</text>
+  <text x="30" y="256" class="sub">회원과 팀</text>
+  <rect x="150" y="214" width="585" height="56" rx="6" class="track"/>
+  <rect x="375" y="222" width="150" height="40" rx="6" class="hold"/>
+  <text x="450" y="247" class="msg" text-anchor="middle">회원1 → 팀A</text>
+  <rect x="560" y="222" width="150" height="40" rx="6" class="hold"/>
+  <text x="635" y="247" class="msg" text-anchor="middle">회원2 → 팀B</text>
+  <rect x="150" y="290" width="300" height="32" rx="15" class="bad"/>
+  <text x="300" y="311" class="badt" text-anchor="middle">SQL 1번 + N번(팀 2개) = 3번</text>
+  <text x="150" y="352" class="foot">조회된 회원이 참조하는 팀이 많을수록 추가 SQL도 늘어납니다.</text>
+</svg>

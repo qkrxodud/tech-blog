@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>orphanRemoval = true인 Parent의 childList에서 첫 번째 Child를 제거하면, 부모와 연관관계가 끊어진 Child가 고아 객체가 되어 DELETE SQL로 삭제되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 12px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">고아 객체 제거 — 컬렉션에서 빠진 자식 삭제</text>
+  <text x="730" y="42" class="code" text-anchor="end">orphanRemoval = true</text>
+  <text x="140" y="68" class="step" text-anchor="middle">1. 부모 조회</text>
+  <text x="380" y="68" class="step" text-anchor="middle">2. 컬렉션에서 제거</text>
+  <text x="620" y="68" class="step" text-anchor="middle">3. 삭제</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <rect x="30" y="90" width="220" height="170" rx="10" class="hold"/>
+  <text x="140" y="114" class="op" text-anchor="middle">parent1</text>
+  <text x="140" y="134" class="m" text-anchor="middle">childList</text>
+  <rect x="50" y="148" width="180" height="40" rx="6" class="box"/>
+  <text x="140" y="173" class="ts" text-anchor="middle">child (0번)</text>
+  <rect x="50" y="200" width="180" height="40" rx="6" class="box"/>
+  <text x="140" y="225" class="ts" text-anchor="middle">child (1번)</text>
+  <line x1="252" y1="175" x2="268" y2="175" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="270" y="90" width="220" height="170" rx="10" class="hold"/>
+  <text x="380" y="114" class="op" text-anchor="middle">parent1</text>
+  <text x="380" y="134" class="m" text-anchor="middle">childList</text>
+  <rect x="290" y="200" width="180" height="40" rx="6" class="box"/>
+  <text x="380" y="225" class="ts" text-anchor="middle">child (1번)</text>
+  <rect x="290" y="148" width="180" height="40" rx="6" class="wait"/>
+  <text x="380" y="173" class="waitt" text-anchor="middle">연관관계 끊김</text>
+  <line x1="492" y1="175" x2="508" y2="175" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="510" y="90" width="220" height="170" rx="10" class="bad"/>
+  <text x="620" y="118" class="badt" text-anchor="middle">고아 객체</text>
+  <text x="620" y="140" class="val" text-anchor="middle">child (0번)</text>
+  <rect x="526" y="160" width="188" height="56" rx="6" class="box"/>
+  <text x="620" y="183" class="m" text-anchor="middle">DELETE FROM CHILD</text>
+  <text x="620" y="203" class="m" text-anchor="middle">WHERE ID =?</text>
+  <text x="30" y="290" class="foot"><tspan font-family="Menlo, Consolas, monospace">remove(0)</tspan>으로 컬렉션에서 뺀 자식은 다른 곳에서 참조하지 않는 고아 객체로 보고 삭제합니다.</text>
+</svg>

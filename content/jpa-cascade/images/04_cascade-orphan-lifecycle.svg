@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>CascadeType.ALL과 orphanRemoval = true를 함께 설정하면 부모를 영속화할 때 자식도 영속화되고, 컬렉션에서 자식을 제거하거나 부모를 제거할 때 자식도 삭제되어 자식의 생명주기를 부모가 관리하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 12px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h"><tspan font-family="Menlo, Consolas, monospace">CascadeType.ALL</tspan> + <tspan font-family="Menlo, Consolas, monospace">orphanRemoval</tspan> — 부모가 자식 생명주기 관리</text>
+  <text x="282" y="68" class="step" text-anchor="middle">부모에 한 작업</text>
+  <text x="606" y="68" class="step" text-anchor="middle">자식에게 일어나는 일</text>
+  <text x="30" y="118" class="lane">저장</text>
+  <rect x="150" y="86" width="585" height="56" rx="6" class="track"/>
+  <rect x="162" y="90" width="240" height="48" rx="8" class="box"/>
+  <text x="282" y="119" class="opm" text-anchor="middle">em.persist(parent)</text>
+  <line x1="404" y1="114" x2="476" y2="114" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="480" y="90" width="252" height="48" rx="8" class="ok"/>
+  <text x="606" y="110" class="okt" text-anchor="middle">자식도 영속화 (INSERT)</text>
+  <text x="606" y="129" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">CascadeType.ALL</tspan></text>
+  <text x="30" y="182" class="lane">제거</text>
+  <rect x="150" y="150" width="585" height="56" rx="6" class="track"/>
+  <rect x="162" y="154" width="240" height="48" rx="8" class="box"/>
+  <text x="282" y="183" class="opm" text-anchor="middle">getChildren().remove(0)</text>
+  <line x1="404" y1="178" x2="476" y2="178" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="480" y="154" width="252" height="48" rx="8" class="bad"/>
+  <text x="606" y="174" class="badt" text-anchor="middle">자식 삭제 (DELETE)</text>
+  <text x="606" y="193" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">orphanRemoval = true</tspan></text>
+  <text x="30" y="246" class="lane">삭제</text>
+  <rect x="150" y="214" width="585" height="56" rx="6" class="track"/>
+  <rect x="162" y="218" width="240" height="48" rx="8" class="box"/>
+  <text x="282" y="247" class="opm" text-anchor="middle">em.remove(parent)</text>
+  <line x1="404" y1="242" x2="476" y2="242" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="480" y="218" width="252" height="48" rx="8" class="bad"/>
+  <text x="606" y="238" class="badt" text-anchor="middle">자식도 삭제 (DELETE)</text>
+  <text x="606" y="257" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">CascadeType.ALL</tspan></text>
+  <text x="30" y="298" class="foot">자식에게 <tspan font-family="Menlo, Consolas, monospace">em.persist()</tspan>, <tspan font-family="Menlo, Consolas, monospace">em.remove()</tspan>를 따로 호출하지 않아도 부모를 따라 저장되고 삭제됩니다.</text>
+</svg>

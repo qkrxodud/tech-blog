@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 372" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>AUTO 모드에서는 persist한 memberA·B·C의 INSERT를 JPQL 실행 전에 플러시해 조회 결과에 포함하고, COMMIT 모드에서는 Order를 조회하는 JPQL 전에 플러시하지 않고 커밋할 때만 플러시하는 두 경우</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="372" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="168" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">AUTO(기본값) — JPQL 실행 전에 플러시한다</text>
+  <text x="730" y="42" class="code" text-anchor="end">FlushModeType.AUTO</text>
+  <rect x="30" y="66" width="150" height="64" rx="8" class="box"/>
+  <text x="105" y="94" class="m" text-anchor="middle">persist</text>
+  <text x="105" y="113" class="val" text-anchor="middle">memberA, B, C</text>
+  <rect x="200" y="66" width="150" height="64" rx="8" class="hold"/>
+  <text x="275" y="94" class="t" text-anchor="middle">자동 플러시</text>
+  <text x="275" y="113" class="val" text-anchor="middle">INSERT 3개 전송</text>
+  <rect x="370" y="66" width="190" height="64" rx="8" class="box"/>
+  <text x="465" y="94" class="t" text-anchor="middle">JPQL 실행</text>
+  <text x="465" y="113" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">select m from Member m</tspan></text>
+  <rect x="580" y="66" width="150" height="64" rx="8" class="ok"/>
+  <text x="655" y="94" class="okt" text-anchor="middle">A, B, C 조회됨</text>
+  <text x="655" y="113" class="val" text-anchor="middle">DB에 반영된 뒤 조회</text>
+  <line x1="180" y1="98" x2="194" y2="98" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="350" y1="98" x2="364" y2="98" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="560" y1="98" x2="574" y2="98" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="160" class="foot">플러시가 없으면 persist한 회원은 영속성 컨텍스트에만 있고 DB에는 반영되지 않은 상태다</text>
+  <rect x="10" y="194" width="740" height="168" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="226" class="h">COMMIT — 커밋할 때만 플러시한다</text>
+  <text x="730" y="226" class="code" text-anchor="end">FlushModeType.COMMIT</text>
+  <rect x="30" y="250" width="150" height="64" rx="8" class="box"/>
+  <text x="105" y="278" class="m" text-anchor="middle">persist</text>
+  <text x="105" y="297" class="val" text-anchor="middle">memberA, B, C</text>
+  <rect x="200" y="250" width="190" height="64" rx="8" class="box"/>
+  <text x="295" y="278" class="t" text-anchor="middle">JPQL 실행</text>
+  <text x="295" y="297" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">select m from Order m</tspan></text>
+  <rect x="410" y="250" width="150" height="64" rx="8" class="hold"/>
+  <text x="485" y="278" class="t" text-anchor="middle">플러시 안 함</text>
+  <text x="485" y="297" class="val" text-anchor="middle">Member와 상관없음</text>
+  <rect x="580" y="250" width="150" height="64" rx="8" class="ok"/>
+  <text x="655" y="278" class="okt" text-anchor="middle">커밋할 때 플러시</text>
+  <text x="655" y="297" class="val" text-anchor="middle">INSERT 3개 전송</text>
+  <line x1="180" y1="282" x2="194" y2="282" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="390" y1="282" x2="404" y2="282" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="560" y1="282" x2="574" y2="282" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="344" class="foot">조회 대상이 Order처럼 persist한 엔티티와 관계없으면 JPQL 전에 플러시할 필요가 없다</text>
+</svg>

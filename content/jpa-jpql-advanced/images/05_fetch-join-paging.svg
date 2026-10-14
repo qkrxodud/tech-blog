@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 504" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>다대일인 회원에서 팀을 페치 조인하면 행 수가 회원 수와 같아 페이징 API를 쓸 수 있고, 일대다인 팀에서 회원 컬렉션을 페치 조인하면 팀 한 건이 여러 행으로 늘어나 하이버네이트가 경고 로그를 남기고 메모리에서 페이징하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="504" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="232" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">단일 값 연관 페치 조인 — 페이징 가능</text>
+  <text x="730" y="42" class="code" text-anchor="end">join fetch m.team</text>
+  <text x="30" y="78" class="m" text-anchor="start">select m from Member m join fetch m.team</text>
+  <text x="30" y="102" class="ts" text-anchor="start"></text>
+  <rect x="30" y="110" width="180" height="24" rx="4" class="hold"/>
+  <text x="80.0" y="129" class="ts" text-anchor="middle">회원</text>
+  <text x="170.0" y="129" class="ts" text-anchor="middle">팀</text>
+  <rect x="30" y="134" width="180" height="24" rx="0" class="box"/>
+  <text x="80.0" y="153" class="val" text-anchor="middle">member1</text>
+  <text x="170.0" y="153" class="val" text-anchor="middle">팀A</text>
+  <rect x="30" y="158" width="180" height="24" rx="0" class="box"/>
+  <text x="80.0" y="177" class="val" text-anchor="middle">member2</text>
+  <text x="170.0" y="177" class="val" text-anchor="middle">팀A</text>
+  <rect x="30" y="182" width="180" height="24" rx="0" class="box"/>
+  <text x="80.0" y="201" class="val" text-anchor="middle">member3</text>
+  <text x="170.0" y="201" class="val" text-anchor="middle">팀B</text>
+  <line x1="130" y1="110" x2="130" y2="206" stroke="#d1d5db" stroke-width="1"/>
+  <text x="240" y="128" class="val" text-anchor="start">회원 한 명당 한 행 — 행 수가 회원 수와 같음</text>
+  <rect x="240" y="150" width="300" height="32" rx="6" class="ok"/>
+  <text x="390" y="171" class="okt" text-anchor="middle">페이징 API 사용 가능</text>
+  <rect x="10" y="258" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="290" class="h">컬렉션 페치 조인 — 페이징 API를 쓰면 안 됨</text>
+  <text x="730" y="290" class="code" text-anchor="end">join fetch t.members</text>
+  <text x="30" y="326" class="m" text-anchor="start">select t from Team t join fetch t.members</text>
+  <text x="30" y="350" class="ts" text-anchor="start"></text>
+  <rect x="30" y="358" width="180" height="24" rx="4" class="hold"/>
+  <text x="70.0" y="377" class="ts" text-anchor="middle">팀</text>
+  <text x="160.0" y="377" class="ts" text-anchor="middle">회원</text>
+  <rect x="30" y="382" width="180" height="24" rx="0" class="box"/>
+  <text x="70.0" y="401" class="val" text-anchor="middle">팀A</text>
+  <text x="160.0" y="401" class="val" text-anchor="middle">member1</text>
+  <rect x="30" y="406" width="180" height="24" rx="0" class="box"/>
+  <text x="70.0" y="425" class="val" text-anchor="middle">팀A</text>
+  <text x="160.0" y="425" class="val" text-anchor="middle">member2</text>
+  <rect x="30" y="430" width="180" height="24" rx="0" class="box"/>
+  <text x="70.0" y="449" class="val" text-anchor="middle">팀B</text>
+  <text x="160.0" y="449" class="val" text-anchor="middle">member3</text>
+  <line x1="110" y1="358" x2="110" y2="454" stroke="#d1d5db" stroke-width="1"/>
+  <text x="240" y="376" class="val" text-anchor="start">팀 한 건이 회원 수만큼 여러 행으로 늘어남</text>
+  <rect x="240" y="394" width="490" height="52" rx="8" class="bad"/>
+  <text x="485" y="416" class="badt" text-anchor="middle">하이버네이트: 경고 로그를 남기고 메모리에서 페이징</text>
+  <text x="485" y="435" class="note" text-anchor="middle">매우 위험 — 절대 사용하면 안 됨</text>
+</svg>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>구현 클래스마다 테이블 전략에서 ITEM 테이블 없이 ALBUM·MOVIE·BOOK 테이블이 각각 공통 컬럼과 전용 컬럼을 모두 가지고, 부모 타입으로 조회하면 UNION SQL이 실행되는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agb" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M10,0 L0,5 L10,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">구현 클래스마다 테이블 전략 — 부모 테이블이 없다</text>
+  <text x="730" y="42" class="code" text-anchor="end">InheritanceType.TABLE_PER_CLASS</text>
+  <rect x="290" y="62" width="180" height="40" rx="8" class="wait"/>
+  <text x="380" y="87" class="waitt" text-anchor="middle">ITEM 테이블 없음</text>
+  <rect x="40" y="122" width="180" height="106" rx="6" class="box"/>
+  <rect x="40" y="122" width="180" height="28" rx="6" class="thead"/>
+  <text x="130.0" y="141" class="mb" text-anchor="middle">ALBUM</text>
+  <text x="52" y="167.5" class="m">ID (PK)</text>
+  <rect x="44" y="179" width="172" height="20" rx="4" class="ok"/>
+  <text x="52" y="193.5" class="okt">공통 컬럼</text>
+  <text x="52" y="219.5" class="s">앨범 전용 컬럼</text>
+  <rect x="290" y="122" width="180" height="106" rx="6" class="box"/>
+  <rect x="290" y="122" width="180" height="28" rx="6" class="thead"/>
+  <text x="380.0" y="141" class="mb" text-anchor="middle">MOVIE</text>
+  <text x="302" y="167.5" class="m">ID (PK)</text>
+  <rect x="294" y="179" width="172" height="20" rx="4" class="ok"/>
+  <text x="302" y="193.5" class="okt">공통 컬럼</text>
+  <text x="302" y="219.5" class="s">영화 전용 컬럼</text>
+  <rect x="540" y="122" width="180" height="106" rx="6" class="box"/>
+  <rect x="540" y="122" width="180" height="28" rx="6" class="thead"/>
+  <text x="630.0" y="141" class="mb" text-anchor="middle">BOOK</text>
+  <text x="552" y="167.5" class="m">ID (PK)</text>
+  <rect x="544" y="179" width="172" height="20" rx="4" class="ok"/>
+  <text x="552" y="193.5" class="okt">공통 컬럼</text>
+  <text x="552" y="219.5" class="s">책 전용 컬럼</text>
+  <text x="30" y="252" class="gnote">자식 테이블마다 공통 컬럼을 따로 가지므로 not null 제약조건을 사용할 수 있습니다.</text>
+  <rect x="30" y="266" width="700" height="40" rx="8" class="bad"/>
+  <text x="380" y="291" class="note" text-anchor="middle">부모 타입으로 조회하면 <tspan font-family="Menlo, Consolas, monospace">ALBUM UNION MOVIE UNION BOOK</tspan> 형태로 모든 자식 테이블을 조회합니다.</text>
+  <text x="30" y="330" class="foot">여러 자식 테이블을 통합해서 쿼리하기 어렵고, UNION SQL 때문에 성능이 느립니다.</text>
+</svg>

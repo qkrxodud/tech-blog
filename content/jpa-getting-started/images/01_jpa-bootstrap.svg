@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 262" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Persistence가 META-INF/persistence.xml 설정 정보를 조회하고 EntityManagerFactory를 생성하며, EntityManagerFactory가 작업 단위마다 EntityManager를 생성하는 JPA 구동 방식</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="262" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="242" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">JPA 구동 방식 — 설정 조회부터 EntityManager 생성까지</text>
+  <rect x="30" y="104" width="150" height="56" rx="8" class="dbbox"/>
+  <text x="105" y="128" class="m" text-anchor="middle">persistence.xml</text>
+  <text x="105" y="147" class="val" text-anchor="middle">/META-INF 설정 정보</text>
+  <rect x="230" y="104" width="140" height="56" rx="8" class="hold"/>
+  <text x="300" y="128" class="m" text-anchor="middle">Persistence</text>
+  <text x="300" y="147" class="val" text-anchor="middle">설정을 읽는 쪽</text>
+  <rect x="410" y="104" width="180" height="56" rx="8" class="box"/>
+  <text x="500" y="128" class="m" text-anchor="middle">EntityManagerFactory</text>
+  <text x="500" y="147" class="val" text-anchor="middle">애플리케이션에 하나</text>
+  <rect x="616" y="66" width="122" height="52" rx="8" class="ok"/>
+  <text x="677" y="97" class="okm" text-anchor="middle">EntityManager</text>
+  <rect x="616" y="146" width="122" height="52" rx="8" class="ok"/>
+  <text x="677" y="177" class="okm" text-anchor="middle">EntityManager</text>
+  <line x1="230" y1="132" x2="186" y2="132" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="205" y="98" class="sub" text-anchor="middle">1. 조회</text>
+  <line x1="370" y1="132" x2="404" y2="132" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="387" y="98" class="sub" text-anchor="middle">2. 생성</text>
+  <line x1="590" y1="124" x2="610" y2="98" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="590" y1="140" x2="610" y2="166" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="603" y="136" class="gnote" text-anchor="middle">3</text>
+  <text x="30" y="236" class="foot">EntityManager는 작업 단위마다 새로 만들고, 스레드 간에 공유하지 않는다</text>
+</svg>

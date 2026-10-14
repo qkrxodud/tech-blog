@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Team.members가 @JoinColumn으로 TEAM_ID를 관리하고, Member.team은 같은 TEAM_ID를 insertable·updatable false로 매핑해 읽기만 하는 일대다 양방향 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agb" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M10,0 L0,5 L10,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">일대다 양방향 — 반대쪽을 읽기 전용으로 매핑한다</text>
+  <rect x="30" y="66" width="240" height="106" rx="6" class="box"/>
+  <rect x="30" y="66" width="240" height="28" rx="6" class="thead"/>
+  <text x="150.0" y="85" class="mb" text-anchor="middle">Member</text>
+  <text x="42" y="111.5" class="m">id</text>
+  <text x="42" y="137.5" class="m">name</text>
+  <rect x="34" y="149" width="232" height="20" rx="4" class="wait"/>
+  <text x="42" y="163.5" class="m">team</text>
+  <rect x="490" y="66" width="240" height="106" rx="6" class="box"/>
+  <rect x="490" y="66" width="240" height="28" rx="6" class="thead"/>
+  <text x="610.0" y="85" class="mb" text-anchor="middle">Team</text>
+  <text x="502" y="111.5" class="m">id</text>
+  <text x="502" y="137.5" class="m">name</text>
+  <rect x="494" y="149" width="232" height="20" rx="4" class="ok"/>
+  <text x="502" y="163.5" class="okm">members</text>
+  <rect x="30" y="188" width="240" height="50" rx="8" class="wait"/>
+  <text x="150" y="208" class="waitt" text-anchor="middle">읽기 전용</text>
+  <text x="150" y="227" class="m" text-anchor="middle">insertable·updatable = false</text>
+  <rect x="490" y="188" width="240" height="50" rx="8" class="ok"/>
+  <text x="610" y="208" class="okt" text-anchor="middle">주인 — 외래 키 등록·수정</text>
+  <text x="610" y="227" class="okm" text-anchor="middle">@JoinColumn(name = "TEAM_ID")</text>
+  <rect x="300" y="266" width="160" height="106" rx="6" class="box"/>
+  <rect x="300" y="266" width="160" height="28" rx="6" class="thead"/>
+  <text x="380.0" y="285" class="mb" text-anchor="middle">MEMBER</text>
+  <text x="312" y="311.5" class="m">MEMBER_ID</text>
+  <text x="312" y="337.5" class="m">USERNAME</text>
+  <rect x="304" y="349" width="152" height="20" rx="4" class="ok"/>
+  <text x="312" y="363.5" class="okm">TEAM_ID (FK)</text>
+  <line x1="274" y1="159.0" x2="298" y2="353.0" stroke="#9ca3af" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ag)"/>
+  <line x1="486" y1="159.0" x2="462" y2="353.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="296" class="code">@ManyToOne</text>
+  <text x="30" y="314" class="code">@JoinColumn(name = "TEAM_ID",</text>
+  <text x="30" y="332" class="code">insertable = false,</text>
+  <text x="30" y="350" class="code">updatable = false)</text>
+  <text x="730" y="296" class="code" text-anchor="end">@OneToMany</text>
+  <text x="730" y="314" class="code" text-anchor="end">@JoinColumn(name = "TEAM_ID")</text>
+  <text x="30" y="396" class="foot">두 필드가 같은 TEAM_ID를 매핑하지만, 외래 키를 바꾸는 것은 Team.members뿐입니다.</text>
+</svg>

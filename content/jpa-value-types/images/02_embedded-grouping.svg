@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>회원 엔티티의 근무 시작일과 근무 종료일을 Period로, 도시·번지·우편번호를 Address로 묶어 회원이 이름, 근무 기간, 집 주소를 가지도록 바꾸는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 12px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">임베디드 타입 — 관련 있는 값을 묶어 새 값 타입으로</text>
+  <text x="730" y="42" class="code" text-anchor="end">@Embeddable</text>
+  <rect x="30" y="66" width="200" height="236" rx="8" class="box"/>
+  <text x="130" y="90" class="t" text-anchor="middle">회원 엔티티</text>
+  <line x1="30" y1="102" x2="230" y2="102" stroke="#d1d5db" stroke-width="1.2"/>
+  <text x="50" y="128" class="val">이름</text>
+  <text x="50" y="158" class="val">근무 시작일</text>
+  <text x="50" y="188" class="val">근무 종료일</text>
+  <text x="50" y="218" class="val">주소 도시</text>
+  <text x="50" y="248" class="val">주소 번지</text>
+  <text x="50" y="278" class="val">주소 우편번호</text>
+  <line x1="236" y1="184" x2="286" y2="184" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="261" y="174" class="s" text-anchor="middle">묶기</text>
+  <rect x="292" y="66" width="210" height="140" rx="8" class="box"/>
+  <text x="397" y="90" class="t" text-anchor="middle">회원 엔티티</text>
+  <line x1="292" y1="102" x2="502" y2="102" stroke="#d1d5db" stroke-width="1.2"/>
+  <text x="310" y="128" class="val">이름</text>
+  <text x="310" y="158" class="val">근무 기간 <tspan font-family="Menlo, Consolas, monospace">Period</tspan></text>
+  <text x="310" y="188" class="val">집 주소 <tspan font-family="Menlo, Consolas, monospace">Address</tspan></text>
+  <rect x="550" y="66" width="180" height="100" rx="8" class="ok"/>
+  <text x="640" y="90" class="okc" text-anchor="middle">Period</text>
+  <line x1="550" y1="102" x2="730" y2="102" stroke="#86efac" stroke-width="1.2"/>
+  <text x="568" y="128" class="val">근무 시작일</text>
+  <text x="568" y="152" class="val">근무 종료일</text>
+  <rect x="550" y="182" width="180" height="120" rx="8" class="ok"/>
+  <text x="640" y="206" class="okc" text-anchor="middle">Address</text>
+  <line x1="550" y1="218" x2="730" y2="218" stroke="#86efac" stroke-width="1.2"/>
+  <text x="568" y="242" class="val">도시 city</text>
+  <text x="568" y="266" class="val">번지 street</text>
+  <text x="568" y="290" class="val">우편번호 zipcode</text>
+  <line x1="505" y1="154" x2="546" y2="122" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="505" y1="186" x2="546" y2="234" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="334" class="foot">근무 기간과 집 주소처럼 의미 있는 단위로 묶으면 회원 엔티티를 더 자연스럽게 읽을 수 있습니다.</text>
+</svg>

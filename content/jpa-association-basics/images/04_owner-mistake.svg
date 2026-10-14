@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 488" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>주인이 아닌 team.getMembers().add(member)만 호출하면 MEMBER.TEAM_ID가 비어 있고, 주인인 member.setTeam(team)에서 양쪽에 값을 넣으면 TEAM_ID에 팀이 들어가는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agb" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M10,0 L0,5 L10,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="488" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="226" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">주인이 아닌 쪽에만 설정 — TEAM_ID가 비어 있다</text>
+  <rect x="30" y="62" width="150" height="40" rx="8" class="box"/>
+  <text x="105.0" y="86.5" class="s" text-anchor="middle">member 저장</text>
+  <line x1="180" y1="82" x2="206" y2="82" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="208" y="62" width="290" height="40" rx="8" class="bad"/>
+  <text x="353.0" y="86.5" class="badm" text-anchor="middle">team.getMembers().add(member)</text>
+  <line x1="498" y1="82" x2="524" y2="82" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="526" y="62" width="150" height="40" rx="8" class="box"/>
+  <text x="601.0" y="86.5" class="s" text-anchor="middle">team 저장</text>
+  <text x="353" y="120" class="note" text-anchor="middle">주인이 아닌 역방향</text>
+  <text x="30" y="148" class="mb">MEMBER</text>
+  <rect x="30" y="156" width="150" height="26" class="thead"/>
+  <text x="105.0" y="173.5" class="m" text-anchor="middle">USERNAME</text>
+  <rect x="180" y="156" width="150" height="26" class="thead"/>
+  <text x="255.0" y="173.5" class="m" text-anchor="middle">TEAM_ID</text>
+  <rect x="30" y="182" width="150" height="26" class="cell"/>
+  <text x="105.0" y="199.5" class="m" text-anchor="middle">member1</text>
+  <rect x="180" y="182" width="150" height="26" class="bad"/>
+  <text x="255.0" y="199.5" class="badm" text-anchor="middle">null</text>
+  <text x="360" y="192" class="note">주인이 아닌 쪽은 읽기만 하므로</text>
+  <text x="360" y="210" class="note">외래 키에 팀이 들어가지 않습니다.</text>
+  <rect x="10" y="252" width="740" height="226" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="284" class="h">주인에 설정 — 편의 메서드로 양쪽에 넣는다</text>
+  <text x="730" y="284" class="code" text-anchor="end">setTeam(team)</text>
+  <rect x="30" y="304" width="190" height="40" rx="8" class="box"/>
+  <text x="125.0" y="328.5" class="m" text-anchor="middle">member.setTeam(team)</text>
+  <line x1="220" y1="324" x2="246" y2="324" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="248" y="304" width="180" height="40" rx="8" class="ok"/>
+  <text x="338.0" y="328.5" class="okm" text-anchor="middle">this.team = team</text>
+  <line x1="428" y1="324" x2="454" y2="324" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="456" y="304" width="274" height="40" rx="8" class="ok"/>
+  <text x="593.0" y="328.5" class="okm" text-anchor="middle">team.getMembers().add(this)</text>
+  <text x="338" y="362" class="gnote" text-anchor="middle">주인에 값 설정</text>
+  <text x="593" y="362" class="gnote" text-anchor="middle">반대쪽에도 값 설정</text>
+  <text x="30" y="390" class="mb">MEMBER</text>
+  <rect x="30" y="398" width="150" height="26" class="thead"/>
+  <text x="105.0" y="415.5" class="m" text-anchor="middle">USERNAME</text>
+  <rect x="180" y="398" width="150" height="26" class="thead"/>
+  <text x="255.0" y="415.5" class="m" text-anchor="middle">TEAM_ID</text>
+  <rect x="30" y="424" width="150" height="26" class="cell"/>
+  <text x="105.0" y="441.5" class="m" text-anchor="middle">member1</text>
+  <rect x="180" y="424" width="150" height="26" class="ok"/>
+  <text x="255.0" y="441.5" class="okt" text-anchor="middle">TeamA의 id</text>
+  <text x="360" y="434" class="gnote">주인에 값을 넣었으므로 외래 키에 팀이 들어가고,</text>
+  <text x="360" y="452" class="gnote">순수 객체 상태에서도 양쪽이 서로를 참조합니다.</text>
+</svg>
