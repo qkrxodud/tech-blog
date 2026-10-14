@@ -261,12 +261,13 @@ function fixImageLinks(body, slug) {
     if (m) byNum[m[1]] = f;
   }
   const used = new Set();
-  const out = body.replace(/!\[[^\]]*\]\(\s*(?:\.\/)?images\/(\d+)[^\n]*?\.(?:png|jpe?g|gif|webp|svg)\)?/gi,
-    (whole, num) => {
+  // 원고에 적은 설명문(alt)은 그대로 살린다. 비어 있을 때만 아래 fillAltText가 소제목으로 채운다.
+  const out = body.replace(/!\[([^\]]*)\]\(\s*(?:\.\/)?images\/(\d+)[^\n]*?\.(?:png|jpe?g|gif|webp|svg)\)?/gi,
+    (whole, alt, num) => {
       const file = byNum[num.padStart(2, '0')] || byNum[num];
       if (!file) { console.warn(`이미지 없음: ${slug} / ${num}`); return whole; }
       used.add(file);
-      return `![](images/${file})`;
+      return `![${alt.trim()}](images/${file})`;
     });
   // 번호 접두어가 없는 파일은 위 정규식에 걸리지 않으므로 본문에 이름이 있는지로 확인한다.
   const missing = files.filter(f => !used.has(f) && !out.includes(f));
@@ -274,9 +275,9 @@ function fixImageLinks(body, slug) {
   return out;
 }
 
-// 그림에 설명문(alt)을 채운다. 화면을 못 보는 분에게는 이것이 그림의 전부이고,
-// 검색엔진도 이 글을 읽는다. 원본에는 하나도 없어서, 그림 바로 앞의 소제목을
-// 가져다 쓴다. 그림 자체를 묘사하진 못해도 "무엇을 설명하는 그림인지"는 전한다.
+// 설명문(alt)이 비어 있는 그림에 설명문을 채운다. 화면을 못 보는 분에게는 이것이
+// 그림의 전부이고, 검색엔진도 이 글을 읽는다. 원고에 설명문이 없을 때만, 그림 바로
+// 앞의 소제목을 가져다 쓴다. 그림 자체를 묘사하진 못해도 "무엇을 설명하는 그림인지"는 전한다.
 function fillAltText(body) {
   const lines = body.split('\n');
   let heading = null, inCode = false, n = 0;
