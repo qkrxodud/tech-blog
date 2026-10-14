@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 480" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>당첨 번호와 일치한 개수로 등수를 정하고, 5개가 일치하면 보너스 볼 일치 여부로 BONUS와 SECOND를 나누는 판정 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .code12 { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="480" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="460" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">당첨 등수 판정 — 일치 개수와 보너스 볼</text>
+  <text x="730" y="42" class="code" text-anchor="end">WinningAmountByRank</text>
+  <rect x="30" y="212" width="150" height="60" rx="8" class="hold"/>
+  <text x="105" y="237" class="opk" text-anchor="middle">당첨 번호와</text>
+  <text x="105" y="257" class="opk" text-anchor="middle">일치 개수 비교</text>
+  <rect x="230" y="70" width="120" height="44" rx="8" class="box"/>
+  <text x="290" y="97" class="opk" text-anchor="middle">6개 일치</text>
+  <line x1="180" y1="242" x2="228" y2="92" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="230" y="130" width="120" height="44" rx="8" class="box"/>
+  <text x="290" y="157" class="opk" text-anchor="middle">5개 일치</text>
+  <line x1="180" y1="242" x2="228" y2="152" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="230" y="250" width="120" height="44" rx="8" class="box"/>
+  <text x="290" y="277" class="opk" text-anchor="middle">4개 일치</text>
+  <line x1="180" y1="242" x2="228" y2="272" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="230" y="310" width="120" height="44" rx="8" class="box"/>
+  <text x="290" y="337" class="opk" text-anchor="middle">3개 일치</text>
+  <line x1="180" y1="242" x2="228" y2="332" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="230" y="370" width="120" height="44" rx="8" class="box"/>
+  <text x="290" y="397" class="opk" text-anchor="middle">그 외</text>
+  <line x1="180" y1="242" x2="228" y2="392" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="400" y="130" width="130" height="44" rx="8" class="box"/>
+  <text x="465" y="157" class="opk" text-anchor="middle">보너스 볼 일치?</text>
+  <line x1="350" y1="152" x2="398" y2="152" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="580" y="70" width="150" height="44" rx="8" class="ok"/>
+  <text x="655" y="88" class="okc" text-anchor="middle">FIRST</text>
+  <text x="655" y="106" class="val" text-anchor="middle">2000000000원</text>
+  <rect x="580" y="130" width="150" height="44" rx="8" class="ok"/>
+  <text x="655" y="148" class="okc" text-anchor="middle">BONUS</text>
+  <text x="655" y="166" class="val" text-anchor="middle">30000000원</text>
+  <rect x="580" y="190" width="150" height="44" rx="8" class="ok"/>
+  <text x="655" y="208" class="okc" text-anchor="middle">SECOND</text>
+  <text x="655" y="226" class="val" text-anchor="middle">1500000원</text>
+  <rect x="580" y="250" width="150" height="44" rx="8" class="ok"/>
+  <text x="655" y="268" class="okc" text-anchor="middle">THIRD</text>
+  <text x="655" y="286" class="val" text-anchor="middle">50000원</text>
+  <rect x="580" y="310" width="150" height="44" rx="8" class="ok"/>
+  <text x="655" y="328" class="okc" text-anchor="middle">FOURTH</text>
+  <text x="655" y="346" class="val" text-anchor="middle">5000원</text>
+  <rect x="580" y="370" width="150" height="44" rx="8" class="box"/>
+  <text x="655" y="388" class="op" text-anchor="middle">EMPTY</text>
+  <text x="655" y="406" class="val" text-anchor="middle">0원</text>
+  <line x1="350" y1="92" x2="578" y2="92" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="350" y1="272" x2="578" y2="272" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="350" y1="332" x2="578" y2="332" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="350" y1="392" x2="578" y2="392" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="530" y1="152" x2="578" y2="152" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="554" y="144" class="gnote" text-anchor="middle">예</text>
+  <line x1="465" y1="174" x2="578" y2="208" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <text x="500" y="206" class="sub" text-anchor="middle">아니오</text>
+  <text x="30" y="440" class="sub">보너스 볼은 5개가 일치한 경우에만 확인해 2등(5개 일치, 보너스 볼 일치)을 나눕니다.</text>
+  <text x="30" y="458" class="sub">이름과 금액은 리뷰를 반영한 WinningAmountByRank의 상수를 그대로 사용하였습니다.</text>
+</svg>

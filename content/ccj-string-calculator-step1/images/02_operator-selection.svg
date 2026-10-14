@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 456" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>if-else로 + - * 기호를 차례로 비교해 MULTIPLY를 고르던 방식과, OperationEnum.from()이 values()에서 기호가 같은 값을 찾아 applyAsInt로 계산하고 없으면 IllegalArgumentException을 던지는 방식의 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="456" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="184" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">변경 전 — if-else로 기호를 하나씩 비교</text>
+  <text x="730" y="42" class="code" text-anchor="end">calculator()</text>
+  <rect x="30" y="66" width="120" height="48" rx="8" class="hold"/>
+  <text x="90" y="86" class="op" text-anchor="middle">operation</text>
+  <text x="90" y="105" class="val" text-anchor="middle">"*" 입력</text>
+  <line x1="153" y1="90" x2="169" y2="90" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="172" y="66" width="120" height="48" rx="8" class="box"/>
+  <text x="232" y="86" class="op" text-anchor="middle">"+".equals</text>
+  <text x="232" y="105" class="val" text-anchor="middle">아니오</text>
+  <line x1="295" y1="90" x2="311" y2="90" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="314" y="66" width="120" height="48" rx="8" class="box"/>
+  <text x="374" y="86" class="op" text-anchor="middle">"-".equals</text>
+  <text x="374" y="105" class="val" text-anchor="middle">아니오</text>
+  <line x1="437" y1="90" x2="453" y2="90" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="456" y="66" width="120" height="48" rx="8" class="box"/>
+  <text x="516" y="86" class="op" text-anchor="middle">"*".equals</text>
+  <text x="516" y="105" class="val" text-anchor="middle">예</text>
+  <line x1="579" y1="90" x2="595" y2="90" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="598" y="66" width="120" height="48" rx="8" class="box"/>
+  <text x="658" y="86" class="op" text-anchor="middle">MULTIPLY</text>
+  <text x="658" y="105" class="val" text-anchor="middle">operationEnum</text>
+  <rect x="172" y="136" width="426" height="34" rx="15" class="bad"/>
+  <text x="385" y="158" class="badt" text-anchor="middle">연산자마다 else if가 이어짐 — else 사용 금지 위반</text>
+  <rect x="10" y="210" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="242" class="h">변경 후 — OperationEnum.from()이 기호로 찾음</text>
+  <text x="730" y="242" class="code" text-anchor="end">OperationEnum</text>
+  <rect x="30" y="266" width="120" height="48" rx="8" class="hold"/>
+  <text x="90" y="286" class="op" text-anchor="middle">from("*")</text>
+  <text x="90" y="305" class="val" text-anchor="middle">기호 전달</text>
+  <line x1="153" y1="290" x2="169" y2="290" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="172" y="266" width="120" height="48" rx="8" class="box"/>
+  <text x="232" y="286" class="op" text-anchor="middle">values()</text>
+  <text x="232" y="305" class="val" text-anchor="middle">연산자 4개</text>
+  <line x1="295" y1="290" x2="311" y2="290" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="314" y="266" width="120" height="48" rx="8" class="box"/>
+  <text x="374" y="286" class="op" text-anchor="middle">filter</text>
+  <text x="374" y="305" class="val" text-anchor="middle">기호가 같은 값</text>
+  <line x1="437" y1="290" x2="453" y2="290" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="456" y="266" width="120" height="48" rx="8" class="ok"/>
+  <text x="516" y="286" class="okc" text-anchor="middle">MULTIPLY</text>
+  <text x="516" y="305" class="val" text-anchor="middle">findFirst()</text>
+  <line x1="579" y1="290" x2="595" y2="290" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="598" y="266" width="120" height="48" rx="8" class="ok"/>
+  <text x="658" y="286" class="okc" text-anchor="middle">applyAsInt</text>
+  <text x="658" y="305" class="val" text-anchor="middle">(5, 4) = 20</text>
+  <text x="232" y="334" class="sub" text-anchor="middle">ADD · MINUS · MULTIPLY · DIVIDE</text>
+  <line x1="374" y1="314" x2="374" y2="370" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="224" y="374" width="300" height="34" rx="15" class="bad"/>
+  <text x="374" y="396" class="badt" text-anchor="middle">없으면 IllegalArgumentException</text>
+  <text x="30" y="430" class="sub">연산자를 추가할 때는 enum에 값만 더하면 from()이 같은 방식으로 찾습니다.</text>
+</svg>

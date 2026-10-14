@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 390" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>우승자 판정: 최종 위치가 pobi 5, crong 4, honux 5일 때 Collections.max로 가장 먼 위치 5를 구하고, 위치가 5인 pobi와 honux를 우승자로 고른다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #4b5563; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="390" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="370" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">우승자 판정 — 가장 먼 위치와 같은 자동차를 모두 고름</text>
+  <text x="100" y="72" class="step">최종 위치</text>
+  <text x="30" y="105" class="op">pobi</text>
+  <rect x="100" y="84" width="236" height="32" rx="6" class="track"/>
+  <rect x="104" y="88" width="220" height="24" rx="4" class="ok"/>
+  <text x="314" y="105" class="okc" text-anchor="end">5</text>
+  <text x="30" y="159" class="op">crong</text>
+  <rect x="100" y="138" width="236" height="32" rx="6" class="track"/>
+  <rect x="104" y="142" width="176" height="24" rx="4" class="hold"/>
+  <text x="270" y="159" class="op" text-anchor="end">4</text>
+  <text x="30" y="213" class="op">honux</text>
+  <rect x="100" y="192" width="236" height="32" rx="6" class="track"/>
+  <rect x="104" y="196" width="220" height="24" rx="4" class="ok"/>
+  <text x="314" y="213" class="okc" text-anchor="end">5</text>
+  <rect x="380" y="76" width="190" height="56" rx="8" class="box"/>
+  <text x="475" y="99" class="t" text-anchor="middle">최대 위치 구하기</text>
+  <text x="475" y="119" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Collections.max → 5</tspan></text>
+  <line x1="340" y1="154" x2="377" y2="118" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="380" y="176" width="190" height="56" rx="8" class="box"/>
+  <text x="475" y="199" class="t" text-anchor="middle">같은 위치만 고르기</text>
+  <text x="475" y="219" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">position == 5</tspan></text>
+  <line x1="475" y1="134" x2="475" y2="173" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="475" y="254" class="sub" text-anchor="middle">crong(4)은 제외</text>
+  <rect x="604" y="176" width="126" height="56" rx="8" class="ok"/>
+  <text x="667" y="199" class="okt" text-anchor="middle">우승자</text>
+  <text x="667" y="219" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">pobi, honux</tspan></text>
+  <line x1="572" y1="204" x2="601" y2="204" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="300" y="280" width="430" height="40" rx="20" class="ok"/>
+  <text x="515" y="305" class="okt" text-anchor="middle">pobi, honux가 최종 우승했습니다.</text>
+  <line x1="667" y1="234" x2="667" y2="277" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="356" class="sub"><tspan font-family="Menlo, Consolas, monospace">outPutWinner()</tspan>가 우승자 이름을 쉼표로 이어 출력합니다. 우승자는 한 명 이상일 수 있습니다.</text>
+</svg>

@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>참여자 4명 사이의 칸 세 개에서 첫 칸(count == ZERO)은 nextBoolean으로 true, 두 번째 칸은 왼쪽 칸이 true라서 false, 세 번째 칸은 왼쪽 칸이 false라서 nextBoolean으로 true가 되어 가로 라인이 겹치지 않는 한 줄이 만들어지고, 가로 라인이 이어진 줄은 이동 방향을 정할 수 없어 만들지 않는다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .name { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .rail { stroke: #9ca3af; stroke-width: 3; stroke-linecap: round; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">가로 라인 생성 규칙 — 왼쪽 칸을 보고 정한다</text>
+  <text x="730" y="42" class="code" text-anchor="end">Line(countOfPerson)</text>
+
+  <text x="180" y="78" class="name" text-anchor="middle">pobi</text>
+  <text x="330" y="78" class="name" text-anchor="middle">honux</text>
+  <text x="480" y="78" class="name" text-anchor="middle">crong</text>
+  <text x="630" y="78" class="name" text-anchor="middle">jk</text>
+  <line x1="180" y1="90" x2="180" y2="140" class="rail"/>
+  <line x1="330" y1="90" x2="330" y2="140" class="rail"/>
+  <line x1="480" y1="90" x2="480" y2="140" class="rail"/>
+  <line x1="630" y1="90" x2="630" y2="140" class="rail"/>
+  <line x1="182" y1="115" x2="328" y2="115" stroke="#16a34a" stroke-width="4"/>
+  <line x1="334" y1="115" x2="476" y2="115" stroke="#c4c8ce" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <line x1="482" y1="115" x2="628" y2="115" stroke="#16a34a" stroke-width="4"/>
+  <text x="255" y="160" class="step" text-anchor="middle">첫 번째 칸</text>
+  <text x="405" y="160" class="step" text-anchor="middle">두 번째 칸</text>
+  <text x="555" y="160" class="step" text-anchor="middle">세 번째 칸</text>
+
+  <rect x="187" y="170" width="136" height="76" rx="8" class="ok"/>
+  <text x="255" y="193" class="okc" text-anchor="middle">count == ZERO</text>
+  <text x="255" y="214" class="ms" text-anchor="middle">nextBoolean()</text>
+  <text x="255" y="235" class="okc" text-anchor="middle">→ true</text>
+
+  <rect x="337" y="170" width="136" height="76" rx="8" class="hold"/>
+  <text x="405" y="193" class="t" text-anchor="middle">왼쪽 칸이 <tspan font-family="Menlo, Consolas, monospace">true</tspan></text>
+  <text x="405" y="214" class="val" text-anchor="middle">무작위로 정하지 않음</text>
+  <text x="405" y="235" class="op" text-anchor="middle">→ false</text>
+
+  <rect x="487" y="170" width="136" height="76" rx="8" class="ok"/>
+  <text x="555" y="193" class="okt" text-anchor="middle">왼쪽 칸이 <tspan font-family="Menlo, Consolas, monospace">false</tspan></text>
+  <text x="555" y="214" class="ms" text-anchor="middle">nextBoolean()</text>
+  <text x="555" y="235" class="okc" text-anchor="middle">→ true</text>
+
+  <line x1="323" y1="208" x2="335" y2="208" stroke="#6b7280" stroke-width="1.3" marker-end="url(#ag)"/>
+  <line x1="473" y1="208" x2="485" y2="208" stroke="#6b7280" stroke-width="1.3" marker-end="url(#ag)"/>
+
+  <text x="30" y="284" class="t">points</text>
+  <text x="187" y="284" class="op">[true, false, true]</text>
+  <text x="730" y="284" class="foot" text-anchor="end">실행 결과의 첫 줄과 같은 모양</text>
+
+  <rect x="10" y="326" width="740" height="134" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="358" class="h">가로 라인이 이어진 줄 — 만들지 않는 경우</text>
+  <line x1="180" y1="378" x2="180" y2="440" class="rail"/>
+  <line x1="330" y1="378" x2="330" y2="440" class="rail"/>
+  <line x1="480" y1="378" x2="480" y2="440" class="rail"/>
+  <line x1="182" y1="409" x2="328" y2="409" stroke="#dc2626" stroke-width="4"/>
+  <line x1="332" y1="409" x2="478" y2="409" stroke="#dc2626" stroke-width="4"/>
+  <circle cx="330" cy="409" r="7" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="520" y="388" class="badc">|-----|-----|</text>
+  <text x="520" y="414" class="note">가운데 세로줄에서 왼쪽과 오른쪽 중</text>
+  <text x="520" y="434" class="note">어느 쪽으로 이동할지 정할 수 없음</text>
+</svg>

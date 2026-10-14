@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>구입 금액 14000원 중 수동 3장은 입력받아 수동 로또로 만들고, 자동 11장은 Lottos.from(count)로 만든 뒤 combineLottos로 합쳐 14장을 만드는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .code12 { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">수동·자동 구매 합치기 — 수동 로또에 자동 로또를 더함</text>
+  <rect x="30" y="130" width="140" height="64" rx="8" class="hold"/>
+  <text x="100" y="158" class="opk" text-anchor="middle">구입 금액</text>
+  <text x="100" y="178" class="val" text-anchor="middle">14000원, 14장</text>
+  <rect x="220" y="72" width="150" height="56" rx="8" class="box"/>
+  <text x="295" y="96" class="opk" text-anchor="middle">수동 번호 3장 입력</text>
+  <text x="295" y="116" class="code12" text-anchor="middle">askManualLotto</text>
+  <rect x="392" y="72" width="150" height="56" rx="8" class="box"/>
+  <text x="467" y="96" class="opk" text-anchor="middle">수동 로또 3장 생성</text>
+  <text x="467" y="116" class="code12" text-anchor="middle">fromManualLottos</text>
+  <rect x="220" y="196" width="322" height="56" rx="8" class="box"/>
+  <text x="381" y="220" class="opk" text-anchor="middle">자동 로또 11장 생성</text>
+  <text x="381" y="240" class="code12" text-anchor="middle">Lottos.from(count)</text>
+  <rect x="590" y="72" width="140" height="180" rx="8" class="ok"/>
+  <text x="660" y="140" class="okt" text-anchor="middle">로또 합치기</text>
+  <text x="660" y="164" class="code12" text-anchor="middle">combineLottos</text>
+  <text x="660" y="188" class="val" text-anchor="middle">3장 + 11장 = 14장</text>
+  <line x1="170" y1="150" x2="218" y2="106" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="370" y1="100" x2="390" y2="100" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="170" y1="174" x2="218" y2="218" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="542" y1="100" x2="588" y2="116" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="542" y1="224" x2="588" y2="208" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="282" class="sub">자동 로또 생성과 합치기는 <tspan font-family="Menlo, Consolas, monospace">createAutoLottos(count, manualLotto)</tspan>에서 처리합니다.</text>
+  <text x="30" y="304" class="sub">구입한 14장을 출력한 뒤 당첨 번호와 보너스 볼을 입력받아 당첨 통계를 계산합니다.</text>
+</svg>

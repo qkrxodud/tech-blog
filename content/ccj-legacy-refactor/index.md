@@ -1,10 +1,14 @@
 ---
 title: "레거시 코드 리팩터링 — 1단계"
 tags: ["TDD","리팩터링","클린 코드","Java","레거시 코드"]
-summary: "레거시 QnaService의 삭제 로직을 도메인 모델로 옮기는 리팩터링 과제와 그에 대한 리뷰 피드백을 정리합니다."
+summary: "레거시 QnaService의 질문 삭제 로직에서 단위 테스트 가능한 비즈니스 로직을 도메인 모델로 옮기는 리팩터링 미션의 요구사항과 리뷰 피드백을 정리합니다."
 ---
 
+넥스트스텝의 TDD, 클린 코드 with Java 과정에서 진행한 미션을 하나씩 기록하려고 합니다. 오늘은 레거시 코드 리팩터링 미션 1단계로, QnaService의 질문 삭제 로직을 도메인 모델로 옮기는 미션의 요구사항과 리뷰 피드백을 정리하도록 하겠습니다.
+
 ## 질문 삭제하기 요구사항
+
+질문 삭제 기능의 요구사항은 아래와 같습니다.
 
 - 질문 데이터를 완전히 삭제하는 것이 아니라 데이터의 상태를 삭제 상태(deleted - boolean type)로 변경합니다.
 - 로그인 사용자와 질문한 사람이 같은 경우 삭제 가능합니다.
@@ -14,12 +18,22 @@ summary: "레거시 QnaService의 삭제 로직을 도메인 모델로 옮기는
 - 질문자와 답변자가 다른 경우 답변을 삭제할 수 없습니다.
 - 질문과 답변 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남깁니다.
 
+요구사항의 삭제 조건을 순서대로 그리면 아래와 같습니다.
+
+![로그인 사용자가 질문자인지, 다른 사람이 쓴 답변이 있는지 차례로 확인한 뒤 질문과 답변을 삭제 상태로 바꾸고 DeleteHistory를 남기는 흐름](images/01_delete-question-rules.svg)
+
+질문자가 아니거나 다른 사람이 쓴 답변이 하나라도 있으면 CannotDeleteException으로 삭제를 막고, 두 조건을 모두 통과해야 질문과 답변을 삭제 상태로 바꾸고 이력을 남깁니다. 답변이 없는 경우에는 답변 확인을 그대로 통과합니다.
+
 ## 리팩터링 요구사항
+
+리팩터링 요구사항은 아래와 같습니다.
 
 - nextstep.qna.service.QnaService의 deleteQuestion()는 앞의 질문 삭제 기능을 구현한 코드입니다. 이 메서드는 단위 테스트하기 어려운 코드와 단위 테스트 가능한 코드가 섞여 있습니다.
 - QnaService의 deleteQuestion() 메서드에서 단위 테스트 가능한 코드(핵심 비즈니스 로직)를 도메인 모델 객체에 구현합니다.
 - QnaService의 비즈니스 로직을 도메인 모델로 이동하는 리팩터링을 진행할 때 TDD로 구현합니다.
 - QnaService의 deleteQuestion() 메서드에 대한 단위 테스트는 src/test/java 폴더의 nextstep.qna.service.QnaServiceTest입니다. 도메인 모델로 로직을 이동한 후에도 QnaServiceTest의 모든 테스트는 통과해야 합니다.
+
+리팩터링 대상인 deleteQuestion() 메서드는 다음과 같습니다.
 
 ```java
 public class QnAService {
@@ -48,14 +62,18 @@ public class QnAService {
 }
 ```
 
+요구사항에 따라 이 메서드에서 단위 테스트 가능한 코드(핵심 비즈니스 로직)를 도메인 모델 객체로 옮기고, 옮긴 뒤에도 QnaServiceTest의 모든 테스트가 통과해야 합니다.
+
 ## 피드백
 
-리뷰어: Service Layer 로직을 도메인 객체로 이동, 정말 잘 했습니다. 💯 특별히 피드백할 부분이 보이지 않습니다. 빠른 미션 진행을 위해 제가 대신 리뷰를 진행했습니다. 내일 강의 마지막 날이지만 2단계까지 한번 도전해 보시죠.
+리뷰어께서 남겨 주신 피드백은 다음과 같습니다.
 
-- 깃허브 링크 :
+> Service Layer 로직을 도메인 객체로 이동, 정말 잘 했습니다. 💯 특별히 피드백할 부분이 보이지 않습니다. 빠른 미션 진행을 위해 제가 대신 리뷰를 진행했습니다. 내일 강의 마지막 날이지만 2단계까지 한번 도전해 보시죠.
 
-[https://github.com/next-step/java-lms/pull/154](https://github.com/next-step/java-lms/pull/154)
+깃허브 링크: [https://github.com/next-step/java-lms/pull/154](https://github.com/next-step/java-lms/pull/154)
 
----
+## 마무리
+
+오늘은 레거시 코드 리팩터링 미션 1단계로, QnaService의 deleteQuestion()에서 단위 테스트 가능한 핵심 비즈니스 로직을 도메인 모델로 옮기는 요구사항과 리뷰 피드백을 정리하였습니다. 다음 글에서는 [스트림, 람다, Optional — 1단계](../ccj-01-stream-lambda-optional/)에 대해 정리하도록 하겠습니다.
 
 > 이 글은 넥스트스텝의 [TDD, 클린 코드 with Java](https://edu.nextstep.camp/c/O0pDe1b) 과정을 들으며 정리한 노트입니다.

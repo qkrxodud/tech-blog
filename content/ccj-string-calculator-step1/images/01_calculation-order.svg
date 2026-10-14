@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>2 + 3 * 4 / 2를 공백으로 나눈 뒤 앞에서부터 2 + 3 = 5, 5 * 4 = 20, 20 / 2 = 10 순서로 계산해 10이 되는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">계산 순서 — 입력된 순서대로 앞에서부터 계산</text>
+  <text x="730" y="42" class="code" text-anchor="end">2 + 3 * 4 / 2</text>
+  <text x="30" y="96" class="lane">입력</text>
+  <text x="30" y="114" class="sub">공백 기준으로 나눔</text>
+  <rect x="150" y="72" width="585" height="60" rx="6" class="track"/>
+  <rect x="196" y="80" width="56" height="44" rx="8" class="box"/>
+  <text x="224" y="108" class="op" text-anchor="middle">2</text>
+  <rect x="270" y="80" width="56" height="44" rx="8" class="hold"/>
+  <text x="298" y="108" class="op" text-anchor="middle">+</text>
+  <rect x="344" y="80" width="56" height="44" rx="8" class="box"/>
+  <text x="372" y="108" class="op" text-anchor="middle">3</text>
+  <rect x="418" y="80" width="56" height="44" rx="8" class="hold"/>
+  <text x="446" y="108" class="op" text-anchor="middle">*</text>
+  <rect x="492" y="80" width="56" height="44" rx="8" class="box"/>
+  <text x="520" y="108" class="op" text-anchor="middle">4</text>
+  <rect x="566" y="80" width="56" height="44" rx="8" class="hold"/>
+  <text x="594" y="108" class="op" text-anchor="middle">/</text>
+  <rect x="640" y="80" width="56" height="44" rx="8" class="box"/>
+  <text x="668" y="108" class="op" text-anchor="middle">2</text>
+  <text x="30" y="186" class="lane">계산</text>
+  <text x="30" y="204" class="sub">앞의 결과에 이어서</text>
+  <rect x="150" y="156" width="585" height="64" rx="6" class="track"/>
+  <rect x="170" y="164" width="160" height="48" rx="8" class="box"/>
+  <text x="250" y="184" class="op" text-anchor="middle">2 + 3</text>
+  <text x="250" y="203" class="val" text-anchor="middle">= 5</text>
+  <line x1="334" y1="188" x2="361" y2="188" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="365" y="164" width="160" height="48" rx="8" class="box"/>
+  <text x="445" y="184" class="op" text-anchor="middle">5 * 4</text>
+  <text x="445" y="203" class="val" text-anchor="middle">= 20</text>
+  <line x1="529" y1="188" x2="556" y2="188" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="560" y="164" width="160" height="48" rx="8" class="ok"/>
+  <text x="640" y="184" class="okc" text-anchor="middle">20 / 2</text>
+  <text x="640" y="203" class="val" text-anchor="middle">= 10</text>
+  <rect x="560" y="238" width="160" height="32" rx="15" class="ok"/>
+  <text x="640" y="259" class="okt" text-anchor="middle">결과 10</text>
+  <text x="150" y="300" class="sub">곱셈·나눗셈을 먼저 계산하지 않습니다. 수학의 계산 우선순위를 따랐다면 결과는 8이 됩니다.</text>
+  <text x="150" y="320" class="sub">나눗셈 결과는 정수로 떨어지는 값으로 한정합니다.</text>
+</svg>

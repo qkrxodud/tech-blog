@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 290" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>구입 금액 14000원을 입력하면 14장을 자동 발급하고, 당첨 번호를 입력받아 당첨 통계와 수익률 0.35를 출력하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="290" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="270" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">로또 구입 흐름 — 구입 금액에서 당첨 통계까지</text>
+  <text x="207" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="318" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="429" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="540" y="68" class="step" text-anchor="middle">4단계</text>
+  <text x="651" y="68" class="step" text-anchor="middle">5단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="106" class="lane">입출력</text>
+  <text x="30" y="123" class="sub">InputView</text>
+  <text x="30" y="138" class="sub">ResultView</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="178" class="lane">도메인</text>
+  <text x="30" y="196" class="sub">발급·통계 계산</text>
+  <rect x="150" y="156" width="585" height="52" rx="6" class="track"/>
+  <rect x="155" y="88" width="104" height="48" rx="8" class="box"/>
+  <text x="207" y="108" class="opk" text-anchor="middle">구입 금액</text>
+  <text x="207" y="127" class="val" text-anchor="middle">14000</text>
+  <rect x="266" y="158" width="104" height="48" rx="8" class="box"/>
+  <text x="318" y="178" class="opk" text-anchor="middle">자동 발급</text>
+  <text x="318" y="197" class="val" text-anchor="middle">14장</text>
+  <rect x="377" y="88" width="104" height="48" rx="8" class="box"/>
+  <text x="429" y="108" class="opk" text-anchor="middle">당첨 번호</text>
+  <text x="429" y="127" class="val" text-anchor="middle">1,2,3,4,5,6</text>
+  <rect x="488" y="158" width="104" height="48" rx="8" class="box"/>
+  <text x="540" y="178" class="opk" text-anchor="middle">당첨 통계</text>
+  <text x="540" y="197" class="val" text-anchor="middle">3개 일치 1장</text>
+  <rect x="599" y="88" width="104" height="48" rx="8" class="ok"/>
+  <text x="651" y="108" class="okt" text-anchor="middle">결과 출력</text>
+  <text x="651" y="127" class="val" text-anchor="middle">수익률 0.35</text>
+  <line x1="232" y1="136" x2="292" y2="158" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="343" y1="158" x2="403" y2="136" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="454" y1="136" x2="514" y2="158" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="565" y1="158" x2="625" y2="136" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="240" class="sub">로또 1장의 가격은 1000원이므로 14000원이면 14장을 발급합니다. 번호는 Collections.shuffle()로 섞고 sort()로 정렬합니다.</text>
+  <text x="30" y="262" class="sub">핵심 로직은 도메인에 두고, 입력과 출력은 InputView, ResultView로 분리합니다.</text>
+</svg>

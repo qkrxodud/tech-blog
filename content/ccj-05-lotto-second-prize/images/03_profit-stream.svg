@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 356" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>리뷰 전에는 for문으로 당첨 결과와 수익률을 필드에 누적했고, 리뷰 후에는 스트림으로 당첨 금액 합계를 구해 구입 금액으로 나눈 값을 반환하는 흐름 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .code12 { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="356" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">리뷰 전 — for문에서 결과를 필드에 누적</text>
+  <rect x="30" y="60" width="160" height="56" rx="8" class="box"/>
+  <text x="110" y="83" class="opk" text-anchor="middle">로또 순회</text>
+  <text x="110" y="103" class="code12" text-anchor="middle">lottos.getLottos()</text>
+  <rect x="205" y="60" width="160" height="56" rx="8" class="box"/>
+  <text x="285" y="83" class="opk" text-anchor="middle">등수 찾기</text>
+  <text x="285" y="103" class="code12" text-anchor="middle">from(winningCount)</text>
+  <rect x="380" y="60" width="160" height="56" rx="8" class="box"/>
+  <text x="460" y="83" class="opk" text-anchor="middle">결과 기록</text>
+  <text x="460" y="103" class="code12" text-anchor="middle">winningResult.put</text>
+  <rect x="555" y="60" width="175" height="56" rx="8" class="bad"/>
+  <text x="642" y="83" class="badt" text-anchor="middle">수익률 계산</text>
+  <text x="642" y="103" class="val" text-anchor="middle">profit 필드에 대입</text>
+  <line x1="190" y1="88" x2="203" y2="88" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="365" y1="88" x2="378" y2="88" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="540" y1="88" x2="553" y2="88" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <text x="30" y="148" class="note">당첨 금액을 winningAmount에 더해 가고, 마지막에 profit 필드에 수익률을 넣습니다.</text>
+  <rect x="10" y="186" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="218" class="h">리뷰 후 — 스트림으로 합계를 구해 반환</text>
+  <rect x="30" y="236" width="160" height="56" rx="8" class="box"/>
+  <text x="110" y="259" class="opk" text-anchor="middle">스트림 생성</text>
+  <text x="110" y="279" class="code12" text-anchor="middle">stream()</text>
+  <rect x="205" y="236" width="160" height="56" rx="8" class="box"/>
+  <text x="285" y="259" class="opk" text-anchor="middle">금액으로 변환</text>
+  <text x="285" y="279" class="code12" text-anchor="middle">mapToInt(...)</text>
+  <rect x="380" y="236" width="160" height="56" rx="8" class="box"/>
+  <text x="460" y="259" class="opk" text-anchor="middle">금액 합계</text>
+  <text x="460" y="279" class="code12" text-anchor="middle">sum()</text>
+  <rect x="555" y="236" width="175" height="56" rx="8" class="ok"/>
+  <text x="642" y="259" class="okt" text-anchor="middle">수익률 반환</text>
+  <text x="642" y="279" class="code12" text-anchor="middle">sum / purchaseAmount</text>
+  <line x1="190" y1="264" x2="203" y2="264" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="365" y1="264" x2="378" y2="264" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="540" y1="264" x2="553" y2="264" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <text x="30" y="324" class="gnote">파라미터로 받은 lottos와 purchaseAmount로 수익률을 계산해 반환합니다.</text>
+</svg>

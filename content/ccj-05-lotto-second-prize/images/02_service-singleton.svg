@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 376" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>리뷰 전에는 lottoCount를 생성자로 받아 Lottos를 필드로 두던 LottoService를, 리뷰 후 createLottoService()로 얻는 싱글톤으로 바꾼 구조 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .code12 { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="376" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">리뷰 전 — 생성자로 lottoCount를 받아 필드에 Lottos를 둠</text>
+  <rect x="30" y="64" width="290" height="60" rx="8" class="box"/>
+  <text x="175" y="89" class="opk" text-anchor="middle">서비스 객체 생성</text>
+  <text x="175" y="110" class="code" text-anchor="middle">new LottoService(lottoCount)</text>
+  <line x1="320" y1="94" x2="398" y2="94" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="400" y="64" width="330" height="60" rx="8" class="bad"/>
+  <text x="565" y="89" class="badc" text-anchor="middle">LottoService</text>
+  <text x="565" y="110" class="code" text-anchor="middle">lottos = new Lottos(lottoCount)</text>
+  <text x="30" y="154" class="note">파라미터에 따라 서비스 객체가 생성되고, 생성할 때 받은 값이 필드로 남습니다.</text>
+  <rect x="10" y="196" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="228" class="h">리뷰 후 — 싱글톤으로 하나의 서비스 객체를 사용</text>
+  <rect x="30" y="250" width="290" height="60" rx="8" class="box"/>
+  <text x="175" y="275" class="opk" text-anchor="middle">서비스 객체 얻기</text>
+  <text x="175" y="296" class="code" text-anchor="middle">createLottoService()</text>
+  <line x1="320" y1="280" x2="398" y2="280" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="400" y="250" width="330" height="60" rx="8" class="ok"/>
+  <text x="565" y="275" class="okc" text-anchor="middle">LottoService</text>
+  <text x="565" y="296" class="code" text-anchor="middle">static lottoService</text>
+  <text x="30" y="340" class="gnote">생성자로 lottoCount를 넘기지 않고, 서비스 객체에 Lottos 필드를 두지 않습니다.</text>
+</svg>

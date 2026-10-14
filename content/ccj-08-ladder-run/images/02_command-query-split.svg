@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>리뷰 전 getConnectNumber는 player.getResult로 값을 읽은 뒤 player.move로 상태를 바꾸고 player를 반환해 이름과 하는 일이 어긋나고, 리뷰 후에는 isPointFullRight, isPointFullLeft, isRightConnect, isLeftConnect가 각각 boolean만 반환하고 상태를 바꾸지 않는다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .name { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .rail { stroke: #9ca3af; stroke-width: 3; stroke-linecap: round; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="364" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">리뷰 전 — 조회 이름, 명령 동작</text>
+  <rect x="30" y="62" width="324" height="44" rx="6" class="box"/>
+  <text x="192" y="81" class="opm" text-anchor="middle">getConnectNumber(</text>
+  <text x="192" y="98" class="ms" text-anchor="middle">player, checkConnectStrategy)</text>
+
+  <rect x="30" y="124" width="324" height="50" rx="8" class="box"/>
+  <text x="44" y="145" class="ms">player.getResult()</text>
+  <text x="44" y="164" class="val">현재 위치를 읽음 (조회)</text>
+  <rect x="30" y="186" width="324" height="70" rx="8" class="bad"/>
+  <text x="44" y="207" class="badc">player.move(...)</text>
+  <text x="44" y="226" class="note">if 세 갈래에서 각각 위치를 바꿈 (명령)</text>
+  <text x="44" y="245" class="note">끝 위치 확인과 연결 확인이 한 함수에</text>
+  <rect x="30" y="268" width="324" height="40" rx="8" class="box"/>
+  <text x="44" y="293" class="ms">return player</text>
+  <line x1="192" y1="106" x2="192" y2="122" stroke="#6b7280" stroke-width="1.3" marker-end="url(#ag)"/>
+  <line x1="192" y1="174" x2="192" y2="184" stroke="#6b7280" stroke-width="1.3" marker-end="url(#ag)"/>
+  <line x1="192" y1="256" x2="192" y2="266" stroke="#6b7280" stroke-width="1.3" marker-end="url(#ag)"/>
+  <text x="30" y="340" class="note">호출하는 쪽은 번호만 가져온다고 예상하지만</text>
+  <text x="30" y="360" class="note">내부에서 player의 상태가 바뀝니다.</text>
+
+  <rect x="386" y="10" width="364" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="406" y="42" class="h">리뷰 후 — 조회만 하는 메서드</text>
+  <rect x="406" y="62" width="324" height="58" rx="8" class="ok"/>
+  <text x="420" y="85" class="okc">isPointFullRight(result)</text>
+  <text x="420" y="107" class="gnote">오른쪽 끝인지 → boolean</text>
+  <rect x="406" y="130" width="324" height="58" rx="8" class="ok"/>
+  <text x="420" y="153" class="okc">isPointFullLeft(result)</text>
+  <text x="420" y="175" class="gnote">왼쪽 끝인지 → boolean</text>
+  <rect x="406" y="198" width="324" height="58" rx="8" class="ok"/>
+  <text x="420" y="221" class="okc">isRightConnect(point)</text>
+  <text x="420" y="243" class="gnote">오른쪽 칸에 가로 라인이 있는지 → boolean</text>
+  <rect x="406" y="266" width="324" height="58" rx="8" class="ok"/>
+  <text x="420" y="289" class="okc">isLeftConnect(point)</text>
+  <text x="420" y="311" class="gnote">왼쪽 칸에 가로 라인이 있는지 → boolean</text>
+  <text x="406" y="352" class="gnote">메서드마다 한 가지만 확인하고</text>
+  <text x="406" y="372" class="gnote">상태는 바꾸지 않습니다.</text>
+</svg>

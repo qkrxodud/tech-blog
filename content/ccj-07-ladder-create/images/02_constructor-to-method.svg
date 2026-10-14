@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 410" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>리뷰 전에는 new Line(countOfPerson)을 호출하면 생성자 안에서 가로 라인 계산까지 바로 실행되고, 리뷰 후에는 가벼운 생성자로 객체만 만든 뒤 calculatorLine(countOfPerson)을 필요할 때 호출해 points를 계산한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .name { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .rail { stroke: #9ca3af; stroke-width: 3; stroke-linecap: round; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="410" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="166" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">리뷰 전 — 생성자에서 가로 라인까지 계산</text>
+  <rect x="30" y="66" width="200" height="60" rx="8" class="box"/>
+  <text x="130" y="91" class="opm" text-anchor="middle">new Line(countOfPerson)</text>
+  <text x="130" y="112" class="val" text-anchor="middle">객체 생성 요청</text>
+  <line x1="232" y1="96" x2="266" y2="96" stroke="#6b7280" stroke-width="1.4" marker-end="url(#ag)"/>
+  <rect x="270" y="66" width="220" height="60" rx="8" class="hold"/>
+  <text x="380" y="91" class="t" text-anchor="middle">생성자 안에서 바로 실행</text>
+  <text x="380" y="112" class="ms" text-anchor="middle">IntStream → connectLine</text>
+  <line x1="492" y1="96" x2="526" y2="96" stroke="#dc2626" stroke-width="1.4" marker-end="url(#arr)"/>
+  <rect x="530" y="66" width="200" height="60" rx="8" class="bad"/>
+  <text x="630" y="91" class="badt" text-anchor="middle">생성과 계산이 한 번에</text>
+  <text x="630" y="112" class="note" text-anchor="middle">생성할 때마다 항상 실행</text>
+  <text x="30" y="156" class="foot">계산이 필요하지 않은 경우에도 생성자 안의 동작을 제어하기 어렵습니다.</text>
+
+  <rect x="10" y="192" width="740" height="208" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="224" class="h">리뷰 후 — 생성자는 가볍게, 계산은 메서드로</text>
+  <text x="730" y="224" class="code" text-anchor="end">calculatorLine()</text>
+  <text x="30" y="250" class="step">1. 객체 생성</text>
+  <rect x="30" y="258" width="240" height="56" rx="8" class="box"/>
+  <text x="150" y="282" class="t" text-anchor="middle">Line 객체 생성</text>
+  <text x="150" y="302" class="val" text-anchor="middle">가벼운 생성자</text>
+  <line x1="272" y1="286" x2="306" y2="286" stroke="#16a34a" stroke-width="1.4" marker-end="url(#agr)"/>
+  <rect x="310" y="258" width="220" height="56" rx="8" class="ok"/>
+  <text x="420" y="282" class="okt" text-anchor="middle">객체를 빠르게 만듦</text>
+  <text x="420" y="302" class="gnote" text-anchor="middle">설정하기 쉽고 투명하게 사용</text>
+
+  <text x="30" y="336" class="step">2. 필요할 때 호출</text>
+  <rect x="30" y="344" width="240" height="46" rx="8" class="box"/>
+  <text x="150" y="372" class="opm" text-anchor="middle">calculatorLine(countOfPerson)</text>
+  <line x1="272" y1="367" x2="306" y2="367" stroke="#16a34a" stroke-width="1.4" marker-end="url(#agr)"/>
+  <rect x="310" y="344" width="220" height="46" rx="8" class="ok"/>
+  <text x="420" y="372" class="okt" text-anchor="middle">points 계산</text>
+  <text x="550" y="364" class="foot">계산하는 시점을</text>
+  <text x="550" y="382" class="foot">호출하는 쪽에서 정할 수 있음</text>
+</svg>

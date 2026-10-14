@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 428" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>변경 전에는 putStudent·removeStudent 같은 자료구조 이름과 NsUser 목록을 썼고, 변경 후에는 enroll·cancel 이름과 SessionUserMapping 목록을 쓰는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="428" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="196" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">변경 전 — 자료구조를 다루는 이름과 NsUser 목록</text>
+  <rect x="34" y="62" width="330" height="50" rx="8" class="box"/>
+  <text x="199" y="84" class="op" text-anchor="middle">putStudent / removeStudent</text>
+  <text x="199" y="103" class="val" text-anchor="middle">자료구조에 추가·제거하는 느낌</text>
+  <rect x="34" y="122" width="330" height="50" rx="8" class="box"/>
+  <text x="199" y="144" class="op" text-anchor="middle">changeStudents(students)</text>
+  <text x="199" y="163" class="val" text-anchor="middle">수강생 목록을 통째로 교체</text>
+  <rect x="380" y="62" width="354" height="110" rx="8" class="box"/>
+  <text x="557" y="112" class="op" text-anchor="middle">List&lt;NsUser&gt; users</text>
+  <text x="557" y="134" class="val" text-anchor="middle">수강신청한 학생을 NsUser로 보관</text>
+  <text x="34" y="194" class="sub">메서드 이름만 봐서는 수강신청·수강취소라는 의도가 드러나지 않습니다.</text>
+
+  <rect x="10" y="222" width="740" height="196" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="254" class="h">변경 후 — 동작이 드러나는 이름과 SessionUserMapping 목록</text>
+  <rect x="34" y="274" width="330" height="50" rx="8" class="ok"/>
+  <text x="199" y="296" class="okc" text-anchor="middle">enroll(nsUser)</text>
+  <text x="199" y="315" class="val" text-anchor="middle">수강신청 — 검증 후 students.enroll()</text>
+  <rect x="34" y="334" width="330" height="50" rx="8" class="ok"/>
+  <text x="199" y="356" class="okc" text-anchor="middle">cancel(nsUser)</text>
+  <text x="199" y="375" class="val" text-anchor="middle">수강취소</text>
+  <rect x="380" y="274" width="354" height="110" rx="8" class="ok"/>
+  <text x="557" y="324" class="okc" text-anchor="middle">List&lt;SessionUserMapping&gt; users</text>
+  <text x="557" y="346" class="val" text-anchor="middle">수강 데이터를 가진 객체로 보관</text>
+  <text x="34" y="406" class="sub">메서드는 도메인 동작으로, 목록은 수강 데이터를 가진 SessionUserMapping으로 바뀌었습니다.</text>
+
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 356" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>리뷰 전에는 수동 번호를 List of List of Integer로 서비스에 넘겼고, 리뷰 후에는 view 쪽 일급 컬렉션 ManualLottoParam으로 감싸 fromManualLottos에 넘기는 구조 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .code12 { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="356" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">리뷰 전 — 2차원 리스트로 수동 번호를 전달</text>
+  <rect x="30" y="60" width="190" height="60" rx="8" class="box"/>
+  <text x="125" y="86" class="op" text-anchor="middle">InputView</text>
+  <text x="125" y="106" class="code12" text-anchor="middle">askManualLottoNumbers</text>
+  <rect x="250" y="60" width="260" height="60" rx="8" class="bad"/>
+  <text x="380" y="86" class="badt" text-anchor="middle">전달하는 값</text>
+  <text x="380" y="106" class="code12" text-anchor="middle">List&lt;List&lt;Integer&gt;&gt;</text>
+  <rect x="540" y="60" width="190" height="60" rx="8" class="box"/>
+  <text x="635" y="86" class="op" text-anchor="middle">LottoService</text>
+  <text x="635" y="106" class="code12" text-anchor="middle">createManualLotto</text>
+  <line x1="220" y1="90" x2="248" y2="90" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="510" y1="90" x2="538" y2="90" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="30" y="150" class="note">입력받은 2차원 리스트를 컨트롤러가 그대로 서비스에 넘깁니다.</text>
+  <rect x="10" y="186" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="218" class="h">리뷰 후 — view 쪽 일급 컬렉션으로 전달</text>
+  <rect x="30" y="236" width="190" height="60" rx="8" class="box"/>
+  <text x="125" y="262" class="op" text-anchor="middle">InputView</text>
+  <text x="125" y="282" class="code12" text-anchor="middle">askManualLotto</text>
+  <rect x="250" y="236" width="260" height="60" rx="8" class="ok"/>
+  <text x="380" y="262" class="okc" text-anchor="middle">ManualLottoParam</text>
+  <text x="380" y="282" class="code12" text-anchor="middle">List&lt;ManualLottoNumbersParam&gt;</text>
+  <rect x="540" y="236" width="190" height="60" rx="8" class="box"/>
+  <text x="635" y="262" class="opk" text-anchor="middle">도메인</text>
+  <text x="635" y="282" class="code12" text-anchor="middle">fromManualLottos</text>
+  <line x1="220" y1="266" x2="248" y2="266" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="510" y1="266" x2="538" y2="266" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="326" class="gnote">도메인 객체 대신 view에서 사용할 일급 컬렉션 객체를 만들어 전달합니다.</text>
+</svg>

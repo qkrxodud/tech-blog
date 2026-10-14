@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>질문 삭제 요구사항: 질문을 조회한 뒤 로그인 사용자가 질문자인지, 답변 작성자가 모두 로그인 사용자인지 확인하고, 하나라도 아니면 CannotDeleteException, 모두 통과하면 질문과 답변을 삭제 상태로 바꾸고 DeleteHistory를 저장하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .bt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #4b5563; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="430" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="410" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">질문 삭제 요구사항 — 삭제 조건과 처리 순서</text>
+  <text x="730" y="42" class="code" text-anchor="end">deleteQuestion()</text>
+
+  <rect x="50" y="62" width="300" height="48" rx="8" class="hold"/>
+  <text x="200" y="82" class="bt" text-anchor="middle">질문 조회</text>
+  <text x="200" y="100" class="cv" text-anchor="middle">findById(questionId)</text>
+  <line x1="200" y1="110" x2="200" y2="128" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+
+  <rect x="50" y="130" width="300" height="48" rx="8" class="box"/>
+  <text x="200" y="150" class="bt" text-anchor="middle">로그인 사용자가 질문자인가</text>
+  <text x="200" y="168" class="cv" text-anchor="middle">question.isOwner(loginUser)</text>
+  <line x1="350" y1="154" x2="408" y2="154" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="379" y="146" class="note" text-anchor="middle">아니오</text>
+  <rect x="410" y="128" width="325" height="52" rx="8" class="bad"/>
+  <text x="572" y="149" class="badc" text-anchor="middle">CannotDeleteException</text>
+  <text x="572" y="168" class="note" text-anchor="middle">질문을 삭제할 권한이 없습니다.</text>
+  <line x1="200" y1="178" x2="200" y2="200" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="212" y="194" class="gnote">예</text>
+
+  <rect x="50" y="202" width="300" height="48" rx="8" class="box"/>
+  <text x="200" y="222" class="bt" text-anchor="middle">답변 작성자가 모두 로그인 사용자인가</text>
+  <text x="200" y="240" class="cv" text-anchor="middle">answer.isOwner(loginUser)</text>
+  <line x1="350" y1="226" x2="408" y2="226" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="379" y="218" class="note" text-anchor="middle">아니오</text>
+  <rect x="410" y="200" width="325" height="52" rx="8" class="bad"/>
+  <text x="572" y="221" class="badc" text-anchor="middle">CannotDeleteException</text>
+  <text x="572" y="240" class="note" text-anchor="middle">다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.</text>
+  <line x1="200" y1="250" x2="200" y2="272" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="212" y="266" class="gnote">예 (답변이 없어도 통과)</text>
+
+  <rect x="50" y="274" width="300" height="48" rx="8" class="ok"/>
+  <text x="200" y="294" class="okt" text-anchor="middle">질문과 답변을 삭제 상태로 변경</text>
+  <text x="200" y="312" class="cv" text-anchor="middle">setDeleted(true)</text>
+  <line x1="200" y1="322" x2="200" y2="340" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+
+  <rect x="50" y="342" width="300" height="48" rx="8" class="ok"/>
+  <text x="200" y="362" class="okt" text-anchor="middle">삭제 이력 저장</text>
+  <text x="200" y="380" class="cv" text-anchor="middle">DeleteHistory(QUESTION, ANSWER)</text>
+  <text x="410" y="362" class="sub">질문 1건과 답변 수만큼의 이력을</text>
+  <text x="410" y="380" class="sub">deleteHistoryService.saveAll()로 저장합니다.</text>
+  <text x="410" y="300" class="sub">데이터를 지우지 않고 deleted 값만 바꿉니다.</text>
+</svg>

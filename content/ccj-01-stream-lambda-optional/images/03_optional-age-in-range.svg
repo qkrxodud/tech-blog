@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 490" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>ageIsInRange2에서 Optional.ofNullable(user)로 시작해 user가 null이거나, 나이가 null이거나, 나이가 30살 이상 45살 이하가 아니면 빈 Optional이 되어 orElse(false)가 false를 반환하고, 모두 통과하면 map이 true로 바꿔 true를 반환하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .bt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #4b5563; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="490" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="470" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">ageIsInRange2 — Optional로 null 분기 없이 조건 확인</text>
+  <rect x="40" y="62" width="340" height="50" rx="8" class="hold"/>
+  <text x="210" y="83" class="opm" text-anchor="middle">Optional.ofNullable(user)</text>
+  <text x="210" y="102" class="val" text-anchor="middle">user를 Optional로 감쌈</text>
+  <line x1="210" y1="112" x2="210" y2="134" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="380" y1="87" x2="458" y2="87" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="460" y="65" width="200" height="44" rx="8" class="bad"/>
+  <text x="560" y="84" class="badt" text-anchor="middle">user가 null</text>
+  <text x="560" y="101" class="note" text-anchor="middle">빈 Optional</text>
+  <rect x="40" y="136" width="340" height="50" rx="8" class="box"/>
+  <text x="210" y="157" class="opm" text-anchor="middle">getAge() != null</text>
+  <text x="210" y="176" class="val" text-anchor="middle">첫 번째 filter — 나이가 있는지</text>
+  <line x1="210" y1="186" x2="210" y2="208" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="380" y1="161" x2="458" y2="161" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="460" y="139" width="200" height="44" rx="8" class="bad"/>
+  <text x="560" y="158" class="badt" text-anchor="middle">나이가 null</text>
+  <text x="560" y="175" class="note" text-anchor="middle">빈 Optional</text>
+  <rect x="40" y="210" width="340" height="50" rx="8" class="box"/>
+  <text x="210" y="231" class="opm" text-anchor="middle">getAge() &gt;= 30 &amp;&amp; getAge() &lt;= 45</text>
+  <text x="210" y="250" class="val" text-anchor="middle">두 번째 filter — 30살 이상 45살 이하</text>
+  <line x1="210" y1="260" x2="210" y2="282" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="380" y1="235" x2="458" y2="235" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="460" y="213" width="200" height="44" rx="8" class="bad"/>
+  <text x="560" y="232" class="badt" text-anchor="middle">나이가 범위 밖</text>
+  <text x="560" y="249" class="note" text-anchor="middle">빈 Optional</text>
+  <rect x="40" y="284" width="340" height="50" rx="8" class="box"/>
+  <text x="210" y="305" class="opm" text-anchor="middle">map(userData -&gt; true)</text>
+  <text x="210" y="324" class="val" text-anchor="middle">남은 값을 true로 바꿈</text>
+  <text x="222" y="128" class="gnote">값 있음</text>
+  <text x="222" y="202" class="gnote">통과</text>
+  <text x="222" y="276" class="gnote">통과</text>
+  <line x1="660" y1="40" x2="660" y2="40" stroke="none"/>
+  <path d="M660,90 H700 V372" fill="none" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <path d="M660,164 H700" fill="none" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <path d="M660,238 H700" fill="none" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <line x1="700" y1="372" x2="700" y2="374" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="210" y1="334" x2="210" y2="374" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="40" y="376" width="695" height="40" rx="8" class="box"/>
+  <text x="387" y="401" class="opm" text-anchor="middle">orElse(false)</text>
+  <line x1="210" y1="416" x2="210" y2="428" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="560" y1="416" x2="560" y2="428" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="100" y="430" width="220" height="36" rx="18" class="ok"/>
+  <text x="210" y="453" class="okt" text-anchor="middle">값이 있으면 true</text>
+  <rect x="440" y="430" width="240" height="36" rx="18" class="bad"/>
+  <text x="560" y="453" class="badt" text-anchor="middle">빈 Optional이면 false</text>
+</svg>

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>assertThat 세 줄을 반복한 @Test 하나와, @ValueSource(ints = {1,2,3})로 contains(input)을 input 1, 2, 3으로 세 번 실행하는 방식, @CsvSource로 1:true부터 5:false까지 다섯 쌍을 넘겨 searchPartialValue()를 다섯 번 실행하는 방식을 비교한 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .bt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #4b5563; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="430" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="410" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">중복 제거 — @Test 하나와 ParameterizedTest 비교</text>
+  <text x="30" y="96" class="lane">@Test</text>
+  <text x="30" y="114" class="sub">변경 전 contains()</text>
+  <rect x="170" y="66" width="565" height="76" rx="6" class="track"/>
+  <rect x="180" y="72" width="330" height="64" rx="8" class="bad"/>
+  <text x="194" y="92" class="cv">assertThat(numbers.contains(1)).isTrue();</text>
+  <text x="194" y="109" class="cv">assertThat(numbers.contains(2)).isTrue();</text>
+  <text x="194" y="126" class="cv">assertThat(numbers.contains(3)).isTrue();</text>
+  <text x="525" y="98" class="note">값만 다른 같은 줄이</text>
+  <text x="525" y="116" class="note">계속 늘어남</text>
+
+  <text x="30" y="186" class="lane">@ValueSource</text>
+  <text x="30" y="204" class="sub">ints = {1,2,3}</text>
+  <text x="30" y="220" class="sub">contains(int input)</text>
+  <rect x="170" y="158" width="565" height="76" rx="6" class="track"/>
+  <rect x="180" y="170" width="108" height="52" rx="8" class="ok"/>
+  <text x="234" y="192" class="step" text-anchor="middle">1번째 실행</text>
+  <text x="234" y="211" class="okc" text-anchor="middle" font-size="13">input = 1</text>
+  <rect x="298" y="170" width="108" height="52" rx="8" class="ok"/>
+  <text x="352" y="192" class="step" text-anchor="middle">2번째 실행</text>
+  <text x="352" y="211" class="okc" text-anchor="middle" font-size="13">input = 2</text>
+  <rect x="416" y="170" width="108" height="52" rx="8" class="ok"/>
+  <text x="470" y="192" class="step" text-anchor="middle">3번째 실행</text>
+  <text x="470" y="211" class="okc" text-anchor="middle" font-size="13">input = 3</text>
+  <text x="545" y="192" class="sub">같은 메서드를 값마다</text>
+  <text x="545" y="210" class="sub">한 번씩 실행, 모두 true</text>
+  <text x="30" y="282" class="lane">@CsvSource</text>
+  <text x="30" y="300" class="sub">delimiter = ':'</text>
+  <text x="30" y="316" class="sub">searchPartialValue()</text>
+  <rect x="164" y="250" width="571" height="96" rx="6" class="track"/>
+  <rect x="172" y="262" width="108" height="72" rx="8" class="ok"/>
+  <text x="226" y="282" class="cv" text-anchor="middle">"1:true"</text>
+  <text x="226" y="302" class="val" text-anchor="middle">input 1</text>
+  <text x="226" y="321" class="val" text-anchor="middle">expected true</text>
+  <rect x="284" y="262" width="108" height="72" rx="8" class="ok"/>
+  <text x="338" y="282" class="cv" text-anchor="middle">"2:true"</text>
+  <text x="338" y="302" class="val" text-anchor="middle">input 2</text>
+  <text x="338" y="321" class="val" text-anchor="middle">expected true</text>
+  <rect x="396" y="262" width="108" height="72" rx="8" class="ok"/>
+  <text x="450" y="282" class="cv" text-anchor="middle">"3:true"</text>
+  <text x="450" y="302" class="val" text-anchor="middle">input 3</text>
+  <text x="450" y="321" class="val" text-anchor="middle">expected true</text>
+  <rect x="508" y="262" width="108" height="72" rx="8" class="box"/>
+  <text x="562" y="282" class="cv" text-anchor="middle">"4:false"</text>
+  <text x="562" y="302" class="val" text-anchor="middle">input 4</text>
+  <text x="562" y="321" class="val" text-anchor="middle">expected false</text>
+  <rect x="620" y="262" width="108" height="72" rx="8" class="box"/>
+  <text x="674" y="282" class="cv" text-anchor="middle">"5:false"</text>
+  <text x="674" y="302" class="val" text-anchor="middle">input 5</text>
+  <text x="674" y="321" class="val" text-anchor="middle">expected false</text>
+  <text x="30" y="378" class="sub">@ValueSource는 값 하나씩, @CsvSource는 입력값과 기대값을 짝지어 넘깁니다. 4, 5처럼 Set에 없는 값이</text>
+  <text x="30" y="398" class="sub">false인지도 같은 메서드에서 확인할 수 있습니다.</text>
+</svg>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 546" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>리뷰 전에는 changeRegex, changeStringInput, setMatch가 멤버 변수 regex, StringInput, matcher를 바꾸고, 리뷰 후에는 상수와 splitString의 지역 변수로 처리하며 changeDelimiter, changeInput이 값을 반환하는 구조 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="546" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="248" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">리뷰 전 — 메서드가 멤버 변수를 바꿈</text>
+  <text x="730" y="42" class="code" text-anchor="end">StringAddCalculator</text>
+  <text x="30" y="72" class="sub">멤버 변수</text>
+  <text x="730" y="72" class="sub" text-anchor="end">메서드</text>
+  <rect x="30" y="84" width="210" height="40" rx="8" class="hold"/>
+  <text x="135" y="110" class="op" text-anchor="middle">regex</text>
+  <rect x="480" y="84" width="250" height="40" rx="8" class="box"/>
+  <text x="605" y="110" class="op" text-anchor="middle">changeRegex()</text>
+  <line x1="478" y1="104" x2="244" y2="104" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="360" y="98" class="note" text-anchor="middle">group(1) 대입</text>
+  <rect x="30" y="134" width="210" height="40" rx="8" class="hold"/>
+  <text x="135" y="160" class="op" text-anchor="middle">StringInput</text>
+  <rect x="480" y="134" width="250" height="40" rx="8" class="box"/>
+  <text x="605" y="160" class="op" text-anchor="middle">changeStringInput()</text>
+  <line x1="478" y1="154" x2="244" y2="154" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="360" y="148" class="note" text-anchor="middle">group(2) 대입</text>
+  <rect x="30" y="184" width="210" height="40" rx="8" class="hold"/>
+  <text x="135" y="210" class="op" text-anchor="middle">matcher</text>
+  <rect x="480" y="184" width="250" height="40" rx="8" class="box"/>
+  <text x="605" y="210" class="op" text-anchor="middle">setMatch()</text>
+  <line x1="478" y1="204" x2="244" y2="204" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="360" y="198" class="note" text-anchor="middle">Pattern.compile()을 매번 실행</text>
+  <text x="30" y="244" class="sub">splitAndSum()을 호출하면 여러 메서드가 같은 멤버 변수를 차례로 바꿉니다.</text>
+  <rect x="10" y="274" width="740" height="262" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="306" class="h">리뷰 후 — 상수와 지역 변수, 값을 반환하는 메서드</text>
+  <text x="30" y="336" class="sub">static final 상수</text>
+  <text x="385" y="336" class="sub" text-anchor="middle">지역 변수</text>
+  <text x="730" y="336" class="sub" text-anchor="end">메서드</text>
+  <rect x="30" y="348" width="236" height="40" rx="8" class="hold"/>
+  <text x="148" y="374" class="op" text-anchor="middle">DELIMITER</text>
+  <rect x="30" y="398" width="236" height="40" rx="8" class="hold"/>
+  <text x="148" y="424" class="op" text-anchor="middle">CUSTOM_DELIMITER_PATTERN</text>
+  <rect x="30" y="448" width="236" height="40" rx="8" class="hold"/>
+  <text x="148" y="474" class="op" text-anchor="middle">FIRST, SECOND</text>
+  <rect x="300" y="348" width="170" height="140" rx="8" class="ok"/>
+  <text x="385" y="374" class="okc" text-anchor="middle">splitString()</text>
+  <text x="385" y="406" class="code" text-anchor="middle">delimiter</text>
+  <text x="385" y="432" class="code" text-anchor="middle">matcher</text>
+  <text x="385" y="458" class="code" text-anchor="middle">input</text>
+  <line x1="268" y1="368" x2="298" y2="368" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="268" y1="418" x2="298" y2="418" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="510" y="362" width="220" height="48" rx="8" class="box"/>
+  <text x="620" y="382" class="op" text-anchor="middle">changeDelimiter()</text>
+  <text x="620" y="401" class="val" text-anchor="middle">group(FIRST) 반환</text>
+  <line x1="508" y1="386" x2="474" y2="386" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="510" y="432" width="220" height="48" rx="8" class="box"/>
+  <text x="620" y="452" class="op" text-anchor="middle">changeInput()</text>
+  <text x="620" y="471" class="val" text-anchor="middle">group(SECOND) 반환</text>
+  <line x1="508" y1="456" x2="474" y2="456" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="516" class="sub">바뀌지 않는 값은 상수로, 바뀌는 값은 splitString() 안의 지역 변수로 두고 메서드는 값을 반환만 합니다.</text>
+</svg>

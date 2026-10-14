@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>SetTest의 setUp()에서 add(1), add(1), add(2), add(3)을 호출하면 두 번째 add(1)은 담기지 않아 numbers에 1, 2, 3만 남고, size()는 3, contains(1), contains(2), contains(3)은 true인 것을 보여 주는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .bt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #4b5563; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">SetTest의 setUp() — 중복된 값은 한 번만 담김</text>
+  <text x="730" y="42" class="code" text-anchor="end">new HashSet&lt;&gt;()</text>
+  <text x="125" y="72" class="gl" text-anchor="middle">setUp()의 add 호출</text>
+  <text x="400" y="72" class="gl" text-anchor="middle">numbers</text>
+  <text x="625" y="72" class="gl" text-anchor="middle">학습 테스트로 확인</text>
+  <rect x="30" y="84" width="190" height="46" rx="8" class="box"/>
+  <text x="125" y="104" class="opm" text-anchor="middle">add(1)</text>
+  <text x="125" y="121" class="val" text-anchor="middle">담김</text>
+  <line x1="222" y1="107" x2="300" y2="150" stroke="#16a34a" stroke-width="1.4" marker-end="url(#agr)"/>
+  <rect x="30" y="140" width="190" height="46" rx="8" class="bad"/>
+  <text x="125" y="160" class="badc" text-anchor="middle">add(1)</text>
+  <text x="125" y="177" class="note" text-anchor="middle">이미 있어 담기지 않음</text>
+  <rect x="30" y="196" width="190" height="46" rx="8" class="box"/>
+  <text x="125" y="216" class="opm" text-anchor="middle">add(2)</text>
+  <text x="125" y="233" class="val" text-anchor="middle">담김</text>
+  <line x1="222" y1="219" x2="300" y2="219" stroke="#16a34a" stroke-width="1.4" marker-end="url(#agr)"/>
+  <rect x="30" y="252" width="190" height="46" rx="8" class="box"/>
+  <text x="125" y="272" class="opm" text-anchor="middle">add(3)</text>
+  <text x="125" y="289" class="val" text-anchor="middle">담김</text>
+  <line x1="222" y1="275" x2="300" y2="230" stroke="#16a34a" stroke-width="1.4" marker-end="url(#agr)"/>
+  <rect x="302" y="120" width="196" height="140" rx="10" class="hold"/>
+  <text x="400" y="146" class="lane" text-anchor="middle">Set</text>
+  <rect x="322" y="170" width="46" height="40" rx="6" class="dbbox"/>
+  <text x="345" y="196" class="db" text-anchor="middle">1</text>
+  <rect x="376" y="170" width="46" height="40" rx="6" class="dbbox"/>
+  <text x="399" y="196" class="db" text-anchor="middle">2</text>
+  <rect x="430" y="170" width="46" height="40" rx="6" class="dbbox"/>
+  <text x="453" y="196" class="db" text-anchor="middle">3</text>
+  <text x="400" y="242" class="val" text-anchor="middle">값 세 개</text>
+  <line x1="500" y1="190" x2="528" y2="107" stroke="#9ca3af" stroke-width="1.2" marker-end="url(#ag)"/>
+  <rect x="530" y="84" width="125" height="46" rx="8" class="box"/>
+  <text x="592" y="112" class="opm" text-anchor="middle">size()</text>
+  <rect x="665" y="91" width="70" height="32" rx="6" class="ok"/>
+  <text x="700" y="112" class="okc" text-anchor="middle">3</text>
+  <line x1="500" y1="190" x2="528" y2="163" stroke="#9ca3af" stroke-width="1.2" marker-end="url(#ag)"/>
+  <rect x="530" y="140" width="125" height="46" rx="8" class="box"/>
+  <text x="592" y="168" class="opm" text-anchor="middle">contains(1)</text>
+  <rect x="665" y="147" width="70" height="32" rx="6" class="ok"/>
+  <text x="700" y="168" class="okc" text-anchor="middle">true</text>
+  <line x1="500" y1="190" x2="528" y2="219" stroke="#9ca3af" stroke-width="1.2" marker-end="url(#ag)"/>
+  <rect x="530" y="196" width="125" height="46" rx="8" class="box"/>
+  <text x="592" y="224" class="opm" text-anchor="middle">contains(2)</text>
+  <rect x="665" y="203" width="70" height="32" rx="6" class="ok"/>
+  <text x="700" y="224" class="okc" text-anchor="middle">true</text>
+  <line x1="500" y1="190" x2="528" y2="275" stroke="#9ca3af" stroke-width="1.2" marker-end="url(#ag)"/>
+  <rect x="530" y="252" width="125" height="46" rx="8" class="box"/>
+  <text x="592" y="280" class="opm" text-anchor="middle">contains(3)</text>
+  <rect x="665" y="259" width="70" height="32" rx="6" class="ok"/>
+  <text x="700" y="280" class="okc" text-anchor="middle">true</text>
+  <text x="30" y="322" class="sub">add()를 네 번 호출했지만 Set은 중복을 허용하지 않으므로 size()는 3입니다.</text>
+</svg>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>과정(Course)은 여러 강의(Session)를 가지고, 강의는 시작일·종료일, 커버 이미지, 무료·유료, 상태, 수강생을 가지며 모집중일 때만 최대 수강 인원 안에서 수강신청할 수 있는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">수강신청 도메인 — 과정은 여러 강의를 가진다</text>
+  <rect x="34" y="160" width="160" height="70" rx="8" class="box"/>
+  <text x="114" y="190" class="op" text-anchor="middle">Course</text>
+  <text x="114" y="212" class="val" text-anchor="middle">과정</text>
+  <line x1="196" y1="195" x2="256" y2="195" class="axis" marker-end="url(#ar)"/>
+  <text x="226" y="184" class="sub" text-anchor="middle">1 : N</text>
+  <text x="226" y="216" class="sub" text-anchor="middle">기수 단위</text>
+  <rect x="260" y="64" width="474" height="264" rx="10" class="hold"/>
+  <text x="280" y="92" class="op">Session</text>
+  <text x="354" y="92" class="sub">강의</text>
+  <rect x="280" y="108" width="434" height="34" rx="6" class="box"/>
+  <text x="296" y="130" class="val">시작일 · 종료일</text>
+  <rect x="280" y="150" width="434" height="34" rx="6" class="box"/>
+  <text x="296" y="172" class="val">강의 커버 이미지</text>
+  <rect x="280" y="192" width="434" height="34" rx="6" class="box"/>
+  <text x="296" y="214" class="val">무료 강의 / 유료 강의</text>
+  <rect x="280" y="234" width="434" height="34" rx="6" class="box"/>
+  <text x="296" y="256" class="val">상태 <tspan font-family="Menlo, Consolas, monospace">SessionType</tspan> — 준비중 · 모집중 · 종료</text>
+  <rect x="280" y="276" width="434" height="34" rx="6" class="box"/>
+  <text x="296" y="298" class="val">수강생 <tspan font-family="Menlo, Consolas, monospace">students</tspan> — 최대 수강 인원을 넘을 수 없음</text>
+  <rect x="34" y="348" width="330" height="36" rx="18" class="ok"/>
+  <text x="199" y="371" class="okt" text-anchor="middle">수강신청은 모집중일 때만 가능</text>
+  <rect x="380" y="348" width="354" height="36" rx="18" class="ok"/>
+  <text x="557" y="371" class="okt" text-anchor="middle">최대 수강 인원을 초과할 수 없음</text>
+</svg>

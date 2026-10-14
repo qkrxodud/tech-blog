@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>리뷰 전에는 LadderGameController와 Ladder가 같은 lines 객체를 참조해 Ladder의 playGame이 바꾼 상태를 Controller가 그대로 사용하고, 리뷰 후에는 Ladder 생성자가 new Players(players.getPlayers())와 new Lines(lines.getLines())로 새 객체를 만들어 보관하고 playGame은 players.move(lines)를 호출한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .name { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .rail { stroke: #9ca3af; stroke-width: 3; stroke-linecap: round; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="196" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">리뷰 전 — 같은 lines를 함께 참조</text>
+  <rect x="30" y="70" width="210" height="62" rx="8" class="box"/>
+  <text x="135" y="95" class="opm" text-anchor="middle">LadderGameController</text>
+  <text x="135" y="117" class="val" text-anchor="middle">상태가 바뀔 것을 예상</text>
+  <rect x="290" y="70" width="180" height="62" rx="8" class="bad"/>
+  <text x="380" y="95" class="badc" text-anchor="middle">lines</text>
+  <text x="380" y="117" class="note" text-anchor="middle">하나의 객체</text>
+  <rect x="520" y="70" width="210" height="62" rx="8" class="box"/>
+  <text x="625" y="95" class="opm" text-anchor="middle">Ladder</text>
+  <text x="625" y="117" class="ms" text-anchor="middle">playGame()</text>
+  <line x1="242" y1="101" x2="286" y2="101" stroke="#6b7280" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#ag)"/>
+  <line x1="518" y1="101" x2="474" y2="101" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="264" y="92" class="sub" text-anchor="middle">참조</text>
+  <text x="496" y="92" class="note" text-anchor="middle">변경</text>
+  <text x="30" y="166" class="note">Ladder가 외부에서 받은 객체의 상태를 바꾸고, Controller도 그 변경을 전제로 lines를 사용합니다.</text>
+  <text x="30" y="186" class="note">객체가 어디서 어떻게 바뀌는지 파악하기 어렵고 Ladder의 캡슐화가 깨집니다.</text>
+
+  <rect x="10" y="222" width="740" height="238" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="254" class="h">리뷰 후 — 생성자에서 새 객체로 보관</text>
+  <text x="730" y="254" class="code" text-anchor="end">new Ladder(players, lines)</text>
+  <rect x="30" y="280" width="210" height="62" rx="8" class="box"/>
+  <text x="135" y="305" class="opm" text-anchor="middle">LadderGameController</text>
+  <text x="135" y="327" class="val" text-anchor="middle">players, lines 전달</text>
+  <line x1="242" y1="311" x2="286" y2="311" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="290" y="276" width="440" height="102" rx="8" class="ok"/>
+  <text x="306" y="300" class="okt">Ladder 생성자</text>
+  <text x="306" y="326" class="ms">this.players = new Players(players.getPlayers());</text>
+  <text x="306" y="348" class="ms">this.lines = new Lines(lines.getLines());</text>
+  <text x="306" y="369" class="gnote">전달받은 값으로 새 객체를 만들어 보관</text>
+  <rect x="290" y="392" width="440" height="44" rx="8" class="box"/>
+  <text x="306" y="419" class="ms">playGame() → players.move(lines)</text>
+  <line x1="510" y1="378" x2="510" y2="390" stroke="#6b7280" stroke-width="1.3" marker-end="url(#ag)"/>
+  <text x="30" y="380" class="gnote">외부에서 넘긴 객체를</text>
+  <text x="30" y="400" class="gnote">그대로 들고 있지 않음</text>
+</svg>

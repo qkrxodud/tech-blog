@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>자동차 경주 4단계 객체 구조: Main이 InputView, Track, ResultView를 사용하고, Track은 일급 컬렉션 Cars를, Cars는 Car를, Car는 Name과 Position을 가진다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #4b5563; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="520" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="500" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">자동차 경주 4단계 — 객체 구조와 책임</text>
+  <rect x="305" y="58" width="150" height="50" rx="8" class="box"/>
+  <text x="380" y="78" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Main</tspan></text>
+  <text x="380" y="98" class="val" text-anchor="middle">경주 진행</text>
+  <rect x="40" y="138" width="200" height="58" rx="8" class="box"/>
+  <text x="140" y="162" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">InputView</tspan></text>
+  <text x="140" y="182" class="val" text-anchor="middle">이름 · 시도 횟수 입력</text>
+  <rect x="280" y="138" width="200" height="58" rx="8" class="box"/>
+  <text x="380" y="162" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Track</tspan></text>
+  <text x="380" y="182" class="val" text-anchor="middle">라운드 진행 · 종료 판단</text>
+  <rect x="520" y="138" width="200" height="58" rx="8" class="box"/>
+  <text x="620" y="162" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">ResultView</tspan></text>
+  <text x="620" y="182" class="val" text-anchor="middle">위치 출력 · 우승자 출력</text>
+  <line x1="340" y1="110" x2="160" y2="135" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="380" y1="110" x2="380" y2="135" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="420" y1="110" x2="600" y2="135" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="280" y="228" width="200" height="58" rx="8" class="ok"/>
+  <text x="380" y="252" class="okt" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Cars</tspan></text>
+  <text x="380" y="272" class="val" text-anchor="middle">일급 컬렉션 · 우승자 판정</text>
+  <line x1="380" y1="198" x2="380" y2="225" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="496" y="262" class="sub"><tspan font-family="Menlo, Consolas, monospace">List&lt;Car&gt;</tspan>를 감쌈</text>
+  <rect x="280" y="318" width="200" height="58" rx="8" class="box"/>
+  <text x="380" y="342" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Car</tspan></text>
+  <text x="380" y="362" class="val" text-anchor="middle">무작위 값 4 이상이면 전진</text>
+  <line x1="380" y1="288" x2="380" y2="315" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="150" y="418" width="200" height="58" rx="8" class="ok"/>
+  <text x="250" y="442" class="okt" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Name</tspan></text>
+  <text x="250" y="462" class="val" text-anchor="middle">5자 초과면 예외</text>
+  <rect x="410" y="418" width="200" height="58" rx="8" class="ok"/>
+  <text x="510" y="442" class="okt" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Position</tspan></text>
+  <text x="510" y="462" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">increase()</tspan>로 위치 증가</text>
+  <line x1="350" y1="378" x2="260" y2="415" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="410" y1="378" x2="500" y2="415" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="640" y="430" width="16" height="16" rx="3" class="ok"/>
+  <text x="664" y="443" class="sub">포장한 객체</text>
+</svg>

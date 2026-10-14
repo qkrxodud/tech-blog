@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>리뷰 전에는 ProfitCalculatorService에 있던 당첨 상수를 enum이 import static으로 가져다 썼고, 리뷰 후에는 WinningAmountByRank enum 안으로 상수를 옮긴 구조 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="206" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">리뷰 전 — 당첨 상수가 서비스에 선언됨</text>
+  <rect x="30" y="60" width="320" height="140" rx="8" class="box"/>
+  <text x="46" y="84" class="op">ProfitCalculatorService</text>
+  <text x="46" y="110" class="code">FIRST_PLACE = 6</text>
+  <text x="46" y="128" class="code">SECOND_PLACE = 5</text>
+  <text x="46" y="146" class="code">THIRD_PLACE = 4</text>
+  <text x="46" y="164" class="code">FOURTH_PLACE = 3</text>
+  <text x="46" y="182" class="code">EMPTY_PLACE = 0</text>
+  <rect x="410" y="60" width="320" height="140" rx="8" class="bad"/>
+  <text x="426" y="84" class="badc">WinningAmountByRank</text>
+  <text x="426" y="110" class="code">FIRST(FIRST_PLACE, 2000000000, ...)</text>
+  <text x="426" y="128" class="code">SECOND(SECOND_PLACE, 1500000, ...)</text>
+  <text x="426" y="146" class="code">...</text>
+  <text x="426" y="178" class="note">서비스의 상수를 <tspan font-family="Menlo, Consolas, monospace">import static</tspan>으로 가져옴</text>
+  <line x1="408" y1="130" x2="354" y2="130" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+
+  <rect x="10" y="232" width="740" height="226" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="264" class="h">리뷰 후 — enum이 상수까지 함께 관리</text>
+  <rect x="30" y="282" width="452" height="156" rx="8" class="ok"/>
+  <text x="46" y="306" class="okc">WinningAmountByRank</text>
+  <text x="46" y="332" class="code">FIRST(WinningAmountByRank.FIRST_PLACE, ...)</text>
+  <text x="46" y="350" class="code">SECOND(WinningAmountByRank.SECOND_PLACE, ...)</text>
+  <text x="46" y="368" class="code">...</text>
+  <text x="46" y="392" class="code">FIRST_PLACE = 6, SECOND_PLACE = 5, ...</text>
+  <text x="46" y="422" class="gnote">당첨 등수의 상수, 금액, 키를 한 enum에서 관리</text>
+  <rect x="502" y="282" width="228" height="156" rx="8" class="box"/>
+  <text x="616" y="306" class="op" text-anchor="middle">ProfitCalculator</text>
+  <text x="616" y="324" class="op" text-anchor="middle">Service</text>
+  <text x="616" y="374" class="sub" text-anchor="middle">당첨 상수 선언 없음</text>
+</svg>

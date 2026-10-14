@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>이동·정지 테스트에서 MoveStrategy를 익명 클래스로 구현한 코드가 () -> true, () -> false 람다로 바뀌고, 결과는 각각 Car("pobi", 1), Car("pobi", 0)인 것을 비교한 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .bt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #4b5563; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">익명 클래스에서 람다로 — MoveStrategy 전달</text>
+  <text x="730" y="42" class="code" text-anchor="end">car.move(...)</text>
+  <text x="249" y="72" class="gl" text-anchor="middle">익명 클래스 (변경 전)</text>
+  <text x="493" y="72" class="gl" text-anchor="middle">람다 (변경 후)</text>
+  <text x="658" y="72" class="gl" text-anchor="middle">결과</text>
+  <text x="30" y="118" class="lane">이동</text>
+  <text x="30" y="136" class="sub">테스트</text>
+  <rect x="96" y="82" width="639" height="84" rx="6" class="track"/>
+  <rect x="104" y="88" width="290" height="72" rx="8" class="hold"/>
+  <text x="118" y="108" class="cv">new MoveStrategy() {</text>
+  <text x="134" y="127" class="cv">public boolean isMovable() {</text>
+  <text x="150" y="146" class="cv">return true; } }</text>
+  <line x1="396" y1="124" x2="416" y2="124" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="418" y="100" width="150" height="48" rx="8" class="box"/>
+  <text x="493" y="120" class="opm" text-anchor="middle">() -&gt; true</text>
+  <text x="493" y="139" class="val" text-anchor="middle">isMovable()의 반환값</text>
+  <line x1="570" y1="124" x2="586" y2="124" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="588" y="100" width="140" height="48" rx="8" class="ok"/>
+  <text x="658" y="120" class="okc" text-anchor="middle">Car("pobi", 1)</text>
+  <text x="658" y="139" class="val" text-anchor="middle">위치 0 → 1</text>
+  <text x="30" y="214" class="lane">정지</text>
+  <text x="30" y="232" class="sub">테스트</text>
+  <rect x="96" y="178" width="639" height="84" rx="6" class="track"/>
+  <rect x="104" y="184" width="290" height="72" rx="8" class="hold"/>
+  <text x="118" y="204" class="cv">new MoveStrategy() {</text>
+  <text x="134" y="223" class="cv">public boolean isMovable() {</text>
+  <text x="150" y="242" class="cv">return false; } }</text>
+  <line x1="396" y1="220" x2="416" y2="220" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="418" y="196" width="150" height="48" rx="8" class="box"/>
+  <text x="493" y="216" class="opm" text-anchor="middle">() -&gt; false</text>
+  <text x="493" y="235" class="val" text-anchor="middle">isMovable()의 반환값</text>
+  <line x1="570" y1="220" x2="586" y2="220" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="588" y="196" width="140" height="48" rx="8" class="ok"/>
+  <text x="658" y="216" class="okc" text-anchor="middle">Car("pobi", 0)</text>
+  <text x="658" y="235" class="val" text-anchor="middle">위치 0 그대로</text>
+  <text x="30" y="292" class="sub">출발은 두 테스트 모두 new Car("pobi", 0)입니다. 익명 클래스 구현이 isMovable()의 반환값만 남은 람다 한 줄로 바뀝니다.</text>
+</svg>

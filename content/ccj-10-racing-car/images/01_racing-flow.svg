@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 410" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>자동차 경주 3단계 실행 흐름: 자동차 대수와 시도 횟수를 입력받아 Car를 만들고, 라운드마다 각 Car가 0~9 무작위 값이 4 이상이면 전진한 뒤 ResultView가 결과를 출력한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #4b5563; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="410" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="390" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">자동차 경주 3단계 — 입력부터 라운드별 출력까지</text>
+  <rect x="30" y="62" width="200" height="56" rx="8" class="box"/>
+  <text x="130" y="85" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">InputView</tspan> 입력</text>
+  <text x="130" y="105" class="val" text-anchor="middle">자동차 대수 3 · 시도 횟수 5</text>
+  <rect x="280" y="62" width="200" height="56" rx="8" class="box"/>
+  <text x="380" y="85" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Track</tspan> 생성</text>
+  <text x="380" y="105" class="val" text-anchor="middle">입력한 대수만큼 Car를 담음</text>
+  <rect x="530" y="62" width="200" height="56" rx="8" class="hold"/>
+  <text x="630" y="85" class="t" text-anchor="middle">라운드 반복</text>
+  <text x="630" y="105" class="val" text-anchor="middle">시도 횟수 5번 <tspan font-family="Menlo, Consolas, monospace">startRacing()</tspan></text>
+  <line x1="232" y1="90" x2="276" y2="90" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="482" y1="90" x2="526" y2="90" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="630" y1="120" x2="630" y2="144" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="30" y="146" width="700" height="214" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="46" y="170" class="lane">라운드 한 번</text>
+  <rect x="40" y="182" width="545" height="166" rx="8" class="wait"/>
+  <text x="54" y="202" class="sub">Car 3대 각각 <tspan font-family="Menlo, Consolas, monospace">calcMove()</tspan></text>
+  <rect x="54" y="236" width="170" height="56" rx="8" class="box"/>
+  <text x="139" y="259" class="code" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">random.nextInt(10)</tspan></text>
+  <text x="139" y="279" class="val" text-anchor="middle">0~9 사이 값</text>
+  <rect x="262" y="236" width="120" height="56" rx="8" class="box"/>
+  <text x="322" y="259" class="t" text-anchor="middle">4 이상?</text>
+  <text x="322" y="279" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">isMove(</tspan>값<tspan font-family="Menlo, Consolas, monospace">)</tspan></text>
+  <line x1="226" y1="264" x2="258" y2="264" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="430" y="212" width="140" height="48" rx="8" class="ok"/>
+  <text x="500" y="231" class="okt" text-anchor="middle">전진</text>
+  <text x="500" y="251" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">-</tspan> 한 칸 추가</text>
+  <rect x="430" y="290" width="140" height="48" rx="8" class="hold"/>
+  <text x="500" y="309" class="t" text-anchor="middle">멈춤</text>
+  <text x="500" y="329" class="val" text-anchor="middle">그대로 둠</text>
+  <line x1="384" y1="258" x2="427" y2="238" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="384" y1="272" x2="427" y2="312" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="398" y="236" class="gnote" text-anchor="middle">예</text>
+  <text x="396" y="306" class="sub" text-anchor="middle">아니오</text>
+  <rect x="600" y="236" width="120" height="56" rx="8" class="box"/>
+  <text x="660" y="259" class="t" text-anchor="middle">결과 출력</text>
+  <text x="660" y="279" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">outPut(cars)</tspan></text>
+  <line x1="587" y1="264" x2="597" y2="264" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="386" class="sub">라운드 한 번이 끝날 때마다 ResultView가 출력하고, 시도 횟수 5번을 채울 때까지 반복합니다.</text>
+</svg>
