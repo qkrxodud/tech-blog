@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>show_sql은 System.out에 실행 SQL을 바로 출력하고, org.hibernate.SQL: debug와 org.hibernate.type: trace는 logger를 통해 실행 SQL과 SQL 실행 파라미터를 남기는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">SQL 로그 — System.out과 logger</text>
+  <text x="730" y="42" class="code" text-anchor="end">application.yaml</text>
+  <rect x="30" y="70" width="250" height="56" rx="8" class="box"/>
+  <text x="155" y="94" class="op" text-anchor="middle">show_sql: true</text>
+  <text x="155" y="113" class="sub" text-anchor="middle">hibernate 옵션</text>
+  <rect x="330" y="70" width="170" height="56" rx="8" class="bad"/>
+  <text x="415" y="94" class="badt" text-anchor="middle">System.out</text>
+  <text x="415" y="113" class="sub" text-anchor="middle">콘솔에 바로 출력</text>
+  <rect x="550" y="78" width="180" height="40" rx="6" class="chip"/>
+  <text x="640" y="103" class="val" text-anchor="middle">실행 SQL</text>
+  <line x1="282" y1="98" x2="326" y2="98" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <line x1="502" y1="98" x2="546" y2="98" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="30" y="150" width="250" height="56" rx="8" class="box"/>
+  <text x="155" y="174" class="op" text-anchor="middle">org.hibernate.SQL: debug</text>
+  <text x="155" y="193" class="sub" text-anchor="middle">logging.level</text>
+  <rect x="330" y="150" width="170" height="56" rx="8" class="ok"/>
+  <text x="415" y="174" class="okm" text-anchor="middle">logger</text>
+  <text x="415" y="193" class="sub" text-anchor="middle">slf4j · logback</text>
+  <rect x="550" y="158" width="180" height="40" rx="6" class="chip"/>
+  <text x="640" y="183" class="val" text-anchor="middle">실행 SQL</text>
+  <line x1="282" y1="178" x2="326" y2="178" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="502" y1="178" x2="546" y2="178" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="30" y="230" width="250" height="56" rx="8" class="box"/>
+  <text x="155" y="254" class="op" text-anchor="middle">org.hibernate.type: trace</text>
+  <text x="155" y="273" class="sub" text-anchor="middle">logging.level</text>
+  <rect x="330" y="230" width="170" height="56" rx="8" class="ok"/>
+  <text x="415" y="254" class="okm" text-anchor="middle">logger</text>
+  <text x="415" y="273" class="sub" text-anchor="middle">slf4j · logback</text>
+  <rect x="550" y="238" width="180" height="40" rx="6" class="chip"/>
+  <text x="640" y="263" class="val" text-anchor="middle">SQL 실행 파라미터</text>
+  <line x1="282" y1="258" x2="326" y2="258" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="502" y1="258" x2="546" y2="258" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="322" class="foot">모든 로그 출력은 가급적 로거를 통해 남겨야 하므로, show_sql 대신 org.hibernate.SQL을 사용합니다.</text>
+</svg>

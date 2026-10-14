@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>one-indexed-parameters가 true일 때 page=1 요청은 내부에서 1을 빼 0페이지 PageRequest로 조회되고, 응답 JSON의 pageNumber와 number는 0으로 나가서 요청 번호와 응답 번호가 어긋난다는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="300" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="280" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">one-indexed-parameters — 요청만 1부터</text>
+  <text x="730" y="42" class="code" text-anchor="end">one-indexed-parameters=true</text>
+  <text x="130" y="72" class="step" text-anchor="middle">요청</text>
+  <text x="380" y="72" class="step" text-anchor="middle">내부 처리</text>
+  <text x="630" y="72" class="step" text-anchor="middle">응답 JSON</text>
+  <line x1="40" y1="80" x2="722" y2="80" class="axis" marker-end="url(#ar)"/>
+  <rect x="30" y="96" width="200" height="56" rx="8" class="ok"/>
+  <text x="130" y="119" class="okc" text-anchor="middle">page=1</text>
+  <text x="130" y="139" class="val" text-anchor="middle">1부터 센 첫 페이지</text>
+  <line x1="232" y1="124" x2="276" y2="124" class="axis" marker-end="url(#ar)"/>
+  <rect x="280" y="96" width="200" height="56" rx="8" class="hold"/>
+  <text x="380" y="119" class="op" text-anchor="middle">page - 1 = 0</text>
+  <text x="380" y="139" class="val" text-anchor="middle">0페이지로 조회</text>
+  <line x1="482" y1="124" x2="526" y2="124" class="axis" marker-end="url(#ar)"/>
+  <rect x="530" y="96" width="200" height="56" rx="8" class="bad"/>
+  <text x="630" y="119" class="badc" text-anchor="middle">"number": 0</text>
+  <text x="630" y="139" class="note" text-anchor="middle">"pageNumber": 0</text>
+  <rect x="30" y="176" width="700" height="56" rx="8" class="wait"/>
+  <text x="380" y="199" class="waitt" text-anchor="middle">web에서 page 파라미터를 -1 처리할 뿐이라</text>
+  <text x="380" y="219" class="waitt" text-anchor="middle">응답 Page는 그대로 0페이지 인덱스를 사용합니다.</text>
+  <text x="30" y="270" class="sub">응답까지 1부터 맞추려면 Pageable, Page 대신 직접 만든 클래스로 요청과 응답을 처리해야 합니다.</text>
+</svg>

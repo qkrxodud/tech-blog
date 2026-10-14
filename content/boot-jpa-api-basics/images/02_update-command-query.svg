@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 352" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>PUT 요청이 들어오면 컨트롤러가 update(id, name)을 호출해 변경 감지로 이름을 바꾸고 반환값 없이 끝낸 뒤, findOne(id)로 다시 조회해 UpdateMemberResponse(id, name)을 만드는 커맨드와 쿼리 분리 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .vm { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .jm { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="352" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="332" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">회원 수정 — 커맨드와 쿼리 분리</text>
+  <text x="730" y="42" class="code" text-anchor="end">PUT /api/v2/members/{id}</text>
+  <text x="205" y="68" class="step" text-anchor="middle">요청</text>
+  <text x="337.5" y="68" class="step" text-anchor="middle">커맨드</text>
+  <text x="480" y="68" class="step" text-anchor="middle">쿼리</text>
+  <text x="637.5" y="68" class="step" text-anchor="middle">응답</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">컨트롤러</text>
+  <text x="30" y="126" class="sub">API 컨트롤러</text>
+  <rect x="150" y="86" width="585" height="56" rx="6" class="track"/>
+  <rect x="155" y="90" width="100" height="48" rx="8" class="box"/>
+  <text x="205" y="110" class="t" text-anchor="middle">PUT 요청</text>
+  <text x="205" y="129" class="val" text-anchor="middle">id, name</text>
+  <rect x="265" y="90" width="145" height="48" rx="8" class="box"/>
+  <text x="337.5" y="110" class="m" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">update(id, name)</tspan></text>
+  <text x="337.5" y="129" class="val" text-anchor="middle">반환값 없음</text>
+  <rect x="420" y="90" width="120" height="48" rx="8" class="box"/>
+  <text x="480" y="110" class="m" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">findOne(id)</tspan></text>
+  <text x="480" y="129" class="val" text-anchor="middle">다시 조회</text>
+  <rect x="550" y="90" width="175" height="48" rx="8" class="ok"/>
+  <text x="637.5" y="110" class="okt" text-anchor="middle">응답 생성</text>
+  <text x="637.5" y="129" class="vm" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">UpdateMemberResponse</tspan></text>
+  <text x="30" y="192" class="lane">서비스</text>
+  <text x="30" y="210" class="sub">MemberService</text>
+  <rect x="150" y="170" width="585" height="56" rx="6" class="track"/>
+  <rect x="265" y="174" width="145" height="48" rx="8" class="hold"/>
+  <text x="337.5" y="194" class="t" text-anchor="middle">이름 변경</text>
+  <text x="337.5" y="213" class="val" text-anchor="middle">변경 감지로 UPDATE</text>
+  <rect x="420" y="174" width="120" height="48" rx="8" class="box"/>
+  <text x="480" y="194" class="t" text-anchor="middle">Member 조회</text>
+  <text x="480" y="213" class="val" text-anchor="middle">findMember 반환</text>
+  <line x1="337" y1="139" x2="337" y2="172" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="470" y1="139" x2="470" y2="172" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="490" y1="173" x2="490" y2="140" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="540" y1="114" x2="548" y2="114" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="410" y1="114" x2="418" y2="114" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="255" y1="114" x2="263" y2="114" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="150" y="246" width="575" height="40" rx="6" class="ok"/>
+  <text x="437.5" y="271" class="gnote" text-anchor="middle">변경은 update(), 조회는 findOne() — 한 메서드가 둘 다 하지 않음</text>
+  <text x="150" y="316" class="foot">응답 DTO의 id와 name은 다시 조회한 findMember에서 꺼냅니다.</text>
+</svg>

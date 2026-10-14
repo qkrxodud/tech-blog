@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 390" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>save 시점에는 AuditingEntityListener가 createDate와 lastModifiedDate에 같은 시간을, createBy와 lastModifiedBy에 AuditorAware가 돌려준 값을 채우고, 수정 후 flush 시점에는 updatable = false인 createDate와 createBy는 그대로 두고 lastModifiedDate와 lastModifiedBy만 새 값으로 바꾼다는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="390" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="370" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Auditing — 저장할 때와 수정할 때 채워지는 값</text>
+  <text x="730" y="42" class="code" text-anchor="end">BaseEntity</text>
+  <text x="335" y="74" class="step" text-anchor="middle">1. save(member)</text>
+  <text x="610" y="74" class="step" text-anchor="middle">2. 값 수정 후 flush</text>
+  <line x1="220" y1="84" x2="730" y2="84" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="127" class="op">createDate</text>
+  <rect x="220" y="100" width="230" height="40" rx="8" class="ok"/>
+  <text x="335" y="125" class="okt" text-anchor="middle">save 시점의 시간</text>
+  <rect x="490" y="100" width="240" height="40" rx="8" class="hold"/>
+  <text x="610" y="125" class="t" text-anchor="middle">그대로 (updatable = false)</text>
+  <text x="30" y="179" class="op">lastModifiedDate</text>
+  <rect x="220" y="152" width="230" height="40" rx="8" class="ok"/>
+  <text x="335" y="177" class="okt" text-anchor="middle">save 시점의 시간</text>
+  <rect x="490" y="152" width="240" height="40" rx="8" class="ok"/>
+  <text x="610" y="177" class="okt" text-anchor="middle">수정 시점의 시간</text>
+  <text x="30" y="231" class="op">createBy</text>
+  <rect x="220" y="204" width="230" height="40" rx="8" class="ok"/>
+  <text x="335" y="229" class="okt" text-anchor="middle">AuditorAware 값</text>
+  <rect x="490" y="204" width="240" height="40" rx="8" class="hold"/>
+  <text x="610" y="229" class="t" text-anchor="middle">그대로 (updatable = false)</text>
+  <text x="30" y="283" class="op">lastModifiedBy</text>
+  <rect x="220" y="256" width="230" height="40" rx="8" class="ok"/>
+  <text x="335" y="281" class="okt" text-anchor="middle">AuditorAware 값</text>
+  <rect x="490" y="256" width="240" height="40" rx="8" class="ok"/>
+  <text x="610" y="281" class="okt" text-anchor="middle">AuditorAware 새 값</text>
+  <text x="30" y="330" class="sub">값은 엔티티에 붙인 AuditingEntityListener가 채우고, 등록자·수정자 값은 AuditorAware 빈이 돌려줍니다.</text>
+  <text x="30" y="352" class="sub">저장 시점에 수정일·수정자까지 채우지 않으려면 @EnableJpaAuditing(modifyOnCreate = false)를 사용합니다.</text>
+</svg>

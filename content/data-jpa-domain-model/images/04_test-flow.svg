@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>팀 2개와 회원 4명을 persist하고 flush와 clear로 영속성 컨텍스트를 비운 뒤, JPQL로 회원을 조회하고 member.getTeam()을 사용할 때 팀이 조회되는 테스트 순서</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">testEntity() — 저장, 초기화, 조회 순서</text>
+  <text x="95.0" y="76" class="step" text-anchor="middle">1단계</text>
+  <rect x="30" y="86" width="130" height="52" rx="8" class="hold"/>
+  <text x="95.0" y="108" class="op" text-anchor="middle">persist</text>
+  <text x="95.0" y="127" class="sub" text-anchor="middle">teamA, teamB</text>
+  <rect x="30" y="178" width="130" height="52" rx="8" class="box"/>
+  <text x="95.0" y="209" class="val" text-anchor="middle">teamA, teamB</text>
+  <rect x="30" y="270" width="130" height="40" rx="6" class="chip"/>
+  <text x="95.0" y="295" class="val" text-anchor="middle">-</text>
+  <line x1="161" y1="112" x2="171" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="237.0" y="76" class="step" text-anchor="middle">2단계</text>
+  <rect x="172" y="86" width="130" height="52" rx="8" class="hold"/>
+  <text x="237.0" y="108" class="op" text-anchor="middle">persist</text>
+  <text x="237.0" y="127" class="sub" text-anchor="middle">member1~4</text>
+  <rect x="172" y="178" width="130" height="52" rx="8" class="box"/>
+  <text x="237.0" y="209" class="val" text-anchor="middle">+ member1~4</text>
+  <rect x="172" y="270" width="130" height="40" rx="6" class="chip"/>
+  <text x="237.0" y="295" class="val" text-anchor="middle">-</text>
+  <line x1="303" y1="112" x2="313" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="379.0" y="76" class="step" text-anchor="middle">3단계</text>
+  <rect x="314" y="86" width="130" height="52" rx="8" class="hold"/>
+  <text x="379.0" y="108" class="t" text-anchor="middle">flush · clear</text>
+  <text x="379.0" y="127" class="sub" text-anchor="middle">초기화</text>
+  <rect x="314" y="178" width="130" height="52" rx="8" class="wait"/>
+  <text x="379.0" y="209" class="waitt" text-anchor="middle">비어 있음</text>
+  <rect x="314" y="270" width="130" height="40" rx="6" class="chip"/>
+  <text x="379.0" y="295" class="val" text-anchor="middle">INSERT 실행</text>
+  <line x1="445" y1="112" x2="455" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="521.0" y="76" class="step" text-anchor="middle">4단계</text>
+  <rect x="456" y="86" width="130" height="52" rx="8" class="hold"/>
+  <text x="521.0" y="108" class="t" text-anchor="middle">JPQL 조회</text>
+  <text x="521.0" y="127" class="sub" text-anchor="middle">select m …</text>
+  <rect x="456" y="178" width="130" height="52" rx="8" class="box"/>
+  <text x="521.0" y="200" class="val" text-anchor="middle">member 4건</text>
+  <text x="521.0" y="219" class="sub" text-anchor="middle">team은 프록시</text>
+  <rect x="456" y="270" width="130" height="40" rx="6" class="chip"/>
+  <text x="521.0" y="295" class="val" text-anchor="middle">SELECT member</text>
+  <line x1="587" y1="112" x2="597" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="663.0" y="76" class="step" text-anchor="middle">5단계</text>
+  <rect x="598" y="86" width="130" height="52" rx="8" class="hold"/>
+  <text x="663.0" y="108" class="t" text-anchor="middle">출력</text>
+  <text x="663.0" y="127" class="sub" text-anchor="middle">member.getTeam()</text>
+  <rect x="598" y="178" width="130" height="52" rx="8" class="ok"/>
+  <text x="663.0" y="200" class="okt" text-anchor="middle">team 초기화</text>
+  <text x="663.0" y="219" class="sub" text-anchor="middle">사용할 때 조회</text>
+  <rect x="598" y="270" width="130" height="40" rx="6" class="ok"/>
+  <text x="663.0" y="295" class="okt" text-anchor="middle">SELECT team</text>
+  <text x="30" y="168" class="sub">영속성 컨텍스트</text>
+  <text x="30" y="262" class="sub">DB</text>
+  <text x="30" y="340" class="foot">flush 때 저장한 팀과 회원이 INSERT되고, clear 후 조회한 회원의 팀은 프록시로 들어옵니다.</text>
+  <text x="30" y="362" class="foot">Member.team이 <tspan font-family="Menlo, Consolas, monospace">FetchType.LAZY</tspan>이므로 팀은 member.getTeam()으로 사용할 때 조회됩니다.</text>
+</svg>

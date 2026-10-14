@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>searchPageSimple은 offset과 limit을 건 내용 쿼리 결과와 content.size를 PageImpl에 넘기고, searchPageComplex는 내용 쿼리를 실행한 뒤 countQuery는 람다로 PageableExecutionUtils.getPage에 넘겨 필요할 때만 countQuery.fetch().size를 실행하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="430" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="150" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">searchPageSimple — 내용 쿼리 한 번</text>
+  <text x="730" y="42" class="code" text-anchor="end">/v2/members</text>
+  <rect x="30" y="64" width="210" height="60" rx="8" class="box"/>
+  <text x="135.0" y="89.5" class="ts" text-anchor="middle">내용 쿼리</text>
+  <text x="135.0" y="108.5" class="m" text-anchor="middle">offset · limit · fetch()</text>
+  <rect x="270" y="64" width="170" height="60" rx="8" class="hold"/>
+  <text x="355.0" y="89.5" class="opm" text-anchor="middle">content</text>
+  <text x="355.0" y="108.5" class="m" text-anchor="middle">List&lt;MemberTeamDto&gt;</text>
+  <rect x="470" y="64" width="260" height="60" rx="8" class="box"/>
+  <text x="600.0" y="89.5" class="m" text-anchor="middle">new PageImpl&lt;&gt;(content,</text>
+  <text x="600.0" y="108.5" class="m" text-anchor="middle">pageable, content.size())</text>
+  <line x1="240" y1="94" x2="266" y2="94" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="440" y1="94" x2="466" y2="94" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="148" class="foot" text-anchor="start">전체 개수 자리에 content.size()를 넘깁니다</text>
+  <rect x="10" y="176" width="740" height="244" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="208" class="h">searchPageComplex — 내용과 count를 나눔</text>
+  <text x="730" y="208" class="code" text-anchor="end">/v3/members</text>
+  <rect x="30" y="230" width="190" height="60" rx="8" class="box"/>
+  <text x="125.0" y="255.5" class="ts" text-anchor="middle">내용 쿼리</text>
+  <text x="125.0" y="274.5" class="m" text-anchor="middle">offset · limit · fetch()</text>
+  <rect x="30" y="310" width="190" height="60" rx="8" class="wait"/>
+  <text x="125.0" y="335.5" class="opm" text-anchor="middle">countQuery</text>
+  <text x="125.0" y="354.5" class="waitt" text-anchor="middle">정의만, 실행 안 함</text>
+  <rect x="250" y="230" width="220" height="140" rx="8" class="hold"/>
+  <text x="360.0" y="267.0" class="opm" text-anchor="middle">PageableExecutionUtils</text>
+  <text x="360.0" y="286.0" class="m" text-anchor="middle">.getPage(content,</text>
+  <text x="360.0" y="305.0" class="m" text-anchor="middle">pageable,</text>
+  <text x="360.0" y="324.0" class="m" text-anchor="middle">() -&gt; countQuery</text>
+  <text x="360.0" y="343.0" class="m" text-anchor="middle">.fetch().size())</text>
+  <line x1="220" y1="260" x2="246" y2="270" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="220" y1="340" x2="246" y2="330" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="150" y="388" class="sub" text-anchor="start">람다로 전달</text>
+  <rect x="500" y="230" width="230" height="60" rx="8" class="ok"/>
+  <text x="615.0" y="255.5" class="okt" text-anchor="middle">전체 개수가 필요할 때</text>
+  <text x="615.0" y="274.5" class="okm" text-anchor="middle">countQuery.fetch().size()</text>
+  <rect x="500" y="310" width="230" height="60" rx="8" class="box"/>
+  <text x="615.0" y="335.5" class="ts" text-anchor="middle">생략할 수 있을 때</text>
+  <text x="615.0" y="354.5" class="val" text-anchor="middle">count 쿼리 실행 안 함</text>
+  <line x1="470" y1="280" x2="496" y2="262" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="470" y1="320" x2="496" y2="338" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="408" class="foot" text-anchor="start">count 쿼리는 람다로 넘겨 두었다가 필요할 때만 실행합니다</text>
+</svg>

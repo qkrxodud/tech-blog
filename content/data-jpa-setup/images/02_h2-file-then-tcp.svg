@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>jdbc:h2:~/datajpa로 최소 한 번 접속해 ~/datajpa.mv.db 파일 생성을 확인하고, 이후 jdbc:h2:tcp://localhost/~/datajpa로 접속하는 순서</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="250" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="230" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">H2 데이터베이스 — 파일을 먼저 만들고 TCP로 접속</text>
+  <text x="135.0" y="82" class="step" text-anchor="middle">1. 파일 경로로 접속</text>
+  <rect x="30" y="92" width="210" height="74" rx="8" class="box"/>
+  <text x="135.0" y="122" class="m" text-anchor="middle">jdbc:h2:~/datajpa</text>
+  <text x="135.0" y="146" class="sub" text-anchor="middle">최소 한 번</text>
+  <text x="356.0" y="82" class="step" text-anchor="middle">2. 파일 생성 확인</text>
+  <rect x="266" y="92" width="180" height="74" rx="8" class="box"/>
+  <text x="356.0" y="122" class="m" text-anchor="middle">~/datajpa.mv.db</text>
+  <text x="356.0" y="146" class="sub" text-anchor="middle">홈 디렉터리</text>
+  <text x="601.0" y="82" class="step" text-anchor="middle">3. 이후 접속</text>
+  <rect x="472" y="92" width="258" height="74" rx="8" class="ok"/>
+  <text x="601.0" y="122" class="okm" text-anchor="middle">jdbc:h2:tcp://localhost/~/datajpa</text>
+  <text x="601.0" y="146" class="sub" text-anchor="middle">TCP 주소로 접속</text>
+  <line x1="242" y1="129" x2="262" y2="129" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="448" y1="129" x2="468" y2="129" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="204" class="foot">처음 접속할 때 데이터베이스 파일이 만들어지고, 그다음부터는 TCP 주소로 접속합니다.</text>
+</svg>

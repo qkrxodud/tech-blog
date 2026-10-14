@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>순수 JPA MemberJpaRepository는 save, delete, findAll, findById, count를 EntityManager로 직접 구현하고, MemberRepository는 JpaRepository를 상속한 빈 인터페이스만으로 같은 basicCRUD 테스트를 통과하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="190" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">순수 JPA — 메서드를 직접 구현</text>
+  <text x="730" y="42" class="code" text-anchor="end">MemberJpaRepository</text>
+  <rect x="30" y="62" width="132" height="60" rx="8" class="box"/>
+  <text x="96.0" y="86" class="op" text-anchor="middle">save</text>
+  <text x="96.0" y="107" class="ms" text-anchor="middle">em.persist()</text>
+  <rect x="172" y="62" width="132" height="60" rx="8" class="box"/>
+  <text x="238.0" y="86" class="op" text-anchor="middle">delete</text>
+  <text x="238.0" y="107" class="ms" text-anchor="middle">em.remove()</text>
+  <rect x="314" y="62" width="132" height="60" rx="8" class="box"/>
+  <text x="380.0" y="86" class="op" text-anchor="middle">findAll</text>
+  <text x="380.0" y="107" class="ms" text-anchor="middle">select m …</text>
+  <rect x="456" y="62" width="132" height="60" rx="8" class="box"/>
+  <text x="522.0" y="86" class="op" text-anchor="middle">findById</text>
+  <text x="522.0" y="107" class="ms" text-anchor="middle">em.find()</text>
+  <rect x="598" y="62" width="132" height="60" rx="8" class="box"/>
+  <text x="664.0" y="86" class="op" text-anchor="middle">count</text>
+  <text x="664.0" y="107" class="ms" text-anchor="middle">select count(m) …</text>
+  <rect x="30" y="136" width="700" height="40" rx="6" class="bad"/>
+  <text x="380" y="161" class="badt" text-anchor="middle">TeamJpaRepository도 엔티티 타입만 바꿔 같은 코드를 반복</text>
+  <rect x="10" y="216" width="740" height="194" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="248" class="h">스프링 데이터 JPA — 인터페이스만 선언</text>
+  <text x="730" y="248" class="code" text-anchor="end">MemberRepository</text>
+  <rect x="30" y="266" width="700" height="40" rx="6" class="hold"/>
+  <text x="380" y="291" class="m" text-anchor="middle">public interface MemberRepository extends JpaRepository&lt;Member, Long&gt; { }</text>
+  <rect x="30" y="318" width="132" height="36" rx="6" class="ok"/>
+  <text x="96.0" y="341" class="okm" text-anchor="middle">save</text>
+  <rect x="172" y="318" width="132" height="36" rx="6" class="ok"/>
+  <text x="238.0" y="341" class="okm" text-anchor="middle">delete</text>
+  <rect x="314" y="318" width="132" height="36" rx="6" class="ok"/>
+  <text x="380.0" y="341" class="okm" text-anchor="middle">findAll</text>
+  <rect x="456" y="318" width="132" height="36" rx="6" class="ok"/>
+  <text x="522.0" y="341" class="okm" text-anchor="middle">findById</text>
+  <rect x="598" y="318" width="132" height="36" rx="6" class="ok"/>
+  <text x="664.0" y="341" class="okm" text-anchor="middle">count</text>
+  <text x="30" y="386" class="gnote">구현 코드 없이 <tspan font-family="Menlo, Consolas, monospace">basicCRUD()</tspan> 테스트를 그대로 통과합니다.</text>
+</svg>

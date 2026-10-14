@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 416" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Jackson이 Order를 JSON으로 만들 때 member를 따라가 Member를 만들고, Member가 다시 주문을 참조하므로 Order로 돌아오기를 반복해 무한 루프에 빠지고, 한쪽에 @JsonIgnore를 붙이면 그 지점에서 직렬화가 멈추는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .vm { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .jm { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="416" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="190" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">양방향 연관관계 — 양쪽을 모두 직렬화</text>
+  <text x="730" y="42" class="code" text-anchor="end">Jackson</text>
+  <rect x="40" y="70" width="110" height="48" rx="8" class="box"/>
+  <text x="95" y="99" class="m" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Order</tspan></text>
+  <rect x="190" y="70" width="110" height="48" rx="8" class="box"/>
+  <text x="245" y="99" class="m" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Member</tspan></text>
+  <rect x="340" y="70" width="110" height="48" rx="8" class="bad"/>
+  <text x="395" y="99" class="badm" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Order</tspan></text>
+  <rect x="490" y="70" width="110" height="48" rx="8" class="bad"/>
+  <text x="545" y="99" class="badm" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Member</tspan></text>
+  <line x1="150" y1="94" x2="188" y2="94" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="300" y1="94" x2="338" y2="94" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="450" y1="94" x2="488" y2="94" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="205" y="140" class="sub" text-anchor="middle"></text>
+  <text x="640" y="99" class="badt">… 반복</text>
+  <text x="169" y="138" class="sub" text-anchor="middle">member</text>
+  <text x="319" y="138" class="sub" text-anchor="middle">주문 참조</text>
+  <text x="469" y="138" class="sub" text-anchor="middle">member</text>
+  <rect x="40" y="150" width="680" height="36" rx="6" class="bad"/>
+  <text x="380" y="173" class="note" text-anchor="middle">양쪽이 서로를 호출하면서 끝나지 않음 → 무한 루프</text>
+  <rect x="10" y="216" width="740" height="190" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="248" class="h">한쪽에 @JsonIgnore — 순환이 끊김</text>
+  <text x="730" y="248" class="code" text-anchor="end">@JsonIgnore</text>
+  <rect x="40" y="276" width="110" height="48" rx="8" class="box"/>
+  <text x="95" y="305" class="m" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Order</tspan></text>
+  <rect x="190" y="276" width="110" height="48" rx="8" class="box"/>
+  <text x="245" y="305" class="m" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Member</tspan></text>
+  <line x1="150" y1="300" x2="188" y2="300" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="169" y="344" class="sub" text-anchor="middle">member</text>
+  <rect x="340" y="284" width="220" height="32" rx="6" class="wait"/>
+  <text x="450" y="305" class="waitt" text-anchor="middle">주문 참조 — @JsonIgnore</text>
+  <line x1="300" y1="300" x2="338" y2="300" stroke="#9ca3af" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <text x="580" y="305" class="gnote">JSON에서 제외</text>
+  <rect x="40" y="356" width="680" height="36" rx="6" class="ok"/>
+  <text x="380" y="379" class="gnote" text-anchor="middle">Member를 만든 뒤 다시 Order로 돌아가지 않으므로 직렬화가 끝남</text>
+</svg>

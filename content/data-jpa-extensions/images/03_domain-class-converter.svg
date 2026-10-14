@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 318" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>/members2/{id} 요청의 id 값을 도메인 클래스 컨버터가 받아 memberRepository.findById로 회원 엔티티를 찾고, 컨트롤러는 Member 타입 파라미터로 엔티티를 받으며, 트랜잭션이 없는 범위에서 조회한 엔티티라 변경해도 DB에 반영되지 않는다는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="318" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">도메인 클래스 컨버터 — id로 엔티티를 찾아 바인딩</text>
+  <text x="730" y="42" class="code" text-anchor="end">findMember2</text>
+  <rect x="30" y="66" width="160" height="56" rx="8" class="box"/>
+  <text x="110" y="89" class="t" text-anchor="middle">HTTP 요청</text>
+  <text x="110" y="109" class="mono" text-anchor="middle">/members2/{id}</text>
+  <line x1="192" y1="94" x2="206" y2="94" class="axis" marker-end="url(#ar)"/>
+  <rect x="210" y="66" width="160" height="56" rx="8" class="hold"/>
+  <text x="290" y="89" class="t" text-anchor="middle">도메인 클래스 컨버터</text>
+  <text x="290" y="109" class="val" text-anchor="middle">회원 id 값을 받음</text>
+  <line x1="372" y1="94" x2="386" y2="94" class="axis" marker-end="url(#ar)"/>
+  <rect x="390" y="66" width="160" height="56" rx="8" class="hold"/>
+  <text x="470" y="89" class="t" text-anchor="middle">리포지토리 조회</text>
+  <text x="470" y="109" class="mono" text-anchor="middle">findById(id)</text>
+  <line x1="552" y1="94" x2="566" y2="94" class="axis" marker-end="url(#ar)"/>
+  <rect x="570" y="66" width="160" height="56" rx="8" class="ok"/>
+  <text x="650" y="89" class="okt" text-anchor="middle">컨트롤러</text>
+  <text x="650" y="109" class="mono" text-anchor="middle">Member member</text>
+  <text x="30" y="152" class="sub">컨트롤러는 Long id 대신 회원 엔티티를 파라미터로 받습니다. 컨버터도 리포지토리로 엔티티를 찾습니다.</text>
+  <rect x="10" y="186" width="740" height="122" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="218" class="h">주의 — 단순 조회용으로만 사용</text>
+  <rect x="30" y="236" width="330" height="52" rx="8" class="hold"/>
+  <text x="195" y="258" class="t" text-anchor="middle">트랜잭션이 없는 범위에서 조회</text>
+  <text x="195" y="277" class="val" text-anchor="middle">컨버터가 찾아 넘겨준 엔티티</text>
+  <line x1="362" y1="262" x2="396" y2="262" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="400" y="236" width="330" height="52" rx="8" class="bad"/>
+  <text x="565" y="258" class="badt" text-anchor="middle">엔티티를 변경해도</text>
+  <text x="565" y="277" class="note" text-anchor="middle">DB에 반영되지 않음</text>
+</svg>

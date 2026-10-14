@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>@SpringBootApplication 패키지와 하위 패키지를 스캔해 Repository를 상속한 MemberRepository를 찾고, 스프링 데이터 JPA가 구현 클래스 프록시를 만들어 @Autowired로 주입하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="340" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">구현 클래스 생성 — 인터페이스 자리에 프록시를 주입</text>
+  <text x="113.0" y="76" class="step" text-anchor="middle">1단계</text>
+  <rect x="30" y="86" width="166" height="80" rx="8" class="box"/>
+  <text x="113.0" y="110" class="t" text-anchor="middle">컴포넌트 스캔</text>
+  <text x="113.0" y="131" class="ms" text-anchor="middle">@SpringBootApplication</text>
+  <text x="113.0" y="152" class="sub" text-anchor="middle">해당 패키지와 하위 패키지</text>
+  <line x1="197" y1="126" x2="206" y2="126" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="291.0" y="76" class="step" text-anchor="middle">2단계</text>
+  <rect x="208" y="86" width="166" height="80" rx="8" class="box"/>
+  <text x="291.0" y="110" class="t" text-anchor="middle">인터페이스 발견</text>
+  <text x="291.0" y="131" class="m" text-anchor="middle">MemberRepository</text>
+  <text x="291.0" y="152" class="sub" text-anchor="middle">Repository를 상속</text>
+  <line x1="375" y1="126" x2="384" y2="126" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="469.0" y="76" class="step" text-anchor="middle">3단계</text>
+  <rect x="386" y="86" width="166" height="80" rx="8" class="ok"/>
+  <text x="469.0" y="110" class="okt" text-anchor="middle">구현 클래스 생성</text>
+  <text x="469.0" y="131" class="okm" text-anchor="middle">$ProxyXXX</text>
+  <text x="469.0" y="152" class="sub" text-anchor="middle">스프링 데이터 JPA가 생성</text>
+  <line x1="553" y1="126" x2="562" y2="126" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="647.0" y="76" class="step" text-anchor="middle">4단계</text>
+  <rect x="564" y="86" width="166" height="80" rx="8" class="ok"/>
+  <text x="647.0" y="110" class="okt" text-anchor="middle">주입</text>
+  <text x="647.0" y="131" class="okm" text-anchor="middle">@Autowired</text>
+  <text x="647.0" y="152" class="sub" text-anchor="middle">MemberRepository에 주입</text>
+  <rect x="30" y="190" width="343" height="52" rx="8" class="box"/>
+  <text x="201" y="212" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">@Repository</tspan> 생략 가능</text>
+  <text x="201" y="231" class="sub" text-anchor="middle">컴포넌트 스캔과 JPA 예외 → 스프링 예외 변환을 자동 처리</text>
+  <rect x="387" y="190" width="343" height="52" rx="8" class="wait"/>
+  <text x="558" y="212" class="t" text-anchor="middle">패키지 위치가 다르면</text>
+  <text x="558" y="231" class="ms" text-anchor="middle">@EnableJpaRepositories(basePackages = …)</text>
+  <text x="30" y="280" class="foot">memberRepository.getClass()를 출력하면 <tspan font-family="Menlo, Consolas, monospace">class com.sun.proxy.$ProxyXXX</tspan>가 나옵니다.</text>
+  <text x="30" y="302" class="foot">개발자가 작성한 것은 인터페이스뿐이고, 구현 클래스는 스프링 데이터 JPA가 만듭니다.</text>
+</svg>

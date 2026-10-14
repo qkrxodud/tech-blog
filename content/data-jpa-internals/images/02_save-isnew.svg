@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>save()는 isNew로 새 엔티티인지 판단해서, @GeneratedValue라 식별자가 null이면 persist로 바로 저장하고, @Id 직접 할당이라 식별자가 이미 있으면 merge로 가서 DB를 먼저 조회한 뒤 없을 때 저장하며, Persistable로 createDate가 null인지 보도록 바꾸면 직접 할당이어도 persist로 간다는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">save() — isNew 판단에 따라 persist와 merge로</text>
+  <text x="730" y="42" class="code" text-anchor="end">entityInformation.isNew(entity)</text>
+  <text x="140" y="72" class="step" text-anchor="middle">식별자</text>
+  <text x="355" y="72" class="step" text-anchor="middle">isNew 결과</text>
+  <text x="595" y="72" class="step" text-anchor="middle">save() 동작</text>
+  <rect x="30" y="84" width="220" height="52" rx="8" class="box"/>
+  <text x="140" y="106" class="op" text-anchor="middle">@GeneratedValue</text>
+  <text x="140" y="125" class="val" text-anchor="middle">save 시점에 id가 null</text>
+  <line x1="252" y1="110" x2="276" y2="110" class="axis" marker-end="url(#ar)"/>
+  <rect x="280" y="84" width="150" height="52" rx="8" class="ok"/>
+  <text x="355" y="106" class="okt" text-anchor="middle">true</text>
+  <text x="355" y="125" class="val" text-anchor="middle">새로운 엔티티</text>
+  <line x1="432" y1="110" x2="456" y2="110" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="460" y="84" width="270" height="52" rx="8" class="ok"/>
+  <text x="595" y="106" class="okc" text-anchor="middle">em.persist()</text>
+  <text x="595" y="125" class="val" text-anchor="middle">바로 저장</text>
+  <rect x="30" y="148" width="220" height="52" rx="8" class="box"/>
+  <text x="140" y="170" class="t" text-anchor="middle">@Id 직접 할당</text>
+  <text x="140" y="189" class="val" text-anchor="middle">save 전에 id 값이 있음</text>
+  <line x1="252" y1="174" x2="276" y2="174" class="axis" marker-end="url(#ar)"/>
+  <rect x="280" y="148" width="150" height="52" rx="8" class="bad"/>
+  <text x="355" y="170" class="badt" text-anchor="middle">false</text>
+  <text x="355" y="189" class="val" text-anchor="middle">기존 엔티티로 판단</text>
+  <line x1="432" y1="174" x2="456" y2="174" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="460" y="148" width="270" height="52" rx="8" class="bad"/>
+  <text x="595" y="170" class="badc" text-anchor="middle">em.merge()</text>
+  <text x="595" y="189" class="val" text-anchor="middle">DB 조회로 확인 후, 없으면 저장</text>
+  <rect x="30" y="212" width="220" height="52" rx="8" class="box"/>
+  <text x="140" y="234" class="op" text-anchor="middle">Persistable</text>
+  <text x="140" y="253" class="val" text-anchor="middle">createDate == null</text>
+  <line x1="252" y1="238" x2="276" y2="238" class="axis" marker-end="url(#ar)"/>
+  <rect x="280" y="212" width="150" height="52" rx="8" class="ok"/>
+  <text x="355" y="234" class="okt" text-anchor="middle">true</text>
+  <text x="355" y="253" class="val" text-anchor="middle">직접 구현한 isNew()</text>
+  <line x1="432" y1="238" x2="456" y2="238" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="460" y="212" width="270" height="52" rx="8" class="ok"/>
+  <text x="595" y="234" class="okc" text-anchor="middle">em.persist()</text>
+  <text x="595" y="253" class="val" text-anchor="middle">조회 없이 저장</text>
+  <text x="30" y="292" class="sub">기본 전략은 식별자가 객체면 null, 자바 기본 타입이면 0일 때 새로운 엔티티로 판단합니다.</text>
+</svg>

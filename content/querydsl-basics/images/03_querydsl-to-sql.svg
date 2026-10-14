@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>queryFactory로 작성한 Querydsl 코드가 select m from Member m where m.username = ?1 형태의 JPQL로 만들어지고, 다시 SQL로 바뀌어 데이터베이스에서 실행되며, use_sql_comments를 켜면 SQL 로그에 JPQL이 주석으로 함께 남는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Querydsl 실행 — 코드에서 JPQL, JPQL에서 SQL로</text>
+  <text x="105" y="74" class="step" text-anchor="middle">Querydsl</text>
+  <text x="293" y="74" class="step" text-anchor="middle">JPQL</text>
+  <text x="482" y="74" class="step" text-anchor="middle">SQL</text>
+  <text x="655" y="74" class="step" text-anchor="middle">데이터베이스</text>
+  <rect x="30" y="86" width="150" height="88" rx="8" class="box"/>
+  <text x="105" y="114" class="opm" text-anchor="middle">queryFactory</text>
+  <text x="105" y="136" class="m" text-anchor="middle">.select(m).from(m)</text>
+  <text x="105" y="156" class="m" text-anchor="middle">.where(...)</text>
+  <rect x="198" y="86" width="190" height="88" rx="8" class="hold"/>
+  <text x="293" y="114" class="m" text-anchor="middle">select m</text>
+  <text x="293" y="134" class="m" text-anchor="middle">from Member m</text>
+  <text x="293" y="154" class="m" text-anchor="middle">where m.username = ?1</text>
+  <rect x="410" y="86" width="145" height="88" rx="8" class="hold"/>
+  <text x="482" y="122" class="t" text-anchor="middle">SQL 변환</text>
+  <text x="482" y="144" class="val" text-anchor="middle">JPA가 SQL 생성</text>
+  <rect x="575" y="86" width="155" height="88" rx="8" class="ok"/>
+  <text x="652" y="122" class="okt" text-anchor="middle">SQL 실행</text>
+  <text x="652" y="144" class="val" text-anchor="middle">member1 조회</text>
+  <line x1="180" y1="130" x2="196" y2="130" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="388" y1="130" x2="408" y2="130" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="555" y1="130" x2="573" y2="130" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="30" y="200" width="700" height="76" rx="8" class="box"/>
+  <text x="46" y="224" class="ts">use_sql_comments: true일 때 SQL 로그</text>
+  <text x="46" y="246" class="m">/* select m from Member m where m.username = ?1 */ select ...</text>
+  <text x="46" y="264" class="sub">SQL 앞에 주석으로 원래 JPQL이 함께 출력됩니다.</text>
+  <line x1="293" y1="174" x2="293" y2="198" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+  <text x="30" y="302" class="foot">Querydsl은 JPQL 빌더이므로, 실행된 JPQL을 보면 Querydsl 코드가 어떤 쿼리로 바뀌었는지 확인할 수 있습니다.</text>
+</svg>

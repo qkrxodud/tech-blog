@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>주문 두 건을 기준으로 페이징하고 싶지만 orderItems를 페치 조인하면 행이 주문 상품 기준 네 행이 되어 행 기준으로 자를 수 없고, 하이버네이트가 경고 로그를 남기고 모든 데이터를 읽어 메모리에서 페이징하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h" text-anchor="start">컬렉션 페치 조인에 페이징 — 메모리에서 페이징</text>
+  <text x="730" y="42" class="code" text-anchor="end">setFirstResult / setMaxResults</text>
+  <text x="30" y="80" class="ts" text-anchor="start">원하는 기준: 일(1)인 주문</text>
+  <rect x="30" y="94" width="200" height="36" rx="8" class="ok"/>
+  <text x="130.0" y="117.0" class="okt" text-anchor="middle">userA 주문</text>
+  <rect x="30" y="138" width="200" height="36" rx="8" class="ok"/>
+  <text x="130.0" y="161.0" class="okt" text-anchor="middle">userB 주문</text>
+  <text x="30" y="200" class="sub" text-anchor="start">주문 단위로 자르고 싶음</text>
+  <text x="270" y="80" class="ts" text-anchor="start">실제 행: 다(N)인 주문 상품 기준</text>
+  <rect x="270" y="94" width="230" height="28" rx="0" class="box"/>
+  <text x="385" y="113" class="val" text-anchor="middle">userA 주문 · 주문 상품 1</text>
+  <rect x="270" y="122" width="230" height="28" rx="0" class="box"/>
+  <text x="385" y="141" class="val" text-anchor="middle">userA 주문 · 주문 상품 2</text>
+  <rect x="270" y="150" width="230" height="28" rx="0" class="box"/>
+  <text x="385" y="169" class="val" text-anchor="middle">userB 주문 · 주문 상품 1</text>
+  <rect x="270" y="178" width="230" height="28" rx="0" class="box"/>
+  <text x="385" y="197" class="val" text-anchor="middle">userB 주문 · 주문 상품 2</text>
+  <text x="270" y="230" class="note" text-anchor="start">행 기준으로 자르면 주문 단위 결과가 맞지 않음</text>
+  <line x1="510" y1="150" x2="548" y2="150" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="556" y="94" width="174" height="112" rx="8" class="bad"/>
+  <text x="643.0" y="155.0" class="badt" text-anchor="middle"></text>
+  <text x="643" y="124" class="badt" text-anchor="middle">하이버네이트</text>
+  <text x="643" y="148" class="note" text-anchor="middle">경고 로그를 남기고</text>
+  <text x="643" y="168" class="note" text-anchor="middle">모든 데이터를 읽어</text>
+  <text x="643" y="188" class="note" text-anchor="middle">메모리에서 페이징</text>
+  <rect x="30" y="262" width="700" height="66" rx="8" class="bad"/>
+  <text x="380" y="290" class="badt" text-anchor="middle">매우 위험 — 최악의 경우 장애로 이어질 수 있음</text>
+  <text x="380" y="312" class="note" text-anchor="middle">일대다 조인으로 데이터가 예측할 수 없이 증가함</text>
+</svg>

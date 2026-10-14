@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>select 대상이 하나면 List String으로 받고, 둘 이상이면 리포지토리 안에서는 Tuple로 받아 tuple.get으로 꺼내며, 리포지토리 밖으로 내보낼 때는 MemberDto로 바꾸는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="340" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">프로젝션 대상 개수 — 결과를 받는 타입</text>
+  <text x="730" y="42" class="code" text-anchor="end">select(...).from(member)</text>
+  <text x="30" y="76" class="step" text-anchor="start">select 대상</text>
+  <text x="230" y="76" class="step" text-anchor="start">결과 타입</text>
+  <text x="490" y="76" class="step" text-anchor="start">값 꺼내기</text>
+  <rect x="30" y="88" width="180" height="52" rx="8" class="hold"/>
+  <text x="120.0" y="109.5" class="ts" text-anchor="middle">대상 하나</text>
+  <text x="120.0" y="128.5" class="m" text-anchor="middle">member.username</text>
+  <rect x="230" y="88" width="230" height="52" rx="8" class="box"/>
+  <text x="345.0" y="119.0" class="opm" text-anchor="middle">List&lt;String&gt;</text>
+  <rect x="490" y="88" width="240" height="52" rx="8" class="box"/>
+  <text x="610.0" y="119.0" class="val" text-anchor="middle">타입을 명확하게 지정</text>
+  <line x1="210" y1="114" x2="226" y2="114" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="460" y1="114" x2="486" y2="114" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="30" y="156" width="180" height="52" rx="8" class="hold"/>
+  <text x="120.0" y="177.5" class="ts" text-anchor="middle">대상 둘 이상</text>
+  <text x="120.0" y="196.5" class="m" text-anchor="middle">username, age</text>
+  <rect x="230" y="156" width="230" height="52" rx="8" class="box"/>
+  <text x="345.0" y="177.5" class="opm" text-anchor="middle">List&lt;Tuple&gt;</text>
+  <text x="345.0" y="196.5" class="sub" text-anchor="middle">리포지토리 계층 안에서 사용</text>
+  <rect x="490" y="156" width="240" height="52" rx="8" class="box"/>
+  <text x="610.0" y="177.5" class="m" text-anchor="middle">tuple.get(member.username)</text>
+  <text x="610.0" y="196.5" class="m" text-anchor="middle">tuple.get(member.age)</text>
+  <line x1="210" y1="182" x2="226" y2="182" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="460" y1="182" x2="486" y2="182" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="345" y1="208" x2="345" y2="238" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="356" y="228" class="gnote" text-anchor="start">밖으로 나갈 때 DTO로 바꿈</text>
+  <rect x="30" y="240" width="180" height="52" rx="8" class="hold"/>
+  <text x="120.0" y="261.5" class="ts" text-anchor="middle">리포지토리 밖</text>
+  <text x="120.0" y="280.5" class="sub" text-anchor="middle">서비스·컨트롤러</text>
+  <rect x="230" y="240" width="230" height="52" rx="8" class="ok"/>
+  <text x="345.0" y="271.0" class="okm" text-anchor="middle">List&lt;MemberDto&gt;</text>
+  <rect x="490" y="240" width="240" height="52" rx="8" class="ok"/>
+  <text x="610.0" y="271.0" class="okm" text-anchor="middle">getUsername(), getAge()</text>
+  <line x1="460" y1="266" x2="486" y2="266" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="314" class="foot" text-anchor="start">Tuple은 Querydsl에 종속적인 타입이라, 리포지토리 밖으로 내보낼 때는 DTO로 바꾸는 것이 바람직합니다</text>
+</svg>

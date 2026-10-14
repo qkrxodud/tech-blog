@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>MemberRepository가 JpaRepository를 상속하고 JpaRepository가 PagingAndSortingRepository를 상속하며, 스프링 데이터 JPA가 만든 구현 클래스 프록시가 MemberRepository를 구현하는 관계</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">공통 인터페이스 — 상속 관계와 구현 클래스</text>
+  <text x="730" y="42" class="sub" text-anchor="end">스프링 부트 <tspan font-family="Menlo, Consolas, monospace">2.6.7</tspan> 프로젝트</text>
+  <rect x="150" y="70" width="400" height="56" rx="8" class="box"/>
+  <text x="350.0" y="93" class="mb" text-anchor="middle">PagingAndSortingRepository</text>
+  <text x="350.0" y="113" class="ms" text-anchor="middle">PagingAndSortingRepository&lt;T, ID&gt;</text>
+  <text x="30" y="103" class="sub">상위 인터페이스</text>
+  <rect x="150" y="170" width="400" height="56" rx="8" class="box"/>
+  <text x="350.0" y="193" class="mb" text-anchor="middle">JpaRepository</text>
+  <text x="350.0" y="213" class="sub" text-anchor="middle">공통 CRUD 제공</text>
+  <text x="30" y="203" class="sub">스프링 데이터 JPA</text>
+  <rect x="150" y="270" width="400" height="56" rx="8" class="ok"/>
+  <text x="350.0" y="293" class="okm" text-anchor="middle">MemberRepository</text>
+  <text x="350.0" y="313" class="ms" text-anchor="middle">extends JpaRepository&lt;Member, Long&gt;</text>
+  <text x="30" y="303" class="okt">직접 작성</text>
+  <line x1="350.0" y1="169" x2="350.0" y2="129" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="360.0" y="152" class="sub">extends</text>
+  <line x1="350.0" y1="269" x2="350.0" y2="229" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="360.0" y="252" class="sub">extends</text>
+  <rect x="596" y="266" width="134" height="64" rx="8" class="ok"/>
+  <text x="663" y="292" class="okt" text-anchor="middle">구현 클래스</text>
+  <text x="663" y="312" class="okm" text-anchor="middle">$ProxyXXX</text>
+  <line x1="594" y1="298" x2="554" y2="298" stroke="#16a34a" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#agr)"/>
+  <text x="663" y="254" class="sub" text-anchor="middle">implements</text>
+  <text x="30" y="362" class="foot">인터페이스는 상속만 선언하고, 구현 클래스는 스프링 데이터 JPA가 프록시로 만들어 주입합니다.</text>
+</svg>

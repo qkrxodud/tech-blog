@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 314" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>member1(10), member2(20)는 teamA로, member3(30), member4(40)는 teamB로 묶여 teamA는 평균 나이 15, teamB는 평균 나이 35가 되는 groupBy(team.name) 결과</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="314" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="294" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">groupBy — 팀 이름으로 묶어 평균 나이 계산</text>
+  <text x="730" y="42" class="code" text-anchor="end">groupBy(team.name)</text>
+  <rect x="30" y="64" width="400" height="92" rx="10" class="cont"/>
+  <text x="46" y="88" class="t">teamA</text>
+  <rect x="120" y="76" width="140" height="66" rx="8" class="box"/>
+  <text x="190" y="102" class="opm" text-anchor="middle">member1</text>
+  <text x="190" y="124" class="val" text-anchor="middle">age 10</text>
+  <rect x="274" y="76" width="140" height="66" rx="8" class="box"/>
+  <text x="344" y="102" class="opm" text-anchor="middle">member2</text>
+  <text x="344" y="124" class="val" text-anchor="middle">age 20</text>
+  <rect x="30" y="172" width="400" height="92" rx="10" class="cont"/>
+  <text x="46" y="196" class="t">teamB</text>
+  <rect x="120" y="184" width="140" height="66" rx="8" class="box"/>
+  <text x="190" y="210" class="opm" text-anchor="middle">member3</text>
+  <text x="190" y="232" class="val" text-anchor="middle">age 30</text>
+  <rect x="274" y="184" width="140" height="66" rx="8" class="box"/>
+  <text x="344" y="210" class="opm" text-anchor="middle">member4</text>
+  <text x="344" y="232" class="val" text-anchor="middle">age 40</text>
+  <rect x="490" y="80" width="240" height="60" rx="8" class="ok"/>
+  <text x="610" y="106" class="okt" text-anchor="middle">teamA</text>
+  <text x="610" y="126" class="val" text-anchor="middle">평균 나이 15</text>
+  <rect x="490" y="188" width="240" height="60" rx="8" class="ok"/>
+  <text x="610" y="214" class="okt" text-anchor="middle">teamB</text>
+  <text x="610" y="234" class="val" text-anchor="middle">평균 나이 35</text>
+  <line x1="432" y1="110" x2="488" y2="110" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="432" y1="218" x2="488" y2="218" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="290" class="foot">select(team.name, member.age.avg())의 결과가 팀마다 Tuple 한 건씩 만들어집니다.</text>
+</svg>

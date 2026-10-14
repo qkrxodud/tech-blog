@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 372" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>findByUserNameAndAgeGreaterThan 메소드 이름을 find, By, UserName, And, AgeGreaterThan으로 나누어 userName 같음 조건과 age 초과 조건을 만들고, AAA와 15로 실행하면 m1(AAA, 10)은 빠지고 m2(AAA, 20)만 조회된다는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="372" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="222" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">메소드 이름으로 쿼리 생성 — 이름을 나눠 조건으로</text>
+  <text x="730" y="42" class="code" text-anchor="end">MemberRepository</text>
+  <rect x="80" y="64" width="70" height="52" rx="8" class="box"/>
+  <text x="115" y="86" class="op" text-anchor="middle">find</text>
+  <text x="115" y="105" class="val" text-anchor="middle">조회</text>
+  <rect x="170" y="64" width="80" height="52" rx="8" class="box"/>
+  <text x="210" y="86" class="op" text-anchor="middle">By</text>
+  <text x="210" y="105" class="val" text-anchor="middle">조건 시작</text>
+  <rect x="270" y="64" width="130" height="52" rx="8" class="hold"/>
+  <text x="335" y="86" class="op" text-anchor="middle">UserName</text>
+  <text x="335" y="105" class="val" text-anchor="middle">같음 (=)</text>
+  <rect x="420" y="64" width="70" height="52" rx="8" class="box"/>
+  <text x="455" y="86" class="op" text-anchor="middle">And</text>
+  <text x="455" y="105" class="val" text-anchor="middle">그리고</text>
+  <rect x="510" y="64" width="170" height="52" rx="8" class="hold"/>
+  <text x="595" y="86" class="op" text-anchor="middle">AgeGreaterThan</text>
+  <text x="595" y="105" class="val" text-anchor="middle">초과 (&gt;)</text>
+  <line x1="335" y1="118" x2="335" y2="148" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <line x1="595" y1="118" x2="595" y2="148" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="80" y="152" width="600" height="60" rx="8" class="ok"/>
+  <text x="380" y="175" class="gnote" text-anchor="middle">스프링 데이터 JPA가 만든 JPQL에 호출 값 AAA, 15를 넣어 보면</text>
+  <text x="380" y="198" class="mono" text-anchor="middle">select m from Member m where m.userName = 'AAA' and m.age &gt; 15</text>
+  <rect x="10" y="248" width="740" height="114" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="280" class="h">실행 결과 — findByUserNameAndAgeGreaterThan("AAA", 15)</text>
+  <rect x="30" y="296" width="340" height="52" rx="8" class="bad"/>
+  <text x="200" y="318" class="badc" text-anchor="middle">m1 = Member("AAA", 10)</text>
+  <text x="200" y="337" class="note" text-anchor="middle">age 10은 15보다 크지 않아 제외</text>
+  <rect x="390" y="296" width="340" height="52" rx="8" class="ok"/>
+  <text x="560" y="318" class="okc" text-anchor="middle">m2 = Member("AAA", 20)</text>
+  <text x="560" y="337" class="val" text-anchor="middle">조건을 만족해 조회됨 (result.get(0))</text>
+</svg>

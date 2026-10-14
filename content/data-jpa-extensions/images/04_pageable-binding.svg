@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 336" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>/members?page=0&amp;size=3&amp;sort=id,desc&amp;sort=username,desc 요청을 스프링 MVC가 page 0, size 3, id 내림차순과 username 내림차순 정렬을 담은 PageRequest로 만들어 컨트롤러의 Pageable 파라미터로 넘기고, memberRepository.findAll(pageable)이 Page를 돌려주면 map으로 MemberDto로 바꿔 응답한다는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="336" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="316" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Pageable 바인딩 — 요청 파라미터에서 응답까지</text>
+  <text x="730" y="42" class="code" text-anchor="end">list(Pageable pageable)</text>
+  <rect x="30" y="62" width="700" height="48" rx="8" class="box"/>
+  <text x="50" y="91" class="t">요청</text>
+  <text x="400" y="91" class="mono" text-anchor="middle">/members?page=0&amp;size=3&amp;sort=id,desc&amp;sort=username,desc</text>
+  <line x1="140" y1="112" x2="140" y2="136" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <text x="150" y="129" class="sub">스프링 MVC가 Pageable로 바인딩</text>
+  <rect x="30" y="140" width="220" height="112" rx="8" class="hold"/>
+  <text x="140" y="164" class="op" text-anchor="middle">PageRequest</text>
+  <text x="140" y="188" class="val" text-anchor="middle">page: 0</text>
+  <text x="140" y="208" class="val" text-anchor="middle">size: 3</text>
+  <text x="140" y="228" class="val" text-anchor="middle">sort: id DESC, username DESC</text>
+  <line x1="252" y1="196" x2="276" y2="196" class="axis" marker-end="url(#ar)"/>
+  <rect x="280" y="166" width="220" height="60" rx="8" class="box"/>
+  <text x="390" y="190" class="t" text-anchor="middle">리포지토리 조회</text>
+  <text x="390" y="211" class="mono" text-anchor="middle">findAll(pageable)</text>
+  <line x1="502" y1="196" x2="526" y2="196" class="axis" marker-end="url(#ar)"/>
+  <rect x="530" y="166" width="200" height="60" rx="8" class="ok"/>
+  <text x="630" y="190" class="okt" text-anchor="middle">DTO로 변환해 응답</text>
+  <text x="630" y="211" class="mono" text-anchor="middle">map(MemberDto::new)</text>
+  <text x="30" y="282" class="sub">page는 0부터 시작하고, 정렬 조건을 더하려면 sort 파라미터를 추가합니다.</text>
+  <text x="30" y="304" class="sub">값을 보내지 않으면 기본값(default-page-size 20)이나 @PageableDefault 설정을 사용합니다.</text>
+</svg>

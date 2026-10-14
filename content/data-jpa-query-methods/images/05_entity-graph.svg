@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 352" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>지연 로딩인 findAll은 회원 조회 쿼리 1번 뒤에 team에 접근할 때마다 team 조회 쿼리가 더 나가 1 + N번이 되고, @EntityGraph(attributePaths = team)를 붙인 findAll은 left outer join으로 회원과 팀을 쿼리 1번에 함께 가져온다는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="352" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">지연 로딩 — team에 접근할 때마다 쿼리</text>
+  <text x="730" y="42" class="code" text-anchor="end">findAll()</text>
+  <rect x="30" y="62" width="150" height="52" rx="8" class="box"/>
+  <text x="105" y="84" class="t" text-anchor="middle">회원 조회</text>
+  <text x="105" y="103" class="mono" text-anchor="middle">select member</text>
+  <line x1="182" y1="88" x2="206" y2="88" class="axis" marker-end="url(#ar)"/>
+  <rect x="210" y="62" width="150" height="52" rx="8" class="bad"/>
+  <text x="285" y="84" class="badt" text-anchor="middle">team 조회</text>
+  <text x="285" y="103" class="val" text-anchor="middle">첫 번째 회원의 팀</text>
+  <line x1="362" y1="88" x2="386" y2="88" class="axis" marker-end="url(#ar)"/>
+  <rect x="390" y="62" width="150" height="52" rx="8" class="bad"/>
+  <text x="465" y="84" class="badt" text-anchor="middle">team 조회</text>
+  <text x="465" y="103" class="val" text-anchor="middle">두 번째 회원의 팀</text>
+  <line x1="542" y1="88" x2="566" y2="88" class="axis" marker-end="url(#ar)"/>
+  <rect x="570" y="62" width="150" height="52" rx="8" class="bad"/>
+  <text x="645" y="84" class="badt" text-anchor="middle">team 조회 …</text>
+  <text x="645" y="103" class="val" text-anchor="middle">필요한 팀마다 반복</text>
+  <rect x="270" y="126" width="220" height="30" rx="15" class="bad"/>
+  <text x="380" y="146" class="badt" text-anchor="middle">쿼리 1 + N번 (N+1 문제)</text>
+  <rect x="10" y="186" width="740" height="156" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="218" class="h">@EntityGraph — 회원과 팀을 한 번에</text>
+  <text x="730" y="218" class="code" text-anchor="end">attributePaths = {"team"}</text>
+  <rect x="30" y="238" width="510" height="52" rx="8" class="ok"/>
+  <text x="285" y="260" class="okt" text-anchor="middle">회원 조회 + 팀 함께 조회</text>
+  <text x="285" y="279" class="mono" text-anchor="middle">select member left outer join team</text>
+  <line x1="542" y1="264" x2="566" y2="264" class="axis" marker-end="url(#ar)"/>
+  <rect x="570" y="238" width="150" height="52" rx="8" class="hold"/>
+  <text x="645" y="260" class="t" text-anchor="middle">team 접근</text>
+  <text x="645" y="279" class="val" text-anchor="middle">추가 쿼리 없음</text>
+  <rect x="270" y="302" width="220" height="30" rx="15" class="ok"/>
+  <text x="380" y="322" class="okt" text-anchor="middle">쿼리 1번 (페치 조인과 같음)</text>
+</svg>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>member.username에 as name을 붙여 UserDto의 name 필드에, 서브 쿼리 subMember.age.max 결과에 ExpressionUtils.as로 age 별칭을 붙여 UserDto의 age 필드에 넣는 연결</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="300" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="280" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">별칭이 다를 때 — 별칭을 DTO 필드 이름에 맞춤</text>
+  <text x="730" y="42" class="code" text-anchor="end">Projections.fields(UserDto.class, …)</text>
+  <text x="30" y="76" class="step" text-anchor="start">select 식</text>
+  <text x="380" y="76" class="step" text-anchor="start">별칭</text>
+  <text x="560" y="76" class="step" text-anchor="start">UserDto 필드</text>
+  <rect x="30" y="88" width="320" height="52" rx="8" class="box"/>
+  <text x="190.0" y="119.0" class="opm" text-anchor="middle">member.username.as("name")</text>
+  <rect x="380" y="88" width="150" height="52" rx="8" class="hold"/>
+  <text x="455.0" y="119.0" class="opm" text-anchor="middle">"name"</text>
+  <rect x="560" y="88" width="170" height="52" rx="8" class="ok"/>
+  <text x="645.0" y="109.5" class="okm" text-anchor="middle">name</text>
+  <text x="645.0" y="128.5" class="sub" text-anchor="middle">String</text>
+  <line x1="350" y1="114" x2="376" y2="114" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="530" y1="114" x2="556" y2="114" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="30" y="156" width="320" height="62" rx="8" class="box"/>
+  <text x="190.0" y="173.0" class="m" text-anchor="middle">ExpressionUtils.as(</text>
+  <text x="190.0" y="192.0" class="m" text-anchor="middle">select(subMember.age.max())</text>
+  <text x="190.0" y="211.0" class="m" text-anchor="middle">.from(subMember), "age")</text>
+  <rect x="380" y="161" width="150" height="52" rx="8" class="hold"/>
+  <text x="455.0" y="192.0" class="opm" text-anchor="middle">"age"</text>
+  <rect x="560" y="161" width="170" height="52" rx="8" class="ok"/>
+  <text x="645.0" y="182.5" class="okm" text-anchor="middle">age</text>
+  <text x="645.0" y="201.5" class="sub" text-anchor="middle">int</text>
+  <line x1="350" y1="187" x2="376" y2="187" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="530" y1="187" x2="556" y2="187" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="250" class="foot" text-anchor="start">프로퍼티·필드 접근 방식은 이름으로 값을 넣으므로, 엔티티와 이름이 다른 필드에는 DTO 필드 이름을 별칭으로 붙입니다</text>
+  <text x="30" y="270" class="foot" text-anchor="start">이름이 없는 서브 쿼리 결과에는 ExpressionUtils.as(source, alias)로 별칭을 붙입니다</text>
+</svg>

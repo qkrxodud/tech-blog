@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 462" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>나이가 10인 회원 5명을 userName 내림차순, 0페이지 3건으로 조회할 때 Page는 member5, member4, member3과 count 쿼리로 전체 5건과 2페이지를 알고, Slice는 count 쿼리 없이 limit + 1로 4건을 조회해 다음 페이지 여부만 알며, List는 count 쿼리 없이 3건만 받는다는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="462" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="176" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">조회 대상 — age 10, userName 내림차순</text>
+  <text x="730" y="42" class="code" text-anchor="end">PageRequest.of(0, 3)</text>
+  <rect x="65" y="66" width="110" height="44" rx="8" class="ok"/>
+  <text x="120" y="93" class="okc" text-anchor="middle">member5</text>
+  <rect x="195" y="66" width="110" height="44" rx="8" class="ok"/>
+  <text x="250" y="93" class="okc" text-anchor="middle">member4</text>
+  <rect x="325" y="66" width="110" height="44" rx="8" class="ok"/>
+  <text x="380" y="93" class="okc" text-anchor="middle">member3</text>
+  <rect x="455" y="66" width="110" height="44" rx="8" class="wait"/>
+  <text x="510" y="93" class="op" text-anchor="middle">member2</text>
+  <rect x="585" y="66" width="110" height="44" rx="8" class="box"/>
+  <text x="640" y="93" class="op" text-anchor="middle">member1</text>
+  <line x1="65" y1="126" x2="435" y2="126" stroke="#16a34a" stroke-width="1.6"/>
+  <line x1="65" y1="120" x2="65" y2="126" stroke="#16a34a" stroke-width="1.6"/>
+  <line x1="435" y1="120" x2="435" y2="126" stroke="#16a34a" stroke-width="1.6"/>
+  <text x="250" y="146" class="gnote" text-anchor="middle">0페이지 — 3건</text>
+  <text x="510" y="132" class="waitt" text-anchor="middle">Slice만 한 건 더</text>
+  <text x="510" y="150" class="waitt" text-anchor="middle">조회 (limit + 1)</text>
+  <text x="30" y="174" class="sub">전체 5건이므로 페이지당 3건이면 0페이지(3건)와 1페이지(2건), 모두 2페이지가 됩니다.</text>
+  <rect x="10" y="202" width="740" height="250" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="234" class="h">반환 타입 — Page, Slice, List</text>
+  <text x="225" y="260" class="step" text-anchor="middle">목록 쿼리</text>
+  <text x="440" y="260" class="step" text-anchor="middle">받는 결과</text>
+  <text x="645" y="260" class="step" text-anchor="middle">count 쿼리</text>
+  <text x="30" y="296" class="lane">Page</text>
+  <text x="30" y="314" class="sub">count 사용</text>
+  <rect x="140" y="272" width="170" height="52" rx="8" class="box"/>
+  <text x="225" y="294" class="t" text-anchor="middle">목록 조회</text>
+  <text x="225" y="313" class="mono" text-anchor="middle">limit 3</text>
+  <line x1="312" y1="298" x2="336" y2="298" class="axis" marker-end="url(#ar)"/>
+  <rect x="340" y="272" width="200" height="52" rx="8" class="hold"/>
+  <text x="440" y="294" class="t" text-anchor="middle">member5, 4, 3</text>
+  <text x="440" y="313" class="val" text-anchor="middle">getContent()</text>
+  <rect x="560" y="272" width="170" height="52" rx="8" class="ok"/>
+  <text x="645" y="294" class="okt" text-anchor="middle">count 실행</text>
+  <text x="645" y="313" class="val" text-anchor="middle">전체 5건 · 2페이지</text>
+  <text x="30" y="356" class="lane">Slice</text>
+  <text x="30" y="374" class="sub">count 없음</text>
+  <rect x="140" y="332" width="170" height="52" rx="8" class="box"/>
+  <text x="225" y="354" class="t" text-anchor="middle">목록 조회</text>
+  <text x="225" y="373" class="mono" text-anchor="middle">limit 4</text>
+  <line x1="312" y1="358" x2="336" y2="358" class="axis" marker-end="url(#ar)"/>
+  <rect x="340" y="332" width="200" height="52" rx="8" class="hold"/>
+  <text x="440" y="354" class="t" text-anchor="middle">4건 중 3건 반환</text>
+  <text x="440" y="373" class="val" text-anchor="middle">hasNext() true</text>
+  <rect x="560" y="332" width="170" height="52" rx="8" class="wait"/>
+  <text x="645" y="354" class="waitt" text-anchor="middle">count 없음</text>
+  <text x="645" y="373" class="val" text-anchor="middle">전체 개수 모름</text>
+  <text x="30" y="416" class="lane">List</text>
+  <text x="30" y="434" class="sub">count 없음</text>
+  <rect x="140" y="392" width="170" height="52" rx="8" class="box"/>
+  <text x="225" y="414" class="t" text-anchor="middle">목록 조회</text>
+  <text x="225" y="433" class="mono" text-anchor="middle">limit 3</text>
+  <line x1="312" y1="418" x2="336" y2="418" class="axis" marker-end="url(#ar)"/>
+  <rect x="340" y="392" width="200" height="52" rx="8" class="hold"/>
+  <text x="440" y="414" class="t" text-anchor="middle">member5, 4, 3</text>
+  <text x="440" y="433" class="val" text-anchor="middle">결과만 반환</text>
+  <rect x="560" y="392" width="170" height="52" rx="8" class="wait"/>
+  <text x="645" y="414" class="waitt" text-anchor="middle">count 없음</text>
+  <text x="645" y="433" class="val" text-anchor="middle">전체 개수 모름</text>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Hello 엔티티를 compileQuerydsl 작업이 읽어 build/generated/querydsl 폴더에 QHello를 만들고, sourceSets로 소스 폴더에 추가된 QHello를 테스트 코드가 사용해 Hello를 조회하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="340" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Q타입 생성 — 엔티티에서 QHello가 만들어져 테스트에서 쓰이기까지</text>
+  <text x="30" y="72" class="step">빌드</text>
+  <rect x="30" y="82" width="210" height="72" rx="8" class="box"/>
+  <text x="135" y="106" class="t" text-anchor="middle">엔티티</text>
+  <text x="135" y="126" class="opm" text-anchor="middle">Hello</text>
+  <text x="135" y="144" class="val" text-anchor="middle">@Entity</text>
+  <rect x="275" y="82" width="210" height="72" rx="8" class="hold"/>
+  <text x="380" y="108" class="opm" text-anchor="middle">compileQuerydsl</text>
+  <text x="380" y="130" class="val" text-anchor="middle">querydsl-apt가 엔티티를 읽음</text>
+  <rect x="520" y="82" width="210" height="72" rx="8" class="ok"/>
+  <text x="625" y="106" class="okm" text-anchor="middle">QHello</text>
+  <text x="625" y="126" class="val" text-anchor="middle">생성 위치</text>
+  <text x="625" y="144" class="m" text-anchor="middle">build/generated/querydsl</text>
+  <line x1="240" y1="118" x2="273" y2="118" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="485" y1="118" x2="518" y2="118" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="192" class="step">테스트</text>
+  <rect x="520" y="202" width="210" height="72" rx="8" class="box"/>
+  <text x="625" y="228" class="opm" text-anchor="middle">sourceSets</text>
+  <text x="625" y="250" class="val" text-anchor="middle">생성 폴더를 소스 폴더로 추가</text>
+  <rect x="275" y="202" width="210" height="72" rx="8" class="box"/>
+  <text x="380" y="226" class="ts" text-anchor="middle">QuerydslApplicationTest</text>
+  <text x="380" y="246" class="m" text-anchor="middle">QHello.hello</text>
+  <text x="380" y="264" class="val" text-anchor="middle">import해서 쿼리 작성</text>
+  <rect x="30" y="202" width="210" height="72" rx="8" class="ok"/>
+  <text x="135" y="226" class="okm" text-anchor="middle">fetchOne()</text>
+  <text x="135" y="246" class="val" text-anchor="middle">저장한 hello와 같은 결과</text>
+  <text x="135" y="264" class="val" text-anchor="middle">Q타입·롬복 동작 확인</text>
+  <line x1="625" y1="154" x2="625" y2="200" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="520" y1="238" x2="487" y2="238" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="275" y1="238" x2="242" y2="238" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="308" class="foot">Q타입은 소스 코드가 아니라 빌드 결과 폴더에 생성되므로 sourceSets 설정이 있어야 import할 수 있습니다.</text>
+</svg>

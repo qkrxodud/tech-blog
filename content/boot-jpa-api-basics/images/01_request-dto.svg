@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 446" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>V1은 요청 JSON을 Member 엔티티에 바로 매핑해 엔티티가 바뀌면 API 스펙도 바뀌고, V2는 CreateMemberRequest로 받아 Member로 옮긴 뒤 CreateMemberResponse로 id만 돌려주어 엔티티와 API 스펙이 분리되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .vm { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .jm { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="446" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="196" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">회원 등록 V1 — 요청을 엔티티로 직접 받음</text>
+  <text x="730" y="42" class="code" text-anchor="end">@RequestBody Member</text>
+  <rect x="40" y="70" width="160" height="56" rx="8" class="box"/>
+  <text x="120" y="94" class="t" text-anchor="middle">요청 JSON</text>
+  <text x="120" y="113" class="vm" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">{"name": …}</tspan></text>
+  <rect x="260" y="70" width="220" height="56" rx="8" class="bad"/>
+  <text x="370" y="94" class="badt" text-anchor="middle">Member 엔티티</text>
+  <text x="370" y="113" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">@NotEmpty</tspan> 등 검증 로직</text>
+  <rect x="540" y="70" width="180" height="56" rx="8" class="box"/>
+  <text x="630" y="94" class="m" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">join(member)</tspan></text>
+  <text x="630" y="113" class="val" text-anchor="middle">회원 저장</text>
+  <line x1="200" y1="98" x2="258" y2="98" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="480" y1="98" x2="538" y2="98" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="40" y="146" width="680" height="40" rx="6" class="bad"/>
+  <text x="380" y="171" class="note" text-anchor="middle">엔티티 필드를 바꾸면 요청 JSON 스펙도 함께 바뀜 → API 사이드 이펙트</text>
+  <rect x="10" y="222" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="254" class="h">회원 등록 V2 — 요청·응답 DTO 분리</text>
+  <text x="730" y="254" class="code" text-anchor="end">/api/v2/members</text>
+  <rect x="30" y="282" width="130" height="56" rx="8" class="box"/>
+  <text x="95" y="306" class="t" text-anchor="middle">요청 JSON</text>
+  <text x="95" y="325" class="vm" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">{"name": …}</tspan></text>
+  <rect x="175" y="282" width="175" height="56" rx="8" class="ok"/>
+  <text x="262.5" y="306" class="okt" text-anchor="middle">요청 DTO</text>
+  <text x="262.5" y="325" class="vm" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">CreateMemberRequest</tspan></text>
+  <rect x="365" y="282" width="175" height="56" rx="8" class="box"/>
+  <text x="452.5" y="306" class="t" text-anchor="middle">Member 엔티티</text>
+  <text x="452.5" y="325" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">setName()</tspan>, <tspan font-family="Menlo, Consolas, monospace">join()</tspan></text>
+  <rect x="555" y="282" width="175" height="56" rx="8" class="ok"/>
+  <text x="642.5" y="306" class="okt" text-anchor="middle">응답 DTO</text>
+  <text x="642.5" y="325" class="vm" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">CreateMemberResponse</tspan></text>
+  <line x1="160" y1="310" x2="173" y2="310" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="350" y1="310" x2="363" y2="310" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="540" y1="310" x2="553" y2="310" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="40" y="358" width="680" height="40" rx="6" class="ok"/>
+  <text x="380" y="383" class="gnote" text-anchor="middle">API 스펙은 DTO가 맡음 → Member 엔티티를 고쳐도 요청·응답 형식은 그대로</text>
+  <text x="40" y="420" class="foot">응답 DTO에는 저장한 회원의 id만 담아 돌려줍니다.</text>
+</svg>

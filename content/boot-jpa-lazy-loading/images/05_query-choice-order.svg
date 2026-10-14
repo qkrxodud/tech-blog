@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>엔티티를 DTO로 변환하는 방법에서 시작해, 필요하면 페치 조인으로 최적화하고, 그래도 안 되면 DTO로 직접 조회하며, 최후에는 네이티브 SQL이나 스프링 JDBC Template을 사용하는 쿼리 방식 선택 순서</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .vm { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .jm { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">쿼리 방식 선택 — 권장 순서</text>
+  <rect x="30" y="66" width="160" height="52" rx="8" class="ok"/>
+  <text x="110" y="88" class="okt" text-anchor="middle">1. 엔티티 → DTO 변환</text>
+  <text x="110" y="107" class="val" text-anchor="middle">우선 선택</text>
+  <path d="M110,119 L110,150 L194,150" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="196" y="124" width="160" height="52" rx="8" class="ok"/>
+  <text x="276" y="146" class="okt" text-anchor="middle">2. 페치 조인 최적화</text>
+  <text x="276" y="165" class="val" text-anchor="middle">대부분 여기서 해결</text>
+  <path d="M276,177 L276,208 L360,208" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="362" y="182" width="160" height="52" rx="8" class="box"/>
+  <text x="442" y="204" class="t" text-anchor="middle">3. DTO 직접 조회</text>
+  <text x="442" y="223" class="val" text-anchor="middle">그래도 안 되면</text>
+  <path d="M442,235 L442,266 L526,266" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="528" y="240" width="202" height="52" rx="8" class="hold"/>
+  <text x="629" y="262" class="t" text-anchor="middle">4. SQL 직접 사용</text>
+  <text x="629" y="281" class="val" text-anchor="middle">네이티브 SQL, JDBC Template</text>
+  <text x="30" y="326" class="foot">앞 단계에서 해결되지 않을 때만 다음 단계로 내려갑니다. 대부분은 2단계에서 해결됩니다.</text>
+</svg>

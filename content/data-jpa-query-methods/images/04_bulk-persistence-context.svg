@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>age가 20인 회원이 영속성 컨텍스트에 있을 때 벌크 연산은 DB만 21로 바꾸고, clearAutomatically 없이 findById로 다시 조회하면 영속성 컨텍스트에 남은 20을 그대로 돌려주지만, clearAutomatically = true면 벌크 연산 직후 영속성 컨텍스트를 비워 DB에서 21을 다시 읽어 온다는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="210" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">초기화하지 않으면 — 과거 값을 읽음</text>
+  <text x="730" y="42" class="code" text-anchor="end">@Modifying</text>
+  <text x="260" y="68" class="step" text-anchor="middle">1. save 후</text>
+  <text x="450" y="68" class="step" text-anchor="middle">2. bulkAgePlus(20)</text>
+  <text x="640" y="68" class="step" text-anchor="middle">3. findById</text>
+  <line x1="170" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">영속성</text>
+  <text x="30" y="128" class="sub">컨텍스트</text>
+  <rect x="170" y="84" width="565" height="56" rx="6" class="track"/>
+  <text x="30" y="178" class="lane">DB</text>
+  <text x="30" y="196" class="sub">member 테이블</text>
+  <rect x="170" y="152" width="565" height="56" rx="6" class="track"/>
+  <rect x="185" y="88" width="150" height="48" rx="8" class="hold"/>
+  <text x="260" y="108" class="t" text-anchor="middle">member1</text>
+  <text x="260" y="127" class="val" text-anchor="middle">age 20</text>
+  <rect x="375" y="88" width="150" height="48" rx="8" class="hold"/>
+  <text x="450" y="108" class="t" text-anchor="middle">그대로 남음</text>
+  <text x="450" y="127" class="val" text-anchor="middle">age 20</text>
+  <rect x="565" y="88" width="150" height="48" rx="8" class="bad"/>
+  <text x="640" y="108" class="badt" text-anchor="middle">1차 캐시에서 반환</text>
+  <text x="640" y="127" class="val" text-anchor="middle">age 20 (과거 값)</text>
+  <rect x="185" y="156" width="150" height="48" rx="8" class="dbbox"/>
+  <text x="260" y="176" class="t" text-anchor="middle">member1</text>
+  <text x="260" y="195" class="val" text-anchor="middle">age 20</text>
+  <rect x="375" y="156" width="150" height="48" rx="8" class="ok"/>
+  <text x="450" y="176" class="okt" text-anchor="middle">update 실행</text>
+  <text x="450" y="195" class="val" text-anchor="middle">age 21</text>
+  <rect x="565" y="164" width="150" height="32" rx="6" class="wait"/>
+  <text x="640" y="185" class="waitt" text-anchor="middle">조회하지 않음</text>
+  <line x1="450" y1="151" x2="450" y2="142" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="462" y="151" class="note">반영 안 됨</text>
+  <rect x="10" y="236" width="740" height="210" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="268" class="h">clearAutomatically = true — 비운 뒤 다시 조회</text>
+  <text x="730" y="268" class="code" text-anchor="end">@Modifying</text>
+  <text x="260" y="294" class="step" text-anchor="middle">1. save 후</text>
+  <text x="450" y="294" class="step" text-anchor="middle">2. bulkAgePlus(20)</text>
+  <text x="640" y="294" class="step" text-anchor="middle">3. findById</text>
+  <line x1="170" y1="302" x2="722" y2="302" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="336" class="lane">영속성</text>
+  <text x="30" y="354" class="sub">컨텍스트</text>
+  <rect x="170" y="310" width="565" height="56" rx="6" class="track"/>
+  <text x="30" y="404" class="lane">DB</text>
+  <text x="30" y="422" class="sub">member 테이블</text>
+  <rect x="170" y="378" width="565" height="56" rx="6" class="track"/>
+  <rect x="185" y="314" width="150" height="48" rx="8" class="hold"/>
+  <text x="260" y="334" class="t" text-anchor="middle">member1</text>
+  <text x="260" y="353" class="val" text-anchor="middle">age 20</text>
+  <rect x="375" y="322" width="150" height="32" rx="6" class="wait"/>
+  <text x="450" y="343" class="waitt" text-anchor="middle">비움 (clear)</text>
+  <rect x="565" y="314" width="150" height="48" rx="8" class="ok"/>
+  <text x="640" y="334" class="okt" text-anchor="middle">다시 읽어 저장</text>
+  <text x="640" y="353" class="val" text-anchor="middle">age 21</text>
+  <rect x="185" y="382" width="150" height="48" rx="8" class="dbbox"/>
+  <text x="260" y="402" class="t" text-anchor="middle">member1</text>
+  <text x="260" y="421" class="val" text-anchor="middle">age 20</text>
+  <rect x="375" y="382" width="150" height="48" rx="8" class="ok"/>
+  <text x="450" y="402" class="okt" text-anchor="middle">update 실행</text>
+  <text x="450" y="421" class="val" text-anchor="middle">age 21</text>
+  <rect x="565" y="382" width="150" height="48" rx="8" class="dbbox"/>
+  <text x="640" y="402" class="t" text-anchor="middle">select 실행</text>
+  <text x="640" y="421" class="val" text-anchor="middle">age 21</text>
+  <line x1="640" y1="380" x2="640" y2="364" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+</svg>
