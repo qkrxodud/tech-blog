@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>product 테이블 한 행에 image 테이블 여러 행이 product_id로 연결되고, image 테이블에 image_id, list_idx, image_type 칼럼이 추가된 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .ster { font-size: 11.5px; font-style: italic; fill: #6b7280; }
+    .cls { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .attr { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .sep { stroke: #d1d5db; stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="dia" viewBox="0 0 16 10" refX="1" refY="5" markerWidth="14" markerHeight="9" orient="auto">
+      <path d="M1,5 L8,1 L15,5 L8,9 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="340" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Image를 @Entity로 매핑한 테이블 — 식별자와 타입 칼럼 추가</text>
+  <text x="730" y="42" class="code" text-anchor="end">SINGLE_TABLE</text>
+  <rect x="60" y="80" width="220" height="62" rx="6" class="dbbox"/>
+  <text x="170.0" y="101" class="db" text-anchor="middle">product</text>
+  <line x1="60" y1="110" x2="280" y2="110" class="sep"/>
+  <text x="72" y="131" class="attr">product_id</text>
+  <rect x="420" y="70" width="240" height="182" rx="6" class="dbbox"/>
+  <text x="540.0" y="91" class="db" text-anchor="middle">image</text>
+  <line x1="420" y1="100" x2="660" y2="100" class="sep"/>
+  <rect x="424" y="104" width="232" height="22" rx="4" class="ok"/>
+  <text x="432" y="121" class="attr">image_id</text>
+  <text x="432" y="145" class="attr">product_id</text>
+  <text x="432" y="169" class="attr">list_idx</text>
+  <rect x="424" y="176" width="232" height="22" rx="4" class="ok"/>
+  <text x="432" y="193" class="attr">image_type</text>
+  <text x="432" y="217" class="attr">image_path</text>
+  <text x="432" y="241" class="attr">upload_time</text>
+  <line x1="282" y1="126" x2="416" y2="126" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="292" y="118" class="sub">1</text>
+  <text x="400" y="118" class="sub" text-anchor="end">N</text>
+  <text x="670" y="120" class="gnote">식별자</text>
+  <text x="670" y="192" class="gnote">II / EI</text>
+  <text x="30" y="284" class="sub">image_id는 식별자 매핑을 위해, image_type은 InternalImage와 ExternalImage를 구분하기 위해 추가한 칼럼입니다.</text>
+  <text x="30" y="304" class="sub">list_idx에는 @OrderColumn으로 List의 순서가 저장됩니다.</text>
+</svg>

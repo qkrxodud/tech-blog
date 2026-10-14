@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 452" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>and는 두 조건을 AND로, or는 OR로 묶고, not은 조건을 뒤집으며, where에 null을 넘기면 조건이 없는 스펙이 되어 뒤의 조건만 남고, null 스펙에 바로 and를 호출하면 NullPointerException이 나는 스펙 조합 결과</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .okc2 { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc2 { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .monos { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="452" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="432" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">스펙 조합 — 메서드마다 만들어지는 조건</text>
+  <text x="730" y="42" class="code" text-anchor="end">and / or / not / where</text>
+  <rect x="40" y="60" width="330" height="34" rx="6" class="dbbox"/>
+  <text x="56" y="82" class="val">조건1 <tspan font-family="Menlo, Consolas, monospace">spec1: ordererId = 'user1'</tspan></text>
+  <rect x="390" y="60" width="330" height="34" rx="6" class="dbbox"/>
+  <text x="406" y="82" class="val">조건2 <tspan font-family="Menlo, Consolas, monospace">spec2: orderDate BETWEEN</tspan></text>
+  <text x="190" y="122" class="step" text-anchor="middle">조합 코드</text>
+  <text x="560" y="122" class="step" text-anchor="middle">결과 조건</text>
+  <rect x="40" y="132" width="300" height="44" rx="8" class="box"/>
+  <text x="190" y="159" class="op2" text-anchor="middle">spec1.and(spec2)</text>
+  <line x1="344" y1="154" x2="396" y2="154" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="400" y="132" width="320" height="44" rx="8" class="ok"/>
+  <text x="560" y="159" class="okt" text-anchor="middle">조건1 AND 조건2</text>
+  <rect x="40" y="186" width="300" height="44" rx="8" class="box"/>
+  <text x="190" y="213" class="op2" text-anchor="middle">spec1.or(spec2)</text>
+  <line x1="344" y1="208" x2="396" y2="208" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="400" y="186" width="320" height="44" rx="8" class="ok"/>
+  <text x="560" y="213" class="okt" text-anchor="middle">조건1 OR 조건2</text>
+  <rect x="40" y="240" width="300" height="44" rx="8" class="box"/>
+  <text x="190" y="267" class="op2" text-anchor="middle">Specification.not(spec1)</text>
+  <line x1="344" y1="262" x2="396" y2="262" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="400" y="240" width="320" height="44" rx="8" class="ok"/>
+  <text x="560" y="267" class="okt" text-anchor="middle">NOT 조건1</text>
+  <rect x="40" y="294" width="300" height="44" rx="8" class="box"/>
+  <text x="190" y="313" class="op2" text-anchor="middle">where(null).and(spec2)</text>
+  <text x="190" y="330" class="val" text-anchor="middle">첫 스펙이 null</text>
+  <line x1="344" y1="316" x2="396" y2="316" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="400" y="294" width="320" height="44" rx="8" class="ok"/>
+  <text x="560" y="321" class="okt" text-anchor="middle">조건2만 적용 (null은 조건 없음)</text>
+  <rect x="40" y="348" width="300" height="44" rx="8" class="box"/>
+  <text x="190" y="367" class="op2" text-anchor="middle">nullableSpec.and(spec2)</text>
+  <text x="190" y="384" class="val" text-anchor="middle">nullableSpec이 null</text>
+  <line x1="344" y1="370" x2="396" y2="370" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="400" y="348" width="320" height="44" rx="8" class="bad"/>
+  <text x="560" y="375" class="badc" text-anchor="middle">NullPointerException</text>
+  <text x="40" y="422" class="sub">where()로 시작하면 첫 스펙이 null이어도 NullPointerException 없이 뒤의 조건만 적용됨</text>
+</svg>

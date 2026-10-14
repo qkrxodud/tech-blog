@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>응용 서비스가 도메인 서비스를 Order의 calculateAmounts에 전달하고, Order가 calculateDiscountAmounts로 할인액을 받아 paymentAmounts를 계산하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 11.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .src { font-size: 13px; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .grp { fill: #f3f4f6; stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 6 4; }
+    .pkg { fill: #ffffff; stroke: #c4c8ce; stroke-width: 1.2; }
+    .grpt { font-size: 13px; font-weight: 700; fill: #4b5563; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .edge { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">도메인 서비스 사용 — 응용 서비스가 전달하고 Order가 쓴다</text>
+  <text x="228" y="70" class="step" text-anchor="middle">1. 전달</text>
+  <text x="374" y="70" class="step" text-anchor="middle">2. 계산 시작</text>
+  <text x="520" y="70" class="step" text-anchor="middle">3. 할인액 계산</text>
+  <text x="666" y="70" class="step" text-anchor="middle">4. 결제 금액</text>
+  <line x1="160" y1="78" x2="735" y2="78" stroke="#c4c8ce" stroke-width="1.2" marker-end="url(#ar)"/>
+  <text x="30" y="114" class="lane">응용 서비스</text>
+  <text x="30" y="132" class="sub">서비스 객체 전달</text>
+  <rect x="150" y="88" width="585" height="60" rx="6" class="track"/>
+  <text x="30" y="190" class="lane">Order</text>
+  <text x="30" y="208" class="sub">주문 애그리거트</text>
+  <rect x="150" y="164" width="585" height="60" rx="6" class="track"/>
+  <text x="30" y="266" class="lane">도메인 서비스</text>
+  <text x="30" y="284" class="sub">할인 금액 계산</text>
+  <rect x="150" y="240" width="585" height="60" rx="6" class="track"/>
+  <rect x="160.0" y="94" width="136" height="48" rx="8" class="box"/>
+  <text x="228.0" y="113.5" class="ops" text-anchor="middle">disCalSvc</text>
+  <text x="228.0" y="132.5" class="val" text-anchor="middle">도메인 서비스 전달</text>
+  <rect x="306.0" y="170" width="136" height="48" rx="8" class="box"/>
+  <text x="374.0" y="189.5" class="ops" text-anchor="middle">calculateAmounts()</text>
+  <text x="374.0" y="208.5" class="val" text-anchor="middle">Order의 기능 실행</text>
+  <rect x="452.0" y="246" width="136" height="48" rx="8" class="box"/>
+  <text x="520.0" y="265.5" class="ops" text-anchor="middle">calculateDiscount</text>
+  <text x="520.0" y="284.5" class="ops" text-anchor="middle">Amounts()</text>
+  <rect x="598.0" y="170" width="136" height="48" rx="8" class="ok"/>
+  <text x="666.0" y="189.5" class="okc" text-anchor="middle">paymentAmounts</text>
+  <text x="666.0" y="208.5" class="val" text-anchor="middle">총액 − 할인 금액</text>
+  <line x1="258" y1="142" x2="344" y2="168" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="404" y1="218" x2="490" y2="244" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="550" y1="246" x2="636" y2="220" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="326" class="foot">할인 계산은 도메인 서비스가 맡고, 결제 금액을 정하는 주체는 Order 애그리거트입니다.</text>
+</svg>

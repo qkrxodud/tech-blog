@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>ShippingInfo의 받는 사람 이름·전화번호는 Receiver로, 주소 세 필드는 Address로 묶어 각각 하나의 밸류 타입으로 만드는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .pk { font-size: 15px; font-weight: 700; fill: #374151; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .st { font-size: 11px; fill: #9ca3af; font-style: italic; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .vm { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .iface { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 3; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkgw { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 6 5; }
+    .use { stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+    .flow { stroke: #9ca3af; stroke-width: 1.5; fill: none; }
+    .impl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .badl { stroke: #dc2626; stroke-width: 1.6; stroke-dasharray: 5 4; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; }
+    .node { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; fill: #6b7280; }
+    .glbl { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .rlbl { font-size: 12px; fill: #b91c1c; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#16a34a" stroke-width="1.4"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">밸류 타입 — 개념적으로 하나인 값을 묶는다</text>
+  <text x="730" y="42" class="code" text-anchor="end">ShippingInfo</text>
+  <rect x="30" y="70" width="280" height="236" rx="10" class="box"/>
+  <text x="170" y="96" class="op" text-anchor="middle">ShippingInfo</text>
+  <line x1="30" y1="110" x2="310" y2="110" class="axis"/>
+  <rect x="40" y="120" width="260" height="64" rx="6" class="ok"/>
+  <rect x="40" y="194" width="260" height="98" rx="6" class="ok"/>
+  <text x="54" y="146" class="vm">receiverName</text>
+  <text x="54" y="172" class="vm">receiverPhoneNumber</text>
+  <text x="54" y="220" class="vm">shippingAddress1</text>
+  <text x="54" y="246" class="vm">shippingAddress2</text>
+  <text x="54" y="272" class="vm">shippingZipcode</text>
+  <line x1="300" y1="152" x2="446" y2="125" class="impl" marker-end="url(#agr)"/>
+  <line x1="300" y1="243" x2="446" y2="234" class="impl" marker-end="url(#agr)"/>
+  <text x="380" y="98" class="glbl" text-anchor="middle">받는 사람</text>
+  <text x="380" y="196" class="glbl" text-anchor="middle">주소</text>
+  <rect x="450" y="80" width="280" height="90" rx="10" class="box"/>
+  <text x="590" y="104" class="op" text-anchor="middle">Receiver</text>
+  <line x1="450" y1="116" x2="730" y2="116" class="axis"/>
+  <text x="474" y="140" class="vm">name</text>
+  <text x="474" y="160" class="vm">phoneNumber</text>
+  <rect x="450" y="196" width="280" height="76" rx="10" class="box"/>
+  <text x="590" y="220" class="op" text-anchor="middle">Address</text>
+  <line x1="450" y1="232" x2="730" y2="232" class="axis"/>
+  <text x="590" y="256" class="val" text-anchor="middle">배송지 주소 세 필드를 하나로</text>
+</svg>

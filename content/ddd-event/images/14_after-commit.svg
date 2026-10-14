@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 464" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>TransactionPhase.AFTER_COMMIT 핸들러는 트랜잭션이 커밋에 성공하면 그 뒤에 환불을 처리하고, 롤백되면 실행되지 않는 두 경우의 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .hd { font-size: 10.5px; fill: #374151; }
+    .gmsg { font-size: 11.5px; fill: #15803d; }
+    .rmsg { font-size: 11.5px; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .act { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L9,5 L1,9" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="760" height="464" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">커밋 성공 — 커밋 뒤에 핸들러를 실행한다</text>
+  <text x="730" y="42" class="code" text-anchor="end">AFTER_COMMIT</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">트랜잭션</text>
+  <text x="30" y="126" class="sub">응용 서비스</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="107.5" class="op" text-anchor="middle">cancel()</text>
+  <text x="220" y="126.5" class="val" text-anchor="middle">주문 취소</text>
+  <rect x="302" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="107.5" class="op" text-anchor="middle">raise()</text>
+  <text x="360" y="126.5" class="val" text-anchor="middle">이벤트 발생</text>
+  <rect x="442" y="88" width="116" height="48" rx="8" class="ok"/>
+  <text x="500" y="107.5" class="okc" text-anchor="middle">commit</text>
+  <text x="500" y="126.5" class="val" text-anchor="middle">커밋 성공</text>
+  <text x="30" y="188" class="lane">핸들러</text>
+  <text x="30" y="206" class="sub">handle()</text>
+  <rect x="150" y="166" width="585" height="52" rx="6" class="track"/>
+  <rect x="302" y="176" width="256" height="32" rx="6" class="wait"/>
+  <text x="430" y="197" class="waitt" text-anchor="middle">커밋될 때까지 실행하지 않음</text>
+  <rect x="582" y="168" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="187.5" class="okc" text-anchor="middle">refund()</text>
+  <text x="640" y="206.5" class="val" text-anchor="middle">환불 처리</text>
+  <line x1="500" y1="136" x2="600" y2="166" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="10" y="240" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="272" class="h">롤백 — 핸들러를 실행하지 않는다</text>
+  <text x="730" y="272" class="code" text-anchor="end">AFTER_COMMIT</text>
+  <text x="220" y="298" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="298" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="298" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="298" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="306" x2="722" y2="306" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="338" class="lane">트랜잭션</text>
+  <text x="30" y="356" class="sub">응용 서비스</text>
+  <rect x="150" y="316" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="318" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="337.5" class="op" text-anchor="middle">cancel()</text>
+  <text x="220" y="356.5" class="val" text-anchor="middle">주문 취소</text>
+  <rect x="302" y="318" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="337.5" class="op" text-anchor="middle">raise()</text>
+  <text x="360" y="356.5" class="val" text-anchor="middle">이벤트 발생</text>
+  <rect x="442" y="318" width="116" height="48" rx="8" class="bad"/>
+  <text x="500" y="337.5" class="badc" text-anchor="middle">rollback</text>
+  <text x="500" y="356.5" class="val" text-anchor="middle">트랜잭션 실패</text>
+  <text x="30" y="418" class="lane">핸들러</text>
+  <text x="30" y="436" class="sub">handle()</text>
+  <rect x="150" y="396" width="585" height="52" rx="6" class="track"/>
+  <rect x="302" y="406" width="256" height="32" rx="6" class="wait"/>
+  <text x="430" y="427" class="waitt" text-anchor="middle">커밋될 때까지 실행하지 않음</text>
+  <rect x="582" y="398" width="116" height="48" rx="8" class="wait"/>
+  <text x="640" y="427" class="waitt" text-anchor="middle">실행 안 함</text>
+  <line x1="500" y1="366" x2="600" y2="396" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+</svg>

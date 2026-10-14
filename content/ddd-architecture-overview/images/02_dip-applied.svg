@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>고수준 영역에 CalculateDiscountService와 RuleDiscounter 인터페이스를 두고, 저수준 영역의 DroolsRuleDiscounter가 그 인터페이스를 구현해 의존 방향이 저수준에서 고수준으로 바뀌는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .pk { font-size: 15px; font-weight: 700; fill: #374151; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .st { font-size: 11px; fill: #9ca3af; font-style: italic; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .vm { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .iface { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 3; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkgw { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 6 5; }
+    .use { stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+    .flow { stroke: #9ca3af; stroke-width: 1.5; fill: none; }
+    .impl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .badl { stroke: #dc2626; stroke-width: 1.6; stroke-dasharray: 5 4; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; }
+    .node { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; fill: #6b7280; }
+    .glbl { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .rlbl { font-size: 12px; fill: #b91c1c; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#16a34a" stroke-width="1.4"/>
+    </marker>
+  </defs>
+  <rect width="760" height="370" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="350" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">DIP 적용 — 저수준 모듈이 고수준 인터페이스에 의존한다</text>
+  <rect x="30" y="58" width="700" height="118" rx="10" class="pkgw"/>
+  <text x="46" y="82" class="pk">고수준</text>
+  <rect x="30" y="196" width="700" height="118" rx="10" class="pkgw"/>
+  <text x="46" y="220" class="pk">저수준</text>
+  <rect x="70" y="100" width="250" height="46" rx="8" class="box"/>
+  <text x="195" y="128" class="opm" text-anchor="middle">CalculateDiscountService</text>
+  <rect x="440" y="96" width="250" height="54" rx="8" class="iface"/>
+  <text x="565" y="114" class="st" text-anchor="middle">«interface»</text>
+  <text x="565" y="133" class="opm" text-anchor="middle">RuleDiscounter</text>
+  <line x1="320" y1="123" x2="436" y2="123" class="use" marker-end="url(#ag)"/>
+  <text x="378" y="115" class="lbl" text-anchor="middle">사용</text>
+  <rect x="440" y="240" width="250" height="46" rx="8" class="box"/>
+  <text x="565" y="268" class="opm" text-anchor="middle">DroolsRuleDiscounter</text>
+  <line x1="565" y1="240" x2="565" y2="154" class="impl" marker-end="url(#tri)"/>
+  <text x="578" y="205" class="glbl">구현</text>
+  <text x="30" y="340" class="glbl">화살표 방향이 저수준 → 고수준으로 뒤집혔다</text>
+</svg>

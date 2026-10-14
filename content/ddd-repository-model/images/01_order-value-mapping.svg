@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 490" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Order 엔티티와 Orderer, ShippingInfo, Address, Receiver 밸류가 purchase_order 테이블 하나의 칼럼으로 매핑되는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .ster { font-size: 11.5px; font-style: italic; fill: #6b7280; }
+    .cls { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .attr { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .sep { stroke: #d1d5db; stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="dia" viewBox="0 0 16 10" refX="1" refY="5" markerWidth="14" markerHeight="9" orient="auto">
+      <path d="M1,5 L8,1 L15,5 L8,9 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="490" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="470" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">주문 애그리거트 — 엔티티와 밸류를 한 테이블에 매핑</text>
+  <text x="730" y="42" class="code" text-anchor="end">@Entity / @Embeddable</text>
+  <rect x="30" y="70" width="210" height="113" rx="6" class="hold"/>
+  <text x="135.0" y="87" class="ster" text-anchor="middle">&lt;&lt;Entity&gt;&gt;</text>
+  <text x="135.0" y="106" class="cls" text-anchor="middle">Order</text>
+  <line x1="30" y1="114" x2="240" y2="114" class="sep"/>
+  <text x="42" y="133" class="attr">number: OrderNo</text>
+  <text x="42" y="152" class="attr">orderer: Orderer</text>
+  <text x="42" y="171" class="attr">shippingInfo: ShippingInfo</text>
+  <rect x="272" y="70" width="200" height="94" rx="6" class="box"/>
+  <text x="372.0" y="87" class="ster" text-anchor="middle">&lt;&lt;Value&gt;&gt;</text>
+  <text x="372.0" y="106" class="cls" text-anchor="middle">Orderer</text>
+  <line x1="272" y1="114" x2="472" y2="114" class="sep"/>
+  <text x="284" y="133" class="attr">memberId: MemberId</text>
+  <text x="284" y="152" class="attr">name: String</text>
+  <rect x="272" y="186" width="200" height="113" rx="6" class="box"/>
+  <text x="372.0" y="203" class="ster" text-anchor="middle">&lt;&lt;Value&gt;&gt;</text>
+  <text x="372.0" y="222" class="cls" text-anchor="middle">ShippingInfo</text>
+  <line x1="272" y1="230" x2="472" y2="230" class="sep"/>
+  <text x="284" y="249" class="attr">message: String</text>
+  <text x="284" y="268" class="attr">address: Address</text>
+  <text x="284" y="287" class="attr">receiver: Receiver</text>
+  <rect x="60" y="334" width="190" height="113" rx="6" class="box"/>
+  <text x="155.0" y="351" class="ster" text-anchor="middle">&lt;&lt;Value&gt;&gt;</text>
+  <text x="155.0" y="370" class="cls" text-anchor="middle">Address</text>
+  <line x1="60" y1="378" x2="250" y2="378" class="sep"/>
+  <text x="72" y="397" class="attr">zipCode: String</text>
+  <text x="72" y="416" class="attr">address1: String</text>
+  <text x="72" y="435" class="attr">address2: String</text>
+  <rect x="282" y="334" width="190" height="94" rx="6" class="box"/>
+  <text x="377.0" y="351" class="ster" text-anchor="middle">&lt;&lt;Value&gt;&gt;</text>
+  <text x="377.0" y="370" class="cls" text-anchor="middle">Receiver</text>
+  <line x1="282" y1="378" x2="472" y2="378" class="sep"/>
+  <text x="294" y="397" class="attr">name: String</text>
+  <text x="294" y="416" class="attr">phone: String</text>
+  <path d="M240,125 L254,125 L254,110 L270,110" fill="none" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+  <path d="M254,125 L254,240 L270,240" fill="none" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+  <path d="M372,300 L372,314 L155,314 L155,332" fill="none" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+  <path d="M372,314 L377,314 L377,332" fill="none" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="530" y="70" width="200" height="254" rx="6" class="dbbox"/>
+  <text x="630.0" y="91" class="db" text-anchor="middle">purchase_order</text>
+  <line x1="530" y1="100" x2="730" y2="100" class="sep"/>
+  <text x="542" y="121" class="attr">order_number</text>
+  <text x="542" y="145" class="attr">orderer_id</text>
+  <text x="542" y="169" class="attr">orderer_name</text>
+  <text x="542" y="193" class="attr">shipping_message</text>
+  <text x="542" y="217" class="attr">shipping_zipcode</text>
+  <text x="542" y="241" class="attr">shipping_addr1</text>
+  <text x="542" y="265" class="attr">shipping_addr2</text>
+  <text x="542" y="289" class="attr">receiver_name</text>
+  <text x="542" y="313" class="attr">receiver_phone</text>
+  <line x1="482" y1="200" x2="522" y2="200" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="522" y1="214" x2="482" y2="214" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="502" y="240" class="sub" text-anchor="middle">매핑</text>
+  <text x="30" y="466" class="sub">밸류의 프로퍼티는 각각 purchase_order 테이블의 칼럼 하나에 대응합니다.</text>
+</svg>

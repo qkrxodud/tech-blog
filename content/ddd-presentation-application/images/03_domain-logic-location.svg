@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>암호 일치 검사를 ChangePasswordService에서 직접 하면 같은 검사가 여러 응용 서비스에 흩어지고, Member.changePassword 안에 두면 응용 서비스는 호출만 하고 검사는 Member 한 곳에 모인다는 두 패널 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .okc2 { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc2 { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .monoxs { font-family: Menlo, Consolas, monospace; font-size: 11.5px; fill: #374151; }
+    .monos { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="450" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">응용 서비스에 도메인 로직 — 검사가 서비스마다 흩어짐</text>
+  <text x="730" y="42" class="code" text-anchor="end">ChangePasswordService</text>
+  <rect x="30" y="62" width="420" height="62" rx="8" class="box"/>
+  <text x="46" y="86" class="op2">ChangePasswordService</text>
+  <text x="46" y="110" class="val">암호 일치 검사 <tspan font-family="Menlo, Consolas, monospace">passwordEncoder.matches(…)</tspan></text>
+  <rect x="320" y="70" width="120" height="22" rx="4" class="bad"/>
+  <text x="380" y="86" class="note" text-anchor="middle">도메인 로직</text>
+  <rect x="30" y="136" width="420" height="62" rx="8" class="wait"/>
+  <text x="46" y="160" class="t">암호 확인이 필요한 다른 응용 서비스</text>
+  <text x="46" y="184" class="val">같은 검사를 또 구현</text>
+  <rect x="320" y="144" width="120" height="22" rx="4" class="bad"/>
+  <text x="380" y="160" class="note" text-anchor="middle">같은 로직 중복</text>
+  <line x1="454" y1="93" x2="526" y2="118" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <line x1="454" y1="167" x2="526" y2="142" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="530" y="98" width="200" height="62" rx="8" class="box"/>
+  <text x="630" y="122" class="op2" text-anchor="middle">Member</text>
+  <text x="630" y="146" class="monos" text-anchor="middle">setPassword(newPw)</text>
+  <rect x="10" y="240" width="740" height="200" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="272" class="h">도메인에 도메인 로직 — 검사가 Member 한 곳에</text>
+  <text x="730" y="272" class="code" text-anchor="end">Member</text>
+  <rect x="30" y="296" width="300" height="62" rx="8" class="box"/>
+  <text x="46" y="320" class="op2">ChangePasswordService</text>
+  <text x="46" y="344" class="val">호출만 함</text>
+  <line x1="334" y1="327" x2="396" y2="327" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="400" y="292" width="330" height="124" rx="8" class="ok"/>
+  <text x="416" y="316" class="okc2">Member.changePassword(oldPw, newPw)</text>
+  <rect x="416" y="330" width="298" height="32" rx="6" class="box"/>
+  <text x="430" y="351" class="val">기존 암호 확인 <tspan font-family="Menlo, Consolas, monospace">matchPassword(oldPw)</tspan></text>
+  <rect x="416" y="370" width="298" height="32" rx="6" class="box"/>
+  <text x="430" y="391" class="val">암호 변경 <tspan font-family="Menlo, Consolas, monospace">setPassword(newPw)</tspan></text>
+  <text x="30" y="426" class="gnote">다른 응용 서비스도 changePassword를 호출하면 같은 검사를 거침</text>
+</svg>

@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>도메인에서 발생한 이벤트를 로컬 핸들러가 저장소에 저장하고, 포워더가 저장소에서 이벤트를 주기적으로 읽어 이벤트 핸들러에 전달하는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .hd { font-size: 10.5px; fill: #374151; }
+    .gmsg { font-size: 11.5px; fill: #15803d; }
+    .rmsg { font-size: 11.5px; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .act { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L9,5 L1,9" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">이벤트 저장소와 포워더 — 저장한 이벤트를 주기적으로 전달</text>
+  <rect x="30" y="60" width="700" height="210" rx="8" class="scope"/>
+  <rect x="50" y="80" width="140" height="52" rx="8" class="box"/>
+  <text x="120" y="111" class="t" text-anchor="middle">도메인</text>
+  <rect x="310" y="80" width="150" height="52" rx="8" class="hold"/>
+  <text x="385" y="111" class="t" text-anchor="middle">이벤트 디스패처</text>
+  <rect x="570" y="80" width="140" height="52" rx="8" class="box"/>
+  <text x="640" y="111" class="t" text-anchor="middle">로컬 핸들러</text>
+  <line x1="192" y1="106" x2="307" y2="106" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="462" y1="106" x2="567" y2="106" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <path d="M320.0,182 L320.0,232 A65.0,10 0 0,0 450.0,232 L450.0,182" class="dbbox"/>
+  <ellipse cx="385" cy="182" rx="65.0" ry="10" class="dbbox"/>
+  <text x="385" y="217.0" class="t" text-anchor="middle">저장소</text>
+  <path d="M640,132 L640,207 L453,207" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="650" y="176" class="s">이벤트 저장</text>
+  <text x="46" y="258" class="sub">한 트랜잭션 — 도메인 변경과 이벤트 저장</text>
+  <rect x="310" y="306" width="150" height="56" rx="8" class="hold"/>
+  <text x="385" y="329.5" class="t" text-anchor="middle">포워더</text>
+  <text x="385" y="348.5" class="s" text-anchor="middle">별도 스레드</text>
+  <rect x="570" y="306" width="140" height="56" rx="8" class="ok"/>
+  <text x="640" y="339" class="okt" text-anchor="middle">이벤트 핸들러</text>
+  <line x1="385" y1="304" x2="385" y2="252" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="462" y1="334" x2="567" y2="334" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="290" y="322" class="s" text-anchor="end">이벤트를 주기적으로 읽어 와 전달</text>
+  <text x="290" y="342" class="s" text-anchor="end">어디까지 전달했는지 추적</text>
+</svg>

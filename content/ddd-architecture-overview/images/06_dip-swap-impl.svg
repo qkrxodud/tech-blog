@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>앞 그림에서 EmailNotifier를 CompositeNotifier로, MyBatisOrderRepository를 JpaOrderRepository로 바꾸어도 응용·도메인 영역은 바뀌지 않는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .pk { font-size: 15px; font-weight: 700; fill: #374151; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .st { font-size: 11px; fill: #9ca3af; font-style: italic; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .vm { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .iface { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 3; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkgw { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 6 5; }
+    .use { stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+    .flow { stroke: #9ca3af; stroke-width: 1.5; fill: none; }
+    .impl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .badl { stroke: #dc2626; stroke-width: 1.6; stroke-dasharray: 5 4; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; }
+    .node { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; fill: #6b7280; }
+    .glbl { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .rlbl { font-size: 12px; fill: #b91c1c; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#16a34a" stroke-width="1.4"/>
+    </marker>
+  </defs>
+  <rect width="760" height="560" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="540" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">구현체 교체 — 인프라 영역의 구현만 바꾼다</text>
+  <rect x="30" y="58" width="450" height="170" rx="10" class="pkgw"/>
+  <text x="46" y="82" class="pk">응용</text>
+  <rect x="50" y="104" width="200" height="46" rx="8" class="box"/>
+  <text x="150" y="132" class="opm" text-anchor="middle">OrderService</text>
+  <rect x="290" y="100" width="172" height="54" rx="8" class="iface"/>
+  <text x="376" y="118" class="st" text-anchor="middle">«interface»</text>
+  <text x="376" y="137" class="opm" text-anchor="middle">Notifier</text>
+  <line x1="250" y1="127" x2="286" y2="127" class="use" marker-end="url(#ag)"/>
+  <rect x="30" y="248" width="450" height="250" rx="10" class="pkgw"/>
+  <text x="46" y="272" class="pk">도메인</text>
+  <rect x="46" y="300" width="226" height="46" rx="8" class="box"/>
+  <text x="159" y="328" class="opm" text-anchor="middle">CalculateDiscountService</text>
+  <rect x="290" y="290" width="172" height="54" rx="8" class="iface"/>
+  <text x="376" y="308" class="st" text-anchor="middle">«interface»</text>
+  <text x="376" y="327" class="opm" text-anchor="middle">OrderRepository</text>
+  <rect x="290" y="410" width="172" height="54" rx="8" class="iface"/>
+  <text x="376" y="428" class="st" text-anchor="middle">«interface»</text>
+  <text x="376" y="447" class="opm" text-anchor="middle">RuleDiscounter</text>
+  <line x1="150" y1="150" x2="150" y2="296" class="use" marker-end="url(#ag)"/>
+  <line x1="215" y1="150" x2="330" y2="286" class="use" marker-end="url(#ag)"/>
+  <line x1="230" y1="346" x2="300" y2="406" class="use" marker-end="url(#ag)"/>
+  <text x="158" y="240" class="lbl">사용</text>
+  <text x="300" y="222" class="lbl">사용</text>
+  <text x="250" y="392" class="lbl" text-anchor="end">사용</text>
+  <rect x="520" y="58" width="220" height="440" rx="10" class="pkgw"/>
+  <text x="536" y="82" class="pk">인프라</text>
+  <rect x="530" y="104" width="200" height="46" rx="8" class="ok"/>
+  <text x="630" y="132" class="okc" text-anchor="middle">CompositeNotifier</text>
+  <rect x="530" y="294" width="200" height="46" rx="8" class="ok"/>
+  <text x="630" y="322" class="okc" text-anchor="middle">JpaOrderRepository</text>
+  <rect x="530" y="414" width="200" height="46" rx="8" class="box"/>
+  <text x="630" y="442" class="opm" text-anchor="middle">DroolsRuleDiscounter</text>
+  <line x1="530" y1="127" x2="466" y2="127" class="impl" marker-end="url(#tri)"/>
+  <line x1="530" y1="317" x2="466" y2="317" class="impl" marker-end="url(#tri)"/>
+  <line x1="530" y1="437" x2="466" y2="437" class="impl" marker-end="url(#tri)"/>
+  <text x="498" y="119" class="glbl" text-anchor="middle">구현</text>
+  <text x="498" y="309" class="glbl" text-anchor="middle">구현</text>
+  <text x="498" y="429" class="glbl" text-anchor="middle">구현</text>
+  <text x="30" y="526" class="glbl">EmailNotifier → CompositeNotifier, MyBatis → JPA로 바꿔도 응용·도메인 코드는 그대로다</text>
+</svg>

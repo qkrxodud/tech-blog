@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>order 패키지 아래 application 패키지에 OrderService가, domain 패키지에 OrderRepository, Order, DiscountCalculationService가 함께 있는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ops { font-size: 11.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .src { font-size: 13px; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .grp { fill: #f3f4f6; stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 6 4; }
+    .pkg { fill: #ffffff; stroke: #c4c8ce; stroke-width: 1.2; }
+    .grpt { font-size: 13px; font-weight: 700; fill: #4b5563; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .edge { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">도메인 서비스의 위치 — 다른 도메인 구성요소와 같은 domain 패키지</text>
+  <rect x="30" y="60" width="700" height="324" rx="8" class="grp"/>
+  <text x="46" y="82" class="opm">order</text>
+  <rect x="170" y="96" width="420" height="110" rx="6" class="pkg"/>
+  <text x="186" y="118" class="opm">application</text>
+  <rect x="220" y="128" width="320" height="64" rx="6" class="box"/>
+  <text x="380.0" y="155.5" class="op" text-anchor="middle">OrderService</text>
+  <text x="380.0" y="174.5" class="ops" text-anchor="middle">+placeOrder(orderRequest: OrderRequest)</text>
+  <rect x="50" y="256" width="660" height="116" rx="6" class="pkg"/>
+  <text x="66" y="278" class="opm">domain</text>
+  <rect x="70" y="296" width="180" height="56" rx="6" class="box"/>
+  <text x="160.0" y="319.5" class="sub" text-anchor="middle">«interface»</text>
+  <text x="160.0" y="338.5" class="opm" text-anchor="middle">OrderRepository</text>
+  <rect x="300" y="296" width="130" height="56" rx="6" class="box"/>
+  <text x="365.0" y="329.0" class="op" text-anchor="middle">Order</text>
+  <rect x="480" y="296" width="210" height="56" rx="6" class="ok"/>
+  <text x="585.0" y="319.5" class="okc" text-anchor="middle">DiscountCalculation</text>
+  <text x="585.0" y="338.5" class="okc" text-anchor="middle">Service</text>
+  <line x1="260" y1="192" x2="165" y2="294" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="365" y1="192" x2="365" y2="294" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="500" y1="192" x2="585" y2="294" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="431" y1="324" x2="477" y2="324" stroke="#9ca3af" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ag)"/>
+  <text x="454" y="316" class="sub" text-anchor="middle">use</text>
+  <text x="30" y="410" class="foot">도메인 서비스는 도메인 로직을 표현하므로 Order, 리포지터리와 같은 domain 패키지에 둡니다.</text>
+</svg>

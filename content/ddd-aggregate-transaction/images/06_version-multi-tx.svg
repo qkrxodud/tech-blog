@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>운영자가 조회 트랜잭션에서 버전 A를 받아 두고, 그사이 다른 사용자가 주문을 수정해 버전이 B가 된 뒤, 변경 트랜잭션에서 버전 A를 함께 보내 시스템이 버전을 비교해 다르면 에러, 같으면 배송 상태를 변경하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbt { font-size: 13px; font-weight: 700; fill: #374151; }
+    .dbc { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">여러 트랜잭션으로 확장 — 화면에 받아 둔 버전을 함께 전송</text>
+  <text x="199" y="68" class="step" text-anchor="middle">1</text>
+  <text x="296" y="68" class="step" text-anchor="middle">2</text>
+  <text x="393" y="68" class="step" text-anchor="middle">3</text>
+  <text x="490" y="68" class="step" text-anchor="middle">4</text>
+  <text x="587" y="68" class="step" text-anchor="middle">5</text>
+  <text x="684" y="68" class="step" text-anchor="middle">6</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <rect x="155" y="84" width="185" height="24" rx="5" class="dbbox"/>
+  <text x="247.5" y="101" class="sub" text-anchor="middle">조회 트랜잭션</text>
+  <rect x="446" y="84" width="282" height="24" rx="5" class="dbbox"/>
+  <text x="587" y="101" class="sub" text-anchor="middle">변경 트랜잭션</text>
+  <text x="30" y="147" class="lane">운영자</text>
+  <rect x="150" y="116" width="585" height="52" rx="6" class="track"/>
+  <rect x="155" y="118" width="88" height="48" rx="8" class="box"/>
+  <text x="199" y="147.0" class="t" text-anchor="middle">조회 요청</text>
+  <rect x="446" y="118" width="88" height="48" rx="8" class="box"/>
+  <text x="490" y="138" class="t" text-anchor="middle">변경 요청</text>
+  <text x="490" y="157" class="val" text-anchor="middle">버전 A 포함</text>
+  <text x="30" y="207" class="lane">시스템</text>
+  <rect x="150" y="176" width="585" height="52" rx="6" class="track"/>
+  <rect x="252" y="178" width="88" height="48" rx="8" class="box"/>
+  <text x="296" y="198" class="t" text-anchor="middle">로딩·응답</text>
+  <text x="296" y="217" class="val" text-anchor="middle">버전 A</text>
+  <rect x="543" y="178" width="88" height="48" rx="8" class="box"/>
+  <text x="587" y="198" class="t" text-anchor="middle">로딩</text>
+  <text x="587" y="217" class="val" text-anchor="middle">버전 B</text>
+  <rect x="640" y="178" width="88" height="48" rx="8" class="bad"/>
+  <text x="684" y="198" class="badt" text-anchor="middle">버전 비교</text>
+  <text x="684" y="217" class="val" text-anchor="middle">A ≠ B</text>
+  <text x="30" y="267" class="lane">다른 사용자</text>
+  <rect x="150" y="236" width="585" height="52" rx="6" class="track"/>
+  <rect x="349" y="238" width="88" height="48" rx="8" class="box"/>
+  <text x="393" y="258" class="t" text-anchor="middle">주문 수정</text>
+  <text x="393" y="277" class="val" text-anchor="middle">버전 A → B</text>
+  <text x="30" y="318" class="db">결과</text>
+  <rect x="150" y="298" width="280" height="30" rx="15" class="bad"/>
+  <text x="290.0" y="318.0" class="badt" text-anchor="middle">버전이 다르면: 수정할 수 없음 에러</text>
+  <rect x="445" y="298" width="290" height="30" rx="15" class="ok"/>
+  <text x="590.0" y="318.0" class="okt" text-anchor="middle">버전이 같으면: 배송 상태 변경 후 응답</text>
+  <text x="30" y="362" class="foot">조회할 때 받은 버전 A를 뷰의 hidden 필드에 담아 두었다가 변경 요청에 함께 보내고, 응용 서비스는 이 값이</text>
+  <text x="30" y="382" class="foot">현재 애그리거트의 버전과 같은지 확인합니다(<tspan font-family="Menlo, Consolas, monospace">matchVersion</tspan>). 다르면 <tspan font-family="Menlo, Consolas, monospace">VersionConflictException</tspan>이 발생합니다.</text>
+</svg>

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Product가 Image 목록을 가지고, 추상 클래스 Image를 InternalImage와 ExternalImage가 상속하는 클래스 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .ster { font-size: 11.5px; font-style: italic; fill: #6b7280; }
+    .cls { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .attr { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .sep { stroke: #d1d5db; stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="dia" viewBox="0 0 16 10" refX="1" refY="5" markerWidth="14" markerHeight="9" orient="auto">
+      <path d="M1,5 L8,1 L15,5 L8,9 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">이미지 업로드 방식에 따른 상속 구조</text>
+  <text x="730" y="42" class="code" text-anchor="end">extends Image</text>
+  <rect x="30" y="70" width="220" height="80" rx="6" class="hold"/>
+  <text x="140.0" y="91" class="cls" text-anchor="middle">Product</text>
+  <line x1="30" y1="100" x2="250" y2="100" class="sep"/>
+  <text x="42" y="119" class="attr">id: ProductId</text>
+  <text x="42" y="138" class="attr">images: List&lt;Image&gt;</text>
+  <rect x="340" y="70" width="280" height="144" rx="6" class="box"/>
+  <text x="480.0" y="87" class="ster" text-anchor="middle">&lt;&lt;abstract&gt;&gt;</text>
+  <text x="480.0" y="106" class="cls" text-anchor="middle">Image</text>
+  <line x1="340" y1="114" x2="620" y2="114" class="sep"/>
+  <text x="352" y="133" class="attr">path: String</text>
+  <line x1="340" y1="145" x2="620" y2="145" class="sep"/>
+  <text x="352" y="164" class="attr">getUrl(): String</text>
+  <text x="352" y="183" class="attr">hasThumbnail(): boolean</text>
+  <text x="352" y="202" class="attr">getThumbnailUrl(): String</text>
+  <line x1="266" y1="115" x2="336" y2="115" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ar)"/>
+  <path d="M252,115 L259,111 L266,115 L259,119 z" fill="#6b7280"/>
+  <text x="300" y="105" class="sub" text-anchor="middle">1..*</text>
+  <rect x="250" y="290" width="200" height="56" rx="6" class="box"/>
+  <text x="350" y="313" class="cls" text-anchor="middle">InternalImage</text>
+  <text x="350" y="334" class="attr" text-anchor="middle">@DiscriminatorValue("II")</text>
+  <rect x="500" y="290" width="200" height="56" rx="6" class="box"/>
+  <text x="600" y="313" class="cls" text-anchor="middle">ExternalImage</text>
+  <text x="600" y="334" class="attr" text-anchor="middle">@DiscriminatorValue("EI")</text>
+  <path d="M350,288 L350,262 L600,262 L600,288" fill="none" stroke="#6b7280" stroke-width="1.5"/>
+  <line x1="480" y1="262" x2="480" y2="238" stroke="#6b7280" stroke-width="1.5" marker-end="url(#tri)"/>
+  <text x="30" y="390" class="sub">JPA는 @Embeddable 타입의 상속 매핑을 지원하지 않으므로, 상속 구조를 쓰려면 Image를 @Entity로 매핑해야 합니다.</text>
+</svg>

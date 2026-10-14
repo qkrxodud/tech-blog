@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 396" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>응용 서비스가 HttpServletRequest와 세션을 직접 다루면 표현 영역에 의존하게 되고, 표현 영역이 요청을 ChangePasswordRequest로 변환해 넘기면 응용 서비스는 표현 영역의 기술을 모른 채 동작한다는 두 패널 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .okc2 { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc2 { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .monoxs { font-family: Menlo, Consolas, monospace; font-size: 11.5px; fill: #374151; }
+    .monos { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="396" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="190" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">표현 영역에 의존 — 응용 서비스가 HTTP를 앎</text>
+  <text x="730" y="42" class="code" text-anchor="end">HttpServletRequest</text>
+  <rect x="30" y="62" width="230" height="56" rx="8" class="box"/>
+  <text x="145" y="86" class="t" text-anchor="middle">표현 영역</text>
+  <text x="145" y="106" class="monos" text-anchor="middle">Controller</text>
+  <line x1="264" y1="90" x2="346" y2="90" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="305" y="80" class="note" text-anchor="middle">request</text>
+  <rect x="350" y="62" width="380" height="56" rx="8" class="bad"/>
+  <text x="366" y="86" class="badt">응용 서비스</text>
+  <text x="366" y="106" class="monos">changePassword(HttpServletRequest)</text>
+  <rect x="350" y="128" width="380" height="32" rx="6" class="bad"/>
+  <text x="366" y="149" class="note">세션 처리 <tspan font-family="Menlo, Consolas, monospace">request.getSession()</tspan></text>
+  <text x="30" y="182" class="note">단독 테스트가 어렵고, 표현 영역이 바뀌면 응용 서비스도 바뀜</text>
+  <rect x="10" y="216" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="248" class="h">요청을 변환해 전달 — 응용 서비스는 HTTP를 모름</text>
+  <text x="730" y="248" class="code" text-anchor="end">ChangePasswordRequest</text>
+  <rect x="30" y="272" width="230" height="70" rx="8" class="box"/>
+  <text x="145" y="296" class="t" text-anchor="middle">표현 영역</text>
+  <text x="145" y="316" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">request</tspan> → 요청 객체로 변환</text>
+  <text x="145" y="332" class="sub" text-anchor="middle">세션도 여기서 관리</text>
+  <line x1="264" y1="307" x2="346" y2="307" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="350" y="272" width="380" height="70" rx="8" class="ok"/>
+  <text x="366" y="298" class="okt">응용 서비스</text>
+  <text x="366" y="322" class="monos">changePassword(ChangePasswordRequest)</text>
+  <text x="30" y="372" class="gnote">응용 서비스에는 기능 실행에 필요한 값만 전달됨</text>
+</svg>

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 422" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>PageRequest.of(1, 10)은 0부터 세는 페이지 번호라 두 번째 페이지인 11번째에서 20번째 행을 가리키고, List로 받으면 목록 쿼리만, Page로 받으면 목록 쿼리와 전체 개수를 구하는 COUNT 쿼리를 함께 실행한다는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .okc2 { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc2 { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .monos { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="422" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="186" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">PageRequest.of(1, 10) — 페이지 번호는 0부터</text>
+  <text x="730" y="42" class="code" text-anchor="end">Pageable</text>
+  <rect x="40" y="70" width="210" height="56" rx="8" class="box"/>
+  <text x="145" y="94" class="op" text-anchor="middle">page 0</text>
+  <text x="145" y="114" class="val" text-anchor="middle">1~10번째 행</text>
+  <rect x="275" y="70" width="210" height="56" rx="8" class="ok"/>
+  <text x="380" y="94" class="okc" text-anchor="middle">page 1</text>
+  <text x="380" y="114" class="val" text-anchor="middle">11~20번째 행</text>
+  <rect x="510" y="70" width="210" height="56" rx="8" class="box"/>
+  <text x="615" y="94" class="op" text-anchor="middle">page 2</text>
+  <text x="615" y="114" class="val" text-anchor="middle">21~30번째 행</text>
+  <line x1="380" y1="160" x2="380" y2="130" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="380" y="180" class="gnote" text-anchor="middle">PageRequest.of(1, 10)이 조회하는 범위</text>
+  <rect x="10" y="212" width="740" height="200" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="244" class="h">반환 타입 — List와 Page의 차이</text>
+  <text x="730" y="244" class="code" text-anchor="end">List / Page</text>
+  <rect x="30" y="264" width="300" height="52" rx="8" class="box"/>
+  <text x="180" y="286" class="op2" text-anchor="middle">List&lt;MemberData&gt;</text>
+  <text x="180" y="305" class="monos" text-anchor="middle">findByNameLike(name, pageable)</text>
+  <line x1="334" y1="290" x2="386" y2="290" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="390" y="264" width="160" height="52" rx="8" class="hold"/>
+  <text x="470" y="286" class="t" text-anchor="middle">목록 쿼리</text>
+  <text x="470" y="305" class="val" text-anchor="middle">11~20번째 행</text>
+  <rect x="570" y="272" width="160" height="36" rx="6" class="wait"/>
+  <text x="650" y="295" class="waitt" text-anchor="middle">COUNT 쿼리 없음</text>
+  <rect x="30" y="334" width="300" height="52" rx="8" class="box"/>
+  <text x="180" y="356" class="op2" text-anchor="middle">Page&lt;MemberData&gt;</text>
+  <text x="180" y="375" class="monos" text-anchor="middle">findByBlocked(blocked, pageable)</text>
+  <line x1="334" y1="360" x2="386" y2="360" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="390" y="334" width="160" height="52" rx="8" class="hold"/>
+  <text x="470" y="356" class="t" text-anchor="middle">목록 쿼리</text>
+  <text x="470" y="375" class="val" text-anchor="middle">11~20번째 행</text>
+  <rect x="570" y="334" width="160" height="52" rx="8" class="ok"/>
+  <text x="650" y="356" class="okt" text-anchor="middle">COUNT 쿼리</text>
+  <text x="650" y="375" class="val" text-anchor="middle">전체 개수</text>
+</svg>

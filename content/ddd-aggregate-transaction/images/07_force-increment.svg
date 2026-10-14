@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>루트가 아닌 엔티티만 바뀌면 일반 @Version은 루트의 버전을 올리지 않지만, OPTIMISTIC_FORCE_INCREMENT로 구하면 변경 여부와 상관없이 트랜잭션 종료 시점에 버전을 올리는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbt { font-size: 13px; font-weight: 700; fill: #374151; }
+    .dbc { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="182" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">일반 비선점 잠금 — 루트가 아닌 엔티티만 바뀌면 버전 그대로</text>
+  <text x="730" y="42" class="code" text-anchor="end">@Version</text>
+  <text x="220" y="68" class="step" text-anchor="middle">애그리거트 구함</text>
+  <text x="360" y="68" class="step" text-anchor="middle">변경</text>
+  <text x="500" y="68" class="step" text-anchor="middle">커밋</text>
+  <text x="640" y="68" class="step" text-anchor="middle">루트의 version</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">주문</text>
+  <text x="30" y="126" class="sub">애그리거트</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="t" text-anchor="middle">Order 구함</text>
+  <text x="220" y="127" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">version = 5</tspan></text>
+  <rect x="302" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="108" class="t" text-anchor="middle">다른 엔티티만</text>
+  <text x="360" y="127" class="val" text-anchor="middle">값 변경</text>
+  <rect x="442" y="88" width="116" height="48" rx="8" class="hold"/>
+  <text x="500" y="117.0" class="t" text-anchor="middle">커밋</text>
+  <rect x="582" y="88" width="116" height="48" rx="8" class="bad"/>
+  <text x="640" y="108" class="badt" text-anchor="middle">그대로 5</text>
+  <text x="640" y="127" class="val" text-anchor="middle">버전 증가 없음</text>
+  <text x="30" y="170" class="note">루트 엔티티는 바뀌지 않았으므로 JPA는 루트의 버전 값을 올리지 않습니다.</text>
+  <rect x="10" y="208" width="740" height="182" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="240" class="h">강제 버전 증가 — 변경 여부와 상관없이 버전 증가</text>
+  <text x="730" y="240" class="code" text-anchor="end">OPTIMISTIC_FORCE_INCREMENT</text>
+  <text x="220" y="266" class="step" text-anchor="middle">애그리거트 구함</text>
+  <text x="360" y="266" class="step" text-anchor="middle">변경</text>
+  <text x="500" y="266" class="step" text-anchor="middle">커밋</text>
+  <text x="640" y="266" class="step" text-anchor="middle">루트의 version</text>
+  <line x1="160" y1="274" x2="722" y2="274" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="306" class="lane">주문</text>
+  <text x="30" y="324" class="sub">애그리거트</text>
+  <rect x="150" y="284" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="286" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="306" class="t" text-anchor="middle">Order 구함</text>
+  <text x="220" y="325" class="val" text-anchor="middle">강제 증가 모드</text>
+  <rect x="302" y="286" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="306" class="t" text-anchor="middle">다른 엔티티만</text>
+  <text x="360" y="325" class="val" text-anchor="middle">값 변경</text>
+  <rect x="442" y="286" width="116" height="48" rx="8" class="hold"/>
+  <text x="500" y="315.0" class="t" text-anchor="middle">커밋</text>
+  <rect x="582" y="286" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="306" class="okt" text-anchor="middle">5 → 6</text>
+  <text x="640" y="325" class="val" text-anchor="middle">버전 증가</text>
+  <text x="30" y="368" class="foot"><tspan font-family="Menlo, Consolas, monospace">EntityManager#find()</tspan>에 잠금 모드를 넘기면 트랜잭션 종료 시점에 버전 값을 올립니다.</text>
+</svg>

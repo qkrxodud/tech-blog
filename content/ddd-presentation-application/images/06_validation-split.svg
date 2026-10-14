@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>가입 요청이 들어오면 표현 영역의 JoinRequestValidator가 필수 값과 형식을 먼저 검사해 오류가 있으면 폼으로 돌려보내고, 통과하면 응용 서비스가 중복 ID 같은 논리적 오류를 검사해 DuplicatedIdException을 던지며, 표현 영역은 이를 받아 폼에 오류로 보여 주는 값 검증 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .okc2 { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc2 { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .monoxs { font-family: Menlo, Consolas, monospace; font-size: 11.5px; fill: #374151; }
+    .monos { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">값 검증 — 형식은 표현 영역, 논리적 오류는 응용 서비스</text>
+  <text x="730" y="42" class="code" text-anchor="end">Errors</text>
+  <rect x="40" y="62" width="400" height="46" rx="10" class="hold"/>
+  <text x="56" y="90" class="t">가입 요청</text>
+  <text x="150" y="90" class="mono">JoinRequest</text>
+  <line x1="240" y1="110" x2="240" y2="126" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="40" y="130" width="400" height="62" rx="10" class="box"/>
+  <circle cx="68" cy="161" r="12" fill="#6b7280"/>
+  <text x="68" y="166" class="num" text-anchor="middle">1</text>
+  <text x="92" y="154" class="t">표현 영역</text>
+  <text x="92" y="176" class="monos">JoinRequestValidator.validate()</text>
+  <text x="330" y="154" class="val">필수 값, 형식, 범위</text>
+  <line x1="444" y1="161" x2="476" y2="161" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="480" y="130" width="250" height="62" rx="8" class="bad"/>
+  <text x="496" y="154" class="badt">형식 오류</text>
+  <text x="496" y="176" class="monos">hasErrors() → formView</text>
+  <line x1="240" y1="194" x2="240" y2="210" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="40" y="214" width="400" height="62" rx="10" class="box"/>
+  <circle cx="68" cy="245" r="12" fill="#6b7280"/>
+  <text x="68" y="250" class="num" text-anchor="middle">2</text>
+  <text x="92" y="238" class="t">응용 서비스</text>
+  <text x="92" y="260" class="monos">JoinService.join()</text>
+  <text x="300" y="238" class="val">중복 ID 같은 논리적 오류</text>
+  <line x1="444" y1="245" x2="476" y2="245" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="480" y="214" width="250" height="62" rx="8" class="bad"/>
+  <text x="496" y="238" class="badt">논리 오류</text>
+  <text x="496" y="260" class="monos">DuplicatedIdException</text>
+  <line x1="605" y1="278" x2="605" y2="306" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="480" y="310" width="250" height="46" rx="8" class="hold"/>
+  <text x="605" y="331" class="t" text-anchor="middle">표현 영역이 폼에 오류 표시</text>
+  <text x="605" y="349" class="monos" text-anchor="middle">errors.rejectValue(…)</text>
+  <line x1="240" y1="278" x2="240" y2="306" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="40" y="310" width="400" height="46" rx="10" class="ok"/>
+  <text x="240" y="338" class="okt" text-anchor="middle">가입 처리</text>
+  <text x="40" y="400" class="sub">원칙적으로 모든 값은 응용 서비스에서 검증하고, 표현 영역은 형식 검사를 먼저 맡을 수 있음</text>
+</svg>

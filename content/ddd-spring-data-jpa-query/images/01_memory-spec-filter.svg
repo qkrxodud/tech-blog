@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 390" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>메모리 리포지터리가 전체 주문의 각 Order에 OrdererSpec의 isSatisfiedBy를 호출해 주문자가 madvirus인 주문만 결과로 남기는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .okc2 { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc2 { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .monos { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="390" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="370" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">메모리 리포지터리의 스펙 — 조건을 만족하는 주문만 남김</text>
+  <text x="730" y="42" class="code" text-anchor="end">findAll(spec)</text>
+  <text x="30" y="68" class="code">spec = new OrdererSpec("madvirus")</text>
+  <text x="120" y="96" class="step" text-anchor="middle">allOrders</text>
+  <text x="380" y="96" class="step" text-anchor="middle">spec.isSatisfiedBy(order)</text>
+  <text x="640" y="96" class="step" text-anchor="middle">결과 List&lt;Order&gt;</text>
+  <rect x="40" y="108" width="160" height="48" rx="8" class="box"/>
+  <text x="120" y="128" class="op" text-anchor="middle">Order 1</text>
+  <text x="120" y="147" class="val" text-anchor="middle">주문자 madvirus</text>
+  <line x1="204" y1="132" x2="296" y2="132" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="300" y="108" width="160" height="48" rx="8" class="ok"/>
+  <text x="380" y="138" class="okc" text-anchor="middle">true</text>
+  <line x1="464" y1="132" x2="556" y2="132" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="560" y="108" width="160" height="48" rx="8" class="ok"/>
+  <text x="640" y="138" class="okt" text-anchor="middle">결과에 포함</text>
+  <rect x="40" y="168" width="160" height="48" rx="8" class="box"/>
+  <text x="120" y="188" class="op" text-anchor="middle">Order 2</text>
+  <text x="120" y="207" class="val" text-anchor="middle">주문자 user1</text>
+  <line x1="204" y1="192" x2="296" y2="192" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="300" y="168" width="160" height="48" rx="8" class="bad"/>
+  <text x="380" y="198" class="badc" text-anchor="middle">false</text>
+  <line x1="464" y1="192" x2="556" y2="192" stroke="#9ca3af" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="174" width="160" height="36" rx="6" class="wait"/>
+  <text x="640" y="197" class="waitt" text-anchor="middle">걸러짐</text>
+  <rect x="40" y="228" width="160" height="48" rx="8" class="box"/>
+  <text x="120" y="248" class="op" text-anchor="middle">Order 3</text>
+  <text x="120" y="267" class="val" text-anchor="middle">주문자 madvirus</text>
+  <line x1="204" y1="252" x2="296" y2="252" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="300" y="228" width="160" height="48" rx="8" class="ok"/>
+  <text x="380" y="258" class="okc" text-anchor="middle">true</text>
+  <line x1="464" y1="252" x2="556" y2="252" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="560" y="228" width="160" height="48" rx="8" class="ok"/>
+  <text x="640" y="258" class="okt" text-anchor="middle">결과에 포함</text>
+  <rect x="40" y="288" width="160" height="48" rx="8" class="box"/>
+  <text x="120" y="308" class="op" text-anchor="middle">Order 4</text>
+  <text x="120" y="327" class="val" text-anchor="middle">주문자 user2</text>
+  <line x1="204" y1="312" x2="296" y2="312" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="300" y="288" width="160" height="48" rx="8" class="bad"/>
+  <text x="380" y="318" class="badc" text-anchor="middle">false</text>
+  <line x1="464" y1="312" x2="556" y2="312" stroke="#9ca3af" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="294" width="160" height="36" rx="6" class="wait"/>
+  <text x="640" y="317" class="waitt" text-anchor="middle">걸러짐</text>
+  <text x="40" y="360" class="sub">조건은 스펙이 판단하고, 리포지터리는 isSatisfiedBy가 true인 애그리거트만 돌려줌</text>
+</svg>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>운영자가 주문 정보를 조회한 뒤 고객이 배송지를 변경했는데, 운영자가 처음 조회한 기존 배송지를 기준으로 배송 상태를 변경해 엉뚱한 곳으로 발송되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbt { font-size: 13px; font-weight: 700; fill: #374151; }
+    .dbc { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">조회와 변경 사이 — 운영자는 바뀌기 전 배송지를 보고 있음</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1. 주문 조회</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2. 변경 폼 요청</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3. 배송지 변경</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4. 배송 상태 변경</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="117" class="lane">운영자</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="t" text-anchor="middle">주문 정보 조회</text>
+  <text x="220" y="127" class="val" text-anchor="middle">기존 배송지 확인</text>
+  <rect x="582" y="88" width="116" height="48" rx="8" class="bad"/>
+  <text x="640" y="108" class="badt" text-anchor="middle">배송 상태 변경</text>
+  <text x="640" y="127" class="val" text-anchor="middle">기존 배송지 기준</text>
+  <text x="30" y="177" class="lane">고객</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="302" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="168" class="t" text-anchor="middle">변경 폼 요청</text>
+  <text x="360" y="187" class="val" text-anchor="middle">폼 제공받음</text>
+  <rect x="442" y="148" width="116" height="48" rx="8" class="ok"/>
+  <text x="500" y="168" class="okt" text-anchor="middle">배송지 변경</text>
+  <text x="500" y="187" class="val" text-anchor="middle">새 배송지 저장</text>
+  <text x="30" y="235" class="db">DB의 배송지</text>
+  <rect x="170" y="214" width="100" height="32" rx="6" class="dbbox"/>
+  <text x="220" y="235.0" class="dbt" text-anchor="middle">기존</text>
+  <rect x="310" y="214" width="100" height="32" rx="6" class="dbbox"/>
+  <text x="360" y="235.0" class="dbt" text-anchor="middle">기존</text>
+  <rect x="450" y="214" width="100" height="32" rx="6" class="dbbox"/>
+  <text x="500" y="235.0" class="dbt" text-anchor="middle">새 배송지</text>
+  <rect x="590" y="214" width="100" height="32" rx="6" class="dbbox"/>
+  <text x="640" y="235.0" class="dbt" text-anchor="middle">새 배송지</text>
+  <text x="30" y="280" class="note">4단계 요청은 1단계에서 본 기존 배송지를 기준으로 하므로, 운영자는 엉뚱한 곳으로 물건을 발송하게 됩니다.</text>
+  <text x="30" y="302" class="foot">1단계 조회와 4단계 변경은 서로 다른 트랜잭션이라, 선점 잠금으로는 그 사이의 변경을 막을 수 없습니다.</text>
+</svg>

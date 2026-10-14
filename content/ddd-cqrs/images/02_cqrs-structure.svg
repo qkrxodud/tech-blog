@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>UI의 변경 요청은 명령 모델이 처리해 DB에 반영하고, 조회 모델은 DB에서 읽은 데이터를 UI에 출력하는 CQRS 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .ster { font-size: 11.5px; font-style: italic; fill: #6b7280; }
+    .cls { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .attr { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .sep { stroke: #d1d5db; stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="dia" viewBox="0 0 16 10" refX="1" refY="5" markerWidth="14" markerHeight="9" orient="auto">
+      <path d="M1,5 L8,1 L15,5 L8,9 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">CQRS — 상태 변경과 조회에 서로 다른 모델 사용</text>
+  <text x="730" y="42" class="code" text-anchor="end">Command / Query</text>
+  <rect x="40" y="80" width="110" height="250" rx="14" class="dbbox"/>
+  <text x="95" y="200" class="db" text-anchor="middle">DB</text>
+  <rect x="200" y="70" width="330" height="270" rx="14" class="box"/>
+  <text x="365" y="92" class="sub" text-anchor="middle">애플리케이션</text>
+  <rect x="220" y="104" width="290" height="96" rx="10" class="ok"/>
+  <text x="365" y="140" class="okt" text-anchor="middle">조회(Query) 모델</text>
+  <text x="365" y="162" class="val" text-anchor="middle">화면에 필요한 데이터만 읽기</text>
+  <rect x="220" y="222" width="290" height="96" rx="10" class="hold"/>
+  <text x="365" y="258" class="opk" text-anchor="middle">명령(Command) 모델</text>
+  <text x="365" y="280" class="val" text-anchor="middle">도메인 상태 변경</text>
+  <rect x="600" y="80" width="120" height="250" rx="10" class="hold"/>
+  <text x="660" y="200" class="db" text-anchor="middle">UI</text>
+  <line x1="152" y1="152" x2="216" y2="152" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <line x1="512" y1="152" x2="596" y2="152" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <text x="554" y="128" class="gnote" text-anchor="middle">데이터 출력</text>
+  <line x1="596" y1="270" x2="514" y2="270" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="554" y="296" class="sub" text-anchor="middle">변경 요청</text>
+  <line x1="218" y1="270" x2="154" y2="270" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="30" y="364" class="sub">변경 요청은 명령 모델로 처리하고, 조회 모델을 이용해 표현 계층에 데이터를 출력합니다.</text>
+</svg>

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>사용자 요청이 표현, 응용, 도메인, 인프라스트럭처 영역을 거쳐 DB에 닿는 아키텍처 구성과, 주문 업무 규칙은 도메인 영역에만 둔다는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .pk { font-size: 15px; font-weight: 700; fill: #374151; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .st { font-size: 11px; fill: #9ca3af; font-style: italic; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .vm { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .iface { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 3; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkgw { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 6 5; }
+    .use { stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+    .flow { stroke: #9ca3af; stroke-width: 1.5; fill: none; }
+    .impl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .badl { stroke: #dc2626; stroke-width: 1.6; stroke-dasharray: 5 4; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; }
+    .node { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; fill: #6b7280; }
+    .glbl { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .rlbl { font-size: 12px; fill: #b91c1c; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#16a34a" stroke-width="1.4"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="450" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">아키텍처 구성 — 네 영역과 업무 규칙의 위치</text>
+  <rect x="200" y="62" width="100" height="30" rx="15" class="hold"/>
+  <text x="250" y="82" class="t" text-anchor="middle">사용자</text>
+  <line x1="250" y1="92" x2="250" y2="110" class="flow" marker-end="url(#ag)"/>
+  <rect x="120" y="112" width="260" height="46" rx="8" class="box"/>
+  <text x="250" y="140" class="t" text-anchor="middle">표현</text>
+  <line x1="40" y1="173" x2="720" y2="173" class="sep"/>
+  <line x1="250" y1="158" x2="250" y2="186" class="flow" marker-end="url(#ag)"/>
+  <rect x="120" y="188" width="260" height="46" rx="8" class="box"/>
+  <text x="250" y="216" class="t" text-anchor="middle">응용</text>
+  <line x1="40" y1="249" x2="720" y2="249" class="sep"/>
+  <line x1="250" y1="234" x2="250" y2="262" class="flow" marker-end="url(#ag)"/>
+  <rect x="120" y="264" width="260" height="46" rx="8" class="ok"/>
+  <text x="250" y="292" class="okt" text-anchor="middle">도메인</text>
+  <line x1="40" y1="325" x2="720" y2="325" class="sep"/>
+  <line x1="250" y1="310" x2="250" y2="338" class="flow" marker-end="url(#ag)"/>
+  <rect x="120" y="340" width="260" height="46" rx="8" class="box"/>
+  <text x="250" y="368" class="t" text-anchor="middle">인프라스트럭처</text>
+  <line x1="250" y1="386" x2="250" y2="404" class="flow" marker-end="url(#ag)"/>
+  <rect x="190" y="406" width="120" height="34" rx="14" class="dbbox"/>
+  <text x="250" y="428" class="db" text-anchor="middle">DB</text>
+  <text x="420" y="132" class="val">사용자 요청을 받아 응답한다</text>
+  <text x="420" y="208" class="val">기능 실행을 조율한다</text>
+  <text x="420" y="280" class="gnote">주문 업무 규칙은 이 영역에만 둔다</text>
+  <text x="420" y="300" class="val">규칙을 <tspan font-family="Menlo, Consolas, monospace">Order</tspan>에 두든 <tspan font-family="Menlo, Consolas, monospace">OrderState</tspan>에 두든</text>
+  <text x="420" y="360" class="val">DB 같은 구현 기술을 다룬다</text>
+</svg>

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 366" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>@PreAuthorize를 붙인 메서드는 실행 전에 AOP가 ADMIN 역할을 검사해 통과해야 block을 실행하고, 게시글 삭제처럼 도메인 객체 단위로 검사할 때는 Article을 먼저 조회한 뒤 permissionService가 삭제 권한을 검사한다는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .okc2 { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc2 { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .monoxs { font-family: Menlo, Consolas, monospace; font-size: 11.5px; fill: #374151; }
+    .monos { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="366" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">메서드 단위 검사 — 실행 전에 AOP가 확인</text>
+  <text x="730" y="42" class="code" text-anchor="end">@PreAuthorize</text>
+  <rect x="30" y="64" width="224" height="58" rx="8" class="box"/>
+  <text x="142" y="88" class="t" text-anchor="middle">block 호출</text>
+  <text x="142" y="108" class="monos" text-anchor="middle">block(memberId)</text>
+  <line x1="256" y1="93" x2="266" y2="93" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="268" y="64" width="224" height="58" rx="8" class="hold"/>
+  <text x="380" y="88" class="t" text-anchor="middle">AOP 권한 검사</text>
+  <text x="380" y="108" class="monos" text-anchor="middle">hasRole('ADMIN')</text>
+  <line x1="494" y1="93" x2="504" y2="93" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="506" y="64" width="224" height="58" rx="8" class="ok"/>
+  <text x="618" y="88" class="okt" text-anchor="middle">메서드 실행</text>
+  <text x="618" y="108" class="monos" text-anchor="middle">member.block()</text>
+  <line x1="380" y1="124" x2="380" y2="148" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="250" y="150" width="260" height="30" rx="6" class="bad"/>
+  <text x="380" y="170" class="note" text-anchor="middle">권한이 없으면 메서드 실행 전에 거부</text>
+  <rect x="10" y="206" width="740" height="150" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="238" class="h">도메인 객체 단위 검사 — 객체를 조회한 뒤 확인</text>
+  <text x="730" y="238" class="code" text-anchor="end">permissionService</text>
+  <rect x="30" y="260" width="164" height="58" rx="8" class="box"/>
+  <text x="112" y="284" class="t" text-anchor="middle">게시글 조회</text>
+  <text x="112" y="304" class="monoxs" text-anchor="middle">findById(articleId)</text>
+  <line x1="196" y1="289" x2="206" y2="289" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="208" y="260" width="164" height="58" rx="8" class="box"/>
+  <text x="290" y="284" class="t" text-anchor="middle">존재 확인</text>
+  <text x="290" y="304" class="monoxs" text-anchor="middle">checkArticleExistence</text>
+  <line x1="374" y1="289" x2="384" y2="289" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="386" y="260" width="164" height="58" rx="8" class="hold"/>
+  <text x="468" y="284" class="t" text-anchor="middle">삭제 권한 검사</text>
+  <text x="468" y="304" class="monoxs" text-anchor="middle">checkDeletePermission</text>
+  <line x1="552" y1="289" x2="562" y2="289" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="564" y="260" width="164" height="58" rx="8" class="ok"/>
+  <text x="646" y="284" class="okt" text-anchor="middle">삭제 진행</text>
+  <text x="646" y="304" class="val" text-anchor="middle">권한 통과 후</text>
+</svg>

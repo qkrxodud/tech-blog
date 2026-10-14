@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 460" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>사용자의 HTTP 요청을 표현 영역이 해석해 JoinRequest로 바꾸고, 응용 영역의 JoinService가 이를 받아 도메인 영역의 객체를 사용해 기능을 실행하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .okc2 { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc2 { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .monoxs { font-family: Menlo, Consolas, monospace; font-size: 11.5px; fill: #374151; }
+    .monos { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="460" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="440" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">요청의 흐름 — 표현 영역에서 응용 영역, 도메인 영역으로</text>
+  <text x="730" y="42" class="code" text-anchor="end">/member/join</text>
+  <rect x="40" y="66" width="680" height="52" rx="10" class="hold"/>
+  <text x="56" y="97" class="t">사용자</text>
+  <text x="210" y="97" class="mono">POST /member/join</text>
+  <text x="450" y="97" class="val">email, password 전달</text>
+  <line x1="380" y1="120" x2="380" y2="136" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="40" y="140" width="680" height="52" rx="10" class="box"/>
+  <circle cx="68" cy="166" r="12" fill="#6b7280"/>
+  <text x="68" y="171" class="num" text-anchor="middle">1</text>
+  <text x="92" y="171" class="t">표현 영역</text>
+  <text x="210" y="171" class="mono">MemberController.join()</text>
+  <text x="450" y="171" class="val">파라미터를 JoinRequest로 변환</text>
+  <line x1="380" y1="194" x2="380" y2="210" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="40" y="214" width="680" height="52" rx="10" class="box"/>
+  <circle cx="68" cy="240" r="12" fill="#6b7280"/>
+  <text x="68" y="245" class="num" text-anchor="middle">2</text>
+  <text x="92" y="245" class="t">응용 영역</text>
+  <text x="210" y="245" class="mono">JoinService.join(joinReq)</text>
+  <text x="450" y="245" class="val">도메인 객체로 기능 실행</text>
+  <line x1="380" y1="268" x2="380" y2="284" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="40" y="288" width="680" height="52" rx="10" class="ok"/>
+  <circle cx="68" cy="314" r="12" fill="#6b7280"/>
+  <text x="68" y="319" class="num" text-anchor="middle">3</text>
+  <text x="92" y="319" class="okt">도메인 영역</text>
+  <text x="210" y="319" class="mono">Member</text>
+  <text x="450" y="319" class="val">도메인 규칙 수행</text>
+  <rect x="40" y="366" width="680" height="36" rx="6" class="wait"/>
+  <text x="380" y="389" class="waitt" text-anchor="middle">결과는 반대 방향으로 응용 영역과 표현 영역을 거쳐 사용자에게 응답</text>
+  <text x="40" y="430" class="sub">사용자가 원하는 기능은 응용 영역이 제공하고, 표현 영역은 요청을 해석해 응용 서비스에 맞게 바꿈</text>
+</svg>

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>findAll에 OrdererIdSpec을 넘기면 스프링 데이터 JPA가 toPredicate를 호출해 Predicate를 얻고, 그 조건을 WHERE 절에 넣어 OrderSummary 목록을 조회하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #1f2937; }
+    .okc2 { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc2 { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .monos { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+  <rect width="760" height="450" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="430" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">스프링 데이터 JPA의 스펙 — 스펙은 조건을, DAO는 쿼리를</text>
+  <text x="730" y="42" class="code" text-anchor="end">Specification&lt;T&gt;</text>
+  <rect x="40" y="66" width="680" height="46" rx="10" class="hold"/>
+  <text x="56" y="94" class="sub">호출</text>
+  <text x="100" y="94" class="mono">orderSummaryDao.findAll(new OrdererIdSpec("user1"))</text>
+  <line x1="380" y1="114" x2="380" y2="130" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="40" y="134" width="680" height="46" rx="10" class="box"/>
+  <circle cx="68" cy="157" r="12" fill="#6b7280"/>
+  <text x="68" y="162" class="num" text-anchor="middle">1</text>
+  <text x="92" y="162" class="op2">toPredicate(root, query, cb)</text>
+  <text x="460" y="162" class="val">스프링 데이터 JPA가 스펙을 호출</text>
+  <line x1="380" y1="182" x2="380" y2="198" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="40" y="202" width="680" height="46" rx="10" class="box"/>
+  <circle cx="68" cy="225" r="12" fill="#6b7280"/>
+  <text x="68" y="230" class="num" text-anchor="middle">2</text>
+  <text x="92" y="230" class="op2">cb.equal(root.get(ordererId), "user1")</text>
+  <text x="460" y="230" class="val">Predicate 생성</text>
+  <line x1="380" y1="250" x2="380" y2="266" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#agy)"/>
+  <rect x="40" y="270" width="680" height="46" rx="10" class="box"/>
+  <circle cx="68" cy="293" r="12" fill="#6b7280"/>
+  <text x="68" y="298" class="num" text-anchor="middle">3</text>
+  <text x="92" y="298" class="op2">where ordererId = 'user1'</text>
+  <text x="460" y="298" class="val">Predicate가 WHERE 조건이 됨</text>
+  <line x1="380" y1="318" x2="380" y2="334" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="40" y="338" width="680" height="46" rx="10" class="ok"/>
+  <text x="380" y="366" class="okt" text-anchor="middle">List&lt;OrderSummary&gt; 결과 반환</text>
+  <text x="40" y="420" class="sub">스펙은 Predicate만 만들고, 쿼리를 만들고 실행하는 일은 스프링 데이터 JPA가 맡음</text>
+</svg>

@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 504" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>주문 요구사항 아홉 가지 중 무엇이 OrderLine의 수량·금액 계산, ShippingInfo 밸류, Order의 changeShipped·changeShippingInfo·cancel·completePayment 기능으로 이어지는지 보여 주는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .pk { font-size: 15px; font-weight: 700; fill: #374151; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .st { font-size: 11px; fill: #9ca3af; font-style: italic; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .vm { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .iface { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 3; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkgw { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 6 5; }
+    .use { stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+    .flow { stroke: #9ca3af; stroke-width: 1.5; fill: none; }
+    .impl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .badl { stroke: #dc2626; stroke-width: 1.6; stroke-dasharray: 5 4; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; }
+    .node { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; fill: #6b7280; }
+    .glbl { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .rlbl { font-size: 12px; fill: #b91c1c; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#ffffff" stroke="#16a34a" stroke-width="1.4"/>
+    </marker>
+  </defs>
+  <rect width="760" height="504" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="484" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">요구사항에서 모델 도출 — 규칙이 어느 모델의 기능이 되는가</text>
+  <text x="40" y="74" class="lbl">요구사항</text>
+  <text x="450" y="74" class="lbl">도출한 모델 · 기능</text>
+  <rect x="30" y="92" width="360" height="30" rx="6" class="hold"/>
+  <text x="44" y="111.5" class="val">최소한 한 종류 이상의 상품을 주문해야 한다</text>
+  <rect x="30" y="130" width="360" height="30" rx="6" class="box"/>
+  <text x="44" y="149.5" class="val">한 상품을 한 개 이상 주문할 수 있다</text>
+  <line x1="392" y1="145" x2="436" y2="145" class="flow" marker-end="url(#ag)"/>
+  <rect x="440" y="130" width="290" height="30" rx="6" class="ok"/>
+  <text x="454" y="149.5" class="okc">OrderLine.quantity</text>
+  <rect x="30" y="168" width="360" height="30" rx="6" class="hold"/>
+  <text x="44" y="187.5" class="val">총 주문 금액은 각 상품의 구매 가격 합을 더한 금액</text>
+  <rect x="30" y="206" width="360" height="30" rx="6" class="box"/>
+  <text x="44" y="225.5" class="val">구매 가격 합 = 상품 가격 × 구매 개수</text>
+  <line x1="392" y1="221" x2="436" y2="221" class="flow" marker-end="url(#ag)"/>
+  <rect x="440" y="206" width="290" height="30" rx="6" class="ok"/>
+  <text x="454" y="225.5" class="okc">OrderLine.calculateAmounts()</text>
+  <rect x="30" y="244" width="360" height="30" rx="6" class="box"/>
+  <text x="44" y="263.5" class="val">주문할 때 배송지 정보를 반드시 지정한다</text>
+  <line x1="392" y1="259" x2="436" y2="259" class="flow" marker-end="url(#ag)"/>
+  <rect x="440" y="244" width="290" height="30" rx="6" class="box"/>
+  <text x="454" y="263.5" class="t"><tspan font-family="Menlo, Consolas, monospace" font-size="13">ShippingInfo</tspan><tspan font-size="12" font-weight="400" fill="#6b7280"> 밸류 타입</tspan></text>
+  <rect x="30" y="282" width="360" height="30" rx="6" class="box"/>
+  <text x="44" y="301.5" class="val">배송지 정보 = 받는 사람 이름, 전화번호, 주소</text>
+  <line x1="392" y1="297" x2="436" y2="297" class="flow" marker-end="url(#ag)"/>
+  <rect x="440" y="282" width="290" height="30" rx="6" class="box"/>
+  <text x="454" y="301.5" class="t"><tspan font-family="Menlo, Consolas, monospace" font-size="13">ShippingInfo</tspan><tspan font-size="12" font-weight="400" fill="#6b7280"> 밸류 타입</tspan></text>
+  <rect x="30" y="320" width="360" height="48" rx="6" class="box"/>
+  <text x="44" y="348.5" class="val">출고를 하면 배송지를 변경할 수 없다</text>
+  <line x1="392" y1="344" x2="436" y2="344" class="flow" marker-end="url(#ag)"/>
+  <rect x="440" y="320" width="290" height="48" rx="6" class="box"/>
+  <text x="454" y="340" class="opm">Order.changeShipped()</text>
+  <text x="454" y="359" class="opm">Order.changeShippingInfo()</text>
+  <rect x="30" y="376" width="360" height="30" rx="6" class="box"/>
+  <text x="44" y="395.5" class="val">출고 전에 주문을 취소할 수 있다</text>
+  <line x1="392" y1="391" x2="436" y2="391" class="flow" marker-end="url(#ag)"/>
+  <rect x="440" y="376" width="290" height="30" rx="6" class="box"/>
+  <text x="454" y="395.5" class="opm">Order.cancel()</text>
+  <rect x="30" y="414" width="360" height="30" rx="6" class="box"/>
+  <text x="44" y="433.5" class="val">결제 완료 전에는 상품을 준비하지 않는다</text>
+  <line x1="392" y1="429" x2="436" y2="429" class="flow" marker-end="url(#ag)"/>
+  <rect x="440" y="414" width="290" height="30" rx="6" class="box"/>
+  <text x="454" y="433.5" class="opm">Order.completePayment()</text>
+  <text x="30" y="470" class="foot">초록 칸은 OrderLine으로 묶인 규칙이고, 회색 칸은 이 글의 코드로 옮기지 않은 규칙입니다.</text>
+</svg>
