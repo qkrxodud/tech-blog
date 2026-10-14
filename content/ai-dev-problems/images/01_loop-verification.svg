@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 422" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>빌드 로그만 확인하면 깨진 화면을 놓치고, 매 루프 끝에 빌드, curl 응답, 브라우저 스크린샷, JS 에러를 확인하면 에러가 났을 때 Claude가 바로 수정하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="422" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="150" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">빌드 로그만 확인 — 화면 문제를 놓침</text>
+  <rect x="30" y="66" width="150" height="48" rx="8" class="box"/>
+  <text x="105" y="86" class="db" text-anchor="middle">빌드 성공</text>
+  <text x="105" y="105" class="val" text-anchor="middle">Java 컴파일</text>
+  <line x1="182" y1="90" x2="246" y2="90" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="250" y="66" width="480" height="48" rx="8" class="bad"/>
+  <text x="490" y="86" class="badt" text-anchor="middle">깨진 화면을 발견하지 못함</text>
+  <text x="490" y="105" class="val" text-anchor="middle">HTML 템플릿 변수명 불일치, JavaScript 에러</text>
+  <text x="250" y="142" class="note">빌드 로그만으로는 발견할 수 없어 깨진 화면이 여러 루프 동안 누적될 수 있음</text>
+  <rect x="10" y="176" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="208" class="h">매 루프 끝 검증 — Playwright로 화면까지 확인</text>
+  <text x="220" y="234" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="234" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="234" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="234" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="242" x2="722" y2="242" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="274" class="lane">루프 끝</text>
+  <text x="30" y="292" class="sub">매 루프 실행</text>
+  <rect x="150" y="252" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="254" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="274" class="db" text-anchor="middle">빌드 성공</text>
+  <text x="220" y="293" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">build</tspan></text>
+  <line x1="280" y1="278" x2="300" y2="278" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="302" y="254" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="274" class="db" text-anchor="middle">응답 확인</text>
+  <text x="360" y="293" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">curl</tspan></text>
+  <line x1="420" y1="278" x2="440" y2="278" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="442" y="254" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="274" class="db" text-anchor="middle">스크린샷</text>
+  <text x="500" y="293" class="val" text-anchor="middle">Playwright</text>
+  <line x1="560" y1="278" x2="580" y2="278" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="582" y="254" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="274" class="db" text-anchor="middle">JS 에러 확인</text>
+  <text x="640" y="293" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">errors=0</tspan></text>
+  <line x1="660" y1="304" x2="672" y2="334" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="620" y1="304" x2="540" y2="334" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="600" y="336" width="135" height="48" rx="8" class="ok"/>
+  <text x="667.5" y="356" class="okt" text-anchor="middle">통과</text>
+  <text x="667.5" y="375" class="val" text-anchor="middle">루프 완료</text>
+  <rect x="250" y="336" width="330" height="48" rx="8" class="bad"/>
+  <text x="415" y="356" class="badt" text-anchor="middle">JS 에러 발생</text>
+  <text x="415" y="375" class="val" text-anchor="middle">Claude가 에러 메시지를 읽고 바로 수정</text>
+</svg>

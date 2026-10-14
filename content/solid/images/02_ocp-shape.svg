@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>AreaCalculator가 Shape의 area()만 호출하고, Rectangle과 Circle은 그대로 둔 채 Shape를 상속한 Triangle을 새로 추가하는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .bt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #4b5563; }
+    .cvb { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #b91c1c; }
+    .cvg { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">OCP — 새 도형은 추가하고 기존 코드는 수정하지 않음</text>
+  <text x="730" y="42" class="code" text-anchor="end">shape.area()</text>
+  <rect x="260" y="62" width="240" height="56" rx="8" class="box"/>
+  <text x="380" y="85" class="op" text-anchor="middle">AreaCalculator</text>
+  <text x="380" y="105" class="cv" text-anchor="middle">calculateArea(List&lt;Shape&gt;)</text>
+  <text x="514" y="95" class="val">수정 없음</text>
+  <line x1="380" y1="120" x2="380" y2="146" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="392" y="138" class="sub">area() 호출</text>
+  <rect x="290" y="148" width="180" height="52" rx="8" class="hold"/>
+  <text x="380" y="170" class="op" text-anchor="middle">Shape</text>
+  <text x="380" y="190" class="cv" text-anchor="middle">abstract area()</text>
+  <rect x="50" y="250" width="200" height="56" rx="8" class="box"/>
+  <text x="150" y="273" class="op" text-anchor="middle">Rectangle</text>
+  <text x="150" y="293" class="cv" text-anchor="middle">width * height</text>
+  <rect x="280" y="250" width="200" height="56" rx="8" class="box"/>
+  <text x="380" y="273" class="op" text-anchor="middle">Circle</text>
+  <text x="380" y="293" class="cv" text-anchor="middle">PI * radius * radius</text>
+  <rect x="510" y="250" width="200" height="56" rx="8" class="ok" stroke-dasharray="5 4"/>
+  <text x="610" y="273" class="okc" text-anchor="middle">Triangle</text>
+  <text x="610" y="293" class="val" text-anchor="middle">Shape 상속, area() 구현</text>
+  <line x1="150" y1="248" x2="318" y2="203" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="380" y1="248" x2="380" y2="203" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="610" y1="248" x2="442" y2="203" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="326" class="sub" text-anchor="middle">수정 없음</text>
+  <text x="380" y="326" class="sub" text-anchor="middle">수정 없음</text>
+  <text x="610" y="326" class="gnote" text-anchor="middle">새로 추가</text>
+</svg>

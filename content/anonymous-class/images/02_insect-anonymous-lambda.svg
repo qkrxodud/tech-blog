@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 410" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Insect를 구현한 클래스를 따로 선언해 생성하는 방법, new Insect() { ... }로 선언과 생성을 한 번에 하는 익명 클래스, () -&gt; System.out.println(...) 람다를 비교하고 세 방식 모두 ant.crawl() 호출 시 Ant is crawling을 출력하는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .bt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #4b5563; }
+    .cvb { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #b91c1c; }
+    .cvg { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="410" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="390" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Insect 구현 방식 — 클래스 선언, 익명 클래스, 람다</text>
+  <text x="730" y="42" class="code" text-anchor="end">ant.crawl()</text>
+  <text x="276" y="72" class="gl" text-anchor="middle">구현 코드</text>
+  <text x="507" y="72" class="gl" text-anchor="middle">특징</text>
+  <text x="663" y="72" class="gl" text-anchor="middle">ant.crawl() 결과</text>
+  <text x="30" y="120" class="lane">클래스 선언</text>
+  <text x="30" y="138" class="sub">일반적인 방법</text>
+  <rect x="126" y="82" width="609" height="84" rx="6" class="track"/>
+  <rect x="136" y="88" width="280" height="72" rx="8" class="hold"/>
+  <text x="150" y="108" class="cv">class ... implements Insect {</text>
+  <text x="166" y="127" class="cv">public void crawl() { ... } }</text>
+  <text x="150" y="146" class="cv">Insect ant = new ...();</text>
+  <line x1="418" y1="124" x2="430" y2="124" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="432" y="96" width="150" height="56" rx="8" class="box"/>
+  <text x="507" y="119" class="val" text-anchor="middle">선언과 생성을</text>
+  <text x="507" y="138" class="val" text-anchor="middle">따로 작성</text>
+  <line x1="584" y1="124" x2="596" y2="124" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="598" y="96" width="130" height="56" rx="8" class="ok"/>
+  <text x="663" y="119" class="cvg" text-anchor="middle">Ant is crawling</text>
+  <text x="663" y="138" class="val" text-anchor="middle">같은 출력</text>
+  <text x="30" y="214" class="lane">익명 클래스</text>
+  <text x="30" y="232" class="sub">이름 없는 클래스</text>
+  <rect x="126" y="176" width="609" height="84" rx="6" class="track"/>
+  <rect x="136" y="182" width="280" height="72" rx="8" class="hold"/>
+  <text x="150" y="202" class="cv">Insect ant = new Insect() {</text>
+  <text x="166" y="221" class="cv">public void crawl() { ... }</text>
+  <text x="150" y="240" class="cv">};</text>
+  <line x1="418" y1="218" x2="430" y2="218" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="432" y="190" width="150" height="56" rx="8" class="box"/>
+  <text x="507" y="213" class="val" text-anchor="middle">이름 없이 선언과</text>
+  <text x="507" y="232" class="val" text-anchor="middle">생성을 한 번에</text>
+  <line x1="584" y1="218" x2="596" y2="218" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="598" y="190" width="130" height="56" rx="8" class="ok"/>
+  <text x="663" y="213" class="cvg" text-anchor="middle">Ant is crawling</text>
+  <text x="663" y="232" class="val" text-anchor="middle">같은 출력</text>
+  <text x="30" y="308" class="lane">람다</text>
+  <text x="30" y="326" class="sub">메서드가 하나일 때</text>
+  <rect x="126" y="270" width="609" height="84" rx="6" class="track"/>
+  <rect x="136" y="276" width="280" height="72" rx="8" class="box"/>
+  <text x="150" y="296" class="cv">Insect ant = () -&gt;</text>
+  <text x="166" y="315" class="cv">System.out.println(</text>
+  <text x="182" y="334" class="cv">"Ant is crawling");</text>
+  <line x1="418" y1="312" x2="430" y2="312" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="432" y="284" width="150" height="56" rx="8" class="box"/>
+  <text x="507" y="307" class="val" text-anchor="middle">메서드 내용만</text>
+  <text x="507" y="326" class="val" text-anchor="middle">남긴 형태</text>
+  <line x1="584" y1="312" x2="596" y2="312" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="598" y="284" width="130" height="56" rx="8" class="ok"/>
+  <text x="663" y="307" class="cvg" text-anchor="middle">Ant is crawling</text>
+  <text x="663" y="326" class="val" text-anchor="middle">같은 출력</text>
+  <text x="30" y="384" class="sub">익명 클래스는 클래스 선언과 객체 생성을 한 번에 하고, 람다는 구현할 메서드가 하나인 인터페이스에서 그 메서드의 내용만 남깁니다.</text>
+</svg>

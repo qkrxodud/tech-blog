@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 310" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>@Mock은 스터빙하지 않은 메서드에서 기본값을 반환하고, @Spy는 실제 메서드를 실행한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="310" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">@Mock과 @Spy — 스터빙하지 않은 메서드의 동작</text>
+  <text x="320" y="76" class="step" text-anchor="middle">스터빙한 메서드</text>
+  <text x="595" y="76" class="step" text-anchor="middle">스터빙하지 않은 메서드</text>
+  <line x1="160" y1="84" x2="722" y2="84" class="axis"/>
+
+  <text x="30" y="118" class="lane">@Mock</text>
+  <text x="30" y="136" class="sub">가짜 객체</text>
+  <rect x="150" y="94" width="585" height="60" rx="6" class="track"/>
+  <rect x="200" y="98" width="240" height="52" rx="8" class="ok"/>
+  <text x="320" y="119" class="op" text-anchor="middle">sendEmail(...)</text>
+  <text x="320" y="139" class="val" text-anchor="middle">정한 값 <tspan font-family="Menlo, Consolas, monospace">true</tspan> 반환</text>
+  <rect x="470" y="98" width="250" height="52" rx="8" class="hold"/>
+  <text x="595" y="119" class="val" text-anchor="middle">아무 동작도 하지 않음</text>
+  <text x="595" y="139" class="val" text-anchor="middle">기본값(<tspan font-family="Menlo, Consolas, monospace">null</tspan> · <tspan font-family="Menlo, Consolas, monospace">0</tspan> · <tspan font-family="Menlo, Consolas, monospace">false</tspan>) 반환</text>
+
+  <text x="30" y="192" class="lane">@Spy</text>
+  <text x="30" y="210" class="sub">실제 객체를 감쌈</text>
+  <rect x="150" y="168" width="585" height="60" rx="6" class="track"/>
+  <rect x="200" y="172" width="240" height="52" rx="8" class="ok"/>
+  <text x="320" y="193" class="op" text-anchor="middle">sendEmail(...)</text>
+  <text x="320" y="213" class="val" text-anchor="middle">정한 값 <tspan font-family="Menlo, Consolas, monospace">true</tspan> 반환</text>
+  <rect x="470" y="172" width="250" height="52" rx="8" class="box"/>
+  <text x="595" y="193" class="val" text-anchor="middle">실제 객체의</text>
+  <text x="595" y="213" class="val" text-anchor="middle">메서드를 그대로 실행</text>
+
+  <text x="30" y="258" class="sub">스터빙: <tspan font-family="Menlo, Consolas, monospace">when(...).thenReturn(...)</tspan> 또는 <tspan font-family="Menlo, Consolas, monospace">doReturn(...).when(...)</tspan></text>
+  <text x="30" y="280" class="sub">@MockBean · @SpyBean도 같은 방식으로 동작하며, 대상이 스프링 컨텍스트의 빈입니다</text>
+</svg>

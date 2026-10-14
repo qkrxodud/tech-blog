@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>주문 신호가 들어오면 같은 날짜와 신호 유형의 주문이 있는지 확인하고, 시뮬레이션 모드면 기록만 남기며, 실거래 전환은 시뮬레이션 100건 이상일 때만 허용하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="520" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">주문 실행 — 중복 주문 확인과 모드 분리</text>
+  <rect x="30" y="72" width="150" height="48" rx="8" class="box"/>
+  <text x="105" y="92" class="db" text-anchor="middle">주문 신호</text>
+  <text x="105" y="111" class="val" text-anchor="middle">BUY · SELL</text>
+  <line x1="182" y1="96" x2="226" y2="96" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="230" y="72" width="240" height="48" rx="8" class="box"/>
+  <text x="350" y="92" class="db" text-anchor="middle">중복 주문 확인</text>
+  <text x="350" y="111" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">isAlreadyExecuted()</tspan></text>
+  <line x1="472" y1="96" x2="526" y2="96" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="499" y="88" class="note" text-anchor="middle">있음</text>
+  <rect x="530" y="72" width="200" height="48" rx="8" class="bad"/>
+  <text x="630" y="92" class="badt" text-anchor="middle">실행하지 않음</text>
+  <text x="630" y="111" class="val" text-anchor="middle">같은 날짜·신호 유형 주문 있음</text>
+  <line x1="350" y1="122" x2="350" y2="178" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="360" y="154" class="gnote">없음</text>
+  <rect x="230" y="180" width="240" height="48" rx="8" class="box"/>
+  <text x="350" y="200" class="db" text-anchor="middle">모드 확인</text>
+  <text x="350" y="219" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">isSimulationMode()</tspan></text>
+  <path d="M472,196 L500,196 L500,158 L526,158" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <path d="M472,212 L500,212 L500,262 L526,262" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="486" y="150" class="sub" text-anchor="middle">시뮬레이션</text>
+  <text x="486" y="282" class="sub" text-anchor="middle">실거래</text>
+  <rect x="530" y="134" width="200" height="48" rx="8" class="hold"/>
+  <text x="630" y="154" class="db" text-anchor="middle">주문 기록만 남김</text>
+  <text x="630" y="173" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">recordSimulationOrder()</tspan></text>
+  <rect x="530" y="238" width="200" height="48" rx="8" class="ok"/>
+  <text x="630" y="258" class="okt" text-anchor="middle">실거래 주문</text>
+  <text x="630" y="277" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">executeLiveOrder()</tspan></text>
+  <rect x="10" y="326" width="740" height="184" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="358" class="h">실거래 모드 전환 — <tspan font-family="Menlo, Consolas, monospace">validateLiveMode()</tspan></text>
+  <rect x="30" y="412" width="190" height="48" rx="8" class="box"/>
+  <text x="125" y="432" class="db" text-anchor="middle">모드 전환 요청</text>
+  <text x="125" y="451" class="val" text-anchor="middle">설정 페이지</text>
+  <path d="M222,428 L270,428 L270,400 L326,400" fill="none" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <path d="M222,444 L270,444 L270,472 L326,472" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="330" y="376" width="400" height="48" rx="8" class="bad"/>
+  <text x="530" y="396" class="badt" text-anchor="middle">시뮬레이션 100건 미만 — 전환 차단</text>
+  <text x="530" y="415" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">InsufficientSimulationException</tspan></text>
+  <rect x="330" y="448" width="400" height="48" rx="8" class="ok"/>
+  <text x="530" y="468" class="okt" text-anchor="middle">시뮬레이션 100건 이상 — 실거래 전환</text>
+  <text x="530" y="487" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">MINIMUM_SIMULATION_COUNT</tspan> 충족</text>
+</svg>

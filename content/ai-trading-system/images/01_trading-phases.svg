@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>자동매매 요구사항을 신호 생성, 주문 실행, 리스크 관리 세 Phase로 나누고 앞 Phase 검증이 끝난 뒤 다음 Phase로 넘어가는 순서</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">자동매매 Phase — 앞 단계 검증이 끝나야 다음 단계로</text>
+  <rect x="30" y="66" width="196" height="200" rx="8" class="box"/>
+  <text x="44" y="90" class="step">Phase 1</text>
+  <text x="44" y="112" class="lane">신호 생성</text>
+  <line x1="40" y1="126" x2="216" y2="126" stroke="#e5e7eb"/>
+  <text x="44" y="152" class="val">09:05 스케줄러 실행</text>
+  <text x="44" y="180" class="val">Readiness Score로 신호 결정</text>
+  <text x="44" y="208" class="val"><tspan font-family="Menlo, Consolas, monospace">AutoSignalLog</tspan> 저장</text>
+  <text x="44" y="236" class="val">텔레그램 알림 발송</text>
+  <rect x="282" y="66" width="196" height="200" rx="8" class="box"/>
+  <text x="296" y="90" class="step">Phase 2</text>
+  <text x="296" y="112" class="lane">주문 실행</text>
+  <line x1="292" y1="126" x2="468" y2="126" stroke="#e5e7eb"/>
+  <text x="296" y="152" class="val">Bithumb JWT 인증</text>
+  <text x="296" y="180" class="val">시뮬레이션·실거래 모드 분리</text>
+  <text x="296" y="208" class="val">멱등성 키로 중복 주문 방지</text>
+  <rect x="534" y="66" width="196" height="200" rx="8" class="box"/>
+  <text x="548" y="90" class="step">Phase 3</text>
+  <text x="548" y="112" class="lane">리스크 관리</text>
+  <line x1="544" y1="126" x2="720" y2="126" stroke="#e5e7eb"/>
+  <text x="548" y="152" class="val">트레일링 스탑 (60초 주기)</text>
+  <text x="548" y="180" class="val">손익분기 스탑 (+5%)</text>
+  <text x="548" y="208" class="val">연속 손실 경고 알림</text>
+  <text x="254" y="156" class="gnote" text-anchor="middle">검증 후</text>
+  <line x1="232" y1="168" x2="276" y2="168" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="506" y="156" class="gnote" text-anchor="middle">검증 후</text>
+  <line x1="484" y1="168" x2="528" y2="168" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="30" y="286" width="700" height="44" rx="8" class="hold"/>
+  <text x="380" y="304" class="db" text-anchor="middle">백로그 항목에 <tspan font-family="Menlo, Consolas, monospace">BLOCKER</tspan> 태그를 붙여 순서를 강제</text>
+  <text x="380" y="322" class="sub" text-anchor="middle">Phase 1이 완전히 검증된 뒤에 Phase 2를 진행</text>
+</svg>

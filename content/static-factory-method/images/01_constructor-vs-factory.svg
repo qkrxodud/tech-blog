@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>생성자를 직접 호출하면 Track이 이름을 나누고 Car와 Cars를 만들지만, 정적 팩토리 메서드 Cars.from()을 쓰면 같은 과정이 Cars 안에서 처리되는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .bt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="540" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">생성자를 직접 호출 — Track이 자동차 목록을 만든다</text>
+  <text x="730" y="42" class="code" text-anchor="end">new Cars(cars)</text>
+  <text x="250" y="68" class="step" text-anchor="middle">1. 이름 나누기</text>
+  <text x="440" y="68" class="step" text-anchor="middle">2. Car 생성</text>
+  <text x="630" y="68" class="step" text-anchor="middle">3. Cars 생성</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">Track</text>
+  <text x="30" y="126" class="sub">경주 진행</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="88" width="160" height="48" rx="8" class="hold"/>
+  <text x="250" y="111" class="op" text-anchor="middle">split(DELIMITER)</text>
+  <text x="250" y="131" class="val" text-anchor="middle">Track이 이름을 나눔</text>
+  <rect x="360" y="88" width="160" height="48" rx="8" class="hold"/>
+  <text x="440" y="111" class="op" text-anchor="middle">new Car()</text>
+  <text x="440" y="131" class="val" text-anchor="middle">Track이 반복해서 생성</text>
+  <rect x="550" y="88" width="160" height="48" rx="8" class="hold"/>
+  <text x="630" y="111" class="op" text-anchor="middle">new Cars()</text>
+  <text x="630" y="131" class="val" text-anchor="middle">Track이 목록을 감쌈</text>
+  <line x1="332" y1="112" x2="356" y2="112" class="axis" marker-end="url(#ar)"/>
+  <line x1="522" y1="112" x2="546" y2="112" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="178" class="lane">Cars</text>
+  <text x="30" y="196" class="sub">자동차 목록</text>
+  <rect x="150" y="156" width="585" height="52" rx="6" class="track"/>
+  <rect x="550" y="158" width="160" height="48" rx="8" class="box"/>
+  <text x="630" y="181" class="op" text-anchor="middle">Cars(cars)</text>
+  <text x="630" y="201" class="val" text-anchor="middle">생성자로 받기만 함</text>
+  <line x1="630" y1="137" x2="630" y2="155" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="240" class="sub">구분자 DELIMITER와 이름을 나누는 반복문이 모두 Track 안에 드러나 있습니다.</text>
+  <rect x="10" y="278" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="310" class="h">정적 팩토리 메서드 — Cars.from()이 목록을 만든다</text>
+  <text x="730" y="310" class="code" text-anchor="end">Cars.from(carNames)</text>
+  <text x="250" y="336" class="step" text-anchor="middle">1. 이름 나누기</text>
+  <text x="440" y="336" class="step" text-anchor="middle">2. Car 생성</text>
+  <text x="630" y="336" class="step" text-anchor="middle">3. Cars 생성</text>
+  <line x1="160" y1="344" x2="722" y2="344" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="376" class="lane">Track</text>
+  <text x="30" y="394" class="sub">경주 진행</text>
+  <rect x="150" y="354" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="356" width="160" height="48" rx="8" class="box"/>
+  <text x="250" y="379" class="op" text-anchor="middle">Cars.from()</text>
+  <text x="250" y="399" class="val" text-anchor="middle">Track은 호출만 함</text>
+  <text x="30" y="446" class="lane">Cars</text>
+  <text x="30" y="464" class="sub">자동차 목록</text>
+  <rect x="150" y="424" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="426" width="160" height="48" rx="8" class="ok"/>
+  <text x="250" y="449" class="okc" text-anchor="middle">split(DELIMITER)</text>
+  <text x="250" y="469" class="val" text-anchor="middle">Cars가 이름을 나눔</text>
+  <rect x="360" y="426" width="160" height="48" rx="8" class="ok"/>
+  <text x="440" y="449" class="okc" text-anchor="middle">new Car()</text>
+  <text x="440" y="469" class="val" text-anchor="middle">Cars가 반복해서 생성</text>
+  <rect x="550" y="426" width="160" height="48" rx="8" class="ok"/>
+  <text x="630" y="449" class="okc" text-anchor="middle">new Cars()</text>
+  <text x="630" y="469" class="val" text-anchor="middle">Cars를 만들어 반환</text>
+  <line x1="250" y1="405" x2="250" y2="423" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="332" y1="450" x2="356" y2="450" class="axis" marker-end="url(#ar)"/>
+  <line x1="522" y1="450" x2="546" y2="450" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="508" class="sub">DELIMITER와 반복문이 Cars로 옮겨 가고, Track에는 Cars.from(carNames) 호출 한 줄이 남습니다.</text>
+</svg>

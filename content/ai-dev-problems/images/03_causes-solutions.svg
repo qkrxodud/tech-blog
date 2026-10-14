@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 324" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>컨텍스트 부족은 상태 파일로, 범위 불명확은 항목을 작게 쪼개는 것으로, 규칙 미정의는 CLAUDE.md와 MEMORY 규칙 명문화로 보완한 정리</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="324" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="304" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">문제의 원인과 해결 — 세 가지로 묶은 정리</text>
+  <text x="180" y="70" class="step" text-anchor="middle">원인</text>
+  <text x="565" y="70" class="step" text-anchor="middle">해결</text>
+  <rect x="30" y="82" width="300" height="48" rx="8" class="bad"/>
+  <text x="180" y="102" class="badt" text-anchor="middle">컨텍스트 부족</text>
+  <text x="180" y="121" class="val" text-anchor="middle">문제 1 — 세션이 끊기면 맥락을 잃음</text>
+  <line x1="334" y1="106" x2="396" y2="106" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="400" y="82" width="330" height="48" rx="8" class="ok"/>
+  <text x="565" y="102" class="okt" text-anchor="middle">상태 파일</text>
+  <text x="565" y="121" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">PROGRESS.md</tspan> · <tspan font-family="Menlo, Consolas, monospace">MEMORY/</tspan> · <tspan font-family="Menlo, Consolas, monospace">CLAUDE.md</tspan></text>
+  <rect x="30" y="146" width="300" height="48" rx="8" class="bad"/>
+  <text x="180" y="166" class="badt" text-anchor="middle">범위 불명확</text>
+  <text x="180" y="185" class="val" text-anchor="middle">문제 4 — 한 번에 너무 많은 기능</text>
+  <line x1="334" y1="170" x2="396" y2="170" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="400" y="146" width="330" height="48" rx="8" class="ok"/>
+  <text x="565" y="166" class="okt" text-anchor="middle">항목을 작게 쪼개기</text>
+  <text x="565" y="185" class="val" text-anchor="middle">“예상 1루프” 단위의 백로그 항목</text>
+  <rect x="30" y="210" width="300" height="48" rx="8" class="bad"/>
+  <text x="180" y="230" class="badt" text-anchor="middle">규칙 미정의</text>
+  <text x="180" y="249" class="val" text-anchor="middle">문제 5·6 — 규칙 위반, 불필요한 코드</text>
+  <line x1="334" y1="234" x2="396" y2="234" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="400" y="210" width="330" height="48" rx="8" class="ok"/>
+  <text x="565" y="230" class="okt" text-anchor="middle">규칙 명문화</text>
+  <text x="565" y="249" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">CLAUDE.md</tspan> 금지 항목 · <tspan font-family="Menlo, Consolas, monospace">MEMORY/</tspan> 피드백</text>
+  <rect x="30" y="274" width="700" height="28" rx="14" class="hold"/>
+  <text x="380" y="293" class="val" text-anchor="middle">실수를 미리 막기보다, 실수가 발생했을 때 빠르게 기록하고 반영</text>
+</svg>

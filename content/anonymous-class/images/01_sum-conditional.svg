@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>sumAll, sumAllEven, sumAllOverThree 세 함수가 sumAllConditional 하나로 합쳐지고, number -&gt; true, number -&gt; number % 2 == 0, number -&gt; number &gt; 3 조건을 전달해 각각 21, 12, 15를 얻는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .bt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #4b5563; }
+    .cvb { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #b91c1c; }
+    .cvg { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">조건만 다른 합계 함수 — 조건을 전달받는 함수 하나로</text>
+  <text x="226" y="72" class="gl" text-anchor="middle">변경 전</text>
+  <text x="458" y="72" class="gl" text-anchor="middle">변경 후 — 전달하는 조건</text>
+  <text x="660" y="72" class="gl" text-anchor="middle">결과</text>
+
+  <text x="30" y="116" class="lane">전체</text>
+  <text x="30" y="134" class="sub">모든 수</text>
+  <rect x="126" y="82" width="609" height="76" rx="6" class="track"/>
+  <rect x="136" y="92" width="180" height="56" rx="8" class="hold"/>
+  <text x="226" y="115" class="op" text-anchor="middle">sumAll()</text>
+  <text x="226" y="135" class="val" text-anchor="middle">for문, 조건 없음</text>
+  <line x1="318" y1="120" x2="336" y2="120" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="338" y="92" width="240" height="56" rx="8" class="box"/>
+  <text x="458" y="115" class="opm" text-anchor="middle">number -&gt; true</text>
+  <text x="458" y="135" class="val" text-anchor="middle">항상 더함</text>
+  <line x1="580" y1="120" x2="598" y2="120" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="600" y="92" width="120" height="56" rx="8" class="ok"/>
+  <text x="660" y="115" class="okc" text-anchor="middle">21</text>
+  <text x="660" y="135" class="val" text-anchor="middle">테스트 기대값</text>
+
+  <text x="30" y="202" class="lane">짝수</text>
+  <text x="30" y="220" class="sub">짝수만</text>
+  <rect x="126" y="168" width="609" height="76" rx="6" class="track"/>
+  <rect x="136" y="178" width="180" height="56" rx="8" class="hold"/>
+  <text x="226" y="201" class="op" text-anchor="middle">sumAllEven()</text>
+  <text x="226" y="221" class="val" text-anchor="middle">for문 + 짝수 if문</text>
+  <line x1="318" y1="206" x2="336" y2="206" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="338" y="178" width="240" height="56" rx="8" class="box"/>
+  <text x="458" y="201" class="opm" text-anchor="middle">number -&gt; number % 2 == 0</text>
+  <text x="458" y="221" class="val" text-anchor="middle">짝수일 때 더함</text>
+  <line x1="580" y1="206" x2="598" y2="206" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="600" y="178" width="120" height="56" rx="8" class="ok"/>
+  <text x="660" y="201" class="okc" text-anchor="middle">12</text>
+  <text x="660" y="221" class="val" text-anchor="middle">테스트 기대값</text>
+
+  <text x="30" y="288" class="lane">3 초과</text>
+  <text x="30" y="306" class="sub">3보다 큰 수</text>
+  <rect x="126" y="254" width="609" height="76" rx="6" class="track"/>
+  <rect x="136" y="264" width="180" height="56" rx="8" class="hold"/>
+  <text x="226" y="287" class="op" text-anchor="middle">sumAllOverThree()</text>
+  <text x="226" y="307" class="val" text-anchor="middle">for문 + 3 초과 if문</text>
+  <line x1="318" y1="292" x2="336" y2="292" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="338" y="264" width="240" height="56" rx="8" class="box"/>
+  <text x="458" y="287" class="opm" text-anchor="middle">number -&gt; number &gt; 3</text>
+  <text x="458" y="307" class="val" text-anchor="middle">3보다 클 때 더함</text>
+  <line x1="580" y1="292" x2="598" y2="292" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="600" y="264" width="120" height="56" rx="8" class="ok"/>
+  <text x="660" y="287" class="okc" text-anchor="middle">15</text>
+  <text x="660" y="307" class="val" text-anchor="middle">테스트 기대값</text>
+
+  <text x="30" y="354" class="sub">변경 후에는 세 테스트 모두 sumAllConditional(numbers, 조건)을 호출하고, for문과 total 계산은 한 곳에만 남습니다.</text>
+</svg>

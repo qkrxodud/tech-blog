@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 496" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>MemberFactory.of가 type에 따라 Member의 하위 타입 RegularMember나 GeneralMember를 반환하고, ShapeFactory.createShape가 입력 값에 따라 Circle이나 Rectangle을 반환하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pool { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="496" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="230" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">반환 타입의 하위 타입 — 반환 타입은 Member</text>
+  <rect x="30" y="66" width="220" height="132" rx="10" class="box"/>
+  <text x="140" y="124" class="opm" text-anchor="middle">MemberFactory</text>
+  <text x="140" y="146" class="opm" text-anchor="middle">.of(type)</text>
+  <rect x="280" y="66" width="210" height="36" rx="8" class="hold"/>
+  <text x="385" y="89" class="opm" text-anchor="middle">type.isRegularMember</text>
+  <rect x="280" y="114" width="210" height="36" rx="8" class="hold"/>
+  <text x="385" y="137" class="opm" text-anchor="middle">type.isGeneralMember</text>
+  <rect x="280" y="162" width="210" height="36" rx="8" class="hold"/>
+  <text x="385" y="185" class="t" text-anchor="middle">일치하는 회원 없음</text>
+  <line x1="252" y1="84" x2="276" y2="84" class="flow" marker-end="url(#ag)"/>
+  <line x1="252" y1="132" x2="276" y2="132" class="flow" marker-end="url(#ag)"/>
+  <line x1="252" y1="180" x2="276" y2="180" class="flow" marker-end="url(#ag)"/>
+  <rect x="530" y="66" width="200" height="36" rx="8" class="ok"/>
+  <text x="630" y="89" class="okm" text-anchor="middle">RegularMember</text>
+  <rect x="530" y="114" width="200" height="36" rx="8" class="ok"/>
+  <text x="630" y="137" class="okm" text-anchor="middle">GeneralMember</text>
+  <rect x="530" y="162" width="200" height="36" rx="8" class="bad"/>
+  <text x="630" y="185" class="badm" text-anchor="middle">MemberException</text>
+  <line x1="492" y1="84" x2="526" y2="84" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="492" y1="132" x2="526" y2="132" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="492" y1="180" x2="526" y2="180" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="30" y="224" class="foot">호출하는 쪽은 <tspan font-family="Menlo, Consolas, monospace">Member</tspan> 타입으로 받고, 실제로는 하위 타입인 <tspan font-family="Menlo, Consolas, monospace">RegularMember</tspan>·<tspan font-family="Menlo, Consolas, monospace">GeneralMember</tspan> 객체가 반환됩니다.</text>
+
+  <rect x="10" y="256" width="740" height="230" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="288" class="h">입력 매개변수에 따라 — 매번 다른 클래스의 객체</text>
+  <rect x="30" y="312" width="220" height="132" rx="10" class="box"/>
+  <text x="140" y="370" class="opm" text-anchor="middle">ShapeFactory</text>
+  <text x="140" y="392" class="opm" text-anchor="middle">.createShape(shapeType)</text>
+  <rect x="280" y="312" width="210" height="36" rx="8" class="hold"/>
+  <text x="385" y="335" class="t" text-anchor="middle">"원"</text>
+  <rect x="280" y="360" width="210" height="36" rx="8" class="hold"/>
+  <text x="385" y="383" class="t" text-anchor="middle">"사각형"</text>
+  <rect x="280" y="408" width="210" height="36" rx="8" class="hold"/>
+  <text x="385" y="431" class="t" text-anchor="middle">그 외의 값</text>
+  <line x1="252" y1="330" x2="276" y2="330" class="flow" marker-end="url(#ag)"/>
+  <line x1="252" y1="378" x2="276" y2="378" class="flow" marker-end="url(#ag)"/>
+  <line x1="252" y1="426" x2="276" y2="426" class="flow" marker-end="url(#ag)"/>
+  <rect x="530" y="312" width="200" height="36" rx="8" class="ok"/>
+  <text x="630" y="335" class="okm" text-anchor="middle">Circle</text>
+  <rect x="530" y="360" width="200" height="36" rx="8" class="ok"/>
+  <text x="630" y="383" class="okm" text-anchor="middle">Rectangle</text>
+  <rect x="530" y="408" width="200" height="36" rx="8" class="bad"/>
+  <text x="630" y="431" class="badm" text-anchor="middle">null</text>
+  <line x1="492" y1="330" x2="526" y2="330" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="492" y1="378" x2="526" y2="378" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="492" y1="426" x2="526" y2="426" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="30" y="470" class="foot">같은 메서드라도 <tspan font-family="Menlo, Consolas, monospace">shapeType</tspan> 값에 따라 <tspan font-family="Menlo, Consolas, monospace">Shape</tspan>를 구현한 서로 다른 클래스의 객체가 반환됩니다.</text>
+</svg>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 390" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Presentation은 @WebMvcTest로 서비스를 @MockBean으로 바꿔 테스트하고, Persistence는 @DataJpaTest, 전체 계층은 @SpringBootTest로 테스트한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="390" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="370" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">계층별 테스트 범위 — 테스트 애노테이션이 띄우는 계층</text>
+  <text x="452" y="70" class="step" text-anchor="middle">슬라이스 테스트</text>
+  <text x="670" y="70" class="step" text-anchor="middle">통합 테스트</text>
+
+  <rect x="30" y="80" width="270" height="70" rx="8" class="box"/>
+  <text x="165" y="108" class="lane" text-anchor="middle">Presentation Layer</text>
+  <text x="165" y="130" class="val" text-anchor="middle">요청을 가장 먼저 받고, 파라미터 최소 검증</text>
+  <rect x="30" y="166" width="270" height="70" rx="8" class="box"/>
+  <text x="165" y="194" class="lane" text-anchor="middle">Business Layer</text>
+  <text x="165" y="216" class="val" text-anchor="middle">비즈니스 로직 구현, 트랜잭션 보장</text>
+  <rect x="30" y="252" width="270" height="70" rx="8" class="box"/>
+  <text x="165" y="280" class="lane" text-anchor="middle">Persistence Layer</text>
+  <text x="165" y="302" class="val" text-anchor="middle">Data CRUD에만 집중</text>
+  <line x1="165" y1="150" x2="165" y2="164" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="165" y1="236" x2="165" y2="250" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+
+  <rect x="316" y="80" width="130" height="70" rx="8" class="ok"/>
+  <text x="381" y="108" class="okc" text-anchor="middle" style="font-size:13px">@WebMvcTest</text>
+  <text x="381" y="130" class="val" text-anchor="middle">컨트롤러 + MockMvc</text>
+  <rect x="316" y="166" width="130" height="70" rx="8" class="wait"/>
+  <text x="381" y="194" class="waitt" text-anchor="middle" font-family="Menlo, Consolas, monospace">@MockBean</text>
+  <text x="381" y="216" class="waitt" text-anchor="middle" font-family="Menlo, Consolas, monospace">ProductService</text>
+
+  <rect x="458" y="252" width="130" height="70" rx="8" class="ok"/>
+  <text x="523" y="280" class="okc" text-anchor="middle" style="font-size:13px">@DataJpaTest</text>
+  <text x="523" y="302" class="val" text-anchor="middle">JPA 관련 빈만</text>
+
+  <rect x="600" y="80" width="140" height="242" rx="8" class="hold"/>
+  <text x="670" y="190" class="op" text-anchor="middle" style="font-size:13px">@SpringBootTest</text>
+  <text x="670" y="212" class="val" text-anchor="middle">전체 컨텍스트</text>
+
+  <text x="30" y="350" class="sub"><tspan font-family="Menlo, Consolas, monospace">@DataJpaTest</tspan>: <tspan font-family="Menlo, Consolas, monospace">@Transactional</tspan>이 포함되어 테스트가 끝나면 롤백합니다</text>
+  <text x="30" y="368" class="sub"><tspan font-family="Menlo, Consolas, monospace">@SpringBootTest</tspan>: <tspan font-family="Menlo, Consolas, monospace">@Transactional</tspan>이 없어 직접 붙이지 않으면 롤백하지 않습니다</text>
+</svg>

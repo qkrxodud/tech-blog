@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>테스트 피라미드 — E2E 5%는 대형, INTEGRATION 15%는 중형, UNIT 80%는 소형 테스트이며 가장 큰 비중은 소형 테스트이다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">테스트 피라미드 — 가장 큰 비중은 소형 테스트</text>
+  <polygon points="250,70 305.4,150 194.6,150" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="250" y="124" class="db" text-anchor="middle">E2E</text>
+  <text x="250" y="143" class="val" text-anchor="middle">5%</text>
+  <polygon points="187.7,160 312.3,160 367.7,240 132.3,240" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="250" y="198" class="db" text-anchor="middle">INTEGRATION</text>
+  <text x="250" y="220" class="val" text-anchor="middle">15%</text>
+  <polygon points="125.4,250 374.6,250 430,330 70,330" class="ok"/>
+  <text x="250" y="286" class="okt" text-anchor="middle">UNIT</text>
+  <text x="250" y="308" class="okt" text-anchor="middle">80%</text>
+  <line x1="300" y1="112" x2="470" y2="112" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <text x="490" y="117" class="lane">large(대형) 테스트</text>
+  <line x1="360" y1="202" x2="470" y2="202" stroke="#c4c8ce" stroke-width="1.4" marker-end="url(#ar)"/>
+  <text x="490" y="207" class="lane">medium(중형) 테스트</text>
+  <line x1="420" y1="292" x2="470" y2="292" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="490" y="297" class="okt" style="font-size:16px">small(소형) 테스트</text>
+  <text x="30" y="356" class="sub">당연하게도 집중해야 하는 것은 가장 많은 비중을 차지하는 소형 테스트입니다</text>
+</svg>

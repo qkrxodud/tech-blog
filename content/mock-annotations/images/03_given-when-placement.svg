@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>댓글 테스트 세 개에서 생성에 필요한 내용 준비는 @BeforeEach로 모으고, 생성은 given, 테스트하려는 행위는 when에 둔 배치</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="450" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">@BeforeEach · given · when — 댓글 테스트 세 개의 배치</text>
+  <text x="30" y="92" class="lane">@BeforeEach</text>
+  <text x="30" y="110" class="sub">공통 준비</text>
+  <rect x="150" y="62" width="585" height="72" rx="6" class="track"/>
+  <rect x="162" y="72" width="180" height="52" rx="8" class="hold"/>
+  <text x="252" y="94" class="db" text-anchor="middle">사용자 생성 준비</text>
+  <text x="252" y="113" class="val" text-anchor="middle">1-1 · 3-1 · 3-3</text>
+  <rect x="354" y="72" width="180" height="52" rx="8" class="hold"/>
+  <text x="444" y="94" class="db" text-anchor="middle">게시물 생성 준비</text>
+  <text x="444" y="113" class="val" text-anchor="middle">1-3 · 3-5</text>
+  <rect x="546" y="72" width="180" height="52" rx="8" class="hold"/>
+  <text x="636" y="94" class="db" text-anchor="middle">댓글 생성 준비</text>
+  <text x="636" y="113" class="val" text-anchor="middle">1-5 · 3-7</text>
+  <text x="342" y="164" class="step" text-anchor="middle">given</text>
+  <text x="630" y="164" class="step" text-anchor="middle">when</text>
+  <line x1="160" y1="172" x2="722" y2="172" class="axis"/>
+  <text x="30" y="204" class="lane">댓글 작성</text>
+  <text x="30" y="222" class="sub"><tspan font-family="Menlo, Consolas, monospace">writeComment</tspan></text>
+  <rect x="150" y="182" width="585" height="64" rx="6" class="track"/>
+  <rect x="162" y="186" width="360" height="56" rx="8" class="box"/>
+  <text x="342" y="218" class="val" text-anchor="middle">1-2 사용자 생성 · 1-4 게시물 생성</text>
+  <rect x="534" y="186" width="192" height="56" rx="8" class="ok"/>
+  <text x="630" y="218" class="okt" text-anchor="middle">1-6 댓글 생성</text>
+  <text x="30" y="280" class="lane">댓글 수정</text>
+  <text x="30" y="298" class="sub"><tspan font-family="Menlo, Consolas, monospace">updateComment</tspan></text>
+  <rect x="150" y="258" width="585" height="64" rx="6" class="track"/>
+  <rect x="162" y="262" width="360" height="56" rx="8" class="box"/>
+  <text x="342" y="284" class="val" text-anchor="middle">2-2 사용자 생성 · 2-4 게시물 생성</text>
+  <text x="342" y="303" class="val" text-anchor="middle">2-6 댓글 생성</text>
+  <rect x="534" y="262" width="192" height="56" rx="8" class="ok"/>
+  <text x="630" y="294" class="okt" text-anchor="middle">2-7 댓글 수정</text>
+  <text x="30" y="356" class="lane">남의 댓글 수정</text>
+  <text x="30" y="374" class="sub">수정할 수 없음</text>
+  <rect x="150" y="334" width="585" height="64" rx="6" class="track"/>
+  <rect x="162" y="338" width="360" height="56" rx="8" class="box"/>
+  <text x="342" y="360" class="val" text-anchor="middle">3-2 사용자1 생성 · 3-4 사용자2 생성</text>
+  <text x="342" y="379" class="val" text-anchor="middle">3-6 게시물 생성 · 3-8 댓글 생성</text>
+  <rect x="534" y="338" width="192" height="56" rx="8" class="ok"/>
+  <text x="630" y="370" class="okt" text-anchor="middle">3-9 사용자2가 수정 시도</text>
+  <text x="30" y="430" class="sub">then 절은 세 테스트 모두 결과를 검증합니다. 생성에 필요한 내용 준비만 @BeforeEach로 모으고, 실제 생성은 각 테스트의 given에 둡니다</text>
+</svg>

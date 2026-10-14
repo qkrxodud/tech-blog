@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 258" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>루프 843에서 setter가 섞인 코드가 생겨 feedback_no_setter.md를 기록하고, 다음 루프부터 이 파일을 읽어 changeXxx() 메서드로 작성하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .hd { font-size: 10.5px; fill: #374151; }
+    .gmsg { font-size: 11.5px; fill: #15803d; }
+    .rmsg { font-size: 11.5px; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .act { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L9,5 L1,9" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="760" height="258" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="238" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h" text-anchor="start">실수의 피드백 — 루프 843의 setter 혼입이 다음 루프에 반영되는 흐름</text>
+  <text x="215" y="68" class="step" text-anchor="middle">루프 843</text>
+  <text x="390" y="68" class="step" text-anchor="middle">피드백 기록</text>
+  <text x="544" y="68" class="step" text-anchor="middle">다음 루프</text>
+  <text x="680" y="68" class="step" text-anchor="middle">이후 루프</text>
+  <line x1="160" y1="76" x2="735" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane" text-anchor="start">루프</text>
+  <text x="30" y="126" class="sub" text-anchor="start">코드 작성</text>
+  <rect x="150" y="86" width="592" height="52" rx="6" class="track"/>
+  <rect x="153" y="88" width="124" height="48" rx="8" class="bad"/>
+  <text x="215.0" y="108.0" class="badt" text-anchor="middle">setter 혼입</text>
+  <text x="215.0" y="127.0" class="val" text-anchor="middle">변경 의도 불명확</text>
+  <rect x="488" y="88" width="112" height="48" rx="8" class="box"/>
+  <text x="544.0" y="108.0" class="t" text-anchor="middle">파일 읽기</text>
+  <text x="544.0" y="127.0" class="val" text-anchor="middle">루프 시작 시</text>
+  <rect x="628" y="88" width="106" height="48" rx="8" class="ok"/>
+  <text x="681.0" y="108.0" class="okm" text-anchor="middle">changeXxx()</text>
+  <text x="681.0" y="127.0" class="val" text-anchor="middle">규칙대로 작성</text>
+  <text x="30" y="172" class="lane" text-anchor="start">MEMORY/</text>
+  <text x="30" y="190" class="sub" text-anchor="start">피드백 파일</text>
+  <rect x="150" y="150" width="592" height="52" rx="6" class="track"/>
+  <rect x="295" y="152" width="190" height="48" rx="8" class="hold"/>
+  <text x="390.0" y="172.0" class="opm" text-anchor="middle">feedback_no_setter.md</text>
+  <text x="390.0" y="191.0" class="val" text-anchor="middle">setter 대신 <tspan font-family="Menlo, Consolas, monospace">changeXxx()</tspan></text>
+  <line x1="262" y1="137" x2="318" y2="150" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="470" y1="151" x2="512" y2="139" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="602" y1="112" x2="625" y2="112" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="236" class="foot" text-anchor="start">피드백을 한 번 파일로 남겨 두면, 이후 루프는 시작할 때마다 이 파일을 읽어 같은 실수를 반복하지 않습니다.</text>
+</svg>

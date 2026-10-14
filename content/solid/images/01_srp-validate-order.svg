@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 496" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>변경 전에는 validateOrder가 주문 항목 개수, 총 가격, 사용자 정보를 직접 꺼내 검사하고, 변경 후에는 Order가 Items의 isItemNotAvailable, isInvalidTotalPrice와 User의 isNullCustomerInfo에 물어본 결과만 확인하는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .bt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .cv { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #4b5563; }
+    .cvb { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #b91c1c; }
+    .cvg { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="496" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="230" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">SRP 변경 전 — 한 메서드에서 값을 꺼내 모두 판단</text>
+  <rect x="30" y="66" width="200" height="124" rx="8" class="hold"/>
+  <text x="130" y="112" class="op" text-anchor="middle">validateOrder</text>
+  <text x="130" y="132" class="cv" text-anchor="middle">(Order order)</text>
+  <text x="130" y="156" class="val" text-anchor="middle">중첩 if문</text>
+  <rect x="256" y="62" width="478" height="132" rx="8" class="wait"/>
+  <line x1="232" y1="94" x2="266" y2="88" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="232" y1="128" x2="266" y2="128" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="232" y1="162" x2="266" y2="168" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ag)"/>
+  <rect x="268" y="72" width="300" height="32" rx="6" class="box"/>
+  <text x="282" y="93" class="cv">order.getItems().size() == 0</text>
+  <text x="586" y="93" class="val">주문 항목 검사</text>
+  <rect x="268" y="112" width="300" height="32" rx="6" class="box"/>
+  <text x="282" y="133" class="cv">order.getTotalPrice() &gt; 0</text>
+  <text x="586" y="133" class="val">총 가격 검사</text>
+  <rect x="268" y="152" width="300" height="32" rx="6" class="box"/>
+  <text x="282" y="173" class="cv">order.hasCustomerInfo()</text>
+  <text x="586" y="173" class="val">사용자 정보 검사</text>
+  <text x="30" y="222" class="note">주문 항목, 총 가격, 사용자 정보에 대한 판단이 모두 validateOrder 한 메서드에 모여 있습니다.</text>
+
+  <rect x="10" y="256" width="740" height="230" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="288" class="h">SRP 변경 후 — Order는 각 객체에 물어본 결과만 확인</text>
+  <rect x="30" y="312" width="200" height="124" rx="8" class="box"/>
+  <text x="130" y="354" class="op" text-anchor="middle">Order</text>
+  <text x="130" y="374" class="cv" text-anchor="middle">validateOrder()</text>
+  <text x="130" y="398" class="val" text-anchor="middle">검사 순서와 로그</text>
+  <rect x="256" y="306" width="478" height="88" rx="8" class="hold"/>
+  <text x="272" y="356" class="lane">Items</text>
+  <rect x="352" y="314" width="230" height="32" rx="6" class="ok"/>
+  <text x="467" y="335" class="cvg" text-anchor="middle">isItemNotAvailable()</text>
+  <text x="596" y="335" class="val">항목이 비었는지</text>
+  <rect x="352" y="354" width="230" height="32" rx="6" class="ok"/>
+  <text x="467" y="375" class="cvg" text-anchor="middle">isInvalidTotalPrice()</text>
+  <text x="596" y="375" class="val">총 가격이 0 미만인지</text>
+  <rect x="256" y="404" width="478" height="48" rx="8" class="hold"/>
+  <text x="272" y="434" class="lane">User</text>
+  <rect x="352" y="412" width="230" height="32" rx="6" class="ok"/>
+  <text x="467" y="433" class="cvg" text-anchor="middle">isNullCustomerInfo()</text>
+  <text x="596" y="433" class="val">id가 null인지</text>
+  <line x1="232" y1="356" x2="254" y2="350" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="232" y1="410" x2="254" y2="424" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="472" class="gnote">항목과 가격은 Items, 사용자 정보는 User가 판단하고, Order는 물어본 결과만 확인합니다.</text>
+</svg>
