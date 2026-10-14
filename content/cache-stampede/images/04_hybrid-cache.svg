@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 566" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 자주 쓰고 잘 바뀌지 않는 데이터는 서버마다 로컬 캐시에, 이외의 데이터는 리모트 캐시에 두는 하이브리드 캐시, 아래쪽은 데이터 수정 시 Zookeeper 노드 값을 현재 시간으로 바꾸고 Watch 이벤트로 각 서버의 로컬 캐시를 만료하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="566" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="232" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">하이브리드 캐시 — 로컬 캐시와 리모트 캐시를 나눠 사용</text>
+  <rect x="30" y="64" width="330" height="60" rx="8" class="box"/>
+  <text x="48" y="99" class="t">서버 1</text>
+  <rect x="130" y="72" width="216" height="44" rx="6" class="ok"/>
+  <text x="238" y="90" class="okt" text-anchor="middle">로컬 캐시</text>
+  <text x="238" y="108" class="val" text-anchor="middle">자주 쓰고 변화가 적은 데이터</text>
+  <rect x="30" y="136" width="330" height="60" rx="8" class="box"/>
+  <text x="48" y="171" class="t">서버 2</text>
+  <rect x="130" y="144" width="216" height="44" rx="6" class="ok"/>
+  <text x="238" y="162" class="okt" text-anchor="middle">로컬 캐시</text>
+  <text x="238" y="180" class="val" text-anchor="middle">자주 쓰고 변화가 적은 데이터</text>
+  <rect x="450" y="64" width="280" height="132" rx="8" class="dbbox"/>
+  <text x="590" y="112" class="t" text-anchor="middle">리모트 캐시</text>
+  <text x="590" y="134" class="val" text-anchor="middle">이외의 데이터</text>
+  <text x="590" y="154" class="sub" text-anchor="middle">로컬로 나눈 만큼 부하가 줄어듦</text>
+  <line x1="362" y1="94" x2="448" y2="112" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="362" y1="166" x2="448" y2="148" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="224" class="foot">로컬 캐시 대상 예: 마케팅 카드, 내비게이터, 리뷰</text>
+  <rect x="10" y="258" width="740" height="298" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="290" class="h">로컬 캐시 동기화 — Zookeeper Watch</text>
+  <text x="730" y="290" class="code" text-anchor="end">watch</text>
+  <text x="220" y="316" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="316" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="316" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="316" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="324" x2="722" y2="324" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="356" class="lane">서버 1</text>
+  <text x="30" y="374" class="sub">로컬 캐시 보유</text>
+  <rect x="150" y="334" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="344" width="396" height="32" rx="6" class="wait"/>
+  <text x="360.0" y="365" class="waitt" text-anchor="middle">로컬 캐시 사용 중 — 이전 데이터</text>
+  <rect x="582.0" y="336" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="356" class="okt" text-anchor="middle">만료 처리</text>
+  <text x="640" y="375" class="val" text-anchor="middle">해당 로컬 캐시</text>
+  <text x="30" y="416" class="lane">Zookeeper</text>
+  <text x="30" y="434" class="sub">노드 Watch</text>
+  <rect x="150" y="394" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="404" width="116" height="32" rx="6" class="wait"/>
+  <text x="220.0" y="425" class="waitt" text-anchor="middle">데이터 수정 발생</text>
+  <rect x="302.0" y="396" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="416" class="t" text-anchor="middle">노드 값 변경</text>
+  <text x="360" y="435" class="val" text-anchor="middle">현재 시간으로</text>
+  <rect x="442.0" y="396" width="116" height="48" rx="8" class="ok"/>
+  <text x="500" y="416" class="okt" text-anchor="middle">이벤트 전달</text>
+  <text x="500" y="435" class="val" text-anchor="middle">각 서버에</text>
+  <text x="30" y="476" class="lane">서버 2</text>
+  <text x="30" y="494" class="sub">로컬 캐시 보유</text>
+  <rect x="150" y="454" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="464" width="396" height="32" rx="6" class="wait"/>
+  <text x="360.0" y="485" class="waitt" text-anchor="middle">로컬 캐시 사용 중 — 이전 데이터</text>
+  <rect x="582.0" y="456" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="476" class="okt" text-anchor="middle">만료 처리</text>
+  <text x="640" y="495" class="val" text-anchor="middle">해당 로컬 캐시</text>
+  <line x1="545" y1="396" x2="598" y2="386" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="545" y1="444" x2="598" y2="456" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="538" class="foot">서버가 여러 개여도 변경 이벤트를 받아 각자 로컬 캐시를 만료하기 때문에 최신 데이터를 맞출 수 있습니다.</text>
+</svg>

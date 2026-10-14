@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 552" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>maxLifetime과 wait_timeout이 모두 60초이면 60초 동안 유휴였던 연결을 DB가 먼저 끊고 풀이 그 연결을 빌려줘 요청이 실패하고, maxLifetime을 58초로 두면 풀이 먼저 연결을 교체해 요청이 정상 처리되는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pool { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="552" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="268" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">maxLifetime = wait_timeout = 60초 — DB가 먼저 끊을 수 있다</text>
+  <text x="220" y="68" class="step" text-anchor="middle">0초</text>
+  <text x="360" y="68" class="step" text-anchor="middle">58초</text>
+  <text x="500" y="68" class="step" text-anchor="middle">59초</text>
+  <text x="640" y="68" class="step" text-anchor="middle">60초</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">HikariCP</text>
+  <text x="30" y="128" class="sub">커넥션 풀</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="190" class="lane">MySQL</text>
+  <text x="30" y="208" class="sub">DB 서버</text>
+  <rect x="150" y="166" width="585" height="52" rx="6" class="track"/>
+  <rect x="158.0" y="88" width="124" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="t" text-anchor="middle">연결 생성</text>
+  <text x="220" y="127" class="val" text-anchor="middle">풀에 보관</text>
+  <line x1="220" y1="137" x2="220" y2="166" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="158.0" y="168" width="124" height="48" rx="8" class="hold"/>
+  <text x="220" y="197" class="t" text-anchor="middle">연결 수락</text>
+  <rect x="298" y="96" width="264" height="32" rx="6" class="wait"/>
+  <text x="430" y="117" class="waitt" text-anchor="middle">반납 후 유휴 상태 — 요청 없음</text>
+  <rect x="298" y="176" width="264" height="32" rx="6" class="wait"/>
+  <text x="430" y="197" class="waitt" text-anchor="middle">마지막 요청 이후 유휴 시간을 셈</text>
+  <rect x="578.0" y="88" width="124" height="48" rx="8" class="bad"/>
+  <text x="640" y="108" class="badc" text-anchor="middle">Exception</text>
+  <text x="640" y="127" class="val" text-anchor="middle">끊긴 연결 대여</text>
+  <rect x="578.0" y="168" width="124" height="48" rx="8" class="bad"/>
+  <text x="640" y="188" class="badm" text-anchor="middle">wait_timeout</text>
+  <text x="640" y="207" class="val" text-anchor="middle">유휴 연결 종료</text>
+  <line x1="640" y1="167" x2="640" y2="138" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="30" y="258" class="note">60초 동안 유휴였던 연결을 DB가 먼저 끊으면, 풀은 이를 모른 채 그 연결을 요청에 빌려줄 수 있습니다.</text>
+  <rect x="10" y="294" width="740" height="248" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="326" class="h">maxLifetime 58초 — wait_timeout보다 몇 초 짧게 설정</text>
+  <text x="220" y="352" class="step" text-anchor="middle">0초</text>
+  <text x="360" y="352" class="step" text-anchor="middle">58초</text>
+  <text x="500" y="352" class="step" text-anchor="middle">59초</text>
+  <text x="640" y="352" class="step" text-anchor="middle">60초</text>
+  <line x1="160" y1="360" x2="722" y2="360" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="394" class="lane">HikariCP</text>
+  <text x="30" y="412" class="sub">커넥션 풀</text>
+  <rect x="150" y="370" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="474" class="lane">MySQL</text>
+  <text x="30" y="492" class="sub">DB 서버</text>
+  <rect x="150" y="450" width="585" height="52" rx="6" class="track"/>
+  <rect x="158.0" y="372" width="124" height="48" rx="8" class="box"/>
+  <text x="220" y="392" class="t" text-anchor="middle">연결 생성</text>
+  <text x="220" y="411" class="val" text-anchor="middle">풀에 보관</text>
+  <line x1="220" y1="421" x2="220" y2="450" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="158.0" y="452" width="124" height="48" rx="8" class="hold"/>
+  <text x="220" y="481" class="t" text-anchor="middle">연결 수락</text>
+  <rect x="298.0" y="372" width="124" height="48" rx="8" class="ok"/>
+  <text x="360" y="392" class="okm" text-anchor="middle">maxLifetime</text>
+  <text x="360" y="411" class="val" text-anchor="middle">닫고 새로 생성</text>
+  <line x1="360" y1="421" x2="360" y2="450" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="298.0" y="452" width="124" height="48" rx="8" class="hold"/>
+  <text x="360" y="481" class="t" text-anchor="middle">새 연결 수락</text>
+  <rect x="438.0" y="372" width="124" height="48" rx="8" class="ok"/>
+  <text x="500" y="392" class="okt" text-anchor="middle">요청 시작</text>
+  <text x="500" y="411" class="val" text-anchor="middle">새 연결 사용</text>
+  <rect x="578.0" y="372" width="124" height="48" rx="8" class="ok"/>
+  <text x="640" y="392" class="okt" text-anchor="middle">요청 완료</text>
+  <text x="640" y="411" class="val" text-anchor="middle">정상 처리</text>
+  <text x="30" y="528" class="foot">풀이 DB보다 먼저 연결을 닫고 새로 만들기 때문에, 이미 끊긴 연결로 요청을 보내지 않습니다.</text>
+</svg>

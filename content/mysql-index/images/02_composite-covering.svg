@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>idx_name_price는 name 순으로 정렬하고 같은 name 안에서 price 순으로 정렬하며, 쿼리에 필요한 열이 name과 price뿐이면 테이블에 접근하지 않고 인덱스만으로 결과를 반환하는 커버링 인덱스가 된다는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="430" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="410" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">복합 인덱스와 커버링 인덱스 — 인덱스만으로 결과 반환</text>
+  <text x="730" y="42" class="code" text-anchor="end">idx_name_price(name, price)</text>
+  <text x="30" y="76" class="t">idx_name_price</text>
+  <text x="30" y="94" class="sub">name 순, 같은 name 안에서 price 순</text>
+  <rect x="30" y="108" width="280" height="28" rx="0" class="grp"/>
+  <text x="90" y="127" class="monob" text-anchor="middle">name</text>
+  <text x="200" y="127" class="monob" text-anchor="middle">price</text>
+  <text x="280" y="127" class="monob" text-anchor="middle">id</text>
+  <rect x="30" y="136" width="280" height="28" rx="0" class="box"/>
+  <rect x="32" y="138" width="116" height="24" rx="3" class="ok"/>
+  <text x="90" y="155" class="okm" text-anchor="middle">Keyboard</text>
+  <rect x="152" y="138" width="96" height="24" rx="3" class="ok"/>
+  <text x="200" y="155" class="okm" text-anchor="middle">30,000</text>
+  <text x="280" y="155" class="mono" text-anchor="middle">1</text>
+  <rect x="30" y="164" width="280" height="28" rx="0" class="box"/>
+  <rect x="32" y="166" width="116" height="24" rx="3" class="ok"/>
+  <text x="90" y="183" class="okm" text-anchor="middle">Laptop</text>
+  <rect x="152" y="166" width="96" height="24" rx="3" class="ok"/>
+  <text x="200" y="183" class="okm" text-anchor="middle">1,000,000</text>
+  <text x="280" y="183" class="mono" text-anchor="middle">4</text>
+  <rect x="30" y="192" width="280" height="28" rx="0" class="box"/>
+  <rect x="32" y="194" width="116" height="24" rx="3" class="ok"/>
+  <text x="90" y="211" class="okm" text-anchor="middle">Monitor</text>
+  <rect x="152" y="194" width="96" height="24" rx="3" class="ok"/>
+  <text x="200" y="211" class="okm" text-anchor="middle">150,000</text>
+  <text x="280" y="211" class="mono" text-anchor="middle">2</text>
+  <rect x="30" y="220" width="280" height="28" rx="0" class="box"/>
+  <rect x="32" y="222" width="116" height="24" rx="3" class="ok"/>
+  <text x="90" y="239" class="okm" text-anchor="middle">Mouse</text>
+  <rect x="152" y="222" width="96" height="24" rx="3" class="ok"/>
+  <text x="200" y="239" class="okm" text-anchor="middle">20,000</text>
+  <text x="280" y="239" class="mono" text-anchor="middle">3</text>
+  <rect x="30" y="248" width="280" height="28" rx="0" class="box"/>
+  <rect x="32" y="250" width="116" height="24" rx="3" class="ok"/>
+  <text x="90" y="267" class="okm" text-anchor="middle">USB Drive</text>
+  <rect x="152" y="250" width="96" height="24" rx="3" class="ok"/>
+  <text x="200" y="267" class="okm" text-anchor="middle">10,000</text>
+  <text x="280" y="267" class="mono" text-anchor="middle">5</text>
+  <text x="470" y="76" class="t">product (테이블)</text>
+  <text x="470" y="94" class="sub">인덱스에 없는 열은 테이블에서 읽음</text>
+  <rect x="470" y="108" width="260" height="28" rx="0" class="grp"/>
+  <text x="505" y="127" class="monob" text-anchor="middle">id</text>
+  <text x="590" y="127" class="monob" text-anchor="middle">stock</text>
+  <text x="685" y="127" class="monob" text-anchor="middle">…</text>
+  <rect x="470" y="136" width="260" height="28" rx="0" class="box"/>
+  <text x="505" y="155" class="mono" text-anchor="middle">1</text>
+  <text x="590" y="155" class="mono" text-anchor="middle">35</text>
+  <text x="685" y="155" class="mono" text-anchor="middle">…</text>
+  <rect x="470" y="164" width="260" height="28" rx="0" class="box"/>
+  <text x="505" y="183" class="mono" text-anchor="middle">2</text>
+  <text x="590" y="183" class="mono" text-anchor="middle">22</text>
+  <text x="685" y="183" class="mono" text-anchor="middle">…</text>
+  <rect x="470" y="192" width="260" height="28" rx="0" class="box"/>
+  <text x="505" y="211" class="mono" text-anchor="middle">3</text>
+  <text x="590" y="211" class="mono" text-anchor="middle">40</text>
+  <text x="685" y="211" class="mono" text-anchor="middle">…</text>
+  <rect x="470" y="220" width="260" height="28" rx="0" class="box"/>
+  <text x="505" y="239" class="mono" text-anchor="middle">4</text>
+  <text x="590" y="239" class="mono" text-anchor="middle">27</text>
+  <text x="685" y="239" class="mono" text-anchor="middle">…</text>
+  <rect x="470" y="248" width="260" height="28" rx="0" class="box"/>
+  <text x="505" y="267" class="mono" text-anchor="middle">5</text>
+  <text x="590" y="267" class="mono" text-anchor="middle">18</text>
+  <text x="685" y="267" class="mono" text-anchor="middle">…</text>
+  <path d="M314,178.0 H464" class="flow" stroke-dasharray="5 4" marker-end="url(#ag)"/>
+  <text x="392" y="170" class="sub" text-anchor="middle">id로 접근</text>
+  <rect x="30" y="300" width="340" height="50" rx="10" class="ok"/>
+  <text x="200" y="320" class="okt" text-anchor="middle">필요한 열이 모두 인덱스에 있음</text>
+  <text x="200" y="339" class="gnote" text-anchor="middle">테이블 접근 없이 바로 반환</text>
+  <rect x="390" y="300" width="340" height="50" rx="10" class="box"/>
+  <text x="560" y="320" class="t" text-anchor="middle">인덱스에 없는 열(stock 등)이 필요함</text>
+  <text x="560" y="339" class="val" text-anchor="middle">id로 테이블에 한 번 더 접근</text>
+  <text x="30" y="384" class="foot">쿼리 결과에 필요한 모든 열이 인덱스에 포함되면 커버링 인덱스가 되어 테이블을 읽지 않습니다.</text>
+  <text x="30" y="404" class="foot">자주 함께 검색되는 열을 복합 인덱스로 묶고, 자주 사용되는 열을 앞에 둡니다.</text>
+</svg>

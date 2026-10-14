@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>네 개의 조회 쿼리 중 id 조회는 기본 키 인덱스, name 조회는 name 단일 인덱스, code와 backnumber 조회와 code 조회는 모두 (code, backnumber) 복합 인덱스를 사용해 인덱스 세 개로 충분하다는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">조회 쿼리 4개 — 인덱스 3개로 감당</text>
+  <text x="30" y="72" class="colh">조회 쿼리</text>
+  <text x="530" y="72" class="colh">사용하는 인덱스</text>
+  <rect x="30" y="86" width="450" height="44" rx="8" class="box"/>
+  <text x="44" y="113" class="mono">select * from item where id =?</text>
+  <rect x="30" y="150" width="450" height="44" rx="8" class="box"/>
+  <text x="44" y="177" class="mono">select * from item where name =?</text>
+  <rect x="30" y="214" width="450" height="44" rx="8" class="box"/>
+  <text x="44" y="241" class="mono">select * from item where code = ? and backnumber =?</text>
+  <rect x="30" y="278" width="450" height="44" rx="8" class="box"/>
+  <text x="44" y="305" class="mono">select * from item where code =?</text>
+  <rect x="530" y="86" width="200" height="44" rx="8" class="box"/>
+  <text x="630" y="105" class="monob" text-anchor="middle">PRIMARY KEY (id)</text>
+  <text x="630" y="122" class="sub" text-anchor="middle">기본 키라 자동 생성</text>
+  <rect x="530" y="150" width="200" height="44" rx="8" class="box"/>
+  <text x="630" y="169" class="monob" text-anchor="middle">(name)</text>
+  <text x="630" y="186" class="sub" text-anchor="middle">단일 인덱스</text>
+  <rect x="530" y="230" width="200" height="76" rx="8" class="ok"/>
+  <text x="630" y="266" class="okm" text-anchor="middle">(code, backnumber)</text>
+  <text x="630" y="284" class="gnote" text-anchor="middle">복합 인덱스</text>
+  <line x1="480" y1="108" x2="526" y2="108" class="flow" marker-end="url(#ag)"/>
+  <line x1="480" y1="172" x2="526" y2="172" class="flow" marker-end="url(#ag)"/>
+  <line x1="480" y1="236" x2="526" y2="252" class="gedge" marker-end="url(#agr)"/>
+  <line x1="480" y1="300" x2="526" y2="284" class="gedge" marker-end="url(#agr)"/>
+  <text x="30" y="352" class="foot">code 조건만 있는 네 번째 쿼리도 code로 시작하는 복합 인덱스를 사용할 수 있습니다.</text>
+  <text x="30" y="372" class="foot">그래서 code 단일 인덱스를 따로 만들 필요가 없습니다.</text>
+</svg>

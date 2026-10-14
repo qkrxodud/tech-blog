@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>price = 20,000을 찾을 때 인덱스가 없으면 product의 다섯 행을 처음부터 모두 확인하고, idx_price가 있으면 정렬된 price에서 20,000을 바로 찾아 id:3 행으로 이동하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">인덱스 없이 — 첫 행부터 끝 행까지 확인</text>
+  <text x="730" y="42" class="code" text-anchor="end">WHERE price = 20000</text>
+  <rect x="30" y="66" width="128" height="56" rx="8" class="box"/>
+  <text x="94" y="88" class="t" text-anchor="middle">id:1 Keyboard</text>
+  <text x="94" y="108" class="mono" text-anchor="middle">30,000</text>
+  <text x="94" y="146" class="note" text-anchor="middle">1번째 확인</text>
+  <rect x="171" y="66" width="128" height="56" rx="8" class="box"/>
+  <text x="235" y="88" class="t" text-anchor="middle">id:2 Monitor</text>
+  <text x="235" y="108" class="mono" text-anchor="middle">150,000</text>
+  <text x="235" y="146" class="note" text-anchor="middle">2번째 확인</text>
+  <rect x="312" y="66" width="128" height="56" rx="8" class="ok"/>
+  <text x="376" y="88" class="okt" text-anchor="middle">id:3 Mouse</text>
+  <text x="376" y="108" class="okm" text-anchor="middle">20,000</text>
+  <text x="376" y="146" class="note" text-anchor="middle">3번째 확인</text>
+  <rect x="453" y="66" width="128" height="56" rx="8" class="box"/>
+  <text x="517" y="88" class="t" text-anchor="middle">id:4 Laptop</text>
+  <text x="517" y="108" class="mono" text-anchor="middle">1,000,000</text>
+  <text x="517" y="146" class="note" text-anchor="middle">4번째 확인</text>
+  <rect x="594" y="66" width="128" height="56" rx="8" class="box"/>
+  <text x="658" y="88" class="t" text-anchor="middle">id:5 USB Drive</text>
+  <text x="658" y="108" class="mono" text-anchor="middle">10,000</text>
+  <text x="658" y="146" class="note" text-anchor="middle">5번째 확인</text>
+  <path d="M30,160 H722" class="redge" marker-end="url(#arr)"/>
+  <text x="30" y="196" class="foot">20,000은 세 번째 행에 있지만, 정렬되어 있지 않아 나머지 행도 끝까지 확인해야 합니다.</text>
+  <rect x="10" y="240" width="740" height="220" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="272" class="h">idx_price — 정렬된 price에서 바로 찾음</text>
+  <text x="730" y="272" class="code" text-anchor="end">CREATE INDEX idx_price ON product(price)</text>
+  <rect x="30" y="294" width="128" height="40" rx="8" class="hold"/>
+  <text x="94" y="319" class="mono" text-anchor="middle">10,000</text>
+  <text x="94" y="352" class="sub" text-anchor="middle">id:5</text>
+  <rect x="171" y="294" width="128" height="40" rx="8" class="ok"/>
+  <text x="235" y="319" class="okm" text-anchor="middle">20,000</text>
+  <text x="235" y="352" class="gnote" text-anchor="middle">id:3</text>
+  <rect x="312" y="294" width="128" height="40" rx="8" class="hold"/>
+  <text x="376" y="319" class="mono" text-anchor="middle">30,000</text>
+  <text x="376" y="352" class="sub" text-anchor="middle">id:1</text>
+  <rect x="453" y="294" width="128" height="40" rx="8" class="hold"/>
+  <text x="517" y="319" class="mono" text-anchor="middle">150,000</text>
+  <text x="517" y="352" class="sub" text-anchor="middle">id:2</text>
+  <rect x="594" y="294" width="128" height="40" rx="8" class="hold"/>
+  <text x="658" y="319" class="mono" text-anchor="middle">1,000,000</text>
+  <text x="658" y="352" class="sub" text-anchor="middle">id:4</text>
+  <line x1="235" y1="360" x2="235" y2="392" class="gedge" marker-end="url(#agr)"/>
+  <rect x="145" y="396" width="180" height="36" rx="8" class="ok"/>
+  <text x="235" y="419" class="okt" text-anchor="middle">id:3 Mouse 반환</text>
+  <text x="342" y="412" class="foot">값 순서로 정렬되어 있어</text>
+  <text x="342" y="431" class="foot">원하는 행으로 바로 이동합니다.</text>
+</svg>

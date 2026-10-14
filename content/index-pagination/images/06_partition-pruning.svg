@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 272" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>created_at 조건이 2025년 범위라 p2023·p2024·p2026은 건너뛰고 p2025 파티션의 커버링 인덱스만 스캔한 뒤 20개 order_id로 JOIN하는 파티션 프루닝</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbc { font-size: 13px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opg { font-size: 14px; font-weight: 700; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .tg { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="272" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">파티션 프루닝 — 2025년 파티션만 스캔</text>
+  <text x="730" y="42" class="code" text-anchor="end">PARTITION BY RANGE (YEAR(created_at))</text>
+  <text x="30" y="70" class="code">created_at &gt;= '2025-01-01' AND created_at &lt; '2026-01-01'</text>
+  <text x="30" y="108" class="lane">파티션</text>
+  <text x="30" y="126" class="subc">orders</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="156" y="88" width="128" height="48" rx="8" class="wait"/>
+  <text x="220" y="108" class="opg" text-anchor="middle">p2023</text>
+  <text x="220" y="127" class="waitt" text-anchor="middle">건너뜀</text>
+  <rect x="296" y="88" width="128" height="48" rx="8" class="wait"/>
+  <text x="360" y="108" class="opg" text-anchor="middle">p2024</text>
+  <text x="360" y="127" class="waitt" text-anchor="middle">건너뜀</text>
+  <rect x="576" y="88" width="128" height="48" rx="8" class="wait"/>
+  <text x="640" y="108" class="opg" text-anchor="middle">p2026</text>
+  <text x="640" y="127" class="waitt" text-anchor="middle">건너뜀</text>
+  <rect x="436" y="88" width="128" height="48" rx="8" class="ok"/>
+  <text x="500" y="108" class="okc" text-anchor="middle">p2025</text>
+  <text x="500" y="127" class="val" text-anchor="middle">스캔 대상</text>
+  <text x="30" y="168" class="lane">인덱스</text>
+  <text x="30" y="186" class="sub">p2025 안</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="436" y="148" width="128" height="48" rx="8" class="hold"/>
+  <text x="500" y="168" class="t" text-anchor="middle">커버링 인덱스</text>
+  <text x="500" y="187" class="val" text-anchor="middle">인덱스만 스캔</text>
+  <rect x="576" y="148" width="128" height="48" rx="8" class="ok"/>
+  <text x="640" y="168" class="okt" text-anchor="middle">20개</text>
+  <text x="640" y="187" class="valc" text-anchor="middle">order_id → JOIN</text>
+  <line x1="500" y1="136" x2="500" y2="147" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="566" y1="172" x2="574" y2="172" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="150" y="214" width="585" height="32" rx="15" class="ok"/>
+  <text x="442.5" y="235" class="okt" text-anchor="middle">1억 건 중 2025년 1000만 건만 대상 — 수십 초 → 1초 미만</text>
+</svg>

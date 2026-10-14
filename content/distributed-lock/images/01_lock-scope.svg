@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 566" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>단일 DB에서는 비관적 락이 같은 행의 순서를 정하지만, 서버와 DB가 여러 개면 DB 락이 자기 DB 안에서만 유효해 모든 서버가 보는 Redis에 분산락을 두는 구조 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="566" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="250" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">단일 DB — 비관적 락으로 순서가 정해짐</text>
+  <text x="730" y="42" class="code" text-anchor="end">SELECT ... FOR UPDATE</text>
+  <rect x="40" y="78" width="160" height="52" rx="8" class="box"/>
+  <text x="120" y="100" class="t" text-anchor="middle">서버 A</text>
+  <text x="120" y="118" class="sub" text-anchor="middle">트랜잭션 1</text>
+  <rect x="40" y="152" width="160" height="52" rx="8" class="box"/>
+  <text x="120" y="174" class="t" text-anchor="middle">서버 B</text>
+  <text x="120" y="192" class="sub" text-anchor="middle">트랜잭션 2</text>
+  <rect x="440" y="74" width="290" height="134" rx="8" class="dbbox"/>
+  <text x="460" y="98" class="db">DB</text>
+  <rect x="460" y="120" width="250" height="50" rx="8" class="hold"/>
+  <text x="585" y="141" class="t" text-anchor="middle">같은 행에 X-Lock</text>
+  <text x="585" y="160" class="val" text-anchor="middle">한 DB 안에서 순서가 정해짐</text>
+  <line x1="202" y1="104" x2="456" y2="136" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="300" y="106" class="gnote" text-anchor="middle">락 획득</text>
+  <line x1="202" y1="178" x2="456" y2="156" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="320" y="196" class="note" text-anchor="middle">해제될 때까지 대기</text>
+  <rect x="40" y="220" width="690" height="32" rx="15" class="ok"/>
+  <text x="385.0" y="241" class="okt" text-anchor="middle">비관적 락으로 충분 — 락과 데이터가 같은 DB 안에 있음</text>
+  <rect x="10" y="276" width="740" height="280" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="308" class="h">여러 서버와 DB — DB 락은 자기 DB 안에서만 유효</text>
+  <rect x="40" y="334" width="160" height="52" rx="8" class="box"/>
+  <text x="120" y="356" class="t" text-anchor="middle">서버 A</text>
+  <text x="120" y="374" class="sub" text-anchor="middle">DB 1 사용</text>
+  <rect x="40" y="430" width="160" height="52" rx="8" class="box"/>
+  <text x="120" y="452" class="t" text-anchor="middle">서버 B</text>
+  <text x="120" y="470" class="sub" text-anchor="middle">DB 2 사용</text>
+  <rect x="560" y="334" width="170" height="52" rx="8" class="dbbox"/>
+  <text x="645" y="356" class="db" text-anchor="middle">DB 1</text>
+  <text x="645" y="374" class="sub" text-anchor="middle">DB 1 안의 행만 잠금</text>
+  <rect x="560" y="430" width="170" height="52" rx="8" class="dbbox"/>
+  <text x="645" y="452" class="db" text-anchor="middle">DB 2</text>
+  <text x="645" y="470" class="sub" text-anchor="middle">DB 2 안의 행만 잠금</text>
+  <line x1="202" y1="352" x2="556" y2="352" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="202" y1="468" x2="556" y2="468" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="645" y="414" class="note" text-anchor="middle">서로의 락이 보이지 않음</text>
+  <rect x="290" y="380" width="200" height="60" rx="8" class="ok"/>
+  <text x="390" y="404" class="okt" text-anchor="middle">Redis 분산락</text>
+  <text x="390" y="424" class="val" text-anchor="middle">모든 서버가 같은 키 확인</text>
+  <line x1="202" y1="374" x2="288" y2="398" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="202" y1="446" x2="288" y2="424" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="40" y="506" width="690" height="32" rx="15" class="ok"/>
+  <text x="385.0" y="527" class="okt" text-anchor="middle">분산락 — 모든 서버가 보는 외부 저장소에 락을 둠</text>
+</svg>

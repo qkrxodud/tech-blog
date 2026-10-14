@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>HelloWorld.java를 javac로 컴파일해 바이트코드 HelloWorld.class를 만들고, 같은 .class 파일을 Windows, Linux, Mac에 설치된 각 JVM이 실행하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="340" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Java — 바이트코드를 OS마다 설치된 JVM이 실행</text>
+  <text x="730" y="42" class="code" text-anchor="end">javac</text>
+  <rect x="30" y="64" width="180" height="56" rx="8" class="box"/>
+  <text x="120.0" y="88" class="t" text-anchor="middle">Java 코드</text>
+  <text x="120.0" y="107" class="subc" text-anchor="middle">HelloWorld.java</text>
+  <rect x="290" y="64" width="180" height="56" rx="8" class="box"/>
+  <text x="380.0" y="88" class="t" text-anchor="middle">Java 컴파일러</text>
+  <text x="380.0" y="107" class="subc" text-anchor="middle">javac</text>
+  <rect x="550" y="64" width="180" height="56" rx="8" class="hold"/>
+  <text x="640.0" y="88" class="t" text-anchor="middle">바이트코드</text>
+  <text x="640.0" y="107" class="subc" text-anchor="middle">HelloWorld.class</text>
+  <line x1="212" y1="92" x2="288" y2="92" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="472" y1="92" x2="548" y2="92" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="30" y="176" width="200" height="48" rx="8" class="box"/>
+  <text x="130" y="206" class="t" text-anchor="middle">JVM</text>
+  <rect x="30" y="250" width="200" height="40" rx="8" class="ok"/>
+  <text x="130" y="275" class="okt" text-anchor="middle">Windows</text>
+  <line x1="130" y1="226" x2="130" y2="248" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="640" y1="122" x2="140" y2="174" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="280" y="176" width="200" height="48" rx="8" class="box"/>
+  <text x="380" y="206" class="t" text-anchor="middle">JVM</text>
+  <rect x="280" y="250" width="200" height="40" rx="8" class="ok"/>
+  <text x="380" y="275" class="okt" text-anchor="middle">Linux</text>
+  <line x1="380" y1="226" x2="380" y2="248" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="640" y1="122" x2="390" y2="174" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="530" y="176" width="200" height="48" rx="8" class="box"/>
+  <text x="630" y="206" class="t" text-anchor="middle">JVM</text>
+  <rect x="530" y="250" width="200" height="40" rx="8" class="ok"/>
+  <text x="630" y="275" class="okt" text-anchor="middle">Mac</text>
+  <line x1="630" y1="226" x2="630" y2="248" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="640" y1="122" x2="630" y2="174" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="316" class="foot">같은 .class 파일을 OS마다 설치된 JVM이 실행하기 때문에 플랫폼에 독립적입니다.</text>
+</svg>

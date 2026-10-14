@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>status 조건이 있으면 rule이 드라이빙 테이블이 되어 detection은 rule_id 인덱스로 조인되고 check_ts 인덱스를 쓰지 못해 정렬이 오래 걸리고, status 조건이 없으면 detection이 드라이빙 테이블이 되는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbc { font-size: 13px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opg { font-size: 14px; font-weight: 700; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .tg { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="540" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">status 조건 있음 — rule이 드라이빙 테이블</text>
+  <text x="730" y="42" class="code" text-anchor="end">rule.status = 'ACTIVE'</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">rule</text>
+  <text x="30" y="126" class="sub">드라이빙</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="156" y="88" width="128" height="48" rx="8" class="hold"/>
+  <text x="220" y="108" class="t" text-anchor="middle">rule 먼저</text>
+  <text x="220" y="127" class="val" text-anchor="middle">데이터가 적음</text>
+  <text x="30" y="168" class="lane">detection</text>
+  <text x="30" y="186" class="sub">드리븐</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="296" y="148" width="128" height="48" rx="8" class="box"/>
+  <text x="360" y="168" class="op" text-anchor="middle">rule_id</text>
+  <text x="360" y="187" class="val" text-anchor="middle">인덱스로 조인</text>
+  <rect x="436" y="148" width="128" height="48" rx="8" class="bad"/>
+  <text x="500" y="168" class="badc" text-anchor="middle">check_ts</text>
+  <text x="500" y="187" class="val" text-anchor="middle">인덱스 동작 안 함</text>
+  <rect x="576" y="148" width="128" height="48" rx="8" class="bad"/>
+  <text x="640" y="168" class="badt" text-anchor="middle">정렬</text>
+  <text x="640" y="187" class="val" text-anchor="middle">많은 시간 소요</text>
+  <line x1="262" y1="136" x2="318" y2="147" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="426" y1="172" x2="434" y2="172" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="566" y1="172" x2="574" y2="172" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="150" y="214" width="585" height="32" rx="15" class="bad"/>
+  <text x="442.5" y="235" class="badt" text-anchor="middle">응답 6초 이상</text>
+  <rect x="10" y="278" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="310" class="h">status 조건 없음 — detection이 드라이빙 테이블</text>
+  <text x="730" y="310" class="code" text-anchor="end">rule.channel = 'GIFT'</text>
+  <text x="220" y="336" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="336" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="336" class="step" text-anchor="middle"></text>
+  <text x="640" y="336" class="step" text-anchor="middle"></text>
+  <line x1="160" y1="344" x2="722" y2="344" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="376" class="lane">detection</text>
+  <text x="30" y="394" class="sub">드라이빙</text>
+  <rect x="150" y="354" width="585" height="52" rx="6" class="track"/>
+  <rect x="156" y="356" width="128" height="48" rx="8" class="ok"/>
+  <text x="220" y="376" class="okt" text-anchor="middle">detection 먼저</text>
+  <text x="220" y="395" class="val" text-anchor="middle">check_ts 조건</text>
+  <text x="30" y="436" class="lane">rule</text>
+  <text x="30" y="454" class="sub">드리븐</text>
+  <rect x="150" y="414" width="585" height="52" rx="6" class="track"/>
+  <rect x="296" y="416" width="128" height="48" rx="8" class="box"/>
+  <text x="360" y="436" class="op" text-anchor="middle">rule.code</text>
+  <text x="360" y="455" class="val" text-anchor="middle">조인 조건으로 조회</text>
+  <line x1="262" y1="404" x2="318" y2="415" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="150" y="482" width="585" height="32" rx="15" class="ok"/>
+  <text x="442.5" y="503" class="okt" text-anchor="middle">응답 1.0~1.3초</text>
+</svg>

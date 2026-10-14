@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 506" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>max_connections가 4인 MySQL에 커넥션 4개짜리 서버 A만 붙으면 원활하지만, 서버 B를 증설해도 DB가 4개까지만 받기 때문에 서버 B의 커넥션은 연결되지 못하는 상황</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pool { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="506" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">서버 1대 — 풀 4개와 max_connections 4가 맞는다</text>
+  <rect x="40" y="62" width="262" height="90" rx="10" class="pool"/>
+  <text x="171" y="86" class="t" text-anchor="middle">애플리케이션 서버 A</text>
+  <rect x="54" y="102" width="52" height="36" rx="6" class="ok"/>
+  <text x="80" y="125" class="okm" text-anchor="middle">C1</text>
+  <rect x="114" y="102" width="52" height="36" rx="6" class="ok"/>
+  <text x="140" y="125" class="okm" text-anchor="middle">C2</text>
+  <rect x="174" y="102" width="52" height="36" rx="6" class="ok"/>
+  <text x="200" y="125" class="okm" text-anchor="middle">C3</text>
+  <rect x="234" y="102" width="52" height="36" rx="6" class="ok"/>
+  <text x="260" y="125" class="okm" text-anchor="middle">C4</text>
+  <rect x="470" y="62" width="250" height="90" rx="10" class="dbbox"/>
+  <text x="595" y="85.0" class="db" text-anchor="middle">MySQL</text>
+  <text x="595" y="107.0" class="opm" text-anchor="middle">max_connections = 4</text>
+  <text x="595" y="131.0" class="okt" text-anchor="middle">사용 중 4 / 4</text>
+  <line x1="304" y1="107" x2="466" y2="107" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="385" y="99" class="gnote" text-anchor="middle">커넥션 4개</text>
+  <text x="30" y="176" class="foot">DBCP의 커넥션 수와 DB가 받을 수 있는 연결 수가 같아 원활하게 동작합니다.</text>
+  <rect x="10" y="206" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="238" class="h">서버 2대로 증설 — max_connections는 여전히 4</text>
+  <rect x="40" y="258" width="262" height="90" rx="10" class="pool"/>
+  <text x="171" y="282" class="t" text-anchor="middle">애플리케이션 서버 A</text>
+  <rect x="54" y="298" width="52" height="36" rx="6" class="ok"/>
+  <text x="80" y="321" class="okm" text-anchor="middle">C1</text>
+  <rect x="114" y="298" width="52" height="36" rx="6" class="ok"/>
+  <text x="140" y="321" class="okm" text-anchor="middle">C2</text>
+  <rect x="174" y="298" width="52" height="36" rx="6" class="ok"/>
+  <text x="200" y="321" class="okm" text-anchor="middle">C3</text>
+  <rect x="234" y="298" width="52" height="36" rx="6" class="ok"/>
+  <text x="260" y="321" class="okm" text-anchor="middle">C4</text>
+  <rect x="40" y="364" width="262" height="90" rx="10" class="pool"/>
+  <text x="171" y="388" class="t" text-anchor="middle">애플리케이션 서버 B (증설)</text>
+  <rect x="54" y="404" width="52" height="36" rx="6" class="bad"/>
+  <text x="80" y="427" class="badm" text-anchor="middle">C1</text>
+  <rect x="114" y="404" width="52" height="36" rx="6" class="bad"/>
+  <text x="140" y="427" class="badm" text-anchor="middle">C2</text>
+  <rect x="174" y="404" width="52" height="36" rx="6" class="bad"/>
+  <text x="200" y="427" class="badm" text-anchor="middle">C3</text>
+  <rect x="234" y="404" width="52" height="36" rx="6" class="bad"/>
+  <text x="260" y="427" class="badm" text-anchor="middle">C4</text>
+  <rect x="470" y="258" width="250" height="196" rx="10" class="dbbox"/>
+  <text x="595" y="334.0" class="db" text-anchor="middle">MySQL</text>
+  <text x="595" y="356.0" class="opm" text-anchor="middle">max_connections = 4</text>
+  <text x="595" y="380.0" class="badt" text-anchor="middle">사용 중 4 / 4</text>
+  <line x1="304" y1="303" x2="466" y2="303" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="385" y="295" class="gnote" text-anchor="middle">커넥션 4개</text>
+  <line x1="304" y1="409" x2="466" y2="409" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="385" y="401" class="note" text-anchor="middle">연결 불가</text>
+  <text x="30" y="478" class="foot">서버를 늘려도 DB가 받을 수 있는 연결은 4개라서, 늘린 서버의 커넥션은 일을 하지 못하고 부하도 줄지 않습니다.</text>
+</svg>

@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>차수 4인 B 트리 예시. 루트 8, 15 아래에 내부 노드 3, 5 / 12 / 18, 20이 있고, 그 아래 리프 노드 여덟 개가 모두 같은 깊이에 있다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">예시 B 트리 — 차수 4, 노드당 키 최대 3개</text>
+  <text x="730" y="42" class="sub" text-anchor="end">자식 최대 4개</text>
+  <line x1="370" y1="110" x2="214" y2="168" class="edge"/>
+  <line x1="406" y1="110" x2="406" y2="168" class="edge"/>
+  <line x1="442" y1="110" x2="598" y2="168" class="edge"/>
+  <line x1="178" y1="202" x2="148" y2="260" class="edge"/>
+  <line x1="214" y1="202" x2="214" y2="260" class="edge"/>
+  <line x1="250" y1="202" x2="280" y2="260" class="edge"/>
+  <line x1="388" y1="202" x2="364" y2="260" class="edge"/>
+  <line x1="424" y1="202" x2="448" y2="260" class="edge"/>
+  <line x1="562" y1="202" x2="532" y2="260" class="edge"/>
+  <line x1="598" y1="202" x2="598" y2="260" class="edge"/>
+  <line x1="634" y1="202" x2="664" y2="260" class="edge"/>
+  <rect x="370" y="76" width="72" height="34" rx="6" class="box"/>
+  <text x="388" y="98" class="monob" text-anchor="middle">8</text>
+  <line x1="406" y1="76" x2="406" y2="110" stroke="#9ca3af" stroke-width="1"/>
+  <text x="424" y="98" class="monob" text-anchor="middle">15</text>
+  <rect x="178" y="168" width="72" height="34" rx="6" class="box"/>
+  <text x="196" y="190" class="monob" text-anchor="middle">3</text>
+  <line x1="214" y1="168" x2="214" y2="202" stroke="#9ca3af" stroke-width="1"/>
+  <text x="232" y="190" class="monob" text-anchor="middle">5</text>
+  <rect x="388" y="168" width="36" height="34" rx="6" class="box"/>
+  <text x="406" y="190" class="monob" text-anchor="middle">12</text>
+  <rect x="562" y="168" width="72" height="34" rx="6" class="box"/>
+  <text x="580" y="190" class="monob" text-anchor="middle">18</text>
+  <line x1="598" y1="168" x2="598" y2="202" stroke="#9ca3af" stroke-width="1"/>
+  <text x="616" y="190" class="monob" text-anchor="middle">20</text>
+  <rect x="112" y="260" width="72" height="34" rx="6" class="box"/>
+  <text x="130" y="282" class="monob" text-anchor="middle">1</text>
+  <line x1="148" y1="260" x2="148" y2="294" stroke="#9ca3af" stroke-width="1"/>
+  <text x="166" y="282" class="monob" text-anchor="middle">2</text>
+  <rect x="196" y="260" width="36" height="34" rx="6" class="box"/>
+  <text x="214" y="282" class="monob" text-anchor="middle">4</text>
+  <rect x="244" y="260" width="72" height="34" rx="6" class="box"/>
+  <text x="262" y="282" class="monob" text-anchor="middle">6</text>
+  <line x1="280" y1="260" x2="280" y2="294" stroke="#9ca3af" stroke-width="1"/>
+  <text x="298" y="282" class="monob" text-anchor="middle">7</text>
+  <rect x="328" y="260" width="72" height="34" rx="6" class="box"/>
+  <text x="346" y="282" class="monob" text-anchor="middle">9</text>
+  <line x1="364" y1="260" x2="364" y2="294" stroke="#9ca3af" stroke-width="1"/>
+  <text x="382" y="282" class="monob" text-anchor="middle">10</text>
+  <rect x="412" y="260" width="72" height="34" rx="6" class="box"/>
+  <text x="430" y="282" class="monob" text-anchor="middle">13</text>
+  <line x1="448" y1="260" x2="448" y2="294" stroke="#9ca3af" stroke-width="1"/>
+  <text x="466" y="282" class="monob" text-anchor="middle">14</text>
+  <rect x="496" y="260" width="72" height="34" rx="6" class="box"/>
+  <text x="514" y="282" class="monob" text-anchor="middle">16</text>
+  <line x1="532" y1="260" x2="532" y2="294" stroke="#9ca3af" stroke-width="1"/>
+  <text x="550" y="282" class="monob" text-anchor="middle">17</text>
+  <rect x="580" y="260" width="36" height="34" rx="6" class="box"/>
+  <text x="598" y="282" class="monob" text-anchor="middle">19</text>
+  <rect x="628" y="260" width="72" height="34" rx="6" class="box"/>
+  <text x="646" y="282" class="monob" text-anchor="middle">21</text>
+  <line x1="664" y1="260" x2="664" y2="294" stroke="#9ca3af" stroke-width="1"/>
+  <text x="682" y="282" class="monob" text-anchor="middle">23</text>
+  <text x="30" y="98" class="sub">루트 노드</text>
+  <text x="30" y="190" class="sub">내부 노드</text>
+  <text x="30" y="282" class="sub">리프 노드</text>
+  <text x="30" y="338" class="foot">키 k개인 노드는 자식이 k+1개이고, 각 자식은 부모의 두 키 사이 값만 저장합니다.</text>
+  <text x="30" y="358" class="foot">루트 노드부터 모든 리프 노드까지 경로의 길이가 같습니다.</text>
+</svg>

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>SELECT *는 idx_user를 거쳐 클러스터 인덱스까지 2단계로 조회하고, 필요한 컬럼이 모두 들어 있는 idx_user_created_id는 인덱스 스캔만으로 결과를 반환하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbc { font-size: 13px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opg { font-size: 14px; font-weight: 700; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .tg { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="540" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">일반 세컨더리 인덱스 — 인덱스 → 테이블 2단계</text>
+  <text x="730" y="42" class="code" text-anchor="end">idx_user</text>
+  <text x="240" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="442" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="644" y="68" class="step" text-anchor="middle">결과</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">인덱스</text>
+  <text x="30" y="126" class="subc">idx_user</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="155" y="88" width="170" height="48" rx="8" class="hold"/>
+  <text x="240" y="108" class="op" text-anchor="middle">user_id=123</text>
+  <text x="240" y="127" class="val" text-anchor="middle">order_id 획득</text>
+  <text x="30" y="168" class="lane">테이블</text>
+  <text x="30" y="186" class="sub">클러스터 인덱스</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="357" y="148" width="170" height="48" rx="8" class="box"/>
+  <text x="442" y="168" class="op" text-anchor="middle">order_id</text>
+  <text x="442" y="187" class="val" text-anchor="middle">전체 행 조회</text>
+  <rect x="569" y="148" width="150" height="48" rx="8" class="ok"/>
+  <text x="644" y="168" class="okt" text-anchor="middle">결과 반환</text>
+  <text x="644" y="187" class="valc" text-anchor="middle">SELECT *</text>
+  <line x1="300" y1="136" x2="380" y2="147" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="528" y1="172" x2="568" y2="172" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="150" y="214" width="585" height="32" rx="15" class="hold"/>
+  <text x="442.5" y="235" class="db" text-anchor="middle">세컨더리 인덱스 + 클러스터 인덱스 2단계 탐색</text>
+  <rect x="10" y="278" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="310" class="h">커버링 인덱스 — 인덱스 스캔으로 완료</text>
+  <text x="730" y="310" class="code" text-anchor="end">idx_user_created_id</text>
+  <text x="240" y="336" class="step" text-anchor="middle">1단계</text>
+  <text x="442" y="336" class="step" text-anchor="middle"></text>
+  <text x="644" y="336" class="step" text-anchor="middle">결과</text>
+  <line x1="160" y1="344" x2="722" y2="344" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="376" class="lane">인덱스</text>
+  <text x="30" y="394" class="sub">커버링 인덱스</text>
+  <rect x="150" y="354" width="585" height="52" rx="6" class="track"/>
+  <rect x="155" y="356" width="170" height="48" rx="8" class="hold"/>
+  <text x="240" y="376" class="op" text-anchor="middle">user_id=123</text>
+  <text x="240" y="395" class="val" text-anchor="middle">필요한 컬럼 모두 있음</text>
+  <rect x="569" y="356" width="150" height="48" rx="8" class="ok"/>
+  <text x="644" y="376" class="okt" text-anchor="middle">결과 반환</text>
+  <text x="644" y="395" class="val" text-anchor="middle">3개 컬럼 그대로</text>
+  <line x1="326" y1="380" x2="568" y2="380" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="436" class="lane">테이블</text>
+  <text x="30" y="454" class="sub">클러스터 인덱스</text>
+  <rect x="150" y="414" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="424" width="560" height="32" rx="6" class="wait"/>
+  <text x="442" y="445" class="waitt" text-anchor="middle">접근하지 않음</text>
+  <rect x="150" y="482" width="585" height="32" rx="15" class="ok"/>
+  <text x="442.5" y="503" class="okt" text-anchor="middle">EXPLAIN Extra: Using index — 1단계로 완료</text>
+</svg>

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 522" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>OFFSET 방식은 처음부터 120개를 읽고 100개를 버리지만, No Offset 방식은 이전 페이지의 마지막 created_at 위치로 바로 찾아가 20개만 읽고 그 마지막 값을 다음 요청의 기준으로 넘기는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbc { font-size: 13px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opg { font-size: 14px; font-weight: 700; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .tg { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="522" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="186" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">OFFSET 100 — 120개 읽고 100개 버림</text>
+  <text x="730" y="42" class="code" text-anchor="end">LIMIT 20 OFFSET 100</text>
+  <text x="160" y="70" class="step">created_at DESC 순서 →</text>
+  <line x1="160" y1="78" x2="648" y2="78" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="660" y="82" class="note">처음부터 읽음</text>
+  <text x="30" y="108" class="lane">인덱스</text>
+  <text x="30" y="126" class="subc">user_id=123</text>
+  <rect x="150" y="88" width="585" height="52" rx="6" class="track"/>
+  <rect x="156" y="94" width="408" height="40" rx="4" class="bad"/>
+  <text x="359" y="119" class="badt" text-anchor="middle">1~100번째 행 — 읽은 뒤 버림</text>
+  <rect x="570" y="94" width="78" height="40" rx="4" class="ok"/>
+  <text x="610" y="119" class="okt" text-anchor="middle">20행</text>
+  <text x="693" y="119" class="tg" text-anchor="middle">...</text>
+  <text x="150" y="172" class="foot">OFFSET이 클수록 버리는 행이 늘어나 뒤 페이지일수록 느려짐</text>
+  <rect x="10" y="212" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="244" class="h">No Offset — 기준 값 위치부터 20개</text>
+  <text x="730" y="244" class="code" text-anchor="end">created_at &lt; '2025-01-05 10:00:00'</text>
+  <text x="160" y="272" class="step">created_at DESC 순서 →</text>
+  <line x1="572" y1="262" x2="572" y2="286" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="560" y="268" class="gnote" text-anchor="end">기준 값으로 바로 찾아감</text>
+  <text x="30" y="310" class="lane">인덱스</text>
+  <text x="30" y="328" class="subc">user_id=123</text>
+  <rect x="150" y="290" width="585" height="52" rx="6" class="track"/>
+  <rect x="156" y="296" width="408" height="40" rx="6" class="wait"/>
+  <text x="360" y="317" class="waitt" text-anchor="middle">1~100번째 행 — 읽지 않음</text>
+  <rect x="570" y="296" width="78" height="40" rx="4" class="ok"/>
+  <text x="610" y="321" class="okt" text-anchor="middle">20행</text>
+  <text x="693" y="321" class="tg" text-anchor="middle">...</text>
+  <text x="30" y="380" class="lane">응답</text>
+  <text x="30" y="398" class="sub">다음 요청</text>
+  <rect x="150" y="358" width="585" height="52" rx="6" class="track"/>
+  <rect x="300" y="360" width="200" height="48" rx="8" class="ok"/>
+  <text x="400" y="380" class="okt" text-anchor="middle">20행 + 마지막 값</text>
+  <text x="400" y="399" class="valc" text-anchor="middle">lastCreatedAt</text>
+  <rect x="515" y="360" width="214" height="48" rx="8" class="box"/>
+  <text x="622" y="380" class="t" text-anchor="middle">다음 페이지 요청</text>
+  <text x="622" y="399" class="valc" text-anchor="middle">created_at &lt; lastCreatedAt</text>
+  <line x1="600" y1="346" x2="460" y2="359" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="502" y1="384" x2="512" y2="384" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="150" y="426" width="585" height="32" rx="15" class="ok"/>
+  <text x="442.5" y="447" class="okt" text-anchor="middle">몇 번째 페이지든 20행만 읽음</text>
+  <text x="150" y="484" class="foot">대신 특정 페이지로 바로 이동할 수 없고 이전 페이지의 마지막 값이 필요함</text>
+</svg>

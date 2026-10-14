@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 332" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>유의미한 1번과 3번 행은 날짜를 2023년으로 바꿔 최신 파티션으로 옮기고, 불필요한 2번 행은 2021년 날짜 그대로 과거 파티션에 남아 과거 파티션 파일만 삭제하면 되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbc { font-size: 13px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opg { font-size: 14px; font-weight: 700; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .tg { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="332" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="312" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">날짜 변경 — 유의미한 데이터만 최신 파티션으로</text>
+  <text x="730" y="42" class="sub" text-anchor="end">파티션 키: createAt</text>
+  <text x="240" y="68" class="step" text-anchor="middle">현재 데이터</text>
+  <text x="442" y="68" class="step" text-anchor="middle">변경 데이터</text>
+  <text x="644" y="68" class="step" text-anchor="middle">파티션</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">1번 행</text>
+  <text x="30" y="126" class="sub">유의미한 데이터</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="165" y="88" width="150" height="48" rx="8" class="box"/>
+  <text x="240" y="108" class="op" text-anchor="middle">2021-02-01</text>
+  <text x="240" y="127" class="val" text-anchor="middle">원래 날짜</text>
+  <rect x="367" y="88" width="150" height="48" rx="8" class="ok"/>
+  <text x="442" y="108" class="okc" text-anchor="middle">2023-02-01</text>
+  <text x="442" y="127" class="val" text-anchor="middle">최신 날짜로 변경</text>
+  <rect x="569" y="88" width="150" height="48" rx="8" class="ok"/>
+  <text x="644" y="108" class="okt" text-anchor="middle">최신 파티션</text>
+  <text x="644" y="127" class="val" text-anchor="middle">유지</text>
+  <line x1="317" y1="112" x2="365" y2="112" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="519" y1="112" x2="567" y2="112" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="168" class="lane">2번 행</text>
+  <text x="30" y="186" class="sub">불필요한 데이터</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="165" y="148" width="150" height="48" rx="8" class="box"/>
+  <text x="240" y="168" class="op" text-anchor="middle">2021-02-02</text>
+  <text x="240" y="187" class="val" text-anchor="middle">원래 날짜</text>
+  <rect x="367" y="148" width="150" height="48" rx="8" class="hold"/>
+  <text x="442" y="168" class="op" text-anchor="middle">2021-02-02</text>
+  <text x="442" y="187" class="val" text-anchor="middle">그대로</text>
+  <rect x="569" y="148" width="150" height="48" rx="8" class="bad"/>
+  <text x="644" y="168" class="badt" text-anchor="middle">과거 파티션</text>
+  <text x="644" y="187" class="val" text-anchor="middle">파일 삭제</text>
+  <line x1="317" y1="172" x2="365" y2="172" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="519" y1="172" x2="567" y2="172" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="228" class="lane">3번 행</text>
+  <text x="30" y="246" class="sub">유의미한 데이터</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="165" y="208" width="150" height="48" rx="8" class="box"/>
+  <text x="240" y="228" class="op" text-anchor="middle">2021-02-03</text>
+  <text x="240" y="247" class="val" text-anchor="middle">원래 날짜</text>
+  <rect x="367" y="208" width="150" height="48" rx="8" class="ok"/>
+  <text x="442" y="228" class="okc" text-anchor="middle">2023-02-03</text>
+  <text x="442" y="247" class="val" text-anchor="middle">최신 날짜로 변경</text>
+  <rect x="569" y="208" width="150" height="48" rx="8" class="ok"/>
+  <text x="644" y="228" class="okt" text-anchor="middle">최신 파티션</text>
+  <text x="644" y="247" class="val" text-anchor="middle">유지</text>
+  <line x1="317" y1="232" x2="365" y2="232" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="519" y1="232" x2="567" y2="232" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="150" y="274" width="585" height="32" rx="15" class="ok"/>
+  <text x="442.5" y="295" class="okt" text-anchor="middle">과거 파티션 파일만 삭제 — java batch로 계속 진행</text>
+</svg>

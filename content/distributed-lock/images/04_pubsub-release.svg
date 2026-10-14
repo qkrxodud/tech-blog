@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 390" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>클라이언트 A의 unlock 스크립트가 lock 키를 지우고 같은 채널에 PUBLISH로 해제 메시지를 보내면, 구독하고 대기하던 B와 C가 메시지를 받아 다시 시도해 B가 락을 얻는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .codek { font-size: 13px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="390" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="370" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">락 해제와 알림 — del + PUBLISH</text>
+  <text x="730" y="42" class="codek" text-anchor="end"><tspan class="code">unlock</tspan> 스크립트</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">클라이언트 A</text>
+  <text x="30" y="126" class="sub">락 보유</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162.0" y="88" width="116" height="48" rx="8" class="hold"/>
+  <text x="220" y="108" class="t" text-anchor="middle">작업 완료</text>
+  <text x="220" y="127" class="val" text-anchor="middle">unlock 호출</text>
+  <rect x="302.0" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="108" class="op" text-anchor="middle">unlock</text>
+  <text x="360" y="127" class="val" text-anchor="middle">lock 키 del</text>
+  <text x="30" y="168" class="lane">Redis</text>
+  <text x="30" y="186" class="sub">lock 채널</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="302.0" y="148" width="116" height="48" rx="8" class="ok"/>
+  <text x="360" y="168" class="okc" text-anchor="middle">PUBLISH</text>
+  <text x="360" y="187" class="val" text-anchor="middle">해제 메시지</text>
+  <line x1="360" y1="136" x2="360" y2="146" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="228" class="lane">클라이언트 B</text>
+  <text x="30" y="246" class="sub">구독하고 대기</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="216" width="248" height="32" rx="6" class="wait"/>
+  <text x="286.0" y="237" class="waitt" text-anchor="middle">채널 구독 — 계속 시도하지 않음</text>
+  <rect x="442.0" y="208" width="116" height="48" rx="8" class="ok"/>
+  <text x="500" y="228" class="okt" text-anchor="middle">메시지 수신</text>
+  <text x="500" y="247" class="val" text-anchor="middle">락 해제 인지</text>
+  <rect x="582.0" y="208" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="228" class="okt" text-anchor="middle">락 재시도</text>
+  <text x="640" y="247" class="val" text-anchor="middle">성공 → 락 획득</text>
+  <text x="30" y="288" class="lane">클라이언트 C</text>
+  <text x="30" y="306" class="sub">구독하고 대기</text>
+  <rect x="150" y="266" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="276" width="248" height="32" rx="6" class="wait"/>
+  <text x="286.0" y="297" class="waitt" text-anchor="middle">채널 구독 — 계속 시도하지 않음</text>
+  <rect x="442.0" y="268" width="116" height="48" rx="8" class="ok"/>
+  <text x="500" y="288" class="okt" text-anchor="middle">메시지 수신</text>
+  <text x="500" y="307" class="val" text-anchor="middle">락 해제 인지</text>
+  <rect x="582.0" y="268" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="288" class="t" text-anchor="middle">락 재시도</text>
+  <text x="640" y="307" class="val" text-anchor="middle">실패 → 다시 대기</text>
+  <path d="M418,172 H430 V292 H439" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <path d="M430,232 H439" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="150" y="334" width="585" height="32" rx="15" class="ok"/>
+  <text x="442.5" y="355" class="okt" text-anchor="middle">스핀락처럼 계속 시도하지 않고, 해제 메시지를 받은 뒤에만 다시 시도</text>
+</svg>

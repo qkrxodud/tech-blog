@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 482" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>11을 삽입할 때 루트 8, 15에서 가운데 자식 12로, 다시 왼쪽 리프 9, 10으로 내려가 11을 추가하고 리프가 9, 10, 11이 되는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="482" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="462" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">삽입 과정 — 11을 삽입할 때</text>
+  <text x="730" y="42" class="code" text-anchor="end">insert 11</text>
+  <line x1="370" y1="104" x2="214" y2="146" class="edge"/>
+  <line x1="406" y1="104" x2="406" y2="146" class="gedge"/>
+  <line x1="442" y1="104" x2="598" y2="146" class="edge"/>
+  <line x1="178" y1="180" x2="148" y2="222" class="edge"/>
+  <line x1="214" y1="180" x2="214" y2="222" class="edge"/>
+  <line x1="250" y1="180" x2="280" y2="222" class="edge"/>
+  <line x1="388" y1="180" x2="364" y2="222" class="gedge"/>
+  <line x1="424" y1="180" x2="448" y2="222" class="edge"/>
+  <line x1="562" y1="180" x2="532" y2="222" class="edge"/>
+  <line x1="598" y1="180" x2="598" y2="222" class="edge"/>
+  <line x1="634" y1="180" x2="664" y2="222" class="edge"/>
+  <rect x="370" y="70" width="72" height="34" rx="6" class="ok"/>
+  <text x="388" y="92" class="okm" text-anchor="middle">8</text>
+  <line x1="406" y1="70" x2="406" y2="104" stroke="#9ca3af" stroke-width="1"/>
+  <text x="424" y="92" class="okm" text-anchor="middle">15</text>
+  <rect x="178" y="146" width="72" height="34" rx="6" class="box"/>
+  <text x="196" y="168" class="monob" text-anchor="middle">3</text>
+  <line x1="214" y1="146" x2="214" y2="180" stroke="#9ca3af" stroke-width="1"/>
+  <text x="232" y="168" class="monob" text-anchor="middle">5</text>
+  <rect x="388" y="146" width="36" height="34" rx="6" class="ok"/>
+  <text x="406" y="168" class="okm" text-anchor="middle">12</text>
+  <rect x="562" y="146" width="72" height="34" rx="6" class="box"/>
+  <text x="580" y="168" class="monob" text-anchor="middle">18</text>
+  <line x1="598" y1="146" x2="598" y2="180" stroke="#9ca3af" stroke-width="1"/>
+  <text x="616" y="168" class="monob" text-anchor="middle">20</text>
+  <rect x="112" y="222" width="72" height="34" rx="6" class="box"/>
+  <text x="130" y="244" class="monob" text-anchor="middle">1</text>
+  <line x1="148" y1="222" x2="148" y2="256" stroke="#9ca3af" stroke-width="1"/>
+  <text x="166" y="244" class="monob" text-anchor="middle">2</text>
+  <rect x="196" y="222" width="36" height="34" rx="6" class="box"/>
+  <text x="214" y="244" class="monob" text-anchor="middle">4</text>
+  <rect x="244" y="222" width="72" height="34" rx="6" class="box"/>
+  <text x="262" y="244" class="monob" text-anchor="middle">6</text>
+  <line x1="280" y1="222" x2="280" y2="256" stroke="#9ca3af" stroke-width="1"/>
+  <text x="298" y="244" class="monob" text-anchor="middle">7</text>
+  <rect x="328" y="222" width="72" height="34" rx="6" class="ok"/>
+  <text x="346" y="244" class="okm" text-anchor="middle">9</text>
+  <line x1="364" y1="222" x2="364" y2="256" stroke="#9ca3af" stroke-width="1"/>
+  <text x="382" y="244" class="okm" text-anchor="middle">10</text>
+  <rect x="412" y="222" width="72" height="34" rx="6" class="box"/>
+  <text x="430" y="244" class="monob" text-anchor="middle">13</text>
+  <line x1="448" y1="222" x2="448" y2="256" stroke="#9ca3af" stroke-width="1"/>
+  <text x="466" y="244" class="monob" text-anchor="middle">14</text>
+  <rect x="496" y="222" width="72" height="34" rx="6" class="box"/>
+  <text x="514" y="244" class="monob" text-anchor="middle">16</text>
+  <line x1="532" y1="222" x2="532" y2="256" stroke="#9ca3af" stroke-width="1"/>
+  <text x="550" y="244" class="monob" text-anchor="middle">17</text>
+  <rect x="580" y="222" width="36" height="34" rx="6" class="box"/>
+  <text x="598" y="244" class="monob" text-anchor="middle">19</text>
+  <rect x="628" y="222" width="72" height="34" rx="6" class="box"/>
+  <text x="646" y="244" class="monob" text-anchor="middle">21</text>
+  <line x1="664" y1="222" x2="664" y2="256" stroke="#9ca3af" stroke-width="1"/>
+  <text x="682" y="244" class="monob" text-anchor="middle">23</text>
+  <line x1="20" y1="280" x2="740" y2="280" stroke="#e5e7eb"/>
+  <circle cx="42" cy="308" r="10" fill="#6b7280"/>
+  <text x="42" y="312" class="num" text-anchor="middle">1</text>
+  <text x="62" y="312.5" class="ko">루트 노드 8, 15에서 11은 8보다 크고 15보다 작으므로 가운데 자식 노드 12로 이동합니다.</text>
+  <circle cx="42" cy="338" r="10" fill="#6b7280"/>
+  <text x="42" y="342" class="num" text-anchor="middle">2</text>
+  <text x="62" y="342.5" class="ko">11은 12보다 작으므로 왼쪽 자식인 리프 노드 9, 10으로 이동합니다.</text>
+  <circle cx="42" cy="368" r="10" fill="#6b7280"/>
+  <text x="42" y="372" class="num" text-anchor="middle">3</text>
+  <text x="62" y="372.5" class="ko">리프 노드의 키가 2개로 최대 3개보다 적으므로 11을 정렬된 위치에 추가합니다.</text>
+  <text x="62" y="422" class="t">삽입 후 리프</text>
+  <rect x="180" y="400" width="36" height="34" rx="4" class="box"/>
+  <text x="198" y="422" class="monob" text-anchor="middle">9</text>
+  <rect x="216" y="400" width="36" height="34" rx="4" class="box"/>
+  <text x="234" y="422" class="monob" text-anchor="middle">10</text>
+  <rect x="252" y="400" width="36" height="34" rx="4" class="ok"/>
+  <text x="270" y="422" class="okm" text-anchor="middle">11</text>
+  <text x="62" y="456" class="foot">리프가 가득 차 있었다면 노드를 둘로 나누고(분할) 가운데 키를 부모로 올립니다.</text>
+</svg>

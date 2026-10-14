@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 서버가 Redis에서 캐시를 찾아 바로 응답하는 cache hit, 아래쪽은 캐시에 데이터가 없어 DB에서 조회한 뒤 캐시에 저장하고 응답하는 cache miss 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="172" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">cache hit — 캐시에서 바로 응답</text>
+  <text x="730" y="42" class="code" text-anchor="end">Redis</text>
+  <rect x="30" y="64" width="125" height="56" rx="8" class="box"/>
+  <text x="92.5" y="88" class="t" text-anchor="middle">사용자</text>
+  <text x="92.5" y="107" class="sub" text-anchor="middle">여러 명의 요청</text>
+  <rect x="215" y="64" width="125" height="56" rx="8" class="box"/>
+  <text x="277.5" y="88" class="t" text-anchor="middle">서버</text>
+  <text x="277.5" y="107" class="sub" text-anchor="middle">애플리케이션</text>
+  <rect x="400" y="64" width="125" height="56" rx="8" class="dbbox"/>
+  <text x="462.5" y="88" class="t" text-anchor="middle">Redis</text>
+  <text x="462.5" y="107" class="sub" text-anchor="middle">캐시 (IMDB)</text>
+  <rect x="585" y="64" width="125" height="56" rx="8" class="wait"/>
+  <text x="647.5" y="88" class="t" text-anchor="middle">DB</text>
+  <text x="647.5" y="107" class="sub" text-anchor="middle">조회하지 않음</text>
+  <line x1="157" y1="82" x2="213" y2="82" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="185" y="76" class="lbl" text-anchor="middle">요청</text>
+  <line x1="342" y1="82" x2="398" y2="82" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="370" y="76" class="lbl" text-anchor="middle">조회</text>
+  <line x1="398" y1="104" x2="342" y2="104" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="370" y="120" class="gnote" text-anchor="middle">hit</text>
+  <line x1="213" y1="104" x2="157" y2="104" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="185" y="120" class="gnote" text-anchor="middle">응답</text>
+  <text x="30" y="160" class="foot">Redis에 원하는 캐시가 있으면 DB를 거치지 않고 IMDB에서 데이터를 가져옵니다.</text>
+  <rect x="10" y="198" width="740" height="172" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="230" class="h">cache miss — DB에서 조회한 뒤 캐시에 저장</text>
+  <text x="730" y="230" class="code" text-anchor="end">Redis → DB</text>
+  <rect x="30" y="252" width="125" height="56" rx="8" class="box"/>
+  <text x="92.5" y="276" class="t" text-anchor="middle">사용자</text>
+  <text x="92.5" y="295" class="sub" text-anchor="middle">여러 명의 요청</text>
+  <rect x="215" y="252" width="125" height="56" rx="8" class="box"/>
+  <text x="277.5" y="276" class="t" text-anchor="middle">서버</text>
+  <text x="277.5" y="295" class="sub" text-anchor="middle">애플리케이션</text>
+  <rect x="400" y="252" width="125" height="56" rx="8" class="dbbox"/>
+  <text x="462.5" y="276" class="t" text-anchor="middle">Redis</text>
+  <text x="462.5" y="295" class="sub" text-anchor="middle">캐시 (IMDB)</text>
+  <rect x="585" y="252" width="125" height="56" rx="8" class="dbbox"/>
+  <text x="647.5" y="276" class="t" text-anchor="middle">DB</text>
+  <text x="647.5" y="295" class="sub" text-anchor="middle">원본 데이터</text>
+  <line x1="157" y1="270" x2="213" y2="270" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="185" y="264" class="lbl" text-anchor="middle">요청</text>
+  <line x1="342" y1="270" x2="398" y2="270" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="370" y="264" class="lbl" text-anchor="middle">조회</text>
+  <line x1="527" y1="270" x2="583" y2="270" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="555" y="264" class="note" text-anchor="middle">miss</text>
+  <line x1="583" y1="292" x2="527" y2="292" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="555" y="308" class="gnote" text-anchor="middle">저장</text>
+  <line x1="398" y1="292" x2="342" y2="292" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="370" y="308" class="gnote" text-anchor="middle">제공</text>
+  <line x1="213" y1="292" x2="157" y2="292" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="185" y="308" class="gnote" text-anchor="middle">응답</text>
+  <text x="30" y="348" class="foot">캐시에 데이터가 없으면 DB에서 조회해 캐시에 저장한 다음 데이터를 제공합니다.</text>
+</svg>

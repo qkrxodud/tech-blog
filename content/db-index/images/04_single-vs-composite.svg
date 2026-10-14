@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>복합 인덱스가 이미 있을 때 code 단일 인덱스를 만들면 중복되어 자원이 낭비되고, 복합 인덱스를 그대로 사용하면 더 효율적이며 자원 낭비를 줄인다는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">복합 인덱스가 이미 있을 때 — code 단일 인덱스가 또 필요한가</text>
+  <rect x="190" y="62" width="380" height="48" rx="10" class="hold"/>
+  <text x="380" y="83" class="t" text-anchor="middle">복합 인덱스 (code, backnumber)가 있을 때</text>
+  <text x="380" y="101" class="ko" text-anchor="middle">code 열에 단일 인덱스를 생성해야 할까?</text>
+  <path d="M300,110 V128 H190 V146" class="redge" marker-end="url(#arr)"/>
+  <path d="M460,110 V128 H570 V146" class="gedge" marker-end="url(#agr)"/>
+  <rect x="30" y="150" width="340" height="210" rx="10" class="bad"/>
+  <text x="200" y="178" class="badt" text-anchor="middle">단일 인덱스 생성</text>
+  <rect x="50" y="196" width="300" height="30" rx="6" class="box"/>
+  <text x="200" y="216" class="mono" text-anchor="middle">(code, backnumber)</text>
+  <rect x="50" y="234" width="300" height="30" rx="6" class="box"/>
+  <text x="200" y="254" class="badm" text-anchor="middle">(code)</text>
+  <text x="200" y="292" class="note" text-anchor="middle">code로 시작하는 복합 인덱스가 있으므로</text>
+  <text x="200" y="311" class="note" text-anchor="middle">중복되고 자원의 낭비가 발생합니다.</text>
+  <text x="200" y="340" class="sub" text-anchor="middle">write 오버헤드·저장 공간이 인덱스 수만큼 늘어남</text>
+  <rect x="390" y="150" width="340" height="210" rx="10" class="ok"/>
+  <text x="560" y="178" class="okt" text-anchor="middle">복합 인덱스 사용</text>
+  <rect x="410" y="196" width="300" height="30" rx="6" class="box"/>
+  <text x="560" y="216" class="mono" text-anchor="middle">(code, backnumber)</text>
+  <rect x="410" y="234" width="300" height="30" rx="6" fill="none" stroke="#16a34a" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="560" y="254" class="gnote" text-anchor="middle">code = ? 조건도 이 인덱스로 처리</text>
+  <text x="560" y="292" class="gnote" text-anchor="middle">더 효율적이며,</text>
+  <text x="560" y="311" class="gnote" text-anchor="middle">자원 낭비를 줄입니다.</text>
+  <text x="560" y="340" class="sub" text-anchor="middle">많이 사용되는 컬럼(code)을 앞에 배치</text>
+</svg>

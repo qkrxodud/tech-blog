@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 296" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>트랜잭션 1이 id = 3 레코드에 next-key lock을 걸어 레코드 3과 그 앞의 갭 (1, 3)이 잠기고, id = 2 삽입은 대기하며 잠기지 않은 갭의 id = 4 삽입은 진행되는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbc { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .mark { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="296" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="276" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">next-key lock — 레코드 락 + 그 앞의 갭 락</text>
+  <text x="730" y="42" class="code" text-anchor="end">REPEATABLE READ</text>
+  <text x="364" y="74" class="note" text-anchor="middle">잠긴 범위 (1, 3] — 갭 (1, 3) + 레코드 id = 3</text>
+  <rect x="285" y="84" width="158" height="60" rx="10" class="bad"/>
+  <text x="30" y="112" class="db">인덱스</text>
+  <text x="30" y="130" class="sub">트랜잭션 1이 id = 3에 락</text>
+  <rect x="215" y="98" width="70" height="32" rx="6" class="dbbox"/>
+  <text x="250" y="119" class="dbc" text-anchor="middle">id = 1</text>
+  <rect x="293" y="98" width="64" height="32" rx="6" class="wait"/>
+  <text x="325.0" y="119" class="waitt" text-anchor="middle">갭</text>
+  <rect x="365" y="98" width="70" height="32" rx="6" class="dbbox"/>
+  <text x="400" y="119" class="dbc" text-anchor="middle">id = 3</text>
+  <rect x="443" y="98" width="64" height="32" rx="6" class="wait"/>
+  <text x="475.0" y="119" class="waitt" text-anchor="middle">갭</text>
+  <rect x="515" y="98" width="70" height="32" rx="6" class="dbbox"/>
+  <text x="550" y="119" class="dbc" text-anchor="middle">id = 5</text>
+  <rect x="593" y="98" width="64" height="32" rx="6" class="wait"/>
+  <text x="625.0" y="119" class="waitt" text-anchor="middle">갭</text>
+  <rect x="665" y="98" width="70" height="32" rx="6" class="dbbox"/>
+  <text x="700" y="119" class="dbc" text-anchor="middle">id = 7</text>
+  <text x="30" y="214" class="db">다른 트랜잭션</text>
+  <rect x="245" y="190" width="140" height="48" rx="8" class="bad"/>
+  <text x="315" y="210" class="badc" text-anchor="middle">INSERT id=2</text>
+  <text x="315" y="229" class="val" text-anchor="middle">갭이 잠겨 대기</text>
+  <rect x="415" y="190" width="140" height="48" rx="8" class="ok"/>
+  <text x="485" y="210" class="okc" text-anchor="middle">INSERT id=4</text>
+  <text x="485" y="229" class="val" text-anchor="middle">삽입 진행</text>
+  <line x1="315" y1="190" x2="315" y2="132" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <line x1="485" y1="190" x2="485" y2="132" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="268" class="foot">잠긴 범위 안에는 트랜잭션 1이 끝날 때까지 새 레코드를 삽입할 수 없습니다.</text>
+</svg>

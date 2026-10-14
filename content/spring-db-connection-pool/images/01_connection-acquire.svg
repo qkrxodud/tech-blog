@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>애플리케이션이 DB 드라이버에 커넥션을 조회하면 드라이버가 DB와 TCP/IP 연결을 맺고 인증 정보를 보내, DB가 세션을 만들고 응답한 뒤 드라이버가 커넥션 객체를 반환하는 여섯 단계</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pool { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="520" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="500" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">커넥션 획득 과정 — 커넥션 하나를 얻기까지</text>
+  <rect x="50" y="62" width="160" height="40" rx="8" class="box"/>
+  <text x="130" y="87" class="t" text-anchor="middle">애플리케이션</text>
+  <line x1="130" y1="104" x2="130" y2="470" class="life"/>
+  <rect x="300" y="62" width="160" height="40" rx="8" class="box"/>
+  <text x="380" y="87" class="t" text-anchor="middle">DB 드라이버</text>
+  <line x1="380" y1="104" x2="380" y2="470" class="life"/>
+  <rect x="550" y="62" width="160" height="40" rx="8" class="box"/>
+  <text x="630" y="87" class="t" text-anchor="middle">DB</text>
+  <line x1="630" y1="104" x2="630" y2="470" class="life"/>
+  <line x1="134" y1="146" x2="376" y2="146" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="255.0" y="137" class="val" text-anchor="middle">1. 커넥션 조회</text>
+  <line x1="384" y1="196" x2="626" y2="196" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="505.0" y="187" class="val" text-anchor="middle">2. TCP/IP 연결 (3 way handshake)</text>
+  <line x1="384" y1="246" x2="626" y2="246" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="505.0" y="237" class="val" text-anchor="middle">3. ID, PW와 기타 정보 전달</text>
+  <rect x="530" y="270" width="200" height="44" rx="8" class="hold"/>
+  <text x="630" y="297" class="t" text-anchor="middle">4. 인증 완료, DB 세션 생성</text>
+  <line x1="626" y1="356" x2="384" y2="356" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="505.0" y="347" class="val" text-anchor="middle">5. 커넥션 생성 완료 응답</text>
+  <line x1="376" y1="406" x2="134" y2="406" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="255.0" y="397" class="gnote" text-anchor="middle">6. 커넥션 객체 반환</text>
+  <rect x="50" y="424" width="160" height="40" rx="10" class="ok"/>
+  <text x="130" y="449" class="okt" text-anchor="middle">커넥션 획득</text>
+  <text x="30" y="494" class="foot">SQL을 실행하기도 전에, 커넥션 하나를 얻는 데에만 여섯 단계를 거칩니다.</text>
+</svg>

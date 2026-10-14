@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 배포 직후 최적화된 네이티브 코드가 없어 첫 요청들이 인터프리터로 실행되며 느린 Cold Start, 아래쪽은 트래픽을 받기 전에 Warm-up 호출로 JIT 캐시를 채워 첫 요청부터 정상 속도로 응답하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="540" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Warm-up 없이 배포 — 첫 요청들이 느림</text>
+  <text x="730" y="42" class="code" text-anchor="end">Cold Start</text>
+  <text x="220" y="68" class="step" text-anchor="middle">배포</text>
+  <text x="360" y="68" class="step" text-anchor="middle">첫 요청</text>
+  <text x="500" y="68" class="step" text-anchor="middle">요청 반복</text>
+  <text x="640" y="68" class="step" text-anchor="middle">최적화 후</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">서버</text>
+  <text x="30" y="126" class="subc">JVM</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162.0" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="t" text-anchor="middle">서버 시작</text>
+  <text x="220" y="127" class="val" text-anchor="middle">클래스 로딩</text>
+  <rect x="302" y="96" width="256" height="32" rx="6" class="wait"/>
+  <text x="430.0" y="117" class="waitt" text-anchor="middle">인터프리터 실행 — JIT 컴파일 진행 중</text>
+  <rect x="582.0" y="88" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="108" class="okt" text-anchor="middle">네이티브 실행</text>
+  <text x="640" y="127" class="val" text-anchor="middle">JIT 캐시 사용</text>
+  <text x="30" y="168" class="lane">사용자 요청</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="302.0" y="148" width="116" height="48" rx="8" class="bad"/>
+  <text x="360" y="168" class="badt" text-anchor="middle">첫 요청</text>
+  <text x="360" y="187" class="val" text-anchor="middle">응답 지연</text>
+  <rect x="442.0" y="148" width="116" height="48" rx="8" class="bad"/>
+  <text x="500" y="168" class="badt" text-anchor="middle">요청</text>
+  <text x="500" y="187" class="val" text-anchor="middle">아직 최적화 전</text>
+  <rect x="582.0" y="148" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="168" class="okt" text-anchor="middle">요청</text>
+  <text x="640" y="187" class="val" text-anchor="middle">정상 속도</text>
+  <rect x="150" y="214" width="585" height="32" rx="15" class="bad"/>
+  <text x="442.5" y="235" class="badt" text-anchor="middle">Cold Start — 최적화된 네이티브 코드가 아직 생성되지 않음</text>
+  <rect x="10" y="278" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="310" class="h">Warm-up 후 트래픽 받기 — JIT 캐시를 미리 채움</text>
+  <text x="730" y="310" class="code" text-anchor="end">C1 · C2</text>
+  <text x="220" y="336" class="step" text-anchor="middle">배포</text>
+  <text x="360" y="336" class="step" text-anchor="middle">Warm-up</text>
+  <text x="500" y="336" class="step" text-anchor="middle">캐시 저장</text>
+  <text x="640" y="336" class="step" text-anchor="middle">트래픽</text>
+  <line x1="160" y1="344" x2="722" y2="344" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="376" class="lane">서버</text>
+  <text x="30" y="394" class="subc">JVM</text>
+  <rect x="150" y="354" width="585" height="52" rx="6" class="track"/>
+  <rect x="162.0" y="356" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="376" class="t" text-anchor="middle">서버 시작</text>
+  <text x="220" y="395" class="val" text-anchor="middle">클래스 로딩</text>
+  <rect x="302.0" y="356" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="376" class="t" text-anchor="middle">Warm-up</text>
+  <text x="360" y="395" class="val" text-anchor="middle">미리 호출</text>
+  <rect x="442.0" y="356" width="116" height="48" rx="8" class="ok"/>
+  <text x="500" y="376" class="okt" text-anchor="middle">네이티브 코드</text>
+  <text x="500" y="395" class="val" text-anchor="middle">JIT 캐시에 저장</text>
+  <rect x="582.0" y="356" width="116" height="48" rx="8" class="hold"/>
+  <text x="640" y="376" class="t" text-anchor="middle">네이티브 실행</text>
+  <text x="640" y="395" class="val" text-anchor="middle">JIT 캐시 사용</text>
+  <text x="30" y="436" class="lane">사용자 요청</text>
+  <rect x="150" y="414" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="424" width="396" height="32" rx="6" class="wait"/>
+  <text x="360.0" y="445" class="waitt" text-anchor="middle">트래픽을 받기 전</text>
+  <rect x="582.0" y="416" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="436" class="okt" text-anchor="middle">첫 요청</text>
+  <text x="640" y="455" class="val" text-anchor="middle">정상 속도</text>
+  <line x1="640" y1="404" x2="640" y2="414" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="150" y="482" width="585" height="32" rx="15" class="ok"/>
+  <text x="442.5" y="503" class="okt" text-anchor="middle">C1, C2 Compile Count로 Warm-up 횟수를 정해 미리 호출</text>
+</svg>

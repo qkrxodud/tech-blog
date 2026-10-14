@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>100만 개의 데이터를 저장할 때 이진 트리는 높이가 약 20이라 디스크를 최대 20번 읽고, B-tree는 높이가 약 3이라 최대 3번만 읽는다는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="362" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <rect x="388" y="10" width="362" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">이진 트리 — 노드당 키 1개</text>
+  <text x="352" y="42" class="sub" text-anchor="end">균형 잡힌 경우</text>
+  <text x="408" y="42" class="h">B-tree — 노드당 키 여러 개</text>
+  <text x="30" y="64" class="sub">데이터 100만 개</text>
+  <text x="408" y="64" class="sub">데이터 100만 개</text>
+  <text x="30" y="107" class="sub">1층</text>
+  <circle cx="200" cy="102" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="352" y="107" class="sub" text-anchor="end">읽기 1</text>
+  <text x="30" y="147" class="sub">2층</text>
+  <circle cx="145" cy="142" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="255" cy="142" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="352" y="147" class="sub" text-anchor="end">읽기 2</text>
+  <text x="30" y="187" class="sub">3층</text>
+  <circle cx="117.5" cy="182" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="172.5" cy="182" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="227.5" cy="182" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="282.5" cy="182" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="352" y="187" class="sub" text-anchor="end">읽기 3</text>
+  <text x="30" y="227" class="sub">4층</text>
+  <circle cx="103.75" cy="222" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="131.25" cy="222" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="158.75" cy="222" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="186.25" cy="222" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="213.75" cy="222" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="241.25" cy="222" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="268.75" cy="222" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="296.25" cy="222" r="9" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="352" y="227" class="sub" text-anchor="end">읽기 4</text>
+  <circle cx="200" cy="254" r="1.8" fill="#9ca3af"/>
+  <circle cx="200" cy="263" r="1.8" fill="#9ca3af"/>
+  <circle cx="200" cy="272" r="1.8" fill="#9ca3af"/>
+  <text x="30" y="303" class="sub">20층</text>
+  <circle cx="100" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <circle cx="118.2" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <circle cx="136.4" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <circle cx="154.6" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <circle cx="172.8" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <circle cx="191" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <circle cx="209.2" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <circle cx="227.4" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <circle cx="245.6" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <circle cx="263.8" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <circle cx="282" cy="298" r="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <text x="352" y="303" class="note" text-anchor="end">읽기 20</text>
+  <rect x="30" y="340" width="322" height="50" rx="10" class="bad"/>
+  <text x="191" y="361" class="badt" text-anchor="middle">높이 약 20</text>
+  <text x="191" y="380" class="note" text-anchor="middle">디스크를 최대 20번 읽어야 합니다</text>
+  <rect x="500" y="92" width="120" height="22" rx="5" class="box"/>
+  <line x1="520" y1="92" x2="520" y2="114" stroke="#d1d5db"/>
+  <line x1="540" y1="92" x2="540" y2="114" stroke="#d1d5db"/>
+  <line x1="560" y1="92" x2="560" y2="114" stroke="#d1d5db"/>
+  <line x1="580" y1="92" x2="580" y2="114" stroke="#d1d5db"/>
+  <line x1="600" y1="92" x2="600" y2="114" stroke="#d1d5db"/>
+  <text x="408" y="107" class="sub">1층</text>
+  <text x="730" y="107" class="sub" text-anchor="end">읽기 1</text>
+  <line x1="560" y1="114" x2="480" y2="150" class="edge"/>
+  <rect x="448" y="150" width="64" height="22" rx="5" class="box"/>
+  <line x1="464" y1="150" x2="464" y2="172" stroke="#d1d5db"/>
+  <line x1="480" y1="150" x2="480" y2="172" stroke="#d1d5db"/>
+  <line x1="496" y1="150" x2="496" y2="172" stroke="#d1d5db"/>
+  <line x1="560" y1="114" x2="560" y2="150" class="edge"/>
+  <rect x="528" y="150" width="64" height="22" rx="5" class="box"/>
+  <line x1="544" y1="150" x2="544" y2="172" stroke="#d1d5db"/>
+  <line x1="560" y1="150" x2="560" y2="172" stroke="#d1d5db"/>
+  <line x1="576" y1="150" x2="576" y2="172" stroke="#d1d5db"/>
+  <line x1="560" y1="114" x2="640" y2="150" class="edge"/>
+  <rect x="608" y="150" width="64" height="22" rx="5" class="box"/>
+  <line x1="624" y1="150" x2="624" y2="172" stroke="#d1d5db"/>
+  <line x1="640" y1="150" x2="640" y2="172" stroke="#d1d5db"/>
+  <line x1="656" y1="150" x2="656" y2="172" stroke="#d1d5db"/>
+  <text x="408" y="165" class="sub">2층</text>
+  <text x="730" y="165" class="sub" text-anchor="end">읽기 2</text>
+  <line x1="480" y1="172" x2="458" y2="208" class="edge"/>
+  <rect x="448" y="208" width="20" height="20" rx="4" class="box"/>
+  <line x1="480" y1="172" x2="480" y2="208" class="edge"/>
+  <rect x="470" y="208" width="20" height="20" rx="4" class="box"/>
+  <line x1="480" y1="172" x2="502" y2="208" class="edge"/>
+  <rect x="492" y="208" width="20" height="20" rx="4" class="box"/>
+  <line x1="560" y1="172" x2="538" y2="208" class="edge"/>
+  <rect x="528" y="208" width="20" height="20" rx="4" class="box"/>
+  <line x1="560" y1="172" x2="560" y2="208" class="edge"/>
+  <rect x="550" y="208" width="20" height="20" rx="4" class="box"/>
+  <line x1="560" y1="172" x2="582" y2="208" class="edge"/>
+  <rect x="572" y="208" width="20" height="20" rx="4" class="box"/>
+  <line x1="640" y1="172" x2="618" y2="208" class="edge"/>
+  <rect x="608" y="208" width="20" height="20" rx="4" class="box"/>
+  <line x1="640" y1="172" x2="640" y2="208" class="edge"/>
+  <rect x="630" y="208" width="20" height="20" rx="4" class="box"/>
+  <line x1="640" y1="172" x2="662" y2="208" class="edge"/>
+  <rect x="652" y="208" width="20" height="20" rx="4" class="box"/>
+  <text x="408" y="223" class="sub">3층</text>
+  <text x="730" y="223" class="gnote" text-anchor="end">읽기 3</text>
+  <text x="560" y="256" class="sub" text-anchor="middle">한 노드를 읽으면 여러 키를 함께 가져옵니다</text>
+  <rect x="408" y="340" width="322" height="50" rx="10" class="ok"/>
+  <text x="569" y="361" class="okt" text-anchor="middle">높이 최대 약 3</text>
+  <text x="569" y="380" class="gnote" text-anchor="middle">디스크를 최대 3번만 읽으면 됩니다</text>
+</svg>

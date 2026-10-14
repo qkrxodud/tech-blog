@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 452" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>DELETE는 행에 삭제 표시만 하고 새 데이터가 그 자리에 덮어써서 용량이 줄지 않아 alter문과 테이블 재구성이 필요하고, 파티셔닝을 하면 과거 파티션만 삭제하면 되는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbc { font-size: 13px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opg { font-size: 14px; font-weight: 700; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .tg { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="452" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="252" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">delete문 — 삭제 표시만 하고 용량은 그대로</text>
+  <text x="730" y="42" class="code" text-anchor="end">DELETE</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">데이터</text>
+  <text x="30" y="126" class="sub">테이블의 행</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="156" y="88" width="128" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="op" text-anchor="middle">DELETE</text>
+  <text x="220" y="127" class="val" text-anchor="middle">과거 데이터</text>
+  <rect x="296" y="88" width="128" height="48" rx="8" class="hold"/>
+  <text x="360" y="108" class="t" text-anchor="middle">삭제 표시</text>
+  <text x="360" y="127" class="val" text-anchor="middle">공간은 남음</text>
+  <rect x="436" y="88" width="128" height="48" rx="8" class="box"/>
+  <text x="500" y="108" class="op" text-anchor="middle">INSERT</text>
+  <text x="500" y="127" class="val" text-anchor="middle">그 자리에 덮어씀</text>
+  <line x1="286" y1="112" x2="294" y2="112" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="426" y1="112" x2="434" y2="112" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="168" class="lane">용량</text>
+  <text x="30" y="186" class="sub">디스크</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="296" y="148" width="128" height="48" rx="8" class="bad"/>
+  <text x="360" y="168" class="badt" text-anchor="middle">그대로</text>
+  <text x="360" y="187" class="val" text-anchor="middle">용량 안 늘어남</text>
+  <rect x="576" y="148" width="128" height="48" rx="8" class="box"/>
+  <text x="640" y="168" class="op" text-anchor="middle">ALTER</text>
+  <text x="640" y="187" class="val" text-anchor="middle">테이블 재구성</text>
+  <line x1="360" y1="136" x2="360" y2="147" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <line x1="426" y1="172" x2="574" y2="172" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="500" y="166" class="step" text-anchor="middle">공간 회수</text>
+  <rect x="150" y="214" width="585" height="32" rx="15" class="bad"/>
+  <text x="442.5" y="235" class="badt" text-anchor="middle">공간을 돌려받으려면 alter문과 테이블 재구성이 필요</text>
+  <rect x="10" y="278" width="740" height="164" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="310" class="h">파티셔닝 — 해당 파티션만 삭제</text>
+  <text x="30" y="348" class="lane">파티션</text>
+  <text x="30" y="366" class="sub">날짜 기준</text>
+  <rect x="150" y="326" width="585" height="52" rx="6" class="track"/>
+  <rect x="160" y="328" width="260" height="48" rx="8" class="bad"/>
+  <text x="290" y="348" class="badt" text-anchor="middle">과거 파티션</text>
+  <text x="290" y="367" class="val" text-anchor="middle">파티션째 삭제</text>
+  <rect x="460" y="328" width="260" height="48" rx="8" class="hold"/>
+  <text x="590" y="348" class="t" text-anchor="middle">최신 파티션</text>
+  <text x="590" y="367" class="val" text-anchor="middle">그대로 유지</text>
+  <rect x="150" y="394" width="585" height="32" rx="15" class="ok"/>
+  <text x="442.5" y="415" class="okt" text-anchor="middle">재구성 없이 파티션만 삭제 — 삭제 정책·보관 기간을 미리 파악</text>
+</svg>

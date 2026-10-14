@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 API 호출마다 TCP 연결과 해제를 반복하는 흐름, 아래쪽은 DB와 미리 연결해 둔 커넥션 풀에서 요청마다 커넥션을 빌려 조회하고 반납하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pool { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="540" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">DBCP 없이 — 요청마다 연결을 맺고 끊는다</text>
+  <rect x="30" y="62" width="124" height="60" rx="10" class="box"/>
+  <text x="92" y="87" class="t" text-anchor="middle">API 호출</text>
+  <text x="92" y="107" class="s" text-anchor="middle">클라이언트 요청</text>
+  <rect x="174" y="62" width="124" height="60" rx="10" class="bad"/>
+  <text x="236" y="87" class="badt" text-anchor="middle">TCP 연결</text>
+  <text x="236" y="107" class="s" text-anchor="middle">3way handshake</text>
+  <rect x="318" y="62" width="124" height="60" rx="10" class="box"/>
+  <text x="380" y="87" class="t" text-anchor="middle">DB 조회</text>
+  <text x="380" y="107" class="s" text-anchor="middle">쿼리 실행</text>
+  <rect x="462" y="62" width="124" height="60" rx="10" class="box"/>
+  <text x="524" y="87" class="t" text-anchor="middle">응답</text>
+  <text x="524" y="107" class="s" text-anchor="middle">클라이언트에 제공</text>
+  <rect x="606" y="62" width="124" height="60" rx="10" class="bad"/>
+  <text x="668" y="87" class="badt" text-anchor="middle">TCP 해제</text>
+  <text x="668" y="107" class="s" text-anchor="middle">4way handshake</text>
+  <line x1="155" y1="92" x2="171" y2="92" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="299" y1="92" x2="315" y2="92" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="443" y1="92" x2="459" y2="92" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="587" y1="92" x2="603" y2="92" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="150" class="note">API를 호출할 때마다 연결과 해제가 반복되고, 그 시간만큼 응답이 늦어집니다.</text>
+  <rect x="10" y="186" width="740" height="344" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="218" class="h">DBCP — 미리 연결해 둔 커넥션을 빌리고 반납한다</text>
+  <rect x="40" y="250" width="110" height="34" rx="8" class="box"/>
+  <text x="95" y="272" class="t" text-anchor="middle">요청 1</text>
+  <rect x="40" y="294" width="110" height="34" rx="8" class="box"/>
+  <text x="95" y="316" class="t" text-anchor="middle">요청 2</text>
+  <rect x="40" y="338" width="110" height="34" rx="8" class="box"/>
+  <text x="95" y="360" class="t" text-anchor="middle">요청 3</text>
+  <rect x="40" y="382" width="110" height="34" rx="8" class="box"/>
+  <text x="95" y="404" class="t" text-anchor="middle">요청 4</text>
+  <rect x="250" y="234" width="230" height="200" rx="10" class="pool"/>
+  <text x="365" y="256" class="t" text-anchor="middle">커넥션 풀 (DBCP)</text>
+  <rect x="280" y="270" width="170" height="30" rx="8" class="ok"/>
+  <text x="365" y="290" class="okt" text-anchor="middle">커넥션 1</text>
+  <rect x="280" y="308" width="170" height="30" rx="8" class="ok"/>
+  <text x="365" y="328" class="okt" text-anchor="middle">커넥션 2</text>
+  <rect x="280" y="346" width="170" height="30" rx="8" class="ok"/>
+  <text x="365" y="366" class="okt" text-anchor="middle">커넥션 3</text>
+  <rect x="280" y="384" width="170" height="30" rx="8" class="ok"/>
+  <text x="365" y="404" class="okt" text-anchor="middle">커넥션 4</text>
+  <line x1="152" y1="267" x2="277" y2="285" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="152" y1="311" x2="277" y2="323" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="152" y1="355" x2="277" y2="361" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="152" y1="399" x2="277" y2="399" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="600" y="270" width="130" height="144" rx="10" class="dbbox"/>
+  <text x="665" y="338" class="db" text-anchor="middle">DB</text>
+  <text x="665" y="358" class="s" text-anchor="middle">MySQL</text>
+  <line x1="452" y1="285" x2="598" y2="285" stroke="#16a34a" stroke-width="1.6"/>
+  <line x1="452" y1="323" x2="598" y2="323" stroke="#16a34a" stroke-width="1.6"/>
+  <line x1="452" y1="361" x2="598" y2="361" stroke="#16a34a" stroke-width="1.6"/>
+  <line x1="452" y1="399" x2="598" y2="399" stroke="#16a34a" stroke-width="1.6"/>
+  <text x="525" y="262" class="gnote" text-anchor="middle">TCP 연결 유지</text>
+  <rect x="40" y="456" width="180" height="48" rx="10" class="ok"/>
+  <text x="130" y="476" class="okt" text-anchor="middle">① 풀에서 빌림</text>
+  <text x="130" y="495" class="s" text-anchor="middle">handshake 없음</text>
+  <rect x="290" y="456" width="180" height="48" rx="10" class="ok"/>
+  <text x="380" y="476" class="okt" text-anchor="middle">② DB 조회</text>
+  <text x="380" y="495" class="s" text-anchor="middle">연결된 커넥션 사용</text>
+  <rect x="540" y="456" width="180" height="48" rx="10" class="ok"/>
+  <text x="630" y="476" class="okt" text-anchor="middle">③ 풀에 반납</text>
+  <text x="630" y="495" class="s" text-anchor="middle">연결은 끊지 않음</text>
+  <line x1="222" y1="480" x2="286" y2="480" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="472" y1="480" x2="536" y2="480" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+</svg>

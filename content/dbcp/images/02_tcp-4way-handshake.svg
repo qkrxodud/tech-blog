@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 290" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>한쪽이 FIN을 보내고 상대가 ACK로 확인한 뒤, 상대도 데이터 전송을 마치고 FIN을 보내면 처음 쪽이 마지막 ACK를 보내 연결이 종료되는 4way handshake 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pool { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="290" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="270" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">4way handshake — 연결을 끊을 때 패킷이 네 번 오간다</text>
+  <text x="730" y="42" class="code" text-anchor="end">FIN → ACK → FIN → ACK</text>
+  <text x="206" y="68" class="step" text-anchor="middle">1. 종료 요청</text>
+  <text x="322" y="68" class="step" text-anchor="middle">2. 요청 확인</text>
+  <text x="438" y="68" class="step" text-anchor="middle">3. 종료 요청</text>
+  <text x="554" y="68" class="step" text-anchor="middle">4. 마지막 확인</text>
+  <text x="670" y="68" class="step" text-anchor="middle">5. 연결 종료</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">클라이언트</text>
+  <text x="30" y="128" class="sub">먼저 끊는 쪽</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="200" class="lane">서버</text>
+  <text x="30" y="218" class="sub">상대방</text>
+  <rect x="150" y="176" width="585" height="52" rx="6" class="track"/>
+  <rect x="154.0" y="88" width="104" height="48" rx="8" class="box"/>
+  <text x="206" y="108" class="op" text-anchor="middle">FIN</text>
+  <text x="206" y="127" class="val" text-anchor="middle">종료 요청</text>
+  <rect x="154.0" y="178" width="104" height="48" rx="8" class="hold"/>
+  <text x="206" y="207" class="val" text-anchor="middle">요청 받음</text>
+  <line x1="206" y1="137" x2="206" y2="176" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="270.0" y="178" width="104" height="48" rx="8" class="box"/>
+  <text x="322" y="198" class="op" text-anchor="middle">ACK</text>
+  <text x="322" y="217" class="val" text-anchor="middle">요청 확인</text>
+  <rect x="270.0" y="88" width="104" height="48" rx="8" class="hold"/>
+  <text x="322" y="117" class="val" text-anchor="middle">확인 받음</text>
+  <line x1="322" y1="177" x2="322" y2="138" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="386.0" y="178" width="104" height="48" rx="8" class="box"/>
+  <text x="438" y="198" class="op" text-anchor="middle">FIN</text>
+  <text x="438" y="217" class="val" text-anchor="middle">전송 완료 후</text>
+  <rect x="386.0" y="88" width="104" height="48" rx="8" class="hold"/>
+  <text x="438" y="117" class="val" text-anchor="middle">요청 받음</text>
+  <line x1="438" y1="177" x2="438" y2="138" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="502.0" y="88" width="104" height="48" rx="8" class="box"/>
+  <text x="554" y="108" class="op" text-anchor="middle">ACK</text>
+  <text x="554" y="127" class="val" text-anchor="middle">마지막 확인</text>
+  <rect x="502.0" y="178" width="104" height="48" rx="8" class="hold"/>
+  <text x="554" y="207" class="val" text-anchor="middle">확인 받음</text>
+  <line x1="554" y1="137" x2="554" y2="176" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="618.0" y="88" width="104" height="48" rx="8" class="hold"/>
+  <text x="670" y="117" class="t" text-anchor="middle">연결 종료</text>
+  <rect x="618.0" y="178" width="104" height="48" rx="8" class="hold"/>
+  <text x="670" y="207" class="t" text-anchor="middle">연결 종료</text>
+  <text x="30" y="258" class="foot">먼저 FIN을 보낸 쪽이 상대의 FIN을 확인하고 마지막 ACK를 보내면 연결이 종료됩니다.</text>
+</svg>
