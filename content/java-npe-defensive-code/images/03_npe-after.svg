@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>수정 후 코드에서 getBody()가 null이면 Objects.isNull 체크로 빈 바이트 배열을 리턴하고, 값이 있으면 스트림을 읽어 바이트로 바꾸며, RestClientException·IOException과 RuntimeException은 각각의 catch에서 로그로 남기는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 12px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 12px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">수정 후 — null이면 빈 배열, 예외는 로그로</text>
+  <text x="225" y="68" class="step" text-anchor="middle">요청</text>
+  <text x="370" y="68" class="step" text-anchor="middle">null 체크</text>
+  <text x="515" y="68" class="step" text-anchor="middle">처리</text>
+  <text x="660" y="68" class="step" text-anchor="middle">결과</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">body = null</text>
+  <text x="30" y="126" class="sub">파일이 없을 때</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="159" y="88" width="132" height="48" rx="8" class="box"/>
+  <text x="225" y="108" class="opm" text-anchor="middle">exchange()</text>
+  <text x="225" y="127" class="val" text-anchor="middle">응답 받음</text>
+  <line x1="293" y1="112" x2="301" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="304" y="88" width="132" height="48" rx="8" class="ok"/>
+  <text x="370" y="108" class="okm" text-anchor="middle">Objects.isNull</text>
+  <text x="370" y="127" class="val" text-anchor="middle">getBody() → true</text>
+  <line x1="438" y1="112" x2="446" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="449" y="88" width="132" height="48" rx="8" class="ok"/>
+  <text x="515" y="108" class="okm" text-anchor="middle">return</text>
+  <text x="515" y="127" class="valc" text-anchor="middle">new byte[0]</text>
+  <line x1="583" y1="112" x2="591" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="594" y="88" width="132" height="48" rx="8" class="ok"/>
+  <text x="660" y="108" class="okt" text-anchor="middle">빈 배열</text>
+  <text x="660" y="127" class="val" text-anchor="middle">NPE 없음</text>
+  <text x="30" y="168" class="lane">body 있음</text>
+  <text x="30" y="186" class="sub">정상 응답</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="159" y="148" width="132" height="48" rx="8" class="box"/>
+  <text x="225" y="168" class="opm" text-anchor="middle">exchange()</text>
+  <text x="225" y="187" class="val" text-anchor="middle">응답 받음</text>
+  <line x1="293" y1="172" x2="301" y2="172" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="304" y="148" width="132" height="48" rx="8" class="box"/>
+  <text x="370" y="168" class="opm" text-anchor="middle">Objects.isNull</text>
+  <text x="370" y="187" class="val" text-anchor="middle">getBody() → false</text>
+  <line x1="438" y1="172" x2="446" y2="172" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="449" y="148" width="132" height="48" rx="8" class="box"/>
+  <text x="515" y="168" class="opm" text-anchor="middle">getInputStream()</text>
+  <text x="515" y="187" class="val" text-anchor="middle">스트림 읽기</text>
+  <line x1="583" y1="172" x2="591" y2="172" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="594" y="148" width="132" height="48" rx="8" class="ok"/>
+  <text x="660" y="168" class="okm" text-anchor="middle">toByteArray</text>
+  <text x="660" y="187" class="valc" text-anchor="middle">fileBytes</text>
+  <text x="30" y="228" class="lane">예외 발생</text>
+  <text x="30" y="246" class="sub">catch 두 개</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="159" y="208" width="281" height="48" rx="8" class="ok"/>
+  <text x="299.5" y="228" class="okm" text-anchor="middle">RestClientException | IOException</text>
+  <text x="299.5" y="247" class="val" text-anchor="middle">restLogger로 로그 남김</text>
+  <rect x="449" y="208" width="277" height="48" rx="8" class="ok"/>
+  <text x="587.5" y="228" class="okm" text-anchor="middle">RuntimeException</text>
+  <text x="587.5" y="247" class="val" text-anchor="middle">restLogger로 로그 남김</text>
+  <text x="30" y="300" class="gnote"><tspan font-family="Menlo, Consolas, monospace">getBody()</tspan>가 null이면 <tspan font-family="Menlo, Consolas, monospace">getInputStream()</tspan>을 호출하기 전에 빈 배열을 리턴합니다.</text>
+  <text x="30" y="322" class="sub">NPE 같은 <tspan font-family="Menlo, Consolas, monospace">RuntimeException</tspan>도 두 번째 catch에서 로그로 남습니다.</text>
+</svg>

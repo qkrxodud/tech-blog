@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>G1 GC의 Initial Mark, Root Region Scan, Concurrent Mark, Remark, Cleanup, Copying 단계와 각 단계의 Stop-The-World 여부</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t13 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okt13 { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badt13 { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">G1 GC — 단계별 Stop-The-World 여부</text>
+  <rect x="30" y="62" width="260" height="40" rx="8" class="box"/>
+  <text x="46" y="87" class="t13">1. Initial Mark</text>
+  <rect x="302" y="68" width="92" height="28" rx="14" class="bad"/>
+  <text x="348" y="87" class="badt13" text-anchor="middle">STW</text>
+  <text x="408" y="87" class="val">루트에서 닿는 객체 표시 (Young GC와 함께)</text>
+  <rect x="30" y="110" width="260" height="40" rx="8" class="box"/>
+  <text x="46" y="135" class="t13">2. Root Region Scan</text>
+  <rect x="302" y="116" width="92" height="28" rx="14" class="ok"/>
+  <text x="348" y="135" class="okt13" text-anchor="middle">동시</text>
+  <text x="408" y="135" class="val">Survivor에서 Old를 참조하는 객체 탐색</text>
+  <rect x="30" y="158" width="260" height="40" rx="8" class="box"/>
+  <text x="46" y="183" class="t13">3. Concurrent Mark</text>
+  <rect x="302" y="164" width="92" height="28" rx="14" class="ok"/>
+  <text x="348" y="183" class="okt13" text-anchor="middle">동시</text>
+  <text x="408" y="183" class="val">힙 전체에서 살아 있는 객체 표시</text>
+  <rect x="30" y="206" width="260" height="40" rx="8" class="box"/>
+  <text x="46" y="231" class="t13">4. Remark</text>
+  <rect x="302" y="212" width="92" height="28" rx="14" class="bad"/>
+  <text x="348" y="231" class="badt13" text-anchor="middle">STW</text>
+  <text x="408" y="231" class="val">변경된 객체를 다시 확인해 Mark 마무리</text>
+  <rect x="30" y="254" width="260" height="40" rx="8" class="box"/>
+  <text x="46" y="279" class="t13">5. Cleanup</text>
+  <rect x="302" y="260" width="92" height="28" rx="14" class="bad"/>
+  <text x="348" y="279" class="badt13" text-anchor="middle">STW + 동시</text>
+  <text x="408" y="279" class="val">빈 Region과 수집 후보 선정, 빈 Region 회수</text>
+  <rect x="30" y="302" width="260" height="40" rx="8" class="box"/>
+  <text x="46" y="327" class="t13">6. Copying</text>
+  <rect x="302" y="308" width="92" height="28" rx="14" class="bad"/>
+  <text x="348" y="327" class="badt13" text-anchor="middle">STW</text>
+  <text x="408" y="327" class="val">살아 있는 객체를 새 Region으로 복사</text>
+  <rect x="30" y="354" width="14" height="14" rx="7" class="bad"/>
+  <text x="50" y="366" class="s">STW: 애플리케이션이 멈춤</text>
+  <rect x="230" y="354" width="14" height="14" rx="7" class="ok"/>
+  <text x="250" y="366" class="s">동시: 애플리케이션과 함께 진행</text>
+  <text x="30" y="394" class="foot">Mark는 대부분 동시에 진행되고, 객체를 옮기는 Copying은 멈춘 상태에서 일부 Region만 처리합니다.</text>
+</svg>

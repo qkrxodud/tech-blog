@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Heap 안의 Eden, Survivor, Old와 힙 밖의 Metaspace를 jstat 지표 E, S0·S1, O, M과 크기 옵션 -Xms·-Xmx, -Xmn, -XX:SurvivorRatio, -XX:MaxMetaspaceSize에 연결한 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t13 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okt13 { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badt13 { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">힙 구조와 크기 옵션 — jstat 지표와 함께</text>
+  <text x="30" y="72" class="val">Heap — <tspan font-family="Menlo, Consolas, monospace">-Xms</tspan> 시작 크기, <tspan font-family="Menlo, Consolas, monospace">-Xmx</tspan> 최대 크기</text>
+  <line x1="30" y1="82" x2="520" y2="82" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="550" y="72" class="val">Non-Heap (네이티브 메모리)</text>
+  <line x1="550" y1="82" x2="730" y2="82" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="30" y="96" width="210" height="84" rx="8" class="ok"/>
+  <text x="135" y="132" class="okt" text-anchor="middle">Eden</text>
+  <text x="135" y="152" class="s" text-anchor="middle">jstat E</text>
+  <rect x="248" y="96" width="56" height="84" rx="8" class="box"/>
+  <text x="276" y="142" class="t13" text-anchor="middle">S0</text>
+  <rect x="312" y="96" width="56" height="84" rx="8" class="box"/>
+  <text x="340" y="142" class="t13" text-anchor="middle">S1</text>
+  <rect x="380" y="96" width="140" height="84" rx="8" class="hold"/>
+  <text x="450" y="132" class="t" text-anchor="middle">Old</text>
+  <text x="450" y="152" class="s" text-anchor="middle">jstat O</text>
+  <rect x="550" y="96" width="180" height="84" rx="8" class="dbbox"/>
+  <text x="640" y="132" class="t" text-anchor="middle">Metaspace</text>
+  <text x="640" y="152" class="s" text-anchor="middle">jstat M · 클래스 메타데이터</text>
+  <line x1="30" y1="196" x2="368" y2="196" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="30" y="216" class="val">Young Generation — <tspan font-family="Menlo, Consolas, monospace">-Xmn</tspan>으로 크기 지정</text>
+  <text x="30" y="238" class="val"><tspan font-family="Menlo, Consolas, monospace">-XX:SurvivorRatio</tspan> — Eden과 Survivor 하나의 크기 비율</text>
+  <line x1="380" y1="196" x2="520" y2="196" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="380" y="216" class="val">Old Generation</text>
+  <text x="380" y="238" class="val">힙에서 Young을 뺀 나머지</text>
+  <line x1="550" y1="196" x2="730" y2="196" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="550" y="216" class="val"><tspan font-family="Menlo, Consolas, monospace">-XX:MaxMetaspaceSize</tspan></text>
+  <text x="550" y="238" class="val">Metaspace 최대 크기</text>
+  <text x="30" y="290" class="foot">JDK 8부터 클래스 메타데이터는 힙 밖의 Metaspace에 있어 <tspan font-family="Menlo, Consolas, monospace">-Xmx</tspan>와 따로 크기를 정합니다.</text>
+</svg>

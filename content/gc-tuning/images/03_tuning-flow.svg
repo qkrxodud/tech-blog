@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>코드 문제를 먼저 확인한 뒤, jstat의 S0·S1·E, O, M, FGC·FGCT, GCT 지표별 증상에서 각 튜닝 방안으로 이어지는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t13 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okt13 { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badt13 { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">GC 튜닝 기준 — 지표에서 튜닝 방안까지</text>
+  <rect x="30" y="58" width="700" height="38" rx="8" class="hold"/>
+  <text x="380" y="82" class="t13" text-anchor="middle">먼저 코드 확인 — 메모리 누수, 대용량 데이터, 제한 없는 캐시</text>
+  <line x1="380" y1="96" x2="380" y2="112" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="180" y="126" class="step" text-anchor="middle">jstat 증상</text>
+  <text x="550" y="126" class="step" text-anchor="middle">튜닝 방안</text>
+  <rect x="30" y="136" width="300" height="44" rx="8" class="bad"/>
+  <text x="46" y="155" class="badt13">1. S0·S1·E 90% 이상 지속</text>
+  <text x="46" y="172" class="s">Young이 가득 참</text>
+  <line x1="332" y1="158" x2="364" y2="158" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="368" y="136" width="362" height="44" rx="8" class="box"/>
+  <text x="384" y="163" class="val"><tspan font-family="Menlo, Consolas, monospace">-Xmn</tspan>으로 Young 늘리기 · <tspan font-family="Menlo, Consolas, monospace">-XX:SurvivorRatio</tspan> 조정</text>
+  <rect x="30" y="188" width="300" height="44" rx="8" class="bad"/>
+  <text x="46" y="207" class="badt13">2. O 80% 이상, Full GC 잦음</text>
+  <text x="46" y="224" class="s">Old가 가득 참</text>
+  <line x1="332" y1="210" x2="364" y2="210" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="368" y="188" width="362" height="44" rx="8" class="box"/>
+  <text x="384" y="215" class="val"><tspan font-family="Menlo, Consolas, monospace">-Xmx</tspan>로 힙 늘리기 · 오래 사는 객체와 누수 확인</text>
+  <rect x="30" y="240" width="300" height="44" rx="8" class="bad"/>
+  <text x="46" y="259" class="badt13">3. M 80% 이상</text>
+  <text x="46" y="276" class="s">Metaspace가 가득 참</text>
+  <line x1="332" y1="262" x2="364" y2="262" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="368" y="240" width="362" height="44" rx="8" class="box"/>
+  <text x="384" y="267" class="val"><tspan font-family="Menlo, Consolas, monospace">-XX:MaxMetaspaceSize</tspan> 늘리기 · 클래스 로딩 확인</text>
+  <rect x="30" y="292" width="300" height="44" rx="8" class="bad"/>
+  <text x="46" y="311" class="badt13">4. FGC·FGCT 빠르게 증가</text>
+  <text x="46" y="328" class="s">Full GC가 자주 발생</text>
+  <line x1="332" y1="314" x2="364" y2="314" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="368" y="292" width="362" height="44" rx="8" class="box"/>
+  <text x="384" y="319" class="val"><tspan font-family="Menlo, Consolas, monospace">-Xmx</tspan>로 힙 늘리기 · 객체 생명 주기 개선</text>
+  <rect x="30" y="344" width="300" height="44" rx="8" class="bad"/>
+  <text x="46" y="363" class="badt13">5. GCT 빠르게 증가</text>
+  <text x="46" y="380" class="s">GC Time이 길어짐</text>
+  <line x1="332" y1="366" x2="364" y2="366" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="368" y="344" width="362" height="44" rx="8" class="box"/>
+  <text x="384" y="371" class="val"><tspan font-family="Menlo, Consolas, monospace">-Xmn</tspan>으로 Young 늘려 GC 빈도 줄이기</text>
+  <text x="30" y="410" class="foot">1, 2, 4, 5에서는 GC 알고리즘 변경도 함께 검토합니다. G1 GC에서는 <tspan font-family="Menlo, Consolas, monospace">-Xmn</tspan>으로 Young 크기를 고정하지 않습니다.</text>
+</svg>

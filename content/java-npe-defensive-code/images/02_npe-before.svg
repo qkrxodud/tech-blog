@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>수정 전 코드에서 getBody()가 null을 돌려주고 getInputStream() 호출에서 NPE가 발생하지만, catch가 RestClientException과 IOException만 잡아 로그 없이 예외가 던져지는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 12px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 12px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">수정 전 — NPE가 catch를 빠져나간다</text>
+  <text x="225" y="68" class="step" text-anchor="middle">요청</text>
+  <text x="370" y="68" class="step" text-anchor="middle">body 꺼내기</text>
+  <text x="515" y="68" class="step" text-anchor="middle">스트림 읽기</text>
+  <text x="660" y="68" class="step" text-anchor="middle">예외 처리</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">try</text>
+  <text x="30" y="126" class="sub">이미지 받기</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="159" y="88" width="132" height="48" rx="8" class="box"/>
+  <text x="225" y="108" class="opm" text-anchor="middle">exchange()</text>
+  <text x="225" y="127" class="val" text-anchor="middle">응답 받음</text>
+  <line x1="293" y1="112" x2="301" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="304" y="88" width="132" height="48" rx="8" class="bad"/>
+  <text x="370" y="108" class="badm" text-anchor="middle">getBody()</text>
+  <text x="370" y="127" class="val" text-anchor="middle">null 반환</text>
+  <line x1="438" y1="112" x2="446" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="449" y="88" width="132" height="48" rx="8" class="bad"/>
+  <text x="515" y="108" class="badm" text-anchor="middle">getInputStream()</text>
+  <text x="515" y="127" class="val" text-anchor="middle">NPE 발생</text>
+  <text x="30" y="168" class="lane">catch</text>
+  <text x="30" y="186" class="sub">잡는 예외</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="449" y="148" width="277" height="48" rx="8" class="wait"/>
+  <text x="587.5" y="168" class="opm" text-anchor="middle">RestClientException | IOException</text>
+  <text x="587.5" y="187" class="val" text-anchor="middle">NPE는 해당하지 않아 잡히지 않음</text>
+  <line x1="515" y1="137" x2="515" y2="147" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="30" y="236" class="lane">결과</text>
+  <line x1="587" y1="197" x2="587" y2="213" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="449" y="216" width="277" height="32" rx="15" class="bad"/>
+  <text x="587.5" y="237" class="badt" text-anchor="middle">로그 없이 예외만 던져짐</text>
+  <text x="30" y="286" class="sub">catch가 <tspan font-family="Menlo, Consolas, monospace">RestClientException</tspan>과 <tspan font-family="Menlo, Consolas, monospace">IOException</tspan>만 잡고 있어서,</text>
+  <text x="30" y="306" class="note"><tspan font-family="Menlo, Consolas, monospace">getBody()</tspan>가 null일 때 생긴 NPE(<tspan font-family="Menlo, Consolas, monospace">RuntimeException</tspan>)는 로그에 남지 않습니다.</text>
+</svg>

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 590" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>플랫폼 스레드는 Java 스레드와 OS 스레드가 1:1이고, Virtual Thread는 여러 개가 ForkJoinPool 스케줄러를 거쳐 적은 수의 Carrier Thread에서 실행되는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .lbl { font-size: 13px; font-weight: 700; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="590" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="210" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">플랫폼 스레드 — Java 스레드와 OS 스레드가 1:1</text>
+  <text x="730" y="42" class="code" text-anchor="end">Thread.ofPlatform()</text>
+  <text x="30" y="92" class="lane">Java 스레드</text>
+  <text x="30" y="166" class="lane">OS 스레드</text>
+  <rect x="162" y="66" width="116" height="40" rx="8" class="box"/>
+  <text x="220" y="91" class="op" text-anchor="middle">Thread 1</text>
+  <line x1="220" y1="106" x2="220" y2="138" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="162" y="140" width="116" height="40" rx="8" class="hold"/>
+  <text x="220" y="165" class="opk" text-anchor="middle">OS 스레드 1</text>
+  <rect x="302" y="66" width="116" height="40" rx="8" class="box"/>
+  <text x="360" y="91" class="op" text-anchor="middle">Thread 2</text>
+  <line x1="360" y1="106" x2="360" y2="138" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="302" y="140" width="116" height="40" rx="8" class="hold"/>
+  <text x="360" y="165" class="opk" text-anchor="middle">OS 스레드 2</text>
+  <rect x="442" y="66" width="116" height="40" rx="8" class="box"/>
+  <text x="500" y="91" class="op" text-anchor="middle">Thread 3</text>
+  <line x1="500" y1="106" x2="500" y2="138" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="442" y="140" width="116" height="40" rx="8" class="hold"/>
+  <text x="500" y="165" class="opk" text-anchor="middle">OS 스레드 3</text>
+  <rect x="582" y="66" width="116" height="40" rx="8" class="box"/>
+  <text x="640" y="91" class="op" text-anchor="middle">Thread 4</text>
+  <line x1="640" y1="106" x2="640" y2="138" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="582" y="140" width="116" height="40" rx="8" class="hold"/>
+  <text x="640" y="165" class="opk" text-anchor="middle">OS 스레드 4</text>
+  <text x="162" y="205" class="note">Java 스레드 수만큼 OS 스레드가 필요하고, 블로킹되는 동안에도 OS 스레드를 점유합니다</text>
+
+  <rect x="10" y="236" width="740" height="344" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="268" class="h">Virtual Thread — 적은 수의 Carrier Thread에 M:N</text>
+  <text x="730" y="268" class="code" text-anchor="end">Thread.ofVirtual()</text>
+  <text x="30" y="314" class="lane">Virtual Thread</text>
+  <text x="30" y="382" class="lane">스케줄러</text>
+  <text x="30" y="450" class="lane">Carrier Thread</text>
+  <text x="30" y="468" class="sub">플랫폼 스레드</text>
+  <text x="30" y="530" class="lane">OS 스레드</text>
+  <rect x="170" y="290" width="56" height="36" rx="7" class="box"/>
+  <text x="198" y="313" class="op" text-anchor="middle" style="font-size:12.5px">VT1</text>
+  <line x1="198" y1="326" x2="198" y2="354" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="240" y="290" width="56" height="36" rx="7" class="box"/>
+  <text x="268" y="313" class="op" text-anchor="middle" style="font-size:12.5px">VT2</text>
+  <line x1="268" y1="326" x2="268" y2="354" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="310" y="290" width="56" height="36" rx="7" class="box"/>
+  <text x="338" y="313" class="op" text-anchor="middle" style="font-size:12.5px">VT3</text>
+  <line x1="338" y1="326" x2="338" y2="354" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="380" y="290" width="56" height="36" rx="7" class="box"/>
+  <text x="408" y="313" class="op" text-anchor="middle" style="font-size:12.5px">VT4</text>
+  <line x1="408" y1="326" x2="408" y2="354" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="450" y="290" width="56" height="36" rx="7" class="box"/>
+  <text x="478" y="313" class="op" text-anchor="middle" style="font-size:12.5px">VT5</text>
+  <line x1="478" y1="326" x2="478" y2="354" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="520" y="290" width="56" height="36" rx="7" class="box"/>
+  <text x="548" y="313" class="op" text-anchor="middle" style="font-size:12.5px">VT6</text>
+  <line x1="548" y1="326" x2="548" y2="354" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="590" y="290" width="56" height="36" rx="7" class="box"/>
+  <text x="618" y="313" class="op" text-anchor="middle" style="font-size:12.5px">VT7</text>
+  <line x1="618" y1="326" x2="618" y2="354" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="660" y="290" width="56" height="36" rx="7" class="box"/>
+  <text x="688" y="313" class="op" text-anchor="middle" style="font-size:12.5px">VT8</text>
+  <line x1="688" y1="326" x2="688" y2="354" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="732" y="313" class="sub" text-anchor="end">…</text>
+  <rect x="170" y="354" width="546" height="40" rx="8" class="hold"/>
+  <text x="443" y="379" class="opk" text-anchor="middle">ForkJoinPool <tspan class="val" font-weight="400">(work-stealing, FIFO 모드)</tspan></text>
+  <line x1="300" y1="394" x2="300" y2="426" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="586" y1="394" x2="586" y2="426" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="200" y="428" width="200" height="44" rx="8" class="ok"/>
+  <text x="300" y="447" class="okt" text-anchor="middle">Carrier 1</text>
+  <text x="300" y="465" class="val" text-anchor="middle">VT 하나를 mount해 실행</text>
+  <rect x="486" y="428" width="200" height="44" rx="8" class="ok"/>
+  <text x="586" y="447" class="okt" text-anchor="middle">Carrier 2</text>
+  <text x="586" y="465" class="val" text-anchor="middle">VT 하나를 mount해 실행</text>
+  <line x1="300" y1="472" x2="300" y2="502" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="586" y1="472" x2="586" y2="502" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+  <rect x="200" y="504" width="200" height="40" rx="8" class="hold"/>
+  <text x="300" y="529" class="opk" text-anchor="middle">OS 스레드 1</text>
+  <rect x="486" y="504" width="200" height="40" rx="8" class="hold"/>
+  <text x="586" y="529" class="opk" text-anchor="middle">OS 스레드 2</text>
+  <text x="170" y="566" class="sub">Carrier Thread 수는 기본적으로 사용 가능한 프로세서 수와 같습니다</text>
+</svg>

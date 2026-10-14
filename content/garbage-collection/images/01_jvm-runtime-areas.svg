@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>JVM 메모리 구조: 모든 스레드가 공유하는 Method Area와 Heap, 스레드마다 만들어지는 JVM Stack, PC Register, Native Method Stack</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t13 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okt13 { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badt13 { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">JVM 메모리 구조 — Runtime Data Area</text>
+  <text x="30" y="74" class="sub">모든 스레드가 공유</text>
+  <text x="486" y="74" class="sub">스레드마다 따로 만들어짐</text>
+  <line x1="30" y1="82" x2="460" y2="82" stroke="#d1d5db" stroke-width="1.2"/>
+  <line x1="486" y1="82" x2="730" y2="82" stroke="#d1d5db" stroke-width="1.2"/>
+  <rect x="30" y="94" width="170" height="200" rx="10" class="box"/>
+  <text x="115" y="122" class="t" text-anchor="middle">Method Area</text>
+  <text x="115" y="146" class="s" text-anchor="middle">필드·메서드 정보</text>
+  <text x="115" y="164" class="s" text-anchor="middle">인터페이스 정보</text>
+  <text x="115" y="182" class="s" text-anchor="middle">static 변수</text>
+  <rect x="42" y="204" width="146" height="76" rx="6" class="dbbox"/>
+  <text x="115" y="228" class="t13" text-anchor="middle">JDK 8부터</text>
+  <text x="115" y="248" class="t13" text-anchor="middle">Metaspace</text>
+  <text x="115" y="267" class="s" text-anchor="middle">(힙 밖 네이티브 메모리)</text>
+  <rect x="214" y="94" width="246" height="200" rx="10" class="ok"/>
+  <text x="337" y="122" class="okt" text-anchor="middle">Heap</text>
+  <text x="337" y="144" class="s" text-anchor="middle">객체와 배열 · GC가 동작하는 영역</text>
+  <text x="278" y="176" class="sub" text-anchor="middle">Young</text>
+  <rect x="228" y="186" width="66" height="92" rx="6" class="box"/>
+  <text x="261" y="237" class="t13" text-anchor="middle">Eden</text>
+  <rect x="298" y="186" width="34" height="44" rx="6" class="box"/>
+  <text x="315" y="213" class="s" text-anchor="middle">S0</text>
+  <rect x="298" y="234" width="34" height="44" rx="6" class="box"/>
+  <text x="315" y="261" class="s" text-anchor="middle">S1</text>
+  <text x="397" y="176" class="sub" text-anchor="middle">Old</text>
+  <rect x="342" y="186" width="106" height="92" rx="6" class="box"/>
+  <text x="395" y="237" class="t13" text-anchor="middle">Old</text>
+  <text x="544" y="108" class="t13" text-anchor="middle">Thread 1</text>
+  <rect x="486" y="120" width="116" height="52" rx="8" class="hold"/>
+  <text x="544" y="142" class="t13" text-anchor="middle">JVM Stack</text>
+  <text x="544" y="160" class="s" text-anchor="middle">지역 변수·프레임</text>
+  <rect x="486" y="180" width="116" height="52" rx="8" class="hold"/>
+  <text x="544" y="202" class="t13" text-anchor="middle">PC Register</text>
+  <text x="544" y="220" class="s" text-anchor="middle">실행 중 명령어 주소</text>
+  <rect x="486" y="240" width="116" height="52" rx="8" class="hold"/>
+  <text x="544" y="262" class="t13" text-anchor="middle">Native Method</text>
+  <text x="544" y="280" class="t13" text-anchor="middle">Stack</text>
+  <text x="672" y="108" class="t13" text-anchor="middle">Thread 2</text>
+  <rect x="614" y="120" width="116" height="52" rx="8" class="hold"/>
+  <text x="672" y="142" class="t13" text-anchor="middle">JVM Stack</text>
+  <text x="672" y="160" class="s" text-anchor="middle">지역 변수·프레임</text>
+  <rect x="614" y="180" width="116" height="52" rx="8" class="hold"/>
+  <text x="672" y="202" class="t13" text-anchor="middle">PC Register</text>
+  <text x="672" y="220" class="s" text-anchor="middle">실행 중 명령어 주소</text>
+  <rect x="614" y="240" width="116" height="52" rx="8" class="hold"/>
+  <text x="672" y="262" class="t13" text-anchor="middle">Native Method</text>
+  <text x="672" y="280" class="t13" text-anchor="middle">Stack</text>
+  <text x="30" y="324" class="foot">초록색 Heap이 GC가 주로 동작하는 영역입니다. Method Area의 클래스 정보는 JDK 8부터 힙 밖의 Metaspace에 있습니다.</text>
+</svg>

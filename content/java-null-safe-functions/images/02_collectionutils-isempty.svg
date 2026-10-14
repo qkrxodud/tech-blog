@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 524" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>CollectionUtils.isEmpty는 coll이 null이면 바로 true, 아니면 coll.isEmpty() 결과를 돌려주고, null이 들어왔을 때 coll.isEmpty()를 직접 호출하면 NPE가 발생하지만 CollectionUtils.isEmpty는 true를 돌려주는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 12px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 12px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="524" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">CollectionUtils.isEmpty — null을 먼저 확인한다</text>
+  <text x="730" y="42" class="code" text-anchor="end">coll == null || coll.isEmpty()</text>
+  <rect x="30" y="80" width="140" height="48" rx="8" class="box"/>
+  <text x="100" y="100" class="op" text-anchor="middle">isEmpty(coll)</text>
+  <text x="100" y="119" class="val" text-anchor="middle">호출</text>
+  <rect x="215" y="80" width="160" height="48" rx="8" class="hold"/>
+  <text x="295" y="100" class="op" text-anchor="middle">coll == null</text>
+  <text x="295" y="119" class="val" text-anchor="middle">null인가?</text>
+  <rect x="420" y="80" width="160" height="48" rx="8" class="hold"/>
+  <text x="500" y="100" class="op" text-anchor="middle">coll.isEmpty()</text>
+  <text x="500" y="119" class="val" text-anchor="middle">비어 있는가?</text>
+  <rect x="625" y="80" width="105" height="48" rx="8" class="box"/>
+  <text x="677.5" y="100" class="op" text-anchor="middle">false</text>
+  <text x="677.5" y="119" class="val" text-anchor="middle">값이 있음</text>
+  <line x1="172" y1="104" x2="212" y2="104" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="377" y1="104" x2="417" y2="104" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="397" y="96" class="lbl" text-anchor="middle">아니오</text>
+  <line x1="582" y1="104" x2="622" y2="104" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="602" y="96" class="lbl" text-anchor="middle">아니오</text>
+  <line x1="295" y1="130" x2="295" y2="172" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="305" y="156" class="gnote">예</text>
+  <line x1="500" y1="130" x2="500" y2="172" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="510" y="156" class="gnote">예</text>
+  <rect x="215" y="175" width="160" height="48" rx="8" class="ok"/>
+  <text x="295" y="195" class="okc" text-anchor="middle">true</text>
+  <text x="295" y="214" class="val" text-anchor="middle">isEmpty() 호출 안 함</text>
+  <rect x="420" y="175" width="160" height="48" rx="8" class="ok"/>
+  <text x="500" y="195" class="okc" text-anchor="middle">true</text>
+  <text x="500" y="214" class="val" text-anchor="middle">빈 컬렉션</text>
+  <text x="30" y="258" class="sub"><tspan font-family="Menlo, Consolas, monospace">isNotEmpty(coll)</tspan>는 <tspan font-family="Menlo, Consolas, monospace">!isEmpty(coll)</tspan>이라, null이거나 비어 있으면 false입니다.</text>
+  <text x="30" y="280" class="sub">null을 먼저 확인하므로 null에 isEmpty()를 호출하는 일이 없습니다.</text>
+  <rect x="10" y="316" width="740" height="192" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="348" class="h">null이 들어왔을 때 — 직접 호출과 비교</text>
+  <text x="30" y="392" class="lane">직접 호출</text>
+  <text x="30" y="410" class="sub">coll.isEmpty()</text>
+  <rect x="150" y="370" width="585" height="52" rx="6" class="track"/>
+  <rect x="158" y="372" width="176" height="48" rx="8" class="box"/>
+  <text x="246" y="392" class="op" text-anchor="middle">coll</text>
+  <text x="246" y="411" class="val" text-anchor="middle">null</text>
+  <line x1="336" y1="396" x2="347" y2="396" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="350" y="372" width="176" height="48" rx="8" class="bad"/>
+  <text x="438" y="392" class="badc" text-anchor="middle">coll.isEmpty()</text>
+  <text x="438" y="411" class="val" text-anchor="middle">null에 호출</text>
+  <line x1="528" y1="396" x2="539" y2="396" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="542" y="372" width="176" height="48" rx="8" class="bad"/>
+  <text x="630" y="392" class="badc" text-anchor="middle">NPE</text>
+  <text x="630" y="411" class="val" text-anchor="middle">예외 발생</text>
+  <text x="30" y="454" class="lane">유틸 사용</text>
+  <text x="30" y="472" class="sub">CollectionUtils</text>
+  <rect x="150" y="432" width="585" height="52" rx="6" class="track"/>
+  <rect x="158" y="434" width="176" height="48" rx="8" class="box"/>
+  <text x="246" y="454" class="op" text-anchor="middle">coll</text>
+  <text x="246" y="473" class="val" text-anchor="middle">null</text>
+  <line x1="336" y1="458" x2="347" y2="458" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="350" y="434" width="176" height="48" rx="8" class="ok"/>
+  <text x="438" y="454" class="okc" text-anchor="middle">coll == null</text>
+  <text x="438" y="473" class="val" text-anchor="middle">먼저 확인</text>
+  <line x1="528" y1="458" x2="539" y2="458" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="542" y="434" width="176" height="48" rx="8" class="ok"/>
+  <text x="630" y="454" class="okc" text-anchor="middle">true</text>
+  <text x="630" y="473" class="val" text-anchor="middle">예외 없음</text>
+</svg>

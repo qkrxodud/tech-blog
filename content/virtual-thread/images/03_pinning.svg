@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 674" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>JDK 21에서 synchronized 안에서 블로킹된 VT-A가 Carrier Thread에 고정되어 VT-B가 기다리는 흐름과, ReentrantLock이나 JDK 24 이후 synchronized에서는 VT-A가 unmount되어 VT-B가 실행되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .lbl { font-size: 13px; font-weight: 700; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="674" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="314" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">pinning — JDK 21, synchronized 안에서 블로킹</text>
+  <text x="730" y="42" class="code" text-anchor="end">synchronized (lock) { I/O }</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">Carrier</text>
+  <text x="30" y="126" class="sub">1개라고 가정</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="117" class="opk" text-anchor="middle">VT-A 실행</text>
+  <rect x="302" y="88" width="256" height="48" rx="8" class="bad"/>
+  <text x="430" y="108" class="badt" text-anchor="middle">VT-A에 묶임</text>
+  <text x="430" y="127" class="val" text-anchor="middle">I/O가 끝날 때까지 놀고 있음</text>
+  <rect x="582" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="117" class="opk" text-anchor="middle">VT-A 실행</text>
+  <text x="30" y="168" class="lane">VT-A</text>
+  <text x="30" y="186" class="sub">synchronized</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="168" class="opk" text-anchor="middle">lock 획득</text>
+  <text x="220" y="187" class="val" text-anchor="middle">블록 진입</text>
+  <rect x="302" y="148" width="256" height="48" rx="8" class="bad"/>
+  <text x="430" y="168" class="badt" text-anchor="middle">I/O 블로킹</text>
+  <text x="430" y="187" class="val" text-anchor="middle">pinned: unmount하지 못함</text>
+  <rect x="582" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="168" class="opk" text-anchor="middle">블록 종료</text>
+  <text x="640" y="187" class="val" text-anchor="middle">lock 해제</text>
+  <text x="30" y="228" class="lane">VT-B</text>
+  <text x="30" y="246" class="sub">다른 작업</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="218" width="560" height="28" rx="6" class="wait"/>
+  <text x="442" y="237" class="waitt" text-anchor="middle">실행 대기 (비어 있는 Carrier가 없음)</text>
+  <text x="150" y="284" class="note">I/O를 기다리는 동안에도 Carrier Thread를 다른 Virtual Thread가 쓰지 못합니다</text>
+  <text x="150" y="306" class="sub">JFR의 <tspan font-family="Menlo, Consolas, monospace">jdk.VirtualThreadPinned</tspan> 이벤트로 확인할 수 있습니다</text>
+
+  <rect x="10" y="340" width="740" height="324" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="372" class="h">unmount — ReentrantLock, 또는 JDK 24 이후 synchronized</text>
+  <text x="730" y="372" class="code" text-anchor="end">JEP 491</text>
+  <text x="220" y="398" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="398" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="398" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="398" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="406" x2="722" y2="406" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="438" class="lane">Carrier</text>
+  <text x="30" y="456" class="sub">1개라고 가정</text>
+  <rect x="150" y="416" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="418" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="447" class="opk" text-anchor="middle">VT-A 실행</text>
+  <rect x="302" y="418" width="256" height="48" rx="8" class="ok"/>
+  <text x="430" y="438" class="okt" text-anchor="middle">VT-B 실행</text>
+  <text x="430" y="457" class="val" text-anchor="middle">VT-A 대신 VT-B를 실행</text>
+  <rect x="582" y="418" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="447" class="opk" text-anchor="middle">VT-A 실행</text>
+  <text x="30" y="498" class="lane">VT-A</text>
+  <text x="30" y="516" class="sub">lock 사용</text>
+  <rect x="150" y="476" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="478" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="498" class="opk" text-anchor="middle">lock 획득</text>
+  <text x="220" y="517" class="val" text-anchor="middle">블록 진입</text>
+  <rect x="302" y="478" width="116" height="48" rx="8" class="hold"/>
+  <text x="360" y="498" class="opk" text-anchor="middle">I/O 블로킹</text>
+  <text x="360" y="517" class="val" text-anchor="middle">unmount</text>
+  <rect x="442" y="488" width="116" height="28" rx="6" class="wait"/>
+  <text x="500" y="507" class="waitt" text-anchor="middle">I/O 완료 대기</text>
+  <rect x="582" y="478" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="498" class="okt" text-anchor="middle">다시 mount</text>
+  <text x="640" y="517" class="val" text-anchor="middle">남은 코드 실행</text>
+  <text x="30" y="558" class="lane">VT-B</text>
+  <text x="30" y="576" class="sub">다른 작업</text>
+  <rect x="150" y="536" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="548" width="116" height="28" rx="6" class="wait"/>
+  <text x="220" y="567" class="waitt" text-anchor="middle">실행 대기</text>
+  <rect x="302" y="538" width="256" height="48" rx="8" class="ok"/>
+  <text x="430" y="558" class="okt" text-anchor="middle">mount·실행</text>
+  <text x="430" y="577" class="val" text-anchor="middle">비어 있는 Carrier 사용</text>
+  <text x="150" y="612" class="sub">VT-A가 unmount되므로 I/O를 기다리는 동안 같은 Carrier Thread에서 VT-B가 실행됩니다</text>
+  <rect x="150" y="626" width="330" height="26" rx="13" class="ok"/>
+  <text x="315" y="644" class="okt" text-anchor="middle" style="font-size:13px">JDK 24부터 synchronized도 이렇게 동작</text>
+</svg>

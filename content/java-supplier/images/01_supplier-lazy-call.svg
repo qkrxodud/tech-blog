@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 416" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 getValue()를 인자로 바로 넘겨 두 번의 호출 모두 getValue가 실행되어 2초가 걸리는 흐름, 아래쪽은 Supplier로 넘겨 number가 양수인 첫 번째 호출에서만 get()으로 getValue가 실행되어 1초가 걸리는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="416" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="190" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">값을 바로 넘길 때 — 쓰지 않을 값도 먼저 계산한다</text>
+  <text x="30" y="64" class="code">printIfValidIndex(number, getValue())</text>
+  <text x="202" y="90" class="gl" text-anchor="middle">첫 번째 호출 (number = 10)</text>
+  <text x="562" y="90" class="gl" text-anchor="middle">두 번째 호출 (number = -10)</text>
+  <line x1="30" y1="96" x2="375" y2="96" class="axis"/>
+  <line x1="390" y1="96" x2="735" y2="96" class="axis"/>
+  <rect x="30" y="104" width="165" height="52" rx="8" class="hold"/>
+  <text x="112.5" y="126" class="opm" text-anchor="middle">getValue()</text>
+  <text x="112.5" y="145" class="val" text-anchor="middle">인자 먼저 계산 · 1초</text>
+  <rect x="210" y="104" width="165" height="52" rx="8" class="box"/>
+  <text x="292.5" y="126" class="opm" text-anchor="middle">printIfValidIndex</text>
+  <text x="292.5" y="145" class="val" text-anchor="middle">인자: 10 → 값 출력</text>
+  <rect x="390" y="104" width="165" height="52" rx="8" class="bad"/>
+  <text x="472.5" y="126" class="badm" text-anchor="middle">getValue()</text>
+  <text x="472.5" y="145" class="val" text-anchor="middle">인자 먼저 계산 · 1초</text>
+  <rect x="570" y="104" width="165" height="52" rx="8" class="box"/>
+  <text x="652.5" y="126" class="opm" text-anchor="middle">printIfValidIndex</text>
+  <text x="652.5" y="145" class="val" text-anchor="middle">인자: -10 → Invalid</text>
+  <line x1="196" y1="130" x2="208" y2="130" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="376" y1="130" x2="388" y2="130" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="556" y1="130" x2="568" y2="130" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="182" class="note">number가 -10이라 값을 쓰지 않는데도 getValue()가 실행되었습니다.</text>
+  <rect x="630" y="162" width="105" height="28" rx="14" class="bad"/>
+  <text x="682.5" y="181" class="badt" text-anchor="middle">합계 2초</text>
+  <rect x="10" y="216" width="740" height="190" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="248" class="h">Supplier로 넘길 때 — 값이 필요한 분기에서만 계산한다</text>
+  <text x="30" y="270" class="code">printIfValidIndex(number, () -&gt; getValue())</text>
+  <text x="202" y="296" class="gl" text-anchor="middle">첫 번째 호출 (number = 10)</text>
+  <text x="562" y="296" class="gl" text-anchor="middle">두 번째 호출 (number = -10)</text>
+  <line x1="30" y1="302" x2="375" y2="302" class="axis"/>
+  <line x1="390" y1="302" x2="735" y2="302" class="axis"/>
+  <rect x="30" y="310" width="165" height="52" rx="8" class="box"/>
+  <text x="112.5" y="332" class="opm" text-anchor="middle">printIfValidIndex</text>
+  <text x="112.5" y="351" class="val" text-anchor="middle">인자: 10, Supplier</text>
+  <rect x="210" y="310" width="165" height="52" rx="8" class="ok"/>
+  <text x="292.5" y="332" class="okm" text-anchor="middle">valueSupplier.get()</text>
+  <text x="292.5" y="351" class="val" text-anchor="middle">getValue() 실행 · 1초</text>
+  <rect x="390" y="310" width="165" height="52" rx="8" class="box"/>
+  <text x="472.5" y="332" class="opm" text-anchor="middle">printIfValidIndex</text>
+  <text x="472.5" y="351" class="val" text-anchor="middle">인자: -10, Supplier</text>
+  <rect x="570" y="310" width="165" height="52" rx="8" class="ok"/>
+  <text x="652.5" y="332" class="okt" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">get()</tspan> 호출 안 함</text>
+  <text x="652.5" y="351" class="val" text-anchor="middle">Invalid 출력</text>
+  <line x1="196" y1="336" x2="208" y2="336" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="376" y1="336" x2="388" y2="336" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="556" y1="336" x2="568" y2="336" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="388" class="gnote">get()을 부르는 분기에서만 getValue()가 실행됩니다.</text>
+  <rect x="630" y="368" width="105" height="28" rx="14" class="ok"/>
+  <text x="682.5" y="387" class="okt" text-anchor="middle">합계 1초</text>
+</svg>

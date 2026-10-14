@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 344" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>VT-A가 I/O로 블로킹되면 Carrier Thread에서 unmount되고, 그 사이 같은 Carrier Thread에 VT-B가 mount되어 실행된 뒤, I/O가 끝난 VT-A가 다시 mount되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .lbl { font-size: 13px; font-weight: 700; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="344" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="324" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">mount·unmount — I/O를 기다리는 동안 Carrier를 넘김</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">Carrier</text>
+  <text x="30" y="126" class="sub">플랫폼 스레드 1개</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="117" class="opk" text-anchor="middle">VT-A 실행</text>
+  
+  <rect x="302" y="88" width="256" height="48" rx="8" class="ok"/>
+  <text x="430" y="108" class="okt" text-anchor="middle">VT-B 실행</text>
+  <text x="430" y="127" class="val" text-anchor="middle">VT-A 대신 VT-B를 실행</text>
+  <rect x="582" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="117" class="opk" text-anchor="middle">VT-A 실행</text>
+  
+  <text x="30" y="168" class="lane">VT-A</text>
+  <text x="30" y="186" class="sub">I/O 하는 작업</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="168" class="op" text-anchor="middle">mount</text>
+  <text x="220" y="187" class="val" text-anchor="middle">코드 실행</text>
+  <rect x="302" y="148" width="116" height="48" rx="8" class="hold"/>
+  <text x="360" y="168" class="op" text-anchor="middle">unmount</text>
+  <text x="360" y="187" class="val" text-anchor="middle">I/O 블로킹 시작</text>
+  <rect x="442" y="158" width="116" height="28" rx="6" class="wait"/>
+  <text x="500" y="177" class="waitt" text-anchor="middle">I/O 완료 대기</text>
+  <rect x="582" y="148" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="168" class="okc" text-anchor="middle">mount</text>
+  <text x="640" y="187" class="val" text-anchor="middle">남은 코드 실행</text>
+  <text x="30" y="228" class="lane">VT-B</text>
+  <text x="30" y="246" class="sub">다른 작업</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="218" width="116" height="28" rx="6" class="wait"/>
+  <text x="220" y="237" class="waitt" text-anchor="middle">실행 대기</text>
+  <rect x="302" y="208" width="116" height="48" rx="8" class="ok"/>
+  <text x="360" y="228" class="okc" text-anchor="middle">mount</text>
+  <text x="360" y="247" class="val" text-anchor="middle">코드 실행</text>
+  <rect x="442" y="208" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="228" class="op" text-anchor="middle">unmount</text>
+  <text x="500" y="247" class="val" text-anchor="middle">작업 끝</text>
+  <line x1="360" y1="197" x2="360" y2="207" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="286" class="sub">VT-A가 I/O를 기다리는 2~3단계에도 Carrier Thread는 쉬지 않고 VT-B를 실행합니다</text>
+  <rect x="150" y="298" width="300" height="26" rx="13" class="ok"/>
+  <text x="300" y="316" class="okt" text-anchor="middle" style="font-size:13px">Carrier Thread 하나로 두 작업을 처리</text>
+</svg>

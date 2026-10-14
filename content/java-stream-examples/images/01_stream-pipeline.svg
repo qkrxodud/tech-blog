@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 384" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Lotto 변환, enum 찾기, 중복 체크, 합계 예제를 스트림 생성, 중간 연산(map, filter, distinct, mapToInt), 최종 연산(collect, findFirst, count, sum), 결과(List, Optional, long, int)로 나눈 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .gl { font-size: 12.5px; font-weight: 700; fill: #6b7280; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+    <rect width="760" height="384" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="364" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Stream 파이프라인 — 생성, 중간 연산, 최종 연산</text>
+  <text x="215" y="72" class="gl" text-anchor="middle">스트림 생성</text>
+  <text x="370" y="72" class="gl" text-anchor="middle">중간 연산</text>
+  <text x="525" y="72" class="gl" text-anchor="middle">최종 연산</text>
+  <text x="672.5" y="72" class="gl" text-anchor="middle">결과</text>
+  <line x1="150" y1="80" x2="728" y2="80" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="123" class="lane">Lotto 변환</text>
+  <rect x="150" y="92" width="130" height="52" rx="8" class="hold"/>
+  <text x="215" y="114" class="opm" text-anchor="middle">stream()</text>
+  <text x="215" y="133" class="val" text-anchor="middle">로또 번호 목록</text>
+  <line x1="282" y1="118" x2="297" y2="118" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="300" y="92" width="140" height="52" rx="8" class="box"/>
+  <text x="370" y="114" class="opm" text-anchor="middle">map(...)</text>
+  <text x="370" y="133" class="val" text-anchor="middle">Lotto 생성</text>
+  <line x1="442" y1="118" x2="457" y2="118" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="460" y="92" width="130" height="52" rx="8" class="box"/>
+  <text x="525" y="114" class="opm" text-anchor="middle">collect(...)</text>
+  <text x="525" y="133" class="val" text-anchor="middle">toList()</text>
+  <line x1="592" y1="118" x2="607" y2="118" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="610" y="92" width="125" height="52" rx="8" class="ok"/>
+  <text x="672.5" y="114" class="okm" text-anchor="middle">List&lt;Lotto&gt;</text>
+  <text x="672.5" y="133" class="val" text-anchor="middle">Lottos로 감쌈</text>
+  <text x="30" y="187" class="lane">enum 찾기</text>
+  <rect x="150" y="156" width="130" height="52" rx="8" class="hold"/>
+  <text x="215" y="178" class="opm" text-anchor="middle">Arrays.stream</text>
+  <text x="215" y="197" class="val" text-anchor="middle">values()</text>
+  <line x1="282" y1="182" x2="297" y2="182" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="300" y="156" width="140" height="52" rx="8" class="box"/>
+  <text x="370" y="178" class="opm" text-anchor="middle">filter(...)</text>
+  <text x="370" y="197" class="val" text-anchor="middle">rank 비교</text>
+  <line x1="442" y1="182" x2="457" y2="182" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="460" y="156" width="130" height="52" rx="8" class="box"/>
+  <text x="525" y="178" class="opm" text-anchor="middle">findFirst()</text>
+  <text x="525" y="197" class="val" text-anchor="middle">첫 번째 값</text>
+  <line x1="592" y1="182" x2="607" y2="182" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="610" y="156" width="125" height="52" rx="8" class="ok"/>
+  <text x="672.5" y="178" class="okm" text-anchor="middle">Optional</text>
+  <text x="672.5" y="197" class="val" text-anchor="middle">orElse(EMPTY)</text>
+  <text x="30" y="251" class="lane">중복 체크</text>
+  <rect x="150" y="220" width="130" height="52" rx="8" class="hold"/>
+  <text x="215" y="242" class="opm" text-anchor="middle">stream()</text>
+  <text x="215" y="261" class="val" text-anchor="middle">번호 목록</text>
+  <line x1="282" y1="246" x2="297" y2="246" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="300" y="220" width="140" height="52" rx="8" class="box"/>
+  <text x="370" y="242" class="opm" text-anchor="middle">distinct()</text>
+  <text x="370" y="261" class="val" text-anchor="middle">중복 제거</text>
+  <line x1="442" y1="246" x2="457" y2="246" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="460" y="220" width="130" height="52" rx="8" class="box"/>
+  <text x="525" y="242" class="opm" text-anchor="middle">count()</text>
+  <text x="525" y="261" class="val" text-anchor="middle">개수 세기</text>
+  <line x1="592" y1="246" x2="607" y2="246" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="610" y="220" width="125" height="52" rx="8" class="ok"/>
+  <text x="672.5" y="242" class="okm" text-anchor="middle">long</text>
+  <text x="672.5" y="261" class="val" text-anchor="middle">size()와 비교</text>
+  <text x="30" y="315" class="lane">합계</text>
+  <rect x="150" y="284" width="130" height="52" rx="8" class="hold"/>
+  <text x="215" y="306" class="opm" text-anchor="middle">stream()</text>
+  <text x="215" y="325" class="val" text-anchor="middle">로또 목록</text>
+  <line x1="282" y1="310" x2="297" y2="310" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="300" y="284" width="140" height="52" rx="8" class="box"/>
+  <text x="370" y="306" class="opm" text-anchor="middle">mapToInt(...)</text>
+  <text x="370" y="325" class="val" text-anchor="middle">당첨 금액</text>
+  <line x1="442" y1="310" x2="457" y2="310" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="460" y="284" width="130" height="52" rx="8" class="box"/>
+  <text x="525" y="306" class="opm" text-anchor="middle">sum()</text>
+  <text x="525" y="325" class="val" text-anchor="middle">합계 구하기</text>
+  <line x1="592" y1="310" x2="607" y2="310" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="610" y="284" width="125" height="52" rx="8" class="ok"/>
+  <text x="672.5" y="306" class="okm" text-anchor="middle">int</text>
+  <text x="672.5" y="325" class="val" text-anchor="middle">구매 금액으로 나눔</text>
+  <text x="150" y="358" class="sub">중간 연산은 새 스트림을 돌려주고, 최종 연산을 호출할 때 요소가 처리되어 결과가 만들어집니다.</text>
+</svg>

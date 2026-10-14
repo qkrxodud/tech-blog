@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>members가 null일 때 members.stream()은 NPE가 발생하고, CollectionUtils.emptyIfNull과 Optional.ofNullable().orElseGet(Collections::emptyList)는 빈 컬렉션으로 바꾼 뒤 Stream을 만들어 빈 List를 돌려주는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 12px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 12px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">members가 null일 때 — 세 가지 호출</text>
+  <text x="730" y="42" class="code" text-anchor="end">List&lt;Member&gt; members = null</text>
+  <text x="221" y="68" class="step" text-anchor="middle">입력</text>
+  <text x="367" y="68" class="step" text-anchor="middle">null 처리</text>
+  <text x="513" y="68" class="step" text-anchor="middle">Stream 생성</text>
+  <text x="659" y="68" class="step" text-anchor="middle">결과</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">stream()</text>
+  <text x="30" y="126" class="sub">바로 호출</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="158" y="88" width="126" height="48" rx="8" class="box"/>
+  <text x="221" y="108" class="op" text-anchor="middle">members</text>
+  <text x="221" y="127" class="val" text-anchor="middle">null</text>
+  <line x1="286" y1="112" x2="301" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="304" y="88" width="126" height="48" rx="8" class="wait"/>
+  <text x="367" y="117" class="waitt" text-anchor="middle">처리 없음</text>
+  <line x1="432" y1="112" x2="447" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="450" y="88" width="126" height="48" rx="8" class="bad"/>
+  <text x="513" y="108" class="badc" text-anchor="middle">.stream()</text>
+  <text x="513" y="127" class="val" text-anchor="middle">null에 호출</text>
+  <line x1="578" y1="112" x2="593" y2="112" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="596" y="88" width="126" height="48" rx="8" class="bad"/>
+  <text x="659" y="108" class="badc" text-anchor="middle">NPE</text>
+  <text x="659" y="127" class="val" text-anchor="middle">filter 전에 중단</text>
+  <text x="30" y="168" class="lane">emptyIfNull</text>
+  <text x="30" y="186" class="sub">CollectionUtils</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="158" y="148" width="126" height="48" rx="8" class="box"/>
+  <text x="221" y="168" class="op" text-anchor="middle">members</text>
+  <text x="221" y="187" class="val" text-anchor="middle">null</text>
+  <line x1="286" y1="172" x2="301" y2="172" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="304" y="148" width="126" height="48" rx="8" class="box"/>
+  <text x="367" y="168" class="op" text-anchor="middle">emptyIfNull</text>
+  <text x="367" y="187" class="val" text-anchor="middle">null이면 빈 컬렉션</text>
+  <line x1="432" y1="172" x2="447" y2="172" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="450" y="148" width="126" height="48" rx="8" class="ok"/>
+  <text x="513" y="168" class="okc" text-anchor="middle">.stream()</text>
+  <text x="513" y="187" class="val" text-anchor="middle">빈 Stream</text>
+  <line x1="578" y1="172" x2="593" y2="172" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="596" y="148" width="126" height="48" rx="8" class="ok"/>
+  <text x="659" y="168" class="okt" text-anchor="middle">빈 List</text>
+  <text x="659" y="187" class="val" text-anchor="middle">예외 없음</text>
+  <text x="30" y="228" class="lane">Optional</text>
+  <text x="30" y="246" class="sub">ofNullable</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="158" y="208" width="126" height="48" rx="8" class="box"/>
+  <text x="221" y="228" class="op" text-anchor="middle">members</text>
+  <text x="221" y="247" class="val" text-anchor="middle">null</text>
+  <line x1="286" y1="232" x2="301" y2="232" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="304" y="208" width="126" height="48" rx="8" class="box"/>
+  <text x="367" y="228" class="op" text-anchor="middle">ofNullable</text>
+  <text x="367" y="247" class="val" text-anchor="middle">orElseGet로 빈 List</text>
+  <line x1="432" y1="232" x2="447" y2="232" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="450" y="208" width="126" height="48" rx="8" class="ok"/>
+  <text x="513" y="228" class="okc" text-anchor="middle">.stream()</text>
+  <text x="513" y="247" class="val" text-anchor="middle">빈 Stream</text>
+  <line x1="578" y1="232" x2="593" y2="232" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="596" y="208" width="126" height="48" rx="8" class="ok"/>
+  <text x="659" y="228" class="okt" text-anchor="middle">빈 List</text>
+  <text x="659" y="247" class="val" text-anchor="middle">예외 없음</text>
+  <text x="150" y="292" class="note"><tspan font-family="Menlo, Consolas, monospace">Objects::nonNull</tspan>은 요소의 null만 거릅니다 — 컬렉션 자체가 null이면 <tspan font-family="Menlo, Consolas, monospace">stream()</tspan>에서 먼저 NPE가 납니다.</text>
+  <text x="150" y="316" class="sub">emptyIfNull과 Optional은 null을 빈 컬렉션으로 바꾼 뒤 Stream을 만듭니다.</text>
+</svg>

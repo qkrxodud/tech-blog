@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>ZGC의 힙 영역: 2MB인 Small, 32MB인 Medium, 2MB의 N배인 Large 영역이 섞여 있는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t13 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okt13 { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badt13 { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">ZGC — 크기가 다른 세 가지 영역</text>
+  <rect x="30" y="62" width="440" height="244" rx="8" class="dbbox"/>
+  <rect x="42" y="72" width="40" height="40" rx="5" class="box"/>
+  <rect x="88" y="72" width="40" height="40" rx="5" class="box"/>
+  <rect x="180" y="72" width="190" height="40" rx="5" class="ok"/>
+  <rect x="376" y="72" width="40" height="40" rx="5" class="box"/>
+  <rect x="42" y="118" width="40" height="40" rx="5" class="box"/>
+  <rect x="134" y="118" width="280" height="40" rx="5" class="hold"/>
+  <rect x="42" y="164" width="190" height="40" rx="5" class="ok"/>
+  <rect x="238" y="164" width="40" height="40" rx="5" class="box"/>
+  <rect x="284" y="164" width="40" height="40" rx="5" class="box"/>
+  <rect x="376" y="164" width="40" height="40" rx="5" class="box"/>
+  <rect x="422" y="164" width="40" height="40" rx="5" class="box"/>
+  <rect x="88" y="210" width="40" height="40" rx="5" class="box"/>
+  <rect x="134" y="210" width="40" height="40" rx="5" class="box"/>
+  <rect x="226" y="210" width="236" height="40" rx="5" class="hold"/>
+  <rect x="42" y="256" width="320" height="40" rx="5" class="hold"/>
+  <rect x="376" y="256" width="40" height="40" rx="5" class="box"/>
+  <rect x="500" y="80" width="36" height="36" rx="5" class="box"/>
+  <text x="550" y="95" class="t13">Small — 2MB</text>
+  <text x="550" y="112" class="s">작은 객체</text>
+  <rect x="500" y="140" width="36" height="36" rx="5" class="ok"/>
+  <text x="550" y="155" class="t13">Medium — 32MB</text>
+  <text x="550" y="172" class="s">중간 크기 객체</text>
+  <rect x="500" y="200" width="36" height="36" rx="5" class="hold"/>
+  <text x="550" y="215" class="t13">Large — N × 2MB</text>
+  <text x="550" y="232" class="s">큰 객체 하나</text>
+  <text x="30" y="326" class="foot">G1의 Region은 크기가 모두 같지만, ZGC는 객체 크기에 맞춰 세 가지 크기의 영역을 사용합니다.</text>
+</svg>

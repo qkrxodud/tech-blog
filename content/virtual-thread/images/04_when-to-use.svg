@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>CPU-bound 작업이면 플랫폼 스레드나 ForkJoinPool, 지연 요구가 엄격한 실시간 시스템이면 다른 모델, I/O 대기가 대부분이고 동시 요청이 많으면 Virtual Thread를 고르는 결정 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .opk { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .lbl { font-size: 13px; font-weight: 700; fill: #374151; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="430" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="410" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Virtual Thread를 쓸지 고르는 순서</text>
+
+  <rect x="40" y="66" width="400" height="58" rx="8" class="box"/>
+  <text x="240" y="89" class="opk" text-anchor="middle">CPU-bound 작업인가?</text>
+  <text x="240" y="110" class="val" text-anchor="middle">머신러닝 훈련, 수학 계산처럼 계산이 대부분</text>
+  <line x1="440" y1="95" x2="494" y2="95" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+  <text x="467" y="87" class="sub" text-anchor="middle">예</text>
+  <rect x="496" y="66" width="234" height="58" rx="8" class="hold"/>
+  <text x="613" y="89" class="opk" text-anchor="middle">플랫폼 스레드·ForkJoinPool</text>
+  <text x="613" y="110" class="val" text-anchor="middle">스레드를 늘려도 빨라지지 않음</text>
+
+  <line x1="240" y1="124" x2="240" y2="164" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+  <text x="252" y="149" class="sub">아니오</text>
+
+  <rect x="40" y="166" width="400" height="58" rx="8" class="box"/>
+  <text x="240" y="189" class="opk" text-anchor="middle">지연 요구가 엄격한 실시간 시스템인가?</text>
+  <text x="240" y="210" class="val" text-anchor="middle">응답 시간 상한을 엄격하게 지켜야 함</text>
+  <line x1="440" y1="195" x2="494" y2="195" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
+  <text x="467" y="187" class="sub" text-anchor="middle">예</text>
+  <rect x="496" y="166" width="234" height="58" rx="8" class="hold"/>
+  <text x="613" y="189" class="opk" text-anchor="middle">플랫폼 스레드나 다른 모델</text>
+  <text x="613" y="210" class="val" text-anchor="middle">Virtual Thread는 피함</text>
+
+  <line x1="240" y1="224" x2="240" y2="264" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="252" y="249" class="sub">아니오</text>
+
+  <rect x="40" y="266" width="690" height="104" rx="8" class="ok"/>
+  <text x="385" y="292" class="okt" text-anchor="middle">Virtual Thread — I/O 대기가 대부분이고 동시 요청이 많은 작업</text>
+  <text x="385" y="316" class="val" text-anchor="middle">웹 서버, API 게이트웨이, 프록시, 채팅 앱, Servlet 기반 blocking 코드 마이그레이션</text>
+  <text x="385" y="340" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Executors.newVirtualThreadPerTaskExecutor()</tspan> — 작업마다 새로 생성</text>
+  <text x="385" y="359" class="val" text-anchor="middle">풀링하지 않고, I/O를 기다리는 동안 Carrier Thread를 놓아줌</text>
+  <text x="40" y="402" class="sub">Pinning, 라이브러리 호환성, ThreadLocal 사용량은 적용 전에 따로 확인합니다</text>
+</svg>
