@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 556" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>자바 코드로 보면 빈 등록, memberService, orderService에서 memberRepository가 3번 호출되어 서로 다른 인스턴스가 생길 것 같지만, 실제로는 1번만 호출되어 모두 같은 인스턴스를 사용하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 12px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .gn { font-size: 12.5px; fill: #15803d; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="556" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="260" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">자바 코드로 본 예상 — memberRepository()가 3번 호출된다</text>
+  <text x="30" y="84" class="lane">빈 등록</text>
+  <text x="30" y="102" class="sub">@Bean 등록 시</text>
+  <rect x="150" y="62" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="64" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="93.0" class="op" text-anchor="middle">memberRepository()</text>
+  <line x1="360" y1="88" x2="414" y2="88" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="420" y="64" width="250" height="48" rx="8" class="box"/>
+  <text x="545.0" y="84.0" class="ms" text-anchor="middle">new MemoryMemberRepository()</text>
+  <text x="545.0" y="103.0" class="val" text-anchor="middle">인스턴스 1</text>
+  <text x="30" y="142" class="lane">회원 서비스</text>
+  <text x="30" y="160" class="sub">memberService()</text>
+  <rect x="150" y="120" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="122" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="151.0" class="op" text-anchor="middle">memberRepository()</text>
+  <line x1="360" y1="146" x2="414" y2="146" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="420" y="122" width="250" height="48" rx="8" class="box"/>
+  <text x="545.0" y="142.0" class="ms" text-anchor="middle">new MemoryMemberRepository()</text>
+  <text x="545.0" y="161.0" class="val" text-anchor="middle">인스턴스 2</text>
+  <text x="30" y="200" class="lane">주문 서비스</text>
+  <text x="30" y="218" class="sub">orderService()</text>
+  <rect x="150" y="178" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="180" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="209.0" class="op" text-anchor="middle">memberRepository()</text>
+  <line x1="360" y1="204" x2="414" y2="204" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="420" y="180" width="250" height="48" rx="8" class="box"/>
+  <text x="545.0" y="200.0" class="ms" text-anchor="middle">new MemoryMemberRepository()</text>
+  <text x="545.0" y="219.0" class="val" text-anchor="middle">인스턴스 3</text>
+  <text x="150" y="254" class="foot">코드만 보면 서로 다른 MemoryMemberRepository 인스턴스 3개가 생길 것 같다</text>
+  <rect x="10" y="286" width="740" height="260" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="318" class="h">실제 결과 — 1번만 호출되고 같은 인스턴스를 사용한다</text>
+  <text x="730" y="318" class="code" text-anchor="end">@Configuration</text>
+  <text x="30" y="360" class="lane">빈 등록</text>
+  <text x="30" y="378" class="sub">@Bean 등록 시</text>
+  <rect x="150" y="338" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="340" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="369.0" class="op" text-anchor="middle">memberRepository()</text>
+  <line x1="360" y1="364" x2="414" y2="364" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="418" class="lane">회원 서비스</text>
+  <text x="30" y="436" class="sub">memberService()</text>
+  <rect x="150" y="396" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="398" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="427.0" class="op" text-anchor="middle">memberRepository()</text>
+  <line x1="360" y1="422" x2="414" y2="422" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="476" class="lane">주문 서비스</text>
+  <text x="30" y="494" class="sub">orderService()</text>
+  <rect x="150" y="454" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="456" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="485.0" class="op" text-anchor="middle">memberRepository()</text>
+  <line x1="360" y1="480" x2="414" y2="480" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="420" y="340" width="250" height="164" rx="8" class="ok"/>
+  <text x="545" y="408" class="okm" text-anchor="middle">MemoryMemberRepository</text>
+  <text x="545" y="428" class="gn" text-anchor="middle">인스턴스 1개</text>
+  <text x="545" y="448" class="gn" text-anchor="middle">로그도 1번만 출력</text>
+  <text x="150" y="530" class="gnote">memberService와 orderService가 가진 memberRepository의 참조값이 같다</text>
+</svg>

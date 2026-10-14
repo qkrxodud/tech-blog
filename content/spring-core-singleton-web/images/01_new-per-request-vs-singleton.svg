@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 556" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>AppConfig는 고객 요청마다 memberService 객체를 새로 만들고, 스프링 컨테이너는 만들어 둔 객체 하나를 모든 요청이 공유하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .gn { font-size: 12.5px; fill: #15803d; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="556" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="260" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">AppConfig — 요청마다 객체를 새로 만든다</text>
+  <text x="30" y="84" class="lane">고객 A</text>
+  <text x="30" y="102" class="sub">요청</text>
+  <rect x="150" y="62" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="64" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="93.0" class="op" text-anchor="middle">memberService()</text>
+  <line x1="360" y1="88" x2="414" y2="88" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="420" y="64" width="230" height="48" rx="8" class="bad"/>
+  <text x="535.0" y="84.0" class="badm" text-anchor="middle">new MemberServiceImpl()</text>
+  <text x="535.0" y="103.0" class="val" text-anchor="middle">객체 1 생성</text>
+  <text x="30" y="142" class="lane">고객 B</text>
+  <text x="30" y="160" class="sub">요청</text>
+  <rect x="150" y="120" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="122" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="151.0" class="op" text-anchor="middle">memberService()</text>
+  <line x1="360" y1="146" x2="414" y2="146" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="420" y="122" width="230" height="48" rx="8" class="bad"/>
+  <text x="535.0" y="142.0" class="badm" text-anchor="middle">new MemberServiceImpl()</text>
+  <text x="535.0" y="161.0" class="val" text-anchor="middle">객체 2 생성</text>
+  <text x="30" y="200" class="lane">고객 C</text>
+  <text x="30" y="218" class="sub">요청</text>
+  <rect x="150" y="178" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="180" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="209.0" class="op" text-anchor="middle">memberService()</text>
+  <line x1="360" y1="204" x2="414" y2="204" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="420" y="180" width="230" height="48" rx="8" class="bad"/>
+  <text x="535.0" y="200.0" class="badm" text-anchor="middle">new MemberServiceImpl()</text>
+  <text x="535.0" y="219.0" class="val" text-anchor="middle">객체 3 생성</text>
+  <text x="150" y="254" class="note">요청 수만큼 객체가 생성되어, 사용자가 많아질수록 메모리 부담이 커진다</text>
+  <rect x="10" y="286" width="740" height="260" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="318" class="h">스프링 컨테이너 — 만들어 둔 객체 하나를 공유한다</text>
+  <text x="730" y="318" class="code" text-anchor="end">ac.getBean()</text>
+  <text x="30" y="360" class="lane">고객 A</text>
+  <text x="30" y="378" class="sub">요청</text>
+  <rect x="150" y="338" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="340" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="369.0" class="op" text-anchor="middle">getBean()</text>
+  <line x1="360" y1="364" x2="494" y2="364" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="418" class="lane">고객 B</text>
+  <text x="30" y="436" class="sub">요청</text>
+  <rect x="150" y="396" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="398" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="427.0" class="op" text-anchor="middle">getBean()</text>
+  <line x1="360" y1="422" x2="494" y2="422" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="476" class="lane">고객 C</text>
+  <text x="30" y="494" class="sub">요청</text>
+  <rect x="150" y="454" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="456" width="190" height="48" rx="8" class="box"/>
+  <text x="265.0" y="485.0" class="op" text-anchor="middle">getBean()</text>
+  <line x1="360" y1="480" x2="494" y2="480" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="500" y="340" width="210" height="164" rx="8" class="ok"/>
+  <text x="605" y="418" class="okc" text-anchor="middle">memberService</text>
+  <text x="605" y="438" class="gn" text-anchor="middle">객체 1개를 모든 요청이 공유</text>
+  <text x="150" y="530" class="gnote">요청이 늘어도 객체는 하나만 유지된다</text>
+</svg>

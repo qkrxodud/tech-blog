@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 480" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>스프링 시작 시점에 MyLogger를 상속받은 CGLIB 프록시가 myLogger 이름으로 등록되어 Controller와 Service에 주입되고, 요청 시점에 log를 호출하면 프록시가 현재 요청의 진짜 MyLogger를 찾아 호출을 위임하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="480" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">스프링 시작 시점 — 가짜 프록시를 등록하고 주입</text>
+  <text x="730" y="42" class="code" text-anchor="end">proxyMode = TARGET_CLASS</text>
+  <rect x="30" y="62" width="330" height="146" rx="10" class="cont"/>
+  <text x="195" y="86" class="db" text-anchor="middle">스프링 컨테이너</text>
+  <text x="50" y="118" class="sub">빈 이름</text>
+  <text x="50" y="138" class="opm">"myLogger"</text>
+  <rect x="160" y="104" width="186" height="52" rx="8" class="ok"/>
+  <text x="253" y="125" class="okm" text-anchor="middle">MyLogger$$Enhancer</text>
+  <text x="253" y="144" class="okm" text-anchor="middle">BySpringCGLIB</text>
+  <text x="195" y="186" class="val" text-anchor="middle">MyLogger를 상속받은 가짜 프록시 객체</text>
+  <rect x="490" y="76" width="200" height="48" rx="8" class="box"/>
+  <text x="590" y="96" class="opm" text-anchor="middle">LogDemoController</text>
+  <text x="590" y="115" class="val" text-anchor="middle">private final MyLogger</text>
+  <rect x="490" y="150" width="200" height="48" rx="8" class="box"/>
+  <text x="590" y="170" class="opm" text-anchor="middle">LogDemoService</text>
+  <text x="590" y="189" class="val" text-anchor="middle">private final MyLogger</text>
+  <line x1="346" y1="122" x2="485" y2="100" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="346" y1="138" x2="485" y2="172" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="420" y="140" class="step" text-anchor="middle">주입</text>
+  <rect x="10" y="240" width="740" height="230" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="272" class="h">요청 시점 — 프록시가 진짜 MyLogger에 위임</text>
+  <text x="105" y="300" class="step" text-anchor="middle">클라이언트</text>
+  <text x="280" y="300" class="step" text-anchor="middle">가짜 프록시</text>
+  <text x="455" y="300" class="step" text-anchor="middle">진짜 빈 찾기</text>
+  <text x="645" y="300" class="step" text-anchor="middle">진짜 빈 실행</text>
+  <rect x="35" y="314" width="140" height="48" rx="8" class="box"/>
+  <text x="105" y="334" class="opm" text-anchor="middle">Controller</text>
+  <text x="105" y="353" class="val" text-anchor="middle">myLogger.log()</text>
+  <rect x="210" y="314" width="140" height="48" rx="8" class="hold"/>
+  <text x="280" y="334" class="ts" text-anchor="middle">프록시.log()</text>
+  <text x="280" y="353" class="val" text-anchor="middle">싱글톤처럼 하나</text>
+  <rect x="375" y="314" width="160" height="48" rx="8" class="box"/>
+  <text x="455" y="334" class="ts" text-anchor="middle">현재 요청의</text>
+  <text x="455" y="353" class="val" text-anchor="middle">request 스코프 빈 조회</text>
+  <rect x="570" y="314" width="150" height="48" rx="8" class="ok"/>
+  <text x="645" y="334" class="okm" text-anchor="middle">MyLogger.log()</text>
+  <text x="645" y="353" class="val" text-anchor="middle">진짜 객체 @x01</text>
+  <rect x="35" y="382" width="140" height="48" rx="8" class="box"/>
+  <text x="105" y="402" class="opm" text-anchor="middle">Service</text>
+  <text x="105" y="421" class="val" text-anchor="middle">myLogger.log()</text>
+  <rect x="210" y="382" width="140" height="48" rx="8" class="hold"/>
+  <text x="280" y="402" class="ts" text-anchor="middle">프록시.log()</text>
+  <text x="280" y="421" class="val" text-anchor="middle">같은 프록시</text>
+  <rect x="375" y="382" width="160" height="48" rx="8" class="box"/>
+  <text x="455" y="402" class="ts" text-anchor="middle">현재 요청의</text>
+  <text x="455" y="421" class="val" text-anchor="middle">request 스코프 빈 조회</text>
+  <rect x="570" y="382" width="150" height="48" rx="8" class="ok"/>
+  <text x="645" y="402" class="okm" text-anchor="middle">MyLogger.log()</text>
+  <text x="645" y="421" class="val" text-anchor="middle">같은 요청 @x01</text>
+  <line x1="175" y1="338" x2="207" y2="338" class="axis" marker-end="url(#ar)"/>
+  <line x1="350" y1="338" x2="372" y2="338" class="axis" marker-end="url(#ar)"/>
+  <line x1="535" y1="338" x2="567" y2="338" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="175" y1="406" x2="207" y2="406" class="axis" marker-end="url(#ar)"/>
+  <line x1="350" y1="406" x2="372" y2="406" class="axis" marker-end="url(#ar)"/>
+  <line x1="535" y1="406" x2="567" y2="406" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="456" class="foot">클라이언트는 원본인지 프록시인지 모르게 사용하고(다형성), 진짜 객체 조회는 메서드를 호출하는 시점까지 미뤄집니다</text>
+</svg>

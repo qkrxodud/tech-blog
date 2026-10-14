@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>생성자로 주입받은 프로토타입 빈은 클라이언트 A와 B가 같은 @x01을 사용해 count가 1, 2가 되고, ObjectProvider의 getObject로 호출마다 조회하면 @x01, @x02가 새로 생성되어 count가 모두 1이 되는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="500" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="232" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">생성자로 주입받은 경우 — 같은 빈을 계속 사용</text>
+  <text x="730" y="42" class="code" text-anchor="end">private final PrototypeBean</text>
+  <text x="205" y="70" class="step" text-anchor="middle">호출</text>
+  <text x="372" y="70" class="step" text-anchor="middle">빈을 얻는 곳</text>
+  <text x="540" y="70" class="step" text-anchor="middle">사용한 빈</text>
+  <text x="690" y="70" class="step" text-anchor="middle">반환값</text>
+  <text x="30" y="106" class="lane">클라이언트 A</text>
+  <rect x="140" y="82" width="598" height="52" rx="6" class="track"/>
+  <rect x="150" y="84" width="110" height="48" rx="8" class="box"/>
+  <text x="205" y="113" class="opm" text-anchor="middle">logic()</text>
+  <line x1="260" y1="108" x2="294" y2="108" class="axis" marker-end="url(#ar)"/>
+  <rect x="297" y="84" width="150" height="48" rx="8" class="hold"/>
+  <text x="372" y="104" class="ts" text-anchor="middle">필드의 참조값</text>
+  <text x="372" y="123" class="val" text-anchor="middle">주입 시점에 받음</text>
+  <line x1="447" y1="108" x2="464" y2="108" class="axis" marker-end="url(#ar)"/>
+  <rect x="467" y="84" width="146" height="48" rx="8" class="box"/>
+  <text x="540" y="104" class="opm" text-anchor="middle">PrototypeBean</text>
+  <text x="540" y="123" class="val" text-anchor="middle">@x01</text>
+  <line x1="613" y1="108" x2="647" y2="108" class="axis" marker-end="url(#ar)"/>
+  <rect x="650" y="84" width="80" height="48" rx="8" class="ok"/>
+  <text x="690" y="113" class="okt" text-anchor="middle">1</text>
+  <text x="30" y="170" class="lane">클라이언트 B</text>
+  <rect x="140" y="146" width="598" height="52" rx="6" class="track"/>
+  <rect x="150" y="148" width="110" height="48" rx="8" class="box"/>
+  <text x="205" y="177" class="opm" text-anchor="middle">logic()</text>
+  <line x1="260" y1="172" x2="294" y2="172" class="axis" marker-end="url(#ar)"/>
+  <rect x="297" y="148" width="150" height="48" rx="8" class="hold"/>
+  <text x="372" y="168" class="ts" text-anchor="middle">필드의 참조값</text>
+  <text x="372" y="187" class="val" text-anchor="middle">같은 참조값</text>
+  <line x1="447" y1="172" x2="464" y2="172" class="axis" marker-end="url(#ar)"/>
+  <rect x="467" y="148" width="146" height="48" rx="8" class="bad"/>
+  <text x="540" y="168" class="badm" text-anchor="middle">PrototypeBean</text>
+  <text x="540" y="187" class="val" text-anchor="middle">@x01</text>
+  <line x1="613" y1="172" x2="647" y2="172" class="axis" marker-end="url(#ar)"/>
+  <rect x="650" y="148" width="80" height="48" rx="8" class="bad"/>
+  <text x="690" y="177" class="badt" text-anchor="middle">2</text>
+  <text x="140" y="224" class="note">싱글톤 빈이 생성될 때 한 번 주입받은 빈이므로 두 번째 호출에서 count가 2가 됩니다</text>
+  <rect x="10" y="258" width="740" height="232" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="290" class="h">ObjectProvider로 조회 — 호출마다 새 빈</text>
+  <text x="730" y="290" class="code" text-anchor="end">ObjectProvider&lt;PrototypeBean&gt;</text>
+  <text x="205" y="318" class="step" text-anchor="middle">호출</text>
+  <text x="372" y="318" class="step" text-anchor="middle">빈을 얻는 곳</text>
+  <text x="540" y="318" class="step" text-anchor="middle">사용한 빈</text>
+  <text x="690" y="318" class="step" text-anchor="middle">반환값</text>
+  <text x="30" y="354" class="lane">클라이언트 A</text>
+  <rect x="140" y="330" width="598" height="52" rx="6" class="track"/>
+  <rect x="150" y="332" width="110" height="48" rx="8" class="box"/>
+  <text x="205" y="361" class="opm" text-anchor="middle">logic()</text>
+  <line x1="260" y1="356" x2="294" y2="356" class="axis" marker-end="url(#ar)"/>
+  <rect x="297" y="332" width="150" height="48" rx="8" class="ok"/>
+  <text x="372" y="352" class="okm" text-anchor="middle">getObject()</text>
+  <text x="372" y="371" class="val" text-anchor="middle">컨테이너에서 조회</text>
+  <line x1="447" y1="356" x2="464" y2="356" class="axis" marker-end="url(#ar)"/>
+  <rect x="467" y="332" width="146" height="48" rx="8" class="box"/>
+  <text x="540" y="352" class="opm" text-anchor="middle">PrototypeBean</text>
+  <text x="540" y="371" class="val" text-anchor="middle">@x01 새로 생성</text>
+  <line x1="613" y1="356" x2="647" y2="356" class="axis" marker-end="url(#ar)"/>
+  <rect x="650" y="332" width="80" height="48" rx="8" class="ok"/>
+  <text x="690" y="361" class="okt" text-anchor="middle">1</text>
+  <text x="30" y="418" class="lane">클라이언트 B</text>
+  <rect x="140" y="394" width="598" height="52" rx="6" class="track"/>
+  <rect x="150" y="396" width="110" height="48" rx="8" class="box"/>
+  <text x="205" y="425" class="opm" text-anchor="middle">logic()</text>
+  <line x1="260" y1="420" x2="294" y2="420" class="axis" marker-end="url(#ar)"/>
+  <rect x="297" y="396" width="150" height="48" rx="8" class="ok"/>
+  <text x="372" y="416" class="okm" text-anchor="middle">getObject()</text>
+  <text x="372" y="435" class="val" text-anchor="middle">컨테이너에서 조회</text>
+  <line x1="447" y1="420" x2="464" y2="420" class="axis" marker-end="url(#ar)"/>
+  <rect x="467" y="396" width="146" height="48" rx="8" class="box"/>
+  <text x="540" y="416" class="opm" text-anchor="middle">PrototypeBean</text>
+  <text x="540" y="435" class="val" text-anchor="middle">@x02 새로 생성</text>
+  <line x1="613" y1="420" x2="647" y2="420" class="axis" marker-end="url(#ar)"/>
+  <rect x="650" y="396" width="80" height="48" rx="8" class="ok"/>
+  <text x="690" y="425" class="okt" text-anchor="middle">1</text>
+  <text x="140" y="472" class="gnote">필요한 시점에 컨테이너에서 빈을 찾으므로(DL) 매번 새 프로토타입 빈을 사용합니다</text>
+</svg>

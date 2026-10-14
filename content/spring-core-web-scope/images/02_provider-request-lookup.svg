@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 516" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>스프링 시작 시점에는 HTTP 요청이 없어 MyLogger를 바로 주입하면 오류가 나고 ObjectProvider를 주입하면 정상 시작하며, 요청이 들어온 뒤 Controller와 Service가 getObject로 조회하면 같은 MyLogger 인스턴스를 받는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="516" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="196" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">스프링 시작 시점 — 아직 HTTP 요청이 없음</text>
+  <text x="252" y="70" class="step" text-anchor="middle">싱글톤 빈 생성</text>
+  <text x="432" y="70" class="step" text-anchor="middle">주입할 대상</text>
+  <text x="615" y="70" class="step" text-anchor="middle">결과</text>
+  <text x="30" y="106" class="lane">바로 주입</text>
+  <text x="30" y="124" class="sub">MyLogger 필드</text>
+  <rect x="168" y="82" width="570" height="52" rx="6" class="track"/>
+  <rect x="177" y="84" width="150" height="48" rx="8" class="box"/>
+  <text x="252" y="104" class="opm" text-anchor="middle">LogDemoService</text>
+  <text x="252" y="123" class="val" text-anchor="middle">생성</text>
+  <rect x="347" y="84" width="170" height="48" rx="8" class="bad"/>
+  <text x="432" y="104" class="badm" text-anchor="middle">MyLogger</text>
+  <text x="432" y="123" class="val" text-anchor="middle">request 스코프 빈</text>
+  <rect x="530" y="84" width="170" height="48" rx="8" class="bad"/>
+  <text x="615" y="104" class="badt" text-anchor="middle">오류 발생</text>
+  <text x="615" y="123" class="val" text-anchor="middle">생성할 수 없음</text>
+  <line x1="327" y1="108" x2="344" y2="108" class="axis" marker-end="url(#ar)"/>
+  <line x1="517" y1="108" x2="527" y2="108" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="166" class="lane">Provider</text>
+  <text x="30" y="184" class="sub">ObjectProvider 필드</text>
+  <rect x="168" y="142" width="570" height="52" rx="6" class="track"/>
+  <rect x="177" y="144" width="150" height="48" rx="8" class="box"/>
+  <text x="252" y="164" class="opm" text-anchor="middle">LogDemoService</text>
+  <text x="252" y="183" class="val" text-anchor="middle">생성</text>
+  <rect x="347" y="144" width="170" height="48" rx="8" class="ok"/>
+  <text x="432" y="164" class="okm" text-anchor="middle">ObjectProvider</text>
+  <text x="432" y="183" class="val" text-anchor="middle">MyLogger는 아직 조회 안 함</text>
+  <rect x="530" y="144" width="170" height="48" rx="8" class="ok"/>
+  <text x="615" y="164" class="okt" text-anchor="middle">정상 시작</text>
+  <text x="615" y="183" class="val" text-anchor="middle">요청 때 조회</text>
+  <line x1="327" y1="168" x2="344" y2="168" class="axis" marker-end="url(#ar)"/>
+  <line x1="517" y1="168" x2="527" y2="168" class="axis" marker-end="url(#ar)"/>
+  <rect x="10" y="222" width="740" height="284" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="254" class="h">요청 시점 — getObject()로 그 요청의 MyLogger를 조회</text>
+  <text x="220" y="282" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="282" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="282" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="282" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="290" x2="722" y2="290" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="322" class="lane">Controller</text>
+  <text x="30" y="340" class="sub">LogDemoController</text>
+  <rect x="150" y="300" width="585" height="52" rx="6" class="track"/>
+  <rect x="158" y="302" width="124" height="48" rx="8" class="box"/>
+  <text x="220" y="322" class="opm" text-anchor="middle">getObject()</text>
+  <text x="220" y="341" class="val" text-anchor="middle">MyLogger 조회</text>
+  <rect x="298" y="302" width="124" height="48" rx="8" class="box"/>
+  <text x="360" y="322" class="opm" text-anchor="middle">log()</text>
+  <text x="360" y="341" class="val" text-anchor="middle">controller test</text>
+  <text x="30" y="382" class="lane">Service</text>
+  <text x="30" y="400" class="sub">LogDemoService</text>
+  <rect x="150" y="360" width="585" height="52" rx="6" class="track"/>
+  <rect x="438" y="362" width="124" height="48" rx="8" class="box"/>
+  <text x="500" y="382" class="opm" text-anchor="middle">getObject()</text>
+  <text x="500" y="401" class="val" text-anchor="middle">MyLogger 조회</text>
+  <rect x="578" y="362" width="124" height="48" rx="8" class="box"/>
+  <text x="640" y="382" class="opm" text-anchor="middle">log()</text>
+  <text x="640" y="401" class="val" text-anchor="middle">service id = testId</text>
+  <text x="30" y="446" class="db">MyLogger</text>
+  <text x="30" y="464" class="sub">request 스코프</text>
+  <rect x="166" y="424" width="108" height="40" rx="6" class="ok"/>
+  <text x="220" y="449" class="okt" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">@x01</tspan> 생성</text>
+  <rect x="446" y="424" width="108" height="40" rx="6" class="ok"/>
+  <text x="500" y="449" class="okt" text-anchor="middle">같은 <tspan font-family="Menlo, Consolas, monospace">@x01</tspan></text>
+  <line x1="220" y1="350" x2="220" y2="420" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="500" y1="410" x2="500" y2="420" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="166" y="490" class="gnote">요청이 진행 중일 때 조회하므로 정상적으로 생성되고, 같은 요청에서는 같은 빈을 받습니다</text>
+</svg>

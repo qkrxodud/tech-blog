@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 306" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>getInstance를 두 번 호출하면 static 영역의 같은 instance가 반환되어 isSameAs가 통과하고, new SingletonService는 private 생성자 때문에 컴파일 오류가 나는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .gn { font-size: 12.5px; fill: #15803d; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="306" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="286" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">싱글톤 패턴 — getInstance()는 항상 같은 객체를 반환한다</text>
+  <text x="30" y="84" class="lane">조회 1</text>
+  <text x="30" y="102" class="sub">singletonService1</text>
+  <rect x="150" y="62" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="64" width="170" height="48" rx="8" class="box"/>
+  <text x="255.0" y="93.0" class="op" text-anchor="middle">getInstance()</text>
+  <line x1="340" y1="88" x2="394" y2="88" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="142" class="lane">조회 2</text>
+  <text x="30" y="160" class="sub">singletonService2</text>
+  <rect x="150" y="120" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="122" width="170" height="48" rx="8" class="box"/>
+  <text x="255.0" y="151.0" class="op" text-anchor="middle">getInstance()</text>
+  <line x1="340" y1="146" x2="394" y2="146" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="400" y="64" width="190" height="106" rx="8" class="hold"/>
+  <text x="495" y="107" class="m" text-anchor="middle">instance</text>
+  <text x="495" y="127" class="val" text-anchor="middle">static 영역의 객체 1개</text>
+  <line x1="590" y1="117" x2="604" y2="117" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="610" y="64" width="115" height="106" rx="8" class="ok"/>
+  <text x="667.5" y="112" class="okc" text-anchor="middle">isSameAs</text>
+  <text x="667.5" y="132" class="gn" text-anchor="middle">통과</text>
+  <text x="30" y="216" class="lane">외부 생성</text>
+  <text x="30" y="234" class="sub">new 키워드</text>
+  <rect x="150" y="194" width="585" height="52" rx="6" class="track"/>
+  <rect x="170" y="196" width="210" height="48" rx="8" class="bad"/>
+  <text x="275.0" y="225.0" class="badm" text-anchor="middle">new SingletonService()</text>
+  <line x1="380" y1="220" x2="434" y2="220" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="440" y="196" width="285" height="48" rx="8" class="bad"/>
+  <text x="582.5" y="216.0" class="badt" text-anchor="middle">컴파일 오류</text>
+  <text x="582.5" y="235.0" class="val" text-anchor="middle">생성자가 private이라 호출할 수 없다</text>
+  <text x="150" y="276" class="foot">객체는 static 영역에 하나만 만들어지고, 외부에서는 getInstance()로만 꺼낼 수 있다</text>
+</svg>

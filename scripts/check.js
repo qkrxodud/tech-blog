@@ -64,11 +64,13 @@ const LECTURE_CATS = new Set(['algorithm', 'infra', 'clean-code-java', 'network'
 for (const p of posts) {
   if (!LECTURE_SERIES.has(p.series) && !LECTURE_CATS.has(p.category)) continue;
   const md = path.join(CONTENT, p.slug, 'index.md');
-  if (fs.existsSync(md) && /!\[[^\]]*\]\(/.test(fs.readFileSync(md, 'utf8'))) {
+  // 직접 그린 SVG 흐름도는 허용한다(2026-10-14 사용자 결정). 캡처로 보이는 래스터 이미지만 잡는다.
+  if (fs.existsSync(md) && /!\[[^\]]*\]\((?![^)]*\.svg\))/.test(fs.readFileSync(md, 'utf8'))) {
     warn('강의 노트에 이미지', p.slug, '슬라이드 캡처로 보이는 이미지가 본문에 있음');
   }
-  if (fs.existsSync(path.join(CONTENT, p.slug, 'images'))) {
-    warn('강의 노트에 images 폴더', p.slug, '');
+  const imgDir = path.join(CONTENT, p.slug, 'images');
+  if (fs.existsSync(imgDir) && fs.readdirSync(imgDir).some(f => !f.startsWith('.') && !f.endsWith('.svg'))) {
+    warn('강의 노트에 images 폴더', p.slug, 'SVG가 아닌 이미지 파일이 있음');
   }
 }
 

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>com.hello 패키지의 메인 설정 정보에 basePackages 없이 @ComponentScan을 붙이면 com.hello가 시작 위치가 되어 com.hello.service와 com.hello.repository까지 스캔 대상이 되는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .okms { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .gscope { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .dim { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .dimt { font-size: 12.5px; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .tag { font-size: 11.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">탐색 위치 — 설정 클래스의 패키지부터 하위 패키지까지</text>
+  <rect x="30" y="64" width="370" height="246" rx="10" class="gscope"/>
+  <text x="48" y="88" class="gnote">컴포넌트 스캔 대상</text>
+  <rect x="50" y="102" width="330" height="60" rx="8" class="hold"/>
+  <text x="70" y="126" class="mb">com.hello</text>
+  <text x="70" y="148" class="val">메인 설정 정보 + <tspan font-family="Menlo, Consolas, monospace">@ComponentScan</tspan></text>
+  <path d="M80,162 L80,212 L120,212" fill="none" stroke="#9ca3af" stroke-width="1.4"/>
+  <path d="M80,212 L80,272 L120,272" fill="none" stroke="#9ca3af" stroke-width="1.4"/>
+  <rect x="120" y="192" width="260" height="40" rx="8" class="box"/>
+  <text x="140" y="217" class="m">com.hello.service</text>
+  <rect x="120" y="252" width="260" height="40" rx="8" class="box"/>
+  <text x="140" y="277" class="m">com.hello.repository</text>
+  <rect x="440" y="70" width="290" height="60" rx="8" class="box"/>
+  <text x="585" y="106" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">basePackages</tspan> 지정 생략</text>
+  <line x1="585" y1="132" x2="585" y2="156" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="440" y="160" width="290" height="60" rx="8" class="hold"/>
+  <text x="585" y="186" class="t" text-anchor="middle">시작 위치 = 설정 클래스의 패키지</text>
+  <text x="585" y="206" class="m" text-anchor="middle">com.hello</text>
+  <line x1="585" y1="222" x2="585" y2="246" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="440" y="250" width="290" height="60" rx="8" class="ok"/>
+  <text x="585" y="276" class="okt" text-anchor="middle">하위 패키지까지 모두 탐색</text>
+  <text x="585" y="296" class="m" text-anchor="middle">service, repository</text>
+  <text x="30" y="334" class="foot"><tspan font-family="Menlo, Consolas, monospace">@SpringBootApplication</tspan>도 이 위치에 두는 것이 관례이고, 그 안에 <tspan font-family="Menlo, Consolas, monospace">@ComponentScan</tspan>이 들어 있습니다.</text>
+</svg>

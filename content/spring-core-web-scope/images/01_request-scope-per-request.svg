@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 310" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>클라이언트 A와 B의 HTTP 요청마다 request 스코프 빈 MyLogger가 따로 생성되어 init으로 UUID를 정하고, 같은 요청 안의 Controller와 Service가 같은 MyLogger로 로그를 남긴 뒤 요청이 끝나면 close가 호출되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="310" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">request 스코프 — HTTP 요청마다 MyLogger를 따로 생성</text>
+  <text x="730" y="42" class="code" text-anchor="end">@Scope("request")</text>
+  <text x="200" y="70" class="step" text-anchor="middle">요청 들어옴</text>
+  <text x="320" y="70" class="step" text-anchor="middle">빈 생성</text>
+  <text x="440" y="70" class="step" text-anchor="middle">Controller</text>
+  <text x="560" y="70" class="step" text-anchor="middle">Service</text>
+  <text x="680" y="70" class="step" text-anchor="middle">요청 끝남</text>
+  <line x1="140" y1="78" x2="738" y2="78" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="112" class="lane">요청 A</text>
+  <text x="30" y="130" class="sub">클라이언트 A</text>
+  <rect x="140" y="88" width="598" height="52" rx="6" class="track"/>
+  <rect x="150" y="90" width="100" height="48" rx="8" class="box"/>
+  <text x="200" y="110" class="opm" text-anchor="middle">/log-demo</text>
+  <text x="200" y="129" class="val" text-anchor="middle">HTTP 요청</text>
+  <rect x="270" y="90" width="100" height="48" rx="8" class="ok"/>
+  <text x="320" y="110" class="okm" text-anchor="middle">init()</text>
+  <text x="320" y="129" class="val" text-anchor="middle">uuid-A</text>
+  <rect x="390" y="90" width="100" height="48" rx="8" class="hold"/>
+  <text x="440" y="110" class="opm" text-anchor="middle">log()</text>
+  <text x="440" y="129" class="val" text-anchor="middle">[uuid-A]</text>
+  <rect x="510" y="90" width="100" height="48" rx="8" class="hold"/>
+  <text x="560" y="110" class="opm" text-anchor="middle">log()</text>
+  <text x="560" y="129" class="val" text-anchor="middle">[uuid-A]</text>
+  <rect x="630" y="90" width="100" height="48" rx="8" class="box"/>
+  <text x="680" y="110" class="opm" text-anchor="middle">close()</text>
+  <text x="680" y="129" class="val" text-anchor="middle">빈 종료</text>
+  <line x1="250" y1="114" x2="267" y2="114" class="axis" marker-end="url(#ar)"/>
+  <line x1="370" y1="114" x2="387" y2="114" class="axis" marker-end="url(#ar)"/>
+  <line x1="490" y1="114" x2="507" y2="114" class="axis" marker-end="url(#ar)"/>
+  <line x1="610" y1="114" x2="627" y2="114" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="184" class="lane">요청 B</text>
+  <text x="30" y="202" class="sub">클라이언트 B</text>
+  <rect x="140" y="160" width="598" height="52" rx="6" class="track"/>
+  <rect x="150" y="162" width="100" height="48" rx="8" class="box"/>
+  <text x="200" y="182" class="opm" text-anchor="middle">/log-demo</text>
+  <text x="200" y="201" class="val" text-anchor="middle">HTTP 요청</text>
+  <rect x="270" y="162" width="100" height="48" rx="8" class="ok"/>
+  <text x="320" y="182" class="okm" text-anchor="middle">init()</text>
+  <text x="320" y="201" class="val" text-anchor="middle">uuid-B</text>
+  <rect x="390" y="162" width="100" height="48" rx="8" class="hold"/>
+  <text x="440" y="182" class="opm" text-anchor="middle">log()</text>
+  <text x="440" y="201" class="val" text-anchor="middle">[uuid-B]</text>
+  <rect x="510" y="162" width="100" height="48" rx="8" class="hold"/>
+  <text x="560" y="182" class="opm" text-anchor="middle">log()</text>
+  <text x="560" y="201" class="val" text-anchor="middle">[uuid-B]</text>
+  <rect x="630" y="162" width="100" height="48" rx="8" class="box"/>
+  <text x="680" y="182" class="opm" text-anchor="middle">close()</text>
+  <text x="680" y="201" class="val" text-anchor="middle">빈 종료</text>
+  <line x1="250" y1="186" x2="267" y2="186" class="axis" marker-end="url(#ar)"/>
+  <line x1="370" y1="186" x2="387" y2="186" class="axis" marker-end="url(#ar)"/>
+  <line x1="490" y1="186" x2="507" y2="186" class="axis" marker-end="url(#ar)"/>
+  <line x1="610" y1="186" x2="627" y2="186" class="axis" marker-end="url(#ar)"/>
+  <text x="140" y="252" class="foot">Controller와 Service는 싱글톤 하나를 함께 사용하고, MyLogger만 요청마다 따로 만들어집니다</text>
+  <text x="140" y="276" class="gnote">같은 요청 안에서는 같은 MyLogger를 사용하므로 로그의 UUID로 요청을 구분할 수 있습니다</text>
+</svg>

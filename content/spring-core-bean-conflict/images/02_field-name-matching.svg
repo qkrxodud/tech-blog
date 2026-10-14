@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>DiscountPolicy 타입으로 조회해 빈 2개가 발견되면 필드명 rateDiscountPolicy와 같은 이름의 빈을 골라 주입하고 fixDiscountPolicy는 제외하는 3단계 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .okms { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .gscope { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .dim { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .dimt { font-size: 12.5px; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .tag { font-size: 11.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">필드명 매칭 — 2개 이상이면 필드명으로 빈 이름을 찾음</text>
+  <text x="135" y="72" class="step" text-anchor="middle">1. 타입으로 조회</text>
+  <text x="380" y="72" class="step" text-anchor="middle">2. 2개 이상 발견</text>
+  <text x="625" y="72" class="step" text-anchor="middle">3. 필드명과 같은 이름의 빈</text>
+  <rect x="30" y="84" width="210" height="170" rx="8" class="box"/>
+  <text x="135" y="108" class="sub" text-anchor="middle">필드 타입</text>
+  <rect x="46" y="118" width="178" height="36" rx="6" class="chip"/>
+  <text x="135" y="141" class="m" text-anchor="middle">DiscountPolicy</text>
+  <text x="135" y="184" class="sub" text-anchor="middle">필드명</text>
+  <rect x="46" y="194" width="178" height="36" rx="6" class="chip"/>
+  <text x="135" y="217" class="m" text-anchor="middle">rateDiscountPolicy</text>
+  <line x1="244" y1="169" x2="271" y2="169" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="275" y="84" width="210" height="170" rx="10" class="scope"/>
+  <text x="380" y="108" class="sub" text-anchor="middle">DiscountPolicy 타입 빈</text>
+  <rect x="291" y="122" width="178" height="44" rx="8" class="box"/>
+  <text x="380" y="149" class="m" text-anchor="middle">rateDiscountPolicy</text>
+  <rect x="291" y="180" width="178" height="44" rx="8" class="box"/>
+  <text x="380" y="207" class="m" text-anchor="middle">fixDiscountPolicy</text>
+  <line x1="489" y1="169" x2="516" y2="169" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="520" y="84" width="210" height="170" rx="10" class="scope"/>
+  <rect x="536" y="112" width="178" height="56" rx="8" class="ok"/>
+  <text x="625" y="136" class="okm" text-anchor="middle">rateDiscountPolicy</text>
+  <text x="625" y="156" class="gnote" text-anchor="middle">이름이 같아 주입</text>
+  <rect x="536" y="180" width="178" height="56" rx="8" class="dim"/>
+  <text x="625" y="204" class="dimt" text-anchor="middle">fixDiscountPolicy</text>
+  <text x="625" y="224" class="sub" text-anchor="middle">제외</text>
+  <text x="30" y="286" class="foot">필드명(생성자라면 파라미터 이름)을 rateDiscountPolicy로 바꾸면 같은 이름의 빈이 주입됩니다.</text>
+</svg>

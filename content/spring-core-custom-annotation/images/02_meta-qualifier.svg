@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 310" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>@MainDiscountPolicy 안의 @Qualifier(&quot;mainDiscountPolicy&quot;)를 스프링이 읽어 같은 구분자를 가진 RateDiscountPolicy 빈을 주입하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 12px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .hd { font-size: 10.5px; fill: #374151; }
+    .gmsg { font-size: 11.5px; fill: #15803d; }
+    .rmsg { font-size: 11.5px; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .life { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .act { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.2; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L9,5 L1,9" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="760" height="310" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">@MainDiscountPolicy — 안에 붙은 @Qualifier로 빈을 찾음</text>
+
+  <text x="120" y="74" class="step" text-anchor="middle">주입받는 쪽</text>
+  <rect x="30" y="86" width="180" height="72" rx="8" class="box"/>
+  <text x="120" y="110" class="ts" text-anchor="middle">OrderServiceImpl 생성자</text>
+  <text x="120" y="131" class="m" text-anchor="middle">@MainDiscountPolicy</text>
+  <text x="120" y="148" class="m" text-anchor="middle">DiscountPolicy</text>
+
+  <line x1="212" y1="122" x2="237" y2="122" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+
+  <text x="370" y="74" class="step" text-anchor="middle">스프링이 애노테이션을 읽음</text>
+  <rect x="240" y="86" width="260" height="110" rx="8" class="hold"/>
+  <text x="370" y="108" class="ms" text-anchor="middle">@interface MainDiscountPolicy</text>
+  <rect x="250" y="120" width="240" height="34" rx="6" class="ok"/>
+  <text x="370" y="142" class="ms" text-anchor="middle">@Qualifier("mainDiscountPolicy")</text>
+  <text x="370" y="178" class="s" text-anchor="middle">구분자: mainDiscountPolicy</text>
+
+  <text x="635" y="74" class="step" text-anchor="middle">등록된 DiscountPolicy 빈</text>
+  <rect x="540" y="86" width="190" height="62" rx="8" class="ok"/>
+  <text x="635" y="110" class="okt" text-anchor="middle">RateDiscountPolicy</text>
+  <text x="635" y="132" class="s" text-anchor="middle">구분자: mainDiscountPolicy</text>
+  <rect x="540" y="160" width="190" height="62" rx="8" class="box"/>
+  <text x="635" y="184" class="t" text-anchor="middle">FixDiscountPolicy</text>
+  <text x="635" y="206" class="s" text-anchor="middle">구분자: fixDiscountPolicy</text>
+
+  <line x1="502" y1="130" x2="537" y2="118" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="520" y="110" class="gmsg" text-anchor="middle">일치</text>
+  <line x1="502" y1="160" x2="537" y2="186" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="520" y="214" class="rmsg" text-anchor="middle">불일치</text>
+
+  <rect x="30" y="238" width="700" height="44" rx="8" class="ok"/>
+  <text x="380" y="265" class="okt" text-anchor="middle">RateDiscountPolicy가 discountPolicy 파라미터에 주입됨</text>
+</svg>

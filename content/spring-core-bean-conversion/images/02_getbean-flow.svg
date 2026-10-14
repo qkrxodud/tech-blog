@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 290" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>OrderApp이 AppConfig로 스프링 컨테이너를 만들고, getBean으로 memberService와 orderService를 조회한 뒤 회원 가입과 주문 생성을 호출하는 순서</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .gnote { font-size: 12px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="290" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="270" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">빈 조회 — 컨테이너를 만들고 getBean으로 꺼낸다</text>
+  <text x="730" y="42" class="code" text-anchor="end">OrderApp.main()</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="365" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="510" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="655" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">OrderApp</text>
+  <text x="30" y="126" class="sub">클라이언트 코드</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="206" class="lane">컨테이너</text>
+  <text x="30" y="224" class="sub">ApplicationContext</text>
+  <rect x="150" y="184" width="585" height="52" rx="6" class="track"/>
+  <rect x="155" y="88" width="130" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="op" text-anchor="middle">new</text>
+  <text x="220" y="127" class="ms" text-anchor="middle">AppConfig.class</text>
+  <rect x="300" y="88" width="130" height="48" rx="8" class="box"/>
+  <text x="365" y="108" class="op" text-anchor="middle">getBean</text>
+  <text x="365" y="127" class="ms" text-anchor="middle">"memberService"</text>
+  <rect x="445" y="88" width="130" height="48" rx="8" class="box"/>
+  <text x="510" y="108" class="op" text-anchor="middle">getBean</text>
+  <text x="510" y="127" class="ms" text-anchor="middle">"orderService"</text>
+  <rect x="590" y="88" width="130" height="48" rx="8" class="ok"/>
+  <text x="655" y="108" class="okc" text-anchor="middle">createOrder</text>
+  <text x="655" y="127" class="val" text-anchor="middle">join 후 주문 생성</text>
+  <rect x="155" y="186" width="130" height="48" rx="8" class="ok"/>
+  <text x="220" y="206" class="okt" text-anchor="middle">빈 4개 등록</text>
+  <text x="220" y="225" class="val" text-anchor="middle">AppConfig 읽음</text>
+  <rect x="300" y="186" width="130" height="48" rx="8" class="box"/>
+  <text x="365" y="206" class="t" text-anchor="middle">빈 반환</text>
+  <text x="365" y="225" class="ms" text-anchor="middle">MemberServiceImpl</text>
+  <rect x="445" y="186" width="130" height="48" rx="8" class="box"/>
+  <text x="510" y="206" class="t" text-anchor="middle">빈 반환</text>
+  <text x="510" y="225" class="ms" text-anchor="middle">OrderServiceImpl</text>
+  <line x1="220" y1="136" x2="220" y2="183" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="343" y1="136" x2="343" y2="183" stroke="#6b7280" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="387" y1="186" x2="387" y2="139" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="488" y1="136" x2="488" y2="183" stroke="#6b7280" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="532" y1="186" x2="532" y2="139" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="264" class="foot">빈 이름은 @Bean 메서드 이름이므로 <tspan font-family="Menlo, Consolas, monospace">"memberService"</tspan>, <tspan font-family="Menlo, Consolas, monospace">"orderService"</tspan>로 조회합니다.</text>
+</svg>

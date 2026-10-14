@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 528" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>싱글톤 빈은 클라이언트 A, B, C의 요청에 같은 SingletonBean 인스턴스를 반환하고, 프로토타입 빈은 요청마다 생성·의존관계 주입·초기화를 거친 새 인스턴스를 반환한 뒤 관리하지 않는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .msg { font-size: 11.5px; fill: #374151; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .cont { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="528" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">싱글톤 빈 요청 — 항상 같은 인스턴스를 반환</text>
+  <text x="730" y="42" class="code" text-anchor="end">@Scope("singleton")</text>
+  <rect x="230" y="58" width="250" height="172" rx="10" class="cont"/>
+  <text x="355" y="80" class="db" text-anchor="middle">스프링 컨테이너</text>
+  <rect x="268" y="128" width="174" height="52" rx="8" class="hold"/>
+  <text x="355" y="150" class="opm" text-anchor="middle">SingletonBean@x01</text>
+  <text x="355" y="169" class="val" text-anchor="middle">컨테이너가 관리</text>
+  <rect x="30" y="94" width="120" height="32" rx="6" class="box"/>
+  <text x="90" y="115" class="ts" text-anchor="middle">클라이언트 A</text>
+  <line x1="150" y1="110" x2="226" y2="110" class="axis" marker-end="url(#ar)"/>
+  <text x="188" y="104" class="step" text-anchor="middle">요청</text>
+  <line x1="480" y1="110" x2="554" y2="110" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="517" y="104" class="step" text-anchor="middle">반환</text>
+  <rect x="560" y="94" width="170" height="32" rx="6" class="ok"/>
+  <text x="645" y="115" class="okm" text-anchor="middle">SingletonBean@x01</text>
+  <rect x="30" y="138" width="120" height="32" rx="6" class="box"/>
+  <text x="90" y="159" class="ts" text-anchor="middle">클라이언트 B</text>
+  <line x1="150" y1="154" x2="226" y2="154" class="axis" marker-end="url(#ar)"/>
+  <text x="188" y="148" class="step" text-anchor="middle">요청</text>
+  <line x1="480" y1="154" x2="554" y2="154" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="517" y="148" class="step" text-anchor="middle">반환</text>
+  <rect x="560" y="138" width="170" height="32" rx="6" class="ok"/>
+  <text x="645" y="159" class="okm" text-anchor="middle">SingletonBean@x01</text>
+  <rect x="30" y="182" width="120" height="32" rx="6" class="box"/>
+  <text x="90" y="203" class="ts" text-anchor="middle">클라이언트 C</text>
+  <line x1="150" y1="198" x2="226" y2="198" class="axis" marker-end="url(#ar)"/>
+  <text x="188" y="192" class="step" text-anchor="middle">요청</text>
+  <line x1="480" y1="198" x2="554" y2="198" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="517" y="192" class="step" text-anchor="middle">반환</text>
+  <rect x="560" y="182" width="170" height="32" rx="6" class="ok"/>
+  <text x="645" y="203" class="okm" text-anchor="middle">SingletonBean@x01</text>
+  <rect x="10" y="262" width="740" height="256" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="294" class="h">프로토타입 빈 요청 — 요청할 때마다 새로 생성</text>
+  <text x="730" y="294" class="code" text-anchor="end">@Scope("prototype")</text>
+  <rect x="230" y="310" width="250" height="172" rx="10" class="cont"/>
+  <text x="355" y="332" class="db" text-anchor="middle">스프링 컨테이너</text>
+  <rect x="30" y="346" width="120" height="32" rx="6" class="box"/>
+  <text x="90" y="367" class="ts" text-anchor="middle">클라이언트 A</text>
+  <line x1="150" y1="362" x2="226" y2="362" class="axis" marker-end="url(#ar)"/>
+  <text x="188" y="356" class="step" text-anchor="middle">요청</text>
+  <rect x="246" y="347" width="218" height="30" rx="6" class="box"/>
+  <text x="355" y="367" class="val" text-anchor="middle">생성 → 의존관계 주입 → 초기화</text>
+  <line x1="480" y1="362" x2="554" y2="362" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="517" y="356" class="step" text-anchor="middle">반환</text>
+  <rect x="560" y="346" width="170" height="32" rx="6" class="box"/>
+  <text x="645" y="367" class="opm" text-anchor="middle">PrototypeBean@x01</text>
+  <rect x="30" y="390" width="120" height="32" rx="6" class="box"/>
+  <text x="90" y="411" class="ts" text-anchor="middle">클라이언트 B</text>
+  <line x1="150" y1="406" x2="226" y2="406" class="axis" marker-end="url(#ar)"/>
+  <text x="188" y="400" class="step" text-anchor="middle">요청</text>
+  <rect x="246" y="391" width="218" height="30" rx="6" class="box"/>
+  <text x="355" y="411" class="val" text-anchor="middle">생성 → 의존관계 주입 → 초기화</text>
+  <line x1="480" y1="406" x2="554" y2="406" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="517" y="400" class="step" text-anchor="middle">반환</text>
+  <rect x="560" y="390" width="170" height="32" rx="6" class="box"/>
+  <text x="645" y="411" class="opm" text-anchor="middle">PrototypeBean@x02</text>
+  <rect x="30" y="434" width="120" height="32" rx="6" class="box"/>
+  <text x="90" y="455" class="ts" text-anchor="middle">클라이언트 C</text>
+  <line x1="150" y1="450" x2="226" y2="450" class="axis" marker-end="url(#ar)"/>
+  <text x="188" y="444" class="step" text-anchor="middle">요청</text>
+  <rect x="246" y="435" width="218" height="30" rx="6" class="box"/>
+  <text x="355" y="455" class="val" text-anchor="middle">생성 → 의존관계 주입 → 초기화</text>
+  <line x1="480" y1="450" x2="554" y2="450" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="517" y="444" class="step" text-anchor="middle">반환</text>
+  <rect x="560" y="434" width="170" height="32" rx="6" class="box"/>
+  <text x="645" y="455" class="opm" text-anchor="middle">PrototypeBean@x03</text>
+  <text x="30" y="506" class="note">반환한 뒤에는 컨테이너가 관리하지 않으므로 <tspan font-family="Menlo, Consolas, monospace">@PreDestroy</tspan> 같은 종료 메서드가 호출되지 않습니다</text>
+</svg>
