@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 516" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>회원 저장 컨트롤러에서 v3는 컨트롤러가 ModelView를 직접 생성해 member를 담아 반환하고, v4는 프론트 컨트롤러가 만든 model을 파라미터로 받아 member를 담은 뒤 save-result라는 뷰 이름만 반환하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .vm { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="516" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="240" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">v3 — 컨트롤러가 ModelView를 직접 생성</text>
+  <text x="730" y="42" class="code" text-anchor="end">ModelView process(paramMap)</text>
+  <text x="228" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="373" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="518" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="663" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">프론트 컨트롤러</text>
+  <text x="30" y="128" class="sub">서블릿 하나</text>
+  <rect x="150" y="86" width="585" height="56" rx="6" class="track"/>
+  <text x="30" y="180" class="lane">컨트롤러</text>
+  <text x="30" y="198" class="sub">회원 저장 컨트롤러</text>
+  <rect x="150" y="156" width="585" height="56" rx="6" class="track"/>
+  <rect x="160.0" y="90" width="136" height="48" rx="8" class="box"/>
+  <text x="228.0" y="110.0" class="t" text-anchor="middle">paramMap 생성</text>
+  <text x="228.0" y="129.0" class="vm" text-anchor="middle">createParamMap()</text>
+  <rect x="305.0" y="160" width="136" height="48" rx="8" class="hold"/>
+  <text x="373.0" y="180.0" class="t" text-anchor="middle">ModelView 생성</text>
+  <text x="373.0" y="199.0" class="vm" text-anchor="middle">new ModelView()</text>
+  <rect x="450.0" y="160" width="136" height="48" rx="8" class="box"/>
+  <text x="518.0" y="180.0" class="t" text-anchor="middle">member 담기</text>
+  <text x="518.0" y="199.0" class="vm" text-anchor="middle">getModel().put()</text>
+  <rect x="595.0" y="90" width="136" height="48" rx="8" class="box"/>
+  <text x="663.0" y="110.0" class="t" text-anchor="middle">ModelView 받음</text>
+  <text x="663.0" y="129.0" class="vm" text-anchor="middle">getViewName()</text>
+  <path d="M296,114 L373,114 L373,158" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <path d="M586,184 L663,184 L663,140" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="150" y="238" class="foot">컨트롤러를 만들 때마다 ModelView를 생성하고 반환하는 코드를 작성해야 합니다.</text>
+  <rect x="10" y="266" width="740" height="240" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="298" class="h">v4 — 컨트롤러는 뷰 이름만 반환</text>
+  <text x="730" y="298" class="code" text-anchor="end">String process(paramMap, model)</text>
+  <text x="228" y="324" class="step" text-anchor="middle">1단계</text>
+  <text x="373" y="324" class="step" text-anchor="middle">2단계</text>
+  <text x="518" y="324" class="step" text-anchor="middle">3단계</text>
+  <text x="663" y="324" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="332" x2="722" y2="332" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="366" class="lane">프론트 컨트롤러</text>
+  <text x="30" y="384" class="sub">서블릿 하나</text>
+  <rect x="150" y="342" width="585" height="56" rx="6" class="track"/>
+  <text x="30" y="436" class="lane">컨트롤러</text>
+  <text x="30" y="454" class="sub">회원 저장 컨트롤러</text>
+  <rect x="150" y="412" width="585" height="56" rx="6" class="track"/>
+  <rect x="160.0" y="346" width="136" height="48" rx="8" class="box"/>
+  <text x="228.0" y="366.0" class="t" text-anchor="middle">model 생성</text>
+  <text x="228.0" y="385.0" class="vm" text-anchor="middle">new HashMap()</text>
+  <rect x="305.0" y="416" width="136" height="48" rx="8" class="box"/>
+  <text x="373.0" y="436.0" class="t" text-anchor="middle">member 담기</text>
+  <text x="373.0" y="455.0" class="vm" text-anchor="middle">model.put()</text>
+  <rect x="450.0" y="416" width="136" height="48" rx="8" class="ok"/>
+  <text x="518.0" y="436.0" class="okt" text-anchor="middle">뷰 이름 반환</text>
+  <text x="518.0" y="455.0" class="vm" text-anchor="middle">"save-result"</text>
+  <rect x="595.0" y="346" width="136" height="48" rx="8" class="box"/>
+  <text x="663.0" y="366.0" class="t" text-anchor="middle">뷰 리졸버</text>
+  <text x="663.0" y="385.0" class="vm" text-anchor="middle">viewResolver()</text>
+  <path d="M296,370 L373,370 L373,414" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <path d="M586,440 L663,440 L663,396" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="494" class="foot">프론트 컨트롤러가 만든 model에 값이 그대로 담기므로, 컨트롤러는 문자열만 반환합니다.</text>
+</svg>

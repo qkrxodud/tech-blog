@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>서블릿과 JSP를 단독으로 쓰면 한 파일에 비즈니스 로직과 HTML이 섞이고, MVC 패턴은 서블릿 컨트롤러와 JSP 뷰로 역할을 나누는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">회원 저장 화면 — 로직과 HTML이 놓이는 곳</text>
+
+  <text x="30" y="98" class="lane">서블릿</text>
+  <text x="30" y="116" class="sub">한 파일이 모두 처리</text>
+  <rect x="150" y="62" width="585" height="84" rx="6" class="track"/>
+  <rect x="162" y="70" width="561" height="68" rx="8" class="bad"/>
+  <line x1="442" y1="78" x2="442" y2="130" stroke="#f3a5a5" stroke-width="1.2"/>
+  <text x="302" y="98" class="badt" text-anchor="middle">비즈니스 로직</text>
+  <text x="302" y="118" class="val" text-anchor="middle">파라미터 조회, 회원 저장</text>
+  <text x="582" y="98" class="badt" text-anchor="middle">HTML 생성</text>
+  <text x="582" y="118" class="val" text-anchor="middle">자바 코드 안의 <tspan font-family="Menlo, Consolas, monospace">w.write("…")</tspan></text>
+
+  <text x="30" y="198" class="lane">JSP</text>
+  <text x="30" y="216" class="sub">한 파일이 모두 처리</text>
+  <rect x="150" y="162" width="585" height="84" rx="6" class="track"/>
+  <rect x="162" y="170" width="561" height="68" rx="8" class="bad"/>
+  <line x1="442" y1="178" x2="442" y2="230" stroke="#f3a5a5" stroke-width="1.2"/>
+  <text x="302" y="198" class="badt" text-anchor="middle">상위 절반: 비즈니스 로직</text>
+  <text x="302" y="218" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">&lt;% … %&gt;</tspan> 안의 자바 코드</text>
+  <text x="582" y="198" class="badt" text-anchor="middle">하위 절반: 뷰 영역</text>
+  <text x="582" y="218" class="val" text-anchor="middle">HTML 안의 <tspan font-family="Menlo, Consolas, monospace">&lt;%= … %&gt;</tspan></text>
+
+  <text x="30" y="298" class="lane">MVC</text>
+  <text x="30" y="316" class="sub">역할을 나눔</text>
+  <rect x="150" y="262" width="585" height="84" rx="6" class="track"/>
+  <rect x="162" y="270" width="250" height="68" rx="8" class="box"/>
+  <text x="287" y="297" class="t" text-anchor="middle">컨트롤러: 비즈니스 로직</text>
+  <text x="287" y="318" class="m" text-anchor="middle">MvcMemberSaveServlet</text>
+  <text x="442" y="294" class="s" text-anchor="middle">forward</text>
+  <line x1="414" y1="304" x2="470" y2="304" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="473" y="270" width="250" height="68" rx="8" class="ok"/>
+  <text x="598" y="297" class="okt" text-anchor="middle">뷰: 화면 렌더링</text>
+  <text x="598" y="318" class="m" text-anchor="middle">save-result.jsp</text>
+
+  <text x="30" y="372" class="foot">서블릿과 JSP를 단독으로 쓰면 한 파일이 로직과 화면을 함께 맡고, MVC 패턴은 두 역할을 나눕니다.</text>
+</svg>

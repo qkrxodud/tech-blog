@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>SpringDataJpaMemberRepository가 JpaRepository와 MemberRepository를 상속하면 스프링 데이터 JPA가 구현체를 만들어 스프링 빈으로 등록하고, SpringConfig가 MemberRepository로 주입받아 MemberService에 넘기는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mg { font-size: 12px; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 12px; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12px; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">스프링 데이터 JPA — 인터페이스만 작성하면 구현체를 만들어 주입</text>
+  <rect x="30" y="68" width="250" height="54" rx="8" class="hold"/>
+  <text x="155" y="91" class="op" text-anchor="middle">JpaRepository&lt;Member, Long&gt;</text>
+  <text x="155" y="110" class="sub" text-anchor="middle">스프링 데이터 JPA가 제공</text>
+  <rect x="300" y="68" width="220" height="54" rx="8" class="hold"/>
+  <text x="410" y="91" class="op" text-anchor="middle">MemberRepository</text>
+  <text x="410" y="110" class="sub" text-anchor="middle">회원 리포지토리 인터페이스</text>
+  <line x1="155" y1="160" x2="155" y2="125" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="410" y1="160" x2="410" y2="125" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="165" y="147" class="sub">상속</text>
+  <text x="420" y="147" class="sub">상속</text>
+  <rect x="30" y="160" width="490" height="56" rx="8" class="box"/>
+  <text x="275" y="184" class="op" text-anchor="middle">SpringDataJpaMemberRepository</text>
+  <text x="275" y="204" class="sub" text-anchor="middle">개발자가 작성하는 인터페이스 (<tspan font-family="Menlo, Consolas, monospace">findByName</tspan> 선언)</text>
+  <rect x="544" y="160" width="186" height="56" rx="8" class="wait"/>
+  <text x="637" y="184" class="waitt" text-anchor="middle">구현 클래스</text>
+  <text x="637" y="203" class="waitt" text-anchor="middle">직접 작성하지 않음</text>
+  <rect x="30" y="262" width="166" height="82" rx="8" class="ok"/>
+  <text x="113" y="287" class="okt" text-anchor="middle">구현체 생성</text>
+  <text x="113" y="309" class="sub" text-anchor="middle">스프링 데이터 JPA가</text>
+  <text x="113" y="328" class="sub" text-anchor="middle">자동으로 생성</text>
+  <line x1="197" y1="303" x2="206" y2="303" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="208" y="262" width="166" height="82" rx="8" class="ok"/>
+  <text x="291" y="287" class="okt" text-anchor="middle">스프링 빈 등록</text>
+  <text x="291" y="309" class="okm" text-anchor="middle">MemberRepository</text>
+  <text x="291" y="328" class="sub" text-anchor="middle">타입의 빈으로 등록</text>
+  <line x1="375" y1="303" x2="384" y2="303" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="386" y="262" width="166" height="82" rx="8" class="box"/>
+  <text x="469" y="287" class="op" text-anchor="middle">SpringConfig</text>
+  <text x="469" y="309" class="sub" text-anchor="middle">생성자로</text>
+  <text x="469" y="328" class="sub" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">MemberRepository</tspan> 주입</text>
+  <line x1="553" y1="303" x2="562" y2="303" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="564" y="262" width="166" height="82" rx="8" class="box"/>
+  <text x="647" y="287" class="op" text-anchor="middle">MemberService</text>
+  <text x="647" y="309" class="m" text-anchor="middle">new MemberService(</text>
+  <text x="647" y="328" class="m" text-anchor="middle">memberRepository)</text>
+  <line x1="113" y1="217" x2="113" y2="259" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="123" y="243" class="gnote">스프링 데이터 JPA가 인터페이스를 찾음</text>
+  <text x="30" y="372" class="foot">개발자가 작성한 것은 인터페이스뿐이고, 구현체는 스프링 데이터 JPA가 만들어 스프링 빈으로 등록합니다.</text>
+  <text x="30" y="394" class="foot">SpringConfig는 직접 만들던 <tspan font-family="Menlo, Consolas, monospace">memberRepository()</tspan> 빈 대신 이 빈을 주입받습니다.</text>
+</svg>

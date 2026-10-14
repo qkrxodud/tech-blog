@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 498" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>컨트롤러마다 공통 기능 호출과 viewPath, forward를 반복하는 구조와, 프론트 컨트롤러가 공통 기능을 먼저 처리한 뒤 컨트롤러를 호출하는 구조의 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="498" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="226" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">지금 구조 — 컨트롤러마다 같은 코드를 반복</text>
+  <rect x="30" y="102" width="120" height="64" rx="8" class="hold"/>
+  <text x="90" y="131" class="t" text-anchor="middle">클라이언트</text>
+  <text x="90" y="150" class="s" text-anchor="middle">요청</text>
+  <rect x="200" y="62" width="220" height="42" rx="8" class="box"/>
+  <text x="310" y="88" class="op" text-anchor="middle" style="font-size: 13px">MvcMemberFormServlet</text>
+  <line x1="152" y1="134" x2="197" y2="83" stroke="#6b7280" stroke-width="1.4" marker-end="url(#ag)"/>
+  <rect x="440" y="67" width="290" height="32" rx="6" class="bad"/>
+  <text x="585" y="88" class="note" text-anchor="middle">공통 기능 호출 + viewPath + forward</text>
+  <rect x="200" y="114" width="220" height="42" rx="8" class="box"/>
+  <text x="310" y="140" class="op" text-anchor="middle" style="font-size: 13px">MvcMemberSaveServlet</text>
+  <line x1="152" y1="134" x2="197" y2="135" stroke="#6b7280" stroke-width="1.4" marker-end="url(#ag)"/>
+  <rect x="440" y="119" width="290" height="32" rx="6" class="bad"/>
+  <text x="585" y="140" class="note" text-anchor="middle">공통 기능 호출 + viewPath + forward</text>
+  <rect x="200" y="166" width="220" height="42" rx="8" class="box"/>
+  <text x="310" y="192" class="op" text-anchor="middle" style="font-size: 13px">MvcMemberListServlet</text>
+  <line x1="152" y1="134" x2="197" y2="187" stroke="#6b7280" stroke-width="1.4" marker-end="url(#ag)"/>
+  <rect x="440" y="171" width="290" height="32" rx="6" class="bad"/>
+  <text x="585" y="192" class="note" text-anchor="middle">공통 기능 호출 + viewPath + forward</text>
+  <text x="30" y="226" class="note">같은 코드를 컨트롤러마다 직접 호출해야 하고, 하나라도 빠뜨리면 문제가 됩니다.</text>
+  <rect x="10" y="252" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="284" class="h">프론트 컨트롤러 — 공통 기능을 먼저 처리한 뒤 컨트롤러 호출</text>
+  <rect x="30" y="348" width="120" height="64" rx="8" class="hold"/>
+  <text x="90" y="377" class="t" text-anchor="middle">클라이언트</text>
+  <text x="90" y="396" class="s" text-anchor="middle">요청</text>
+  <rect x="200" y="340" width="200" height="80" rx="8" class="ok"/>
+  <text x="300" y="370" class="okt" text-anchor="middle">프론트 컨트롤러</text>
+  <text x="300" y="390" class="val" text-anchor="middle">수문장 역할</text>
+  <text x="300" y="408" class="val" text-anchor="middle">공통 기능 처리</text>
+  <line x1="152" y1="380" x2="197" y2="380" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="480" y="304" width="250" height="42" rx="8" class="box"/>
+  <text x="605" y="330" class="op" text-anchor="middle" style="font-size: 13px">MvcMemberFormServlet</text>
+  <line x1="402" y1="380" x2="477" y2="325" stroke="#16a34a" stroke-width="1.4" marker-end="url(#agr)"/>
+  <rect x="480" y="358" width="250" height="42" rx="8" class="box"/>
+  <text x="605" y="384" class="op" text-anchor="middle" style="font-size: 13px">MvcMemberSaveServlet</text>
+  <line x1="402" y1="380" x2="477" y2="379" stroke="#16a34a" stroke-width="1.4" marker-end="url(#agr)"/>
+  <rect x="480" y="412" width="250" height="42" rx="8" class="box"/>
+  <text x="605" y="438" class="op" text-anchor="middle" style="font-size: 13px">MvcMemberListServlet</text>
+  <line x1="402" y1="380" x2="477" y2="433" stroke="#16a34a" stroke-width="1.4" marker-end="url(#agr)"/>
+  <text x="30" y="476" class="gnote">공통 기능은 프론트 컨트롤러 한곳에서 처리하고, 각 컨트롤러는 자기 요청만 처리합니다.</text>
+</svg>

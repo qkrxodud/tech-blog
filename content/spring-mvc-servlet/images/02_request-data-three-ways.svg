@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 432" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>GET 쿼리 파라미터는 URL에, POST HTML Form은 메시지 바디에 같은 username=hello&amp;age=20 형식으로 담겨 둘 다 getParameter로 조회하고, JSON 메시지 바디는 getInputStream으로 읽어 ObjectMapper로 변환한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .mv { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .gn { font-size: 12.5px; fill: #15803d; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="432" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="412" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">HTTP 요청 데이터 — 3가지 전달 방식과 서버의 조회 방법</text>
+  <text x="30" y="66" class="step">방식</text>
+  <text x="186" y="66" class="step">HTTP 요청 메시지</text>
+  <text x="560" y="66" class="step">서버에서 조회</text>
+
+  <rect x="30" y="76" width="140" height="90" rx="8" class="box"/>
+  <text x="100" y="114" class="t" text-anchor="middle">GET</text>
+  <text x="100" y="134" class="val" text-anchor="middle">쿼리 파라미터</text>
+  <rect x="186" y="76" width="344" height="90" rx="8" class="box"/>
+  <text x="200" y="104" class="mv" style="font-size:11px">GET /request-param?username=hello&amp;age=20</text>
+  <text x="200" y="130" class="val">메시지 바디 없음, content-type 없음</text>
+  <text x="200" y="150" class="sub">예) 검색, 필터, 페이징</text>
+  <line x1="530" y1="121" x2="554" y2="121" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="560" y="76" width="170" height="90" rx="8" class="ok"/>
+  <text x="645" y="114" class="okm" text-anchor="middle">getParameter()</text>
+  <text x="645" y="134" class="val" text-anchor="middle">쿼리 파라미터 조회</text>
+
+  <rect x="30" y="178" width="140" height="104" rx="8" class="box"/>
+  <text x="100" y="223" class="t" text-anchor="middle">POST</text>
+  <text x="100" y="243" class="val" text-anchor="middle">HTML Form</text>
+  <rect x="186" y="178" width="344" height="104" rx="8" class="box"/>
+  <text x="200" y="202" class="mv" style="font-size:11px">POST /request-param</text>
+  <text x="200" y="222" class="mv" style="font-size:10.5px">Content-Type: application/x-www-form-urlencoded</text>
+  <text x="200" y="246" class="mv" style="font-size:11px">username=hello&amp;age=20</text>
+  <text x="200" y="270" class="sub">예) 회원 가입, 상품 주문 · 바디에 쿼리 파라미터 형식</text>
+  <line x1="530" y1="230" x2="554" y2="230" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="560" y="178" width="170" height="104" rx="8" class="ok"/>
+  <text x="645" y="218" class="okm" text-anchor="middle">getParameter()</text>
+  <text x="645" y="238" class="val" text-anchor="middle">GET과 같은 메서드</text>
+  <text x="645" y="256" class="val" text-anchor="middle">(서버에는 같은 형식)</text>
+
+  <rect x="30" y="294" width="140" height="104" rx="8" class="box"/>
+  <text x="100" y="332" class="t" text-anchor="middle">메시지 바디</text>
+  <text x="100" y="352" class="val" text-anchor="middle">HTTP API (JSON)</text>
+  <text x="100" y="370" class="sub" text-anchor="middle">POST, PUT, PATCH</text>
+  <rect x="186" y="294" width="344" height="104" rx="8" class="box"/>
+  <text x="200" y="318" class="mv" style="font-size:11px">POST /request-body-json</text>
+  <text x="200" y="338" class="mv" style="font-size:11px">Content-Type: application/json</text>
+  <text x="200" y="362" class="mv" style="font-size:11px">{"username" : "hello", "age":20}</text>
+  <text x="200" y="386" class="sub">JSON, XML, TEXT를 바디에 직접 담음</text>
+  <line x1="530" y1="346" x2="554" y2="346" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="560" y="294" width="170" height="104" rx="8" class="hold"/>
+  <text x="645" y="330" class="m" text-anchor="middle">getInputStream()</text>
+  <text x="645" y="350" class="val" text-anchor="middle">바디를 직접 읽고</text>
+  <text x="645" y="368" class="val" text-anchor="middle">ObjectMapper로 변환</text>
+</svg>

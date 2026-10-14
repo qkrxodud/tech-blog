@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>beforeEach에서 MemoryMemberRepository를 만들어 MemberService 생성자로 넘기고, 테스트의 join은 그 저장소에 저장되며, afterEach에서 같은 저장소를 clearStore로 비우는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .mxs { font-size: 11px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .chip { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .gscope { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">@BeforeEach — 저장소를 만들어 생성자로 주입</text>
+  <text x="730" y="42" class="code" text-anchor="end">MemberServiceTest</text>
+  <text x="256.0" y="68" class="step" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">beforeEach()</tspan></text>
+  <text x="446.0" y="68" class="step" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">@Test</tspan> 회원가입()</text>
+  <text x="636.0" y="68" class="step" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">afterEach()</tspan></text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">테스트</text>
+  <text x="30" y="128" class="sub">테스트 클래스</text>
+  <rect x="150" y="86" width="585" height="60" rx="6" class="track"/>
+  <rect x="166" y="92" width="180" height="48" rx="8" class="box"/>
+  <text x="256.0" y="112.0" class="val" text-anchor="middle">저장소 생성 후</text>
+  <text x="256.0" y="131.0" class="val" text-anchor="middle">생성자로 전달</text>
+  <rect x="356" y="92" width="180" height="48" rx="8" class="box"/>
+  <text x="446.0" y="112.0" class="mb" text-anchor="middle">join(member1)</text>
+  <text x="446.0" y="131.0" class="val" text-anchor="middle">서비스에 가입 요청</text>
+  <rect x="546" y="92" width="180" height="48" rx="8" class="box"/>
+  <text x="636.0" y="112.0" class="mb" text-anchor="middle">clearStore()</text>
+  <text x="636.0" y="131.0" class="val" text-anchor="middle">저장소 비움</text>
+  <text x="30" y="186" class="lane">서비스</text>
+  <text x="30" y="204" class="code">MemberService</text>
+  <rect x="150" y="162" width="585" height="60" rx="6" class="track"/>
+  <rect x="166" y="168" width="180" height="48" rx="8" class="ok"/>
+  <text x="256.0" y="188.0" class="okt" text-anchor="middle">생성자로</text>
+  <text x="256.0" y="207.0" class="val" text-anchor="middle">저장소를 받음</text>
+  <rect x="356" y="168" width="180" height="48" rx="8" class="box"/>
+  <text x="446.0" y="188.0" class="mb" text-anchor="middle">save(member)</text>
+  <text x="446.0" y="207.0" class="val" text-anchor="middle">받은 저장소에 저장</text>
+  <text x="30" y="262" class="lane">저장소</text>
+  <text x="30" y="280" class="sub">메모리 구현체</text>
+  <rect x="150" y="238" width="585" height="60" rx="6" class="track"/>
+  <rect x="166" y="244" width="180" height="48" rx="8" class="hold"/>
+  <text x="256.0" y="264.0" class="t" text-anchor="middle">인스턴스 하나</text>
+  <text x="256.0" y="283.0" class="val" text-anchor="middle">생성</text>
+  <rect x="356" y="244" width="180" height="48" rx="8" class="hold"/>
+  <text x="446.0" y="264.0" class="mb" text-anchor="middle">member1</text>
+  <text x="446.0" y="283.0" class="val" text-anchor="middle">저장됨</text>
+  <rect x="546" y="244" width="180" height="48" rx="8" class="hold"/>
+  <text x="636.0" y="264.0" class="mb" text-anchor="middle">store</text>
+  <text x="636.0" y="283.0" class="val" text-anchor="middle">비어 있음</text>
+  <line x1="256.0" y1="140" x2="256.0" y2="168" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="446.0" y1="140" x2="446.0" y2="168" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="446.0" y1="216" x2="446.0" y2="244" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="636.0" y1="140" x2="636.0" y2="244" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="320" class="foot">테스트와 MemberService가 같은 저장소 인스턴스를 사용하므로, afterEach에서 비우는 저장소도 서비스가 쓴 저장소입니다.</text>
+</svg>

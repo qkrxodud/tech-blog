@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 460" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>v5에 ControllerV4를 추가한 뒤 /front-controller/v5/v4/members/save 요청이 오면 handlerAdapters를 등록 순서대로 확인해 ControllerV3HandlerAdapter는 supports()가 false이고 ControllerV4HandlerAdapter가 선택되며, 이 어댑터가 컨트롤러가 반환한 save-result 문자열과 model을 ModelView로 만들어 반환하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .vm { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="460" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">어댑터 조회 — 등록 순서대로 supports() 확인</text>
+  <text x="730" y="42" class="code" text-anchor="end">/front-controller/v5/v4/members/save</text>
+  <rect x="30" y="70" width="184" height="56" rx="8" class="box"/>
+  <text x="122.0" y="94.0" class="t" text-anchor="middle">핸들러</text>
+  <text x="122.0" y="113.0" class="vm" text-anchor="middle">MemberSaveControllerV4</text>
+  <rect x="250" y="70" width="230" height="56" rx="8" class="bad"/>
+  <text x="365.0" y="94.0" class="badm" text-anchor="middle">ControllerV3HandlerAdapter</text>
+  <text x="365.0" y="113.0" class="vm" text-anchor="middle">supports() → false</text>
+  <rect x="504" y="70" width="230" height="56" rx="8" class="ok"/>
+  <text x="619.0" y="94.0" class="okm" text-anchor="middle">ControllerV4HandlerAdapter</text>
+  <text x="619.0" y="113.0" class="vm" text-anchor="middle">supports() → true</text>
+  <line x1="214" y1="98" x2="248" y2="98" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="480" y1="98" x2="502" y2="98" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="30" y="154" class="foot">ControllerV3HandlerAdapter는 ControllerV4를 지원하지 않으므로 다음 어댑터로 넘어갑니다.</text>
+  <rect x="10" y="196" width="740" height="256" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="228" class="h">ControllerV4HandlerAdapter.handle() — 반환 형식 맞추기</text>
+  <rect x="30" y="246" width="155" height="56" rx="8" class="box"/>
+  <text x="107.5" y="270.0" class="t" text-anchor="middle">파라미터 준비</text>
+  <text x="107.5" y="289.0" class="vm" text-anchor="middle">paramMap, model</text>
+  <rect x="213" y="246" width="155" height="56" rx="8" class="box"/>
+  <text x="290.5" y="270.0" class="t" text-anchor="middle">컨트롤러 호출</text>
+  <text x="290.5" y="289.0" class="vm" text-anchor="middle">process()</text>
+  <rect x="396" y="246" width="155" height="56" rx="8" class="bad"/>
+  <text x="473.5" y="270.0" class="badt" text-anchor="middle">문자열 반환</text>
+  <text x="473.5" y="289.0" class="vm" text-anchor="middle">"save-result"</text>
+  <rect x="579" y="246" width="155" height="56" rx="8" class="ok"/>
+  <text x="656.5" y="270.0" class="okt" text-anchor="middle">ModelView로 변환</text>
+  <text x="656.5" y="289.0" class="vm" text-anchor="middle">setModel(model)</text>
+  <line x1="185" y1="274" x2="211" y2="274" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="368" y1="274" x2="394" y2="274" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="551" y1="274" x2="577" y2="274" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="341" class="t">컨트롤러 반환</text>
+  <rect x="150" y="320" width="585" height="32" rx="6" class="dbbox"/>
+  <text x="442.5" y="341" class="m" text-anchor="middle">String process(paramMap, model)</text>
+  <text x="30" y="385" class="t">어댑터 반환</text>
+  <rect x="150" y="364" width="585" height="32" rx="6" class="dbbox"/>
+  <text x="442.5" y="385" class="okm" text-anchor="middle">ModelView handle(request, response, handler)</text>
+  <text x="150" y="430" class="foot">어댑터가 뷰 이름을 ModelView로 감싸 주므로 프론트 컨트롤러는 v3와 v4를 같은 방식으로 처리합니다.</text>
+</svg>

@@ -1,20 +1,24 @@
 ---
 title: "H2 데이터베이스 설치와 연동"
 tags: ["Spring","H2","DB","JDBC"]
-summary: "H2 데이터베이스를 설치하고 build.gradle과 application.properties를 설정해 스프링 프로젝트와 연동하는 과정을 정리합니다."
+summary: "H2 데이터베이스를 설치해 member 테이블을 만들고, build.gradle과 application.properties를 설정해 스프링 프로젝트와 연동하는 과정을 정리합니다."
 ---
+
+이전에 [회원 웹 기능 — 등록, 출력](../spring-intro-member-web/)에 대해 작성하였습니다. 지금까지는 회원 정보를 메모리에 저장했는데, 오늘은 H2 데이터베이스를 설치하고 스프링 프로젝트와 연동하는 과정을 정리하도록 하겠습니다.
 
 ## H2 설치
 
-다운로드 URL: [https://www.h2database.com/html/download-archive.html](https://www.h2database.com/html/download-archive.html)
+H2는 아래 주소에서 내려받을 수 있습니다.
 
-버전 1.4.200을 설치합니다.
+- 다운로드 URL: [https://www.h2database.com/html/download-archive.html](https://www.h2database.com/html/download-archive.html)
 
-설치 파일의 압축을 푼 후 h2.bat 파일을 실행합니다.
+버전은 1.4.200을 설치하였습니다. 설치 파일의 압축을 푼 후 `h2.bat` 파일을 실행하고, JDBC URL을 프로토콜 주소로 입력해 연결합니다. 스프링에서 접속할 때 사용하는 주소는 아래 `application.properties`의 `jdbc:h2:tcp://localhost/~/test`입니다.
 
-JDBC URL을 프로토콜로 연결합니다.
+처음 접속할 때 데이터베이스 파일을 먼저 만들고 그다음부터 TCP 주소로 접속하는 순서는 [프로젝트 환경설정](../data-jpa-setup/)의 H2 데이터베이스 설치 부분에 정리하였습니다.
 
 ## 멤버 테이블 생성
+
+H2 콘솔에서 아래 SQL로 member 테이블을 생성합니다.
 
 ```sql
 CREATE TABLE member(
@@ -26,9 +30,9 @@ CREATE TABLE member(
 
 ## 스프링 H2 데이터베이스 연동
 
-- build.gradle의 dependencies에 implementation을 사용해 외부 라이브러리를 받습니다.
+먼저 `build.gradle`의 dependencies에 `implementation`으로 외부 라이브러리를 추가합니다.
 
-```
+```gradle
 dependencies {
    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
    implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -38,16 +42,20 @@ dependencies {
 }
 ```
 
-- application.properties에 DB 정보를 입력합니다.
+다음으로 `application.properties`에 DB 정보를 입력합니다.
 
-```
+```properties
 spring.datasource.url=jdbc:h2:tcp://localhost/~/test
 spring.datasource.driver-class-name=org.h2.Driver
 
 ```
 
-이제 스프링에서 DB에 연결하는 환경설정을 완료했습니다.
+이것으로 스프링에서 DB에 연결하기 위한 환경설정을 마쳤습니다.
 
-다음으로 스프링에서 DB를 사용해보겠습니다.
+## 마무리
+
+오늘은 H2 데이터베이스를 설치해 member 테이블을 만들고, `build.gradle`과 `application.properties`를 설정해 스프링 프로젝트와 연동하는 과정에 대해 정리하였습니다.
+
+다음 글에서는 스프링에서 실제로 DB를 사용하는 [순수 JDBC 사용과 연동](../spring-intro-jdbc/)에 대해 정리하도록 하겠습니다.
 
 > 이 글은 인프런 김영한 님의 [스프링 입문 — 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술](https://www.inflearn.com/course/스프링-입문-스프링부트)을 들으며 정리한 노트입니다.

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>new-form.jsp가 상대 경로 save로 폼을 전송하면 컨트롤러가 회원을 저장해 request에 member를 담고, save-result.jsp로 포워드해 화면을 그리는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">회원 저장 — 폼 전송부터 결과 화면까지</text>
+  <text x="30" y="66" class="val">상대 경로 전송: <tspan font-family="Menlo, Consolas, monospace">/servlet-mvc/members/</tspan> + <tspan font-family="Menlo, Consolas, monospace">save</tspan> → <tspan font-family="Menlo, Consolas, monospace">/servlet-mvc/members/save</tspan></text>
+  <text x="210" y="92" class="step" text-anchor="middle">폼 전송</text>
+  <text x="322" y="92" class="step" text-anchor="middle">회원 저장</text>
+  <text x="434" y="92" class="step" text-anchor="middle">모델에 보관</text>
+  <text x="546" y="92" class="step" text-anchor="middle">forward</text>
+  <text x="658" y="92" class="step" text-anchor="middle">결과 화면</text>
+  <line x1="160" y1="100" x2="722" y2="100" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="132" class="lane">브라우저</text>
+  <text x="30" y="150" class="sub">클라이언트</text>
+  <rect x="150" y="110" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="192" class="lane">컨트롤러</text>
+  <text x="30" y="210" class="sub">서블릿</text>
+  <rect x="150" y="170" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="252" class="lane">request</text>
+  <text x="30" y="270" class="sub">모델</text>
+  <rect x="150" y="230" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="312" class="lane">뷰</text>
+  <text x="30" y="330" class="sub" font-family="Menlo, Consolas, monospace">save-result.jsp</text>
+  <rect x="150" y="290" width="585" height="52" rx="6" class="track"/>
+  <rect x="158" y="112" width="104" height="48" rx="8" class="box"/>
+  <text x="210" y="132" class="m" text-anchor="middle" font-weight="700" style="font-size: 11.5px">new-form.jsp</text>
+  <text x="210" y="151" class="m" text-anchor="middle" style="font-size: 11px">action="save"</text>
+  <rect x="270" y="172" width="104" height="48" rx="8" class="box"/>
+  <text x="322" y="192" class="t" text-anchor="middle">파라미터 조회</text>
+  <text x="322" y="211" class="m" text-anchor="middle">save(member)</text>
+  <rect x="382" y="232" width="104" height="48" rx="8" class="hold"/>
+  <text x="434" y="252" class="m" text-anchor="middle" font-weight="700" style="font-size: 11.5px">setAttribute</text>
+  <text x="434" y="271" class="m" text-anchor="middle">"member"</text>
+  <rect x="494" y="292" width="104" height="48" rx="8" class="box"/>
+  <text x="546" y="312" class="t" text-anchor="middle">화면 렌더링</text>
+  <text x="546" y="331" class="m" text-anchor="middle">${member.id}</text>
+  <rect x="606" y="112" width="104" height="48" rx="8" class="ok"/>
+  <text x="658" y="132" class="okt" text-anchor="middle">성공 화면</text>
+  <text x="658" y="151" class="val" text-anchor="middle">회원 정보 출력</text>
+  <line x1="240" y1="160" x2="292" y2="172" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="352" y1="220" x2="404" y2="232" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="464" y1="280" x2="516" y2="292" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="576" y1="292" x2="628" y2="160" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="372" class="foot">컨트롤러가 request에 member를 담아 forward 하면, 뷰는 그 값을 ${} 문법으로 꺼내 화면을 그립니다.</text>
+</svg>

@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 494" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>요청마다 쓰레드를 생성하고 종료하는 방식은 생성 비용, 컨텍스트 스위칭 비용, 생성 개수 제한이 없는 문제가 있고, 쓰레드 풀은 미리 만든 최대 200개의 쓰레드를 빌려주고 반납받으며 쓰레드가 없으면 요청을 대기시키거나 거절한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .mv { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .gn { font-size: 12.5px; fill: #15803d; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="494" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="220" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">요청마다 쓰레드 생성 — 요청이 오면 만들고, 끝나면 종료한다</text>
+  <text x="30" y="88" class="lane">요청1</text>
+  <rect x="150" y="60" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="62" width="160" height="48" rx="8" class="bad"/>
+  <text x="242" y="91" class="badt" text-anchor="middle">쓰레드 생성</text>
+  <line x1="322" y1="86" x2="356" y2="86" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="362" y="62" width="160" height="48" rx="8" class="box"/>
+  <text x="442" y="91" class="t" text-anchor="middle">서블릿 호출</text>
+  <line x1="522" y1="86" x2="556" y2="86" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="562" y="62" width="160" height="48" rx="8" class="box"/>
+  <text x="642" y="91" class="t" text-anchor="middle">쓰레드 종료</text>
+  <text x="30" y="148" class="lane">요청2</text>
+  <rect x="150" y="120" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="122" width="160" height="48" rx="8" class="bad"/>
+  <text x="242" y="151" class="badt" text-anchor="middle">쓰레드 생성</text>
+  <line x1="322" y1="146" x2="356" y2="146" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="362" y="122" width="160" height="48" rx="8" class="box"/>
+  <text x="442" y="151" class="t" text-anchor="middle">서블릿 호출</text>
+  <line x1="522" y1="146" x2="556" y2="146" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="562" y="122" width="160" height="48" rx="8" class="box"/>
+  <text x="642" y="151" class="t" text-anchor="middle">쓰레드 종료</text>
+  <text x="30" y="200" class="note">· 생성 비용이 비싸 응답이 늦어짐 · 쓰레드 간 컨텍스트 스위칭 비용 발생</text>
+  <text x="30" y="218" class="note">· 생성 개수에 제한이 없어 요청이 몰리면 CPU, 메모리 임계점을 넘어 서버가 죽을 수 있음</text>
+
+  <rect x="10" y="246" width="740" height="238" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="278" class="h">쓰레드 풀 — 미리 만든 쓰레드를 빌려주고 반납받는다</text>
+  <rect x="30" y="294" width="120" height="46" rx="8" class="box"/>
+  <text x="90" y="322" class="t" text-anchor="middle">요청1</text>
+  <rect x="30" y="350" width="120" height="46" rx="8" class="box"/>
+  <text x="90" y="378" class="t" text-anchor="middle">요청2</text>
+  <rect x="30" y="420" width="120" height="46" rx="8" class="box"/>
+  <text x="90" y="448" class="t" text-anchor="middle">201번째 요청</text>
+  <line x1="150" y1="317" x2="244" y2="317" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="197" y="309" class="gnote" text-anchor="middle">빌려줌</text>
+  <line x1="150" y1="373" x2="244" y2="373" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="197" y="365" class="gnote" text-anchor="middle">빌려줌</text>
+  <rect x="250" y="294" width="260" height="102" rx="8" class="hold"/>
+  <text x="380" y="318" class="t" text-anchor="middle">쓰레드 풀</text>
+  <rect x="276" y="330" width="30" height="22" rx="4" class="box"/>
+  <rect x="314" y="330" width="30" height="22" rx="4" class="box"/>
+  <rect x="352" y="330" width="30" height="22" rx="4" class="box"/>
+  <rect x="390" y="330" width="30" height="22" rx="4" class="box"/>
+  <text x="456" y="346" class="val" text-anchor="middle">… 200개</text>
+  <text x="380" y="380" class="val" text-anchor="middle">최대 200개 (톰캣 기본, 변경 가능)</text>
+  <line x1="510" y1="328" x2="564" y2="328" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="537" y="320" class="sub" text-anchor="middle">사용</text>
+  <line x1="570" y1="364" x2="516" y2="364" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="543" y="382" class="gnote" text-anchor="middle">반납</text>
+  <rect x="570" y="304" width="160" height="82" rx="8" class="ok"/>
+  <text x="650" y="334" class="okt" text-anchor="middle">요청 처리</text>
+  <text x="650" y="356" class="val" text-anchor="middle">서블릿 호출 → 응답</text>
+  <line x1="150" y1="443" x2="244" y2="443" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="250" y="420" width="480" height="46" rx="8" class="bad"/>
+  <text x="490" y="448" class="badt" text-anchor="middle">쓰레드가 모두 사용 중이면 대기 또는 거절</text>
+</svg>

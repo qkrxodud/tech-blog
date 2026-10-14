@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>JpaMemberRepository의 save는 em.persist, findById는 em.find를 사용하고, findAll과 findByName은 JPQL을 작성해 em.createQuery로 조회하는 대응 관계</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mg { font-size: 12px; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 12px; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12px; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">JpaMemberRepository — 메서드마다 EntityManager를 사용하는 방식</text>
+  <text x="115" y="74" class="step" text-anchor="middle">리포지토리 메서드</text>
+  <text x="402" y="74" class="step" text-anchor="middle">EntityManager 사용</text>
+  <text x="660" y="74" class="step" text-anchor="middle">구분</text>
+  <rect x="30" y="86" width="170" height="54" rx="8" class="box"/>
+  <text x="115" y="118" class="op" text-anchor="middle">save(member)</text>
+  <line x1="201" y1="113" x2="224" y2="113" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="226" y="86" width="352" height="54" rx="8" class="box"/>
+  <text x="402" y="108" class="m" text-anchor="middle">em.persist(member)</text>
+  <text x="402" y="127" class="foot" text-anchor="middle">member를 그대로 반환</text>
+  <rect x="588" y="98" width="144" height="30" rx="15" class="hold"/>
+  <text x="660" y="118" class="val" text-anchor="middle">EntityManager 메서드</text>
+  <rect x="30" y="152" width="170" height="54" rx="8" class="box"/>
+  <text x="115" y="184" class="op" text-anchor="middle">findById(id)</text>
+  <line x1="201" y1="179" x2="224" y2="179" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="226" y="152" width="352" height="54" rx="8" class="box"/>
+  <text x="402" y="174" class="m" text-anchor="middle">em.find(Member.class, id)</text>
+  <text x="402" y="193" class="foot" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Optional.ofNullable</tspan>로 감싸 반환</text>
+  <rect x="588" y="164" width="144" height="30" rx="15" class="hold"/>
+  <text x="660" y="184" class="val" text-anchor="middle">EntityManager 메서드</text>
+  <rect x="30" y="218" width="170" height="54" rx="8" class="box"/>
+  <text x="115" y="250" class="op" text-anchor="middle">findAll()</text>
+  <line x1="201" y1="245" x2="224" y2="245" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="226" y="218" width="352" height="54" rx="8" class="ok"/>
+  <text x="402" y="240" class="okm" text-anchor="middle">&quot;select m from Member m&quot;</text>
+  <text x="402" y="259" class="okm" text-anchor="middle">em.createQuery(…).getResultList()</text>
+  <rect x="588" y="230" width="144" height="30" rx="15" class="ok"/>
+  <text x="660" y="250" class="okt" text-anchor="middle">JPQL</text>
+  <rect x="30" y="284" width="170" height="72" rx="8" class="box"/>
+  <text x="115" y="325" class="op" text-anchor="middle">findByName(name)</text>
+  <line x1="201" y1="320" x2="224" y2="320" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="226" y="284" width="352" height="72" rx="8" class="ok"/>
+  <text x="402" y="306" class="okm" text-anchor="middle">&quot;select m from Member m where m.name = :name&quot;</text>
+  <text x="402" y="324" class="okm" text-anchor="middle">.setParameter(&quot;name&quot;, name)</text>
+  <text x="402" y="342" class="okm" text-anchor="middle">result.stream().findAny()</text>
+  <rect x="588" y="305" width="144" height="30" rx="15" class="ok"/>
+  <text x="660" y="325" class="okt" text-anchor="middle">JPQL</text>
+  <text x="30" y="378" class="foot">저장과 PK 조회는 EntityManager의 메서드를 그대로 쓰고, 전체 조회와 이름 조회는 JPQL을 작성합니다.</text>
+</svg>

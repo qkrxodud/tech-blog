@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 446" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>SpringConfig의 @Bean 메서드 memberService()와 memoryMemberRepository()가 스프링 컨테이너에 빈으로 등록되고, memberService가 생성자로 memoryMemberRepository를 전달받는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="446" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="240" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">빈 등록 — @Bean 메서드가 반환한 객체를 빈으로 등록</text>
+  <text x="730" y="42" class="code" text-anchor="end">SpringConfig.java</text>
+
+  <rect x="30" y="62" width="240" height="166" rx="10" class="grp"/>
+  <text x="46" y="88" class="op">SpringConfig</text>
+  <text x="256" y="88" class="sub" text-anchor="end">@Configuration</text>
+  <rect x="44" y="118" width="212" height="40" rx="8" class="box"/>
+  <text x="150" y="143" class="m" text-anchor="middle">memberService()</text>
+  <rect x="44" y="172" width="212" height="40" rx="8" class="box"/>
+  <text x="150" y="197" class="m" text-anchor="middle">memoryMemberRepository()</text>
+
+  <text x="294" y="110" class="gnote" text-anchor="middle">@Bean</text>
+
+  <rect x="318" y="62" width="412" height="166" rx="10" class="grp"/>
+  <text x="334" y="88" class="t">스프링 컨테이너</text>
+  <line x1="258" y1="138" x2="330" y2="138" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="258" y1="192" x2="330" y2="192" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="420" y="110" class="sub" text-anchor="middle">빈 이름</text>
+  <text x="618" y="110" class="sub" text-anchor="middle">빈 객체</text>
+  <rect x="332" y="118" width="176" height="40" rx="8" class="ok"/>
+  <text x="420" y="143" class="m" text-anchor="middle">memberService</text>
+  <rect x="520" y="118" width="196" height="40" rx="8" class="box"/>
+  <text x="618" y="143" class="m" text-anchor="middle">MemberService</text>
+  <rect x="332" y="172" width="176" height="40" rx="8" class="ok"/>
+  <text x="420" y="197" class="m" text-anchor="middle">memoryMemberRepository</text>
+  <rect x="520" y="172" width="196" height="40" rx="8" class="box"/>
+  <text x="618" y="197" class="m" text-anchor="middle">MemoryMemberRepository</text>
+
+  <rect x="10" y="266" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="298" class="h">의존관계 — 생성자로 리포지토리 빈을 전달받는다</text>
+  <rect x="30" y="318" width="210" height="58" rx="8" class="box"/>
+  <text x="135" y="342" class="op" text-anchor="middle">memberService</text>
+  <text x="135" y="363" class="m" text-anchor="middle">MemberService</text>
+  <text x="290" y="338" class="gnote" text-anchor="middle">생성자 주입</text>
+  <line x1="242" y1="347" x2="336" y2="347" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="340" y="318" width="230" height="58" rx="8" class="box"/>
+  <text x="455" y="342" class="op" text-anchor="middle">memoryMemberRepository</text>
+  <text x="455" y="363" class="m" text-anchor="middle">MemoryMemberRepository</text>
+  <text x="604" y="338" class="sub" text-anchor="middle">차후 교체</text>
+  <line x1="572" y1="347" x2="636" y2="347" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#ag)"/>
+  <rect x="640" y="318" width="96" height="58" rx="8" class="wait"/>
+  <text x="688" y="342" class="waitt" text-anchor="middle">DB 구현체</text>
+  <text x="688" y="362" class="sub" text-anchor="middle">DB가 정해지면</text>
+  <text x="30" y="412" class="foot"><tspan font-family="Menlo, Consolas, monospace">memberService()</tspan> 안에서 <tspan font-family="Menlo, Consolas, monospace">memoryMemberRepository()</tspan>를 호출해 <tspan font-family="Menlo, Consolas, monospace">MemberService</tspan> 생성자에 넘깁니다.</text>
+</svg>

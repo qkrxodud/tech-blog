@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>save()가 DataSourceUtils로 커넥션을 얻고 RETURN_GENERATED_KEYS로 PreparedStatement를 만들어 insert를 실행한 뒤, getGeneratedKeys로 받은 id를 member에 넣고 finally에서 releaseConnection으로 커넥션을 돌려주는 순서</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">save() — 회원 한 명을 저장하는 JDBC 호출 순서</text>
+  <text x="730" y="42" class="code" text-anchor="end">JdbcMemberRepository</text>
+  <text x="34" y="86" class="step">1단계</text>
+  <rect x="30" y="96" width="210" height="62" rx="8" class="box"/>
+  <text x="135" y="122" class="op" text-anchor="middle">getConnection()</text>
+  <text x="135" y="142" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">DataSourceUtils</tspan>로 커넥션 얻기</text>
+  <text x="279" y="86" class="step">2단계</text>
+  <rect x="275" y="96" width="210" height="62" rx="8" class="box"/>
+  <text x="380" y="122" class="op" text-anchor="middle">prepareStatement()</text>
+  <text x="380" y="142" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">RETURN_GENERATED_KEYS</tspan> 지정</text>
+  <text x="524" y="86" class="step">3단계</text>
+  <rect x="520" y="96" width="210" height="62" rx="8" class="box"/>
+  <text x="625" y="122" class="op" text-anchor="middle">executeUpdate()</text>
+  <text x="625" y="142" class="val" text-anchor="middle">이름을 넣고 insert 실행</text>
+  <text x="524" y="202" class="step">4단계</text>
+  <rect x="520" y="212" width="210" height="62" rx="8" class="box"/>
+  <text x="625" y="238" class="op" text-anchor="middle">getGeneratedKeys()</text>
+  <text x="625" y="258" class="val" text-anchor="middle">DB가 만든 id 받기</text>
+  <text x="279" y="202" class="step">5단계</text>
+  <rect x="275" y="212" width="210" height="62" rx="8" class="ok"/>
+  <text x="380" y="238" class="okm" text-anchor="middle">member.setId()</text>
+  <text x="380" y="258" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">rs.getLong(1)</tspan> 값을 넣기</text>
+  <text x="34" y="202" class="step">6단계</text>
+  <rect x="30" y="212" width="210" height="62" rx="8" class="hold"/>
+  <text x="135" y="238" class="op" text-anchor="middle">close()</text>
+  <text x="135" y="258" class="val" text-anchor="middle">finally — <tspan font-family="Menlo, Consolas, monospace">releaseConnection</tspan></text>
+  <line x1="242" y1="127" x2="271" y2="127" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="487" y1="127" x2="516" y2="127" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="625" y1="160" x2="625" y2="190" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="518" y1="243" x2="489" y2="243" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="273" y1="243" x2="244" y2="243" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="306" class="note"><tspan font-family="Menlo, Consolas, monospace">rs.next()</tspan>가 false면 <tspan font-family="Menlo, Consolas, monospace">SQLException(</tspan>&quot;id 조회 실패&quot;<tspan font-family="Menlo, Consolas, monospace">)</tspan>을 던지고, catch에서 <tspan font-family="Menlo, Consolas, monospace">IllegalStateException</tspan>으로 감쌉니다.</text>
+  <text x="30" y="326" class="foot">예외가 나도 <tspan font-family="Menlo, Consolas, monospace">close()</tspan>는 finally에서 항상 호출됩니다.</text>
+</svg>

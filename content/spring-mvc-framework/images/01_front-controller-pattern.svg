@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 512" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>프론트 컨트롤러 도입 전에는 회원 등록 폼, 회원 저장, 회원 목록 서블릿이 각각 요청을 받아 공통 로직이 중복되고, 도입 후에는 프론트 컨트롤러 서블릿 하나가 요청을 받아 공통 처리를 한 뒤 서블릿을 사용하지 않는 컨트롤러를 호출하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .vm { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="512" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">프론트 컨트롤러 도입 전 — 컨트롤러마다 서블릿</text>
+  <rect x="40" y="112" width="120" height="52" rx="8" class="box"/>
+  <text x="100.0" y="143.0" class="t" text-anchor="middle">클라이언트</text>
+  <rect x="470" y="66" width="240" height="44" rx="8" class="bad"/>
+  <text x="590.0" y="84.0" class="badt" text-anchor="middle">회원 등록 폼 서블릿</text>
+  <text x="590.0" y="103.0" class="val" text-anchor="middle">공통 로직 포함</text>
+  <line x1="160" y1="138" x2="468" y2="88" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="470" y="122" width="240" height="44" rx="8" class="bad"/>
+  <text x="590.0" y="140.0" class="badt" text-anchor="middle">회원 저장 서블릿</text>
+  <text x="590.0" y="159.0" class="val" text-anchor="middle">공통 로직 포함</text>
+  <line x1="160" y1="138" x2="468" y2="144" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="470" y="178" width="240" height="44" rx="8" class="bad"/>
+  <text x="590.0" y="196.0" class="badt" text-anchor="middle">회원 목록 서블릿</text>
+  <text x="590.0" y="215.0" class="val" text-anchor="middle">공통 로직 포함</text>
+  <line x1="160" y1="138" x2="468" y2="200" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="40" y="206" class="note">공통 로직이 컨트롤러마다 중복</text>
+  <rect x="10" y="262" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="294" class="h">프론트 컨트롤러 도입 후 — 입구는 서블릿 하나</text>
+  <rect x="40" y="364" width="120" height="52" rx="8" class="box"/>
+  <text x="100.0" y="395.0" class="t" text-anchor="middle">클라이언트</text>
+  <line x1="160" y1="390" x2="218" y2="390" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="222" y="344" width="180" height="92" rx="8" class="ok"/>
+  <text x="312" y="376" class="okt" text-anchor="middle">프론트 컨트롤러</text>
+  <text x="312" y="397" class="val" text-anchor="middle">서블릿 하나로 요청 받음</text>
+  <text x="312" y="416" class="val" text-anchor="middle">공통 처리</text>
+  <rect x="490" y="318" width="220" height="44" rx="8" class="box"/>
+  <text x="600.0" y="336.0" class="t" text-anchor="middle">회원 등록 폼 컨트롤러</text>
+  <text x="600.0" y="355.0" class="val" text-anchor="middle">서블릿 사용 안 함</text>
+  <line x1="402" y1="390" x2="488" y2="340" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="490" y="374" width="220" height="44" rx="8" class="box"/>
+  <text x="600.0" y="392.0" class="t" text-anchor="middle">회원 저장 컨트롤러</text>
+  <text x="600.0" y="411.0" class="val" text-anchor="middle">서블릿 사용 안 함</text>
+  <line x1="402" y1="390" x2="488" y2="396" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="490" y="430" width="220" height="44" rx="8" class="box"/>
+  <text x="600.0" y="448.0" class="t" text-anchor="middle">회원 목록 컨트롤러</text>
+  <text x="600.0" y="467.0" class="val" text-anchor="middle">서블릿 사용 안 함</text>
+  <line x1="402" y1="390" x2="488" y2="452" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+</svg>

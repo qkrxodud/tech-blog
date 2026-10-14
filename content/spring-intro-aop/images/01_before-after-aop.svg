@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 530" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>AOP 적용 전에는 join과 findMembers마다 시작 시각 기록과 finally의 시간 출력 코드가 들어 있고, AOP 적용 후에는 TimeTraceAop 한 곳에서 hello.hellospring 하위 메서드의 시간을 측정하고 서비스 메서드에는 핵심 로직만 남는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mg { font-size: 12px; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 12px; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12px; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="530" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="262" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">AOP 적용 전 — 메서드마다 시간 측정 코드</text>
+  <text x="730" y="42" class="code" text-anchor="end">MemberService</text>
+  <rect x="30" y="58" width="216" height="182" rx="8" class="box"/>
+  <text x="138" y="80" class="op" text-anchor="middle">join()</text>
+  <rect x="40" y="90" width="196" height="34" rx="6" class="bad"/>
+  <text x="138" y="112" class="badt" style="font-size:13px" text-anchor="middle">시작 시각 기록</text>
+  <rect x="40" y="132" width="196" height="46" rx="6" class="hold"/>
+  <text x="138" y="151" class="t" style="font-size:13px" text-anchor="middle">핵심 로직</text>
+  <text x="138" y="169" class="sub" text-anchor="middle">중복 회원 검증, 저장</text>
+  <rect x="40" y="186" width="196" height="46" rx="6" class="bad"/>
+  <text x="138" y="205" class="badt" style="font-size:13px" text-anchor="middle">finally에서 시간 출력</text>
+  <text x="138" y="223" class="badm" style="font-size:10px" text-anchor="middle">&quot;join &quot; + timeMs + &quot;ms&quot;</text>
+  <rect x="272" y="58" width="216" height="182" rx="8" class="box"/>
+  <text x="380" y="80" class="op" text-anchor="middle">findMembers()</text>
+  <rect x="282" y="90" width="196" height="34" rx="6" class="bad"/>
+  <text x="380" y="112" class="badt" style="font-size:13px" text-anchor="middle">시작 시각 기록</text>
+  <rect x="282" y="132" width="196" height="46" rx="6" class="hold"/>
+  <text x="380" y="151" class="t" style="font-size:13px" text-anchor="middle">핵심 로직</text>
+  <text x="380" y="169" class="sub" text-anchor="middle">전체 회원 조회</text>
+  <rect x="282" y="186" width="196" height="46" rx="6" class="bad"/>
+  <text x="380" y="205" class="badt" style="font-size:13px" text-anchor="middle">finally에서 시간 출력</text>
+  <text x="380" y="223" class="badm" style="font-size:10px" text-anchor="middle">&quot;findMembers &quot; + timeMs + &quot;ms&quot;</text>
+  <rect x="514" y="58" width="216" height="182" rx="8" class="box"/>
+  <text x="622" y="80" class="op" text-anchor="middle">findOne()</text>
+  <rect x="524" y="90" width="196" height="34" rx="6" class="wait"/>
+  <text x="622" y="112" class="waitt" text-anchor="middle">측정 코드 없음</text>
+  <rect x="524" y="132" width="196" height="46" rx="6" class="hold"/>
+  <text x="622" y="151" class="t" style="font-size:13px" text-anchor="middle">핵심 로직</text>
+  <text x="622" y="169" class="sub" text-anchor="middle">id로 회원 조회</text>
+  <text x="30" y="262" class="note">같은 시간 측정 코드가 <tspan font-family="Menlo, Consolas, monospace">join()</tspan>과 <tspan font-family="Menlo, Consolas, monospace">findMembers()</tspan>에 반복되고, 측정 방식을 바꾸려면 메서드마다 고쳐야 합니다.</text>
+  <rect x="10" y="288" width="740" height="232" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="320" class="h">AOP 적용 후 — TimeTraceAop 한 곳에서 시간 측정</text>
+  <rect x="30" y="336" width="700" height="62" rx="8" class="ok"/>
+  <text x="380" y="361" class="okc" text-anchor="middle">@Around(&quot;execution(* hello.hellospring..*(..))&quot;)</text>
+  <text x="380" y="384" class="sub" text-anchor="middle">시작 시각 기록 → <tspan font-family="Menlo, Consolas, monospace">joinPoint.proceed()</tspan>로 대상 메서드 실행 → finally에서 걸린 시간 출력</text>
+  <line x1="138" y1="399" x2="138" y2="426" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="30" y="428" width="216" height="56" rx="8" class="box"/>
+  <text x="138" y="451" class="op" text-anchor="middle">join()</text>
+  <text x="138" y="471" class="sub" text-anchor="middle">핵심 로직만 — 중복 회원 검증, 저장</text>
+  <line x1="380" y1="399" x2="380" y2="426" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="272" y="428" width="216" height="56" rx="8" class="box"/>
+  <text x="380" y="451" class="op" text-anchor="middle">findMembers()</text>
+  <text x="380" y="471" class="sub" text-anchor="middle">핵심 로직만 — 전체 회원 조회</text>
+  <line x1="622" y1="399" x2="622" y2="426" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="514" y="428" width="216" height="56" rx="8" class="box"/>
+  <text x="622" y="451" class="op" text-anchor="middle">findOne()</text>
+  <text x="622" y="471" class="sub" text-anchor="middle">핵심 로직만 — id로 회원 조회</text>
+  <text x="30" y="508" class="gnote"><tspan font-family="Menlo, Consolas, monospace">hello.hellospring</tspan> 패키지와 하위 패키지의 모든 메서드가 대상이고, 서비스 메서드에는 핵심 로직만 남습니다.</text>
+</svg>

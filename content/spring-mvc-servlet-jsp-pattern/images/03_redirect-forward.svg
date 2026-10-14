@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 498" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>리다이렉트는 클라이언트가 redirect 경로로 다시 요청해 URL이 바뀌고, 포워드는 서버 안에서 서블릿이 JSP를 호출해 URL이 그대로인 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="498" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="226" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">리다이렉트 — 클라이언트가 redirect 경로로 다시 요청</text>
+  <text x="220" y="68" class="step" text-anchor="middle">요청</text>
+  <text x="360" y="68" class="step" text-anchor="middle">리다이렉트 응답</text>
+  <text x="500" y="68" class="step" text-anchor="middle">다시 요청</text>
+  <text x="640" y="68" class="step" text-anchor="middle">응답</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+
+  <text x="30" y="108" class="lane">클라이언트</text>
+  <text x="30" y="126" class="sub">웹 브라우저</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="t" text-anchor="middle">요청</text>
+  <text x="220" y="127" class="val" text-anchor="middle">처음 경로</text>
+  <rect x="442" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="108" class="t" text-anchor="middle">다시 요청</text>
+  <text x="500" y="127" class="val" text-anchor="middle">redirect 경로</text>
+
+  <text x="30" y="168" class="lane">서버</text>
+  <text x="30" y="186" class="sub">WAS</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="302" y="148" width="116" height="48" rx="8" class="hold"/>
+  <text x="360" y="168" class="t" text-anchor="middle">응답</text>
+  <text x="360" y="187" class="val" text-anchor="middle">redirect 경로</text>
+  <rect x="582" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="640" y="168" class="t" text-anchor="middle">응답</text>
+  <text x="640" y="187" class="val" text-anchor="middle">최종 결과</text>
+
+  <line x1="262" y1="136" x2="318" y2="148" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="402" y1="148" x2="458" y2="136" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="542" y1="136" x2="598" y2="148" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="222" class="note">응답이 클라이언트에 나갔다가 다시 요청하므로 클라이언트가 인지하고, URL 경로도 바뀝니다.</text>
+
+  <rect x="10" y="252" width="740" height="226" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="284" class="h">포워드 — 서버 내부에서 JSP를 호출</text>
+  <text x="220" y="310" class="step" text-anchor="middle">요청</text>
+  <text x="360" y="310" class="step" text-anchor="middle">서블릿 호출</text>
+  <text x="500" y="310" class="step" text-anchor="middle">forward</text>
+  <text x="640" y="310" class="step" text-anchor="middle">응답</text>
+  <line x1="160" y1="318" x2="722" y2="318" class="axis" marker-end="url(#ar)"/>
+
+  <text x="30" y="350" class="lane">클라이언트</text>
+  <text x="30" y="368" class="sub">웹 브라우저</text>
+  <rect x="150" y="328" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="330" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="350" class="t" text-anchor="middle">요청</text>
+  <text x="220" y="369" class="val" text-anchor="middle">new-form 경로</text>
+  <rect x="582" y="330" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="350" class="okt" text-anchor="middle">응답</text>
+  <text x="640" y="369" class="val" text-anchor="middle">URL 그대로</text>
+
+  <text x="30" y="410" class="lane">서버</text>
+  <text x="30" y="428" class="sub">WAS</text>
+  <rect x="150" y="388" width="585" height="52" rx="6" class="track"/>
+  <rect x="302" y="390" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="410" class="t" text-anchor="middle">서블릿</text>
+  <text x="360" y="429" class="val" text-anchor="middle">컨트롤러</text>
+  <line x1="420" y1="414" x2="439" y2="414" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="442" y="390" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="410" class="t" text-anchor="middle">JSP</text>
+  <text x="500" y="429" class="m" text-anchor="middle">new-form.jsp</text>
+
+  <line x1="262" y1="378" x2="318" y2="390" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="542" y1="390" x2="598" y2="378" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="464" class="gnote">서블릿이 서버 안에서 JSP로 forward 하므로 클라이언트는 인지하지 못하고, URL도 바뀌지 않습니다.</text>
+</svg>

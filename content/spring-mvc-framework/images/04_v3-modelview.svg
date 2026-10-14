@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 432" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>v3에서 프론트 컨트롤러가 createParamMap으로 paramMap을 만들어 MemberSaveControllerV3를 호출하면, 컨트롤러는 viewName이 save-result이고 model에 member를 담은 ModelView를 반환하고, 뷰 리졸버가 save-result를 /WEB-INF/views/save-result.jsp로 바꾼 뒤 MyView가 모델을 request에 담아 JSP로 forward하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .vm { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="432" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="412" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">v3 — 논리 뷰 이름과 모델을 담은 ModelView</text>
+  <text x="730" y="42" class="code" text-anchor="end">/front-controller/v3/members/save</text>
+  <text x="228" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="373" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="518" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="663" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">프론트 컨트롤러</text>
+  <text x="30" y="128" class="sub">서블릿 하나</text>
+  <rect x="150" y="86" width="585" height="56" rx="6" class="track"/>
+  <text x="30" y="180" class="lane">컨트롤러</text>
+  <text x="30" y="198" class="sub">서블릿 사용 안 함</text>
+  <rect x="150" y="156" width="585" height="56" rx="6" class="track"/>
+  <text x="30" y="250" class="lane">MyView</text>
+  <text x="30" y="268" class="sub">뷰 객체</text>
+  <rect x="150" y="226" width="585" height="56" rx="6" class="track"/>
+  <rect x="160.0" y="90" width="136" height="48" rx="8" class="box"/>
+  <text x="228.0" y="110.0" class="t" text-anchor="middle">paramMap 생성</text>
+  <text x="228.0" y="129.0" class="vm" text-anchor="middle">createParamMap()</text>
+  <rect x="305.0" y="160" width="136" height="48" rx="8" class="box"/>
+  <text x="373.0" y="180.0" class="t" text-anchor="middle">회원 저장</text>
+  <text x="373.0" y="199.0" class="vm" text-anchor="middle">process()</text>
+  <rect x="450.0" y="160" width="136" height="48" rx="8" class="box"/>
+  <text x="518.0" y="180.0" class="t" text-anchor="middle">ModelView 반환</text>
+  <text x="518.0" y="199.0" class="vm" text-anchor="middle">save-result</text>
+  <rect x="450.0" y="90" width="136" height="48" rx="8" class="box"/>
+  <text x="518.0" y="110.0" class="t" text-anchor="middle">뷰 리졸버</text>
+  <text x="518.0" y="129.0" class="vm" text-anchor="middle">viewResolver()</text>
+  <rect x="595.0" y="230" width="136" height="48" rx="8" class="ok"/>
+  <text x="663.0" y="250.0" class="okm" text-anchor="middle">render(model)</text>
+  <text x="663.0" y="269.0" class="val" text-anchor="middle">JSP로 forward</text>
+  <path d="M296,114 L373,114 L373,158" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="518" y1="158" x2="518" y2="140" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <path d="M586,114 L663,114 L663,228" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="317" class="t">ModelView</text>
+  <rect x="150" y="296" width="585" height="32" rx="6" class="dbbox"/>
+  <text x="442.5" y="317" class="m" text-anchor="middle">viewName = "save-result", model = {member}</text>
+  <text x="30" y="361" class="t">물리 뷰 경로</text>
+  <rect x="150" y="340" width="585" height="32" rx="6" class="dbbox"/>
+  <text x="442.5" y="361" class="m" text-anchor="middle">save-result → /WEB-INF/views/save-result.jsp</text>
+  <text x="150" y="402" class="foot">컨트롤러는 서블릿을 모르고, 경로 변환과 request 담기는 뷰 리졸버와 MyView가 맡습니다.</text>
+</svg>

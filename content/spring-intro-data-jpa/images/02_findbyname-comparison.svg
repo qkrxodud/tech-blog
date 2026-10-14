@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 410" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>findByName을 순수 JDBC로는 SQL, Connection, PreparedStatement, ResultSet과 결과 매핑을 직접 작성해 23줄, JPA로는 JPQL과 setParameter로 6줄, 스프링 데이터 JPA로는 메서드 선언 한 줄로 작성하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mg { font-size: 12px; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 12px; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12px; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="410" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h"><tspan font-family="Menlo, Consolas, monospace">findByName</tspan> 비교 — 직접 작성하는 코드가 줄어드는 과정</text>
+  <rect x="30" y="64" width="700" height="96" rx="8" class="box"/>
+  <text x="46" y="90" class="t">순수 JDBC</text>
+  <text x="46" y="109" class="mg" style="font-size:10.5px">JdbcMemberRepository</text>
+  <text x="46" y="128" class="val">메서드 23줄</text>
+  <line x1="246" y1="76" x2="246" y2="148" stroke="#e5e7eb" stroke-width="1.2"/>
+  <text x="262" y="92" class="val">SQL 작성: <tspan font-family="Menlo, Consolas, monospace">select * from member where name = ?</tspan></text>
+  <text x="262" y="114" class="val"><tspan font-family="Menlo, Consolas, monospace">Connection</tspan>, <tspan font-family="Menlo, Consolas, monospace">PreparedStatement</tspan>, <tspan font-family="Menlo, Consolas, monospace">ResultSet</tspan>을 직접 다룸</text>
+  <text x="262" y="136" class="val">결과를 <tspan font-family="Menlo, Consolas, monospace">Member</tspan>로 직접 매핑하고, 예외 처리와 <tspan font-family="Menlo, Consolas, monospace">close()</tspan>까지 작성</text>
+  <rect x="30" y="176" width="700" height="96" rx="8" class="box"/>
+  <text x="46" y="202" class="t">JPA</text>
+  <text x="46" y="221" class="mg" style="font-size:10.5px">JpaMemberRepository</text>
+  <text x="46" y="240" class="val">메서드 6줄</text>
+  <line x1="246" y1="188" x2="246" y2="260" stroke="#e5e7eb" stroke-width="1.2"/>
+  <text x="262" y="204" class="val">JPQL 작성: <tspan font-family="Menlo, Consolas, monospace">select m from Member m where m.name = :name</tspan></text>
+  <text x="262" y="226" class="val"><tspan font-family="Menlo, Consolas, monospace">setParameter(&quot;name&quot;, name)</tspan>로 파라미터 설정</text>
+  <text x="262" y="248" class="val">결과는 <tspan font-family="Menlo, Consolas, monospace">Member</tspan> 목록으로 받아 <tspan font-family="Menlo, Consolas, monospace">stream().findAny()</tspan>로 반환</text>
+  <rect x="30" y="288" width="700" height="74" rx="8" class="ok"/>
+  <text x="46" y="314" class="okt">스프링 데이터 JPA</text>
+  <text x="46" y="333" class="mg" style="font-size:10.5px">SpringDataJpaMemberRepository</text>
+  <text x="46" y="352" class="val">선언 1줄</text>
+  <line x1="246" y1="300" x2="246" y2="350" stroke="#e5e7eb" stroke-width="1.2"/>
+  <text x="262" y="316" class="val"><tspan font-family="Menlo, Consolas, monospace">Optional&lt;Member&gt; findByName(String name);</tspan> 선언</text>
+  <text x="262" y="338" class="val">SQL과 JPQL을 작성하지 않고, 구현은 스프링 데이터 JPA가 만듦</text>
+  <line x1="380" y1="161" x2="380" y2="174" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="380" y1="273" x2="380" y2="286" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="390" class="foot">줄 수는 메서드 선언부터 닫는 중괄호까지 센 값입니다(<tspan font-family="Menlo, Consolas, monospace">@Override</tspan> 제외).</text>
+</svg>

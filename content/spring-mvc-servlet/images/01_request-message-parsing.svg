@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 388" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>서블릿이 HTTP 요청 메시지를 파싱해 HttpServletRequest에 담아 주므로, 시작 라인은 getMethod와 getRequestURI 등으로, 헤더는 getHeader와 getHeaderNames로, 바디는 form 형식이면 getParameter로, 그 밖에는 getInputStream으로 조회한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .mv { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .gn { font-size: 12.5px; fill: #15803d; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="760" height="388" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="368" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">HttpServletRequest — 요청 메시지를 파싱해 메서드로 제공한다</text>
+  <text x="30" y="66" class="step">HTTP 요청 메시지</text>
+  <text x="460" y="66" class="step">HttpServletRequest 조회 메서드</text>
+
+  <rect x="30" y="76" width="380" height="72" rx="8" class="box"/>
+  <text x="44" y="96" class="sub">시작 라인</text>
+  <text x="44" y="122" class="m">POST /save HTTP/1.1</text>
+  <line x1="410" y1="112" x2="454" y2="112" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="460" y="76" width="270" height="72" rx="8" class="hold"/>
+  <text x="474" y="100" class="mv">getMethod() getRequestURI()</text>
+  <text x="474" y="118" class="mv">getQueryString() getScheme()</text>
+  <text x="474" y="138" class="mv">getProtocol()</text>
+
+  <rect x="30" y="160" width="380" height="76" rx="8" class="box"/>
+  <text x="44" y="180" class="sub">헤더</text>
+  <text x="44" y="204" class="mv">Host: localhost:8080</text>
+  <text x="44" y="224" class="mv">Content-Type: application/x-www-form-urlencoded</text>
+  <line x1="410" y1="198" x2="454" y2="198" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="460" y="160" width="270" height="76" rx="8" class="hold"/>
+  <text x="474" y="192" class="mv">getHeader() getHeaderNames()</text>
+  <text x="474" y="214" class="val">Host, Content-Type 편의 조회도 제공</text>
+
+  <rect x="30" y="248" width="380" height="64" rx="8" class="box"/>
+  <text x="44" y="268" class="sub">바디</text>
+  <text x="44" y="294" class="m">username=kim&amp;age=20</text>
+  <line x1="410" y1="280" x2="454" y2="280" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="460" y="248" width="270" height="64" rx="8" class="hold"/>
+  <text x="474" y="272" class="val">form 형식: <tspan font-family="Menlo, Consolas, monospace" style="font-size:12px">getParameter()</tspan></text>
+  <text x="474" y="296" class="val">직접 조회: <tspan font-family="Menlo, Consolas, monospace" style="font-size:12px">getInputStream()</tspan></text>
+
+  <text x="30" y="346" class="foot">서블릿이 개발자 대신 메시지를 파싱해 결과를 HttpServletRequest 객체에 담아 제공합니다.</text>
+</svg>
