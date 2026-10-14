@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 306" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>피자 가격이 3만 원일 때 트랜잭션 1이 1만 원으로 쓰고, 커밋되지 않은 그 값 위에 트랜잭션 2가 2만 원으로 쓰고 커밋한 뒤, 트랜잭션 1이 abort되어 가격이 3만 원으로 돌아가 트랜잭션 2의 결과가 사라지는 schedule. 커밋되지 않은 값을 읽지 않으므로 cascadeless지만 strict는 아니다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .lanec { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .gflow { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .glbl { font-size: 12px; font-weight: 700; fill: #15803d; }
+    .rlbl { font-size: 12px; font-weight: 700; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="306" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="286" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">cascadeless지만 strict는 아닌 schedule — 피자 가격</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">트랜잭션 1</text>
+  <text x="30" y="126" class="sub">1만 원으로 변경</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="168" class="lane">트랜잭션 2</text>
+  <text x="30" y="186" class="sub">2만 원으로 변경</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="107" class="op" text-anchor="middle">W(pizza)</text>
+  <text x="220" y="126" class="val" text-anchor="middle">3만 → 1만</text>
+  <rect x="582" y="88" width="116" height="48" rx="8" class="bad"/>
+  <text x="640" y="107" class="badc" text-anchor="middle">abort</text>
+  <text x="640" y="126" class="val" text-anchor="middle">3만으로 되돌림</text>
+  <rect x="302" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="167" class="op" text-anchor="middle">W(pizza)</text>
+  <text x="360" y="186" class="val" text-anchor="middle">1만 → 2만</text>
+  <rect x="442" y="148" width="116" height="48" rx="8" class="ok"/>
+  <text x="500" y="167" class="okc" text-anchor="middle">commit</text>
+  <text x="500" y="186" class="val" text-anchor="middle">2만 확정</text>
+  <text x="30" y="235" class="db">피자 가격</text>
+  <text x="30" y="252" class="sub">처음 3만 원</text>
+  <rect x="180" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="220" y="235" class="db" text-anchor="middle">1만</text>
+  <rect x="320" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="360" y="235" class="db" text-anchor="middle">2만</text>
+  <rect x="460" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="500" y="235" class="db" text-anchor="middle">2만</text>
+  <rect x="600" y="214" width="80" height="32" rx="6" class="bad"/>
+  <text x="640" y="235" class="badt" text-anchor="middle">3만</text>
+  <text x="150" y="278" class="note">T2는 커밋 안 된 값을 읽지 않지만 그 위에 썼기 때문에, T2가 커밋한 2만 원이 사라집니다</text>
+</svg>

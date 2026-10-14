@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 386" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>server.properties의 listeners, advertised.listeners를 localhost:9092로, log.dirs를 원하는 위치로 수정한 뒤 주키퍼 실행, 브로커 실행, 동작 확인 순서로 진행하는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .grp { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="386" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">server.properties — 로컬에서 실행하도록 수정</text>
+  <rect x="30" y="62" width="520" height="26" rx="6" class="chip"/>
+  <text x="44" y="80" class="m">listeners=PLAINTEXT://localhost:9092</text>
+  <text x="570" y="80" class="sub">로컬호스트로 통신</text>
+  <rect x="30" y="94" width="520" height="26" rx="6" class="chip"/>
+  <text x="44" y="112" class="m">advertised.listeners=PLAINTEXT://localhost:9092</text>
+  <text x="570" y="112" class="sub">로컬호스트로 통신</text>
+  <rect x="30" y="126" width="520" height="26" rx="6" class="chip"/>
+  <text x="44" y="144" class="m">log.dirs=/Users/coby/Downloads/kafka_2.12-2.5.0/data</text>
+  <text x="570" y="144" class="sub">데이터를 저장할 위치</text>
+  <rect x="10" y="186" width="740" height="190" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="218" class="h">실행 순서 — 주키퍼, 브로커, 동작 확인</text>
+  <rect x="30" y="240" width="200" height="96" rx="8" class="box"/>
+  <text x="130.0" y="266" class="t" text-anchor="middle">1. 주키퍼 실행</text>
+  <text x="130.0" y="292" class="m" text-anchor="middle">zookeeper-server-start.sh</text>
+  <text x="130.0" y="312" class="m" text-anchor="middle">zookeeper.properties</text>
+  <rect x="270" y="240" width="200" height="96" rx="8" class="box"/>
+  <text x="370.0" y="266" class="t" text-anchor="middle">2. 브로커 실행</text>
+  <text x="370.0" y="292" class="m" text-anchor="middle">kafka-server-start.sh</text>
+  <text x="370.0" y="312" class="m" text-anchor="middle">server.properties</text>
+  <rect x="500" y="240" width="230" height="96" rx="8" class="ok"/>
+  <text x="615.0" y="266" class="okt" text-anchor="middle">3. 동작 확인</text>
+  <text x="615.0" y="292" class="m" text-anchor="middle">kafka-broker-api-versions.sh</text>
+  <text x="615.0" y="312" class="m" text-anchor="middle">kafka-topics.sh --list</text>
+  <line x1="232" y1="288" x2="266" y2="288" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="472" y1="288" x2="496" y2="288" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="362" class="foot">확인 명령어는 <tspan font-family="Menlo, Consolas, monospace">--bootstrap-server localhost:9092</tspan>로 로컬 브로커에 접속합니다.</text>
+</svg>

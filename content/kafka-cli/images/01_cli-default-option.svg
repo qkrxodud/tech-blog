@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 290" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>브로커의 기본 파티션 값이 10일 때 파티션 개수를 지정하지 않으면 10개로 만들어지고, partitions 옵션으로 5를 지정하면 원하는 5개로 만들어지는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .grp { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="290" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="270" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">선택 옵션 — 지정하지 않으면 브로커 기본값을 사용</text>
+  <text x="30" y="104" class="lane">지정 안 함</text>
+  <text x="30" y="124" class="sub">5개를 원함</text>
+  <rect x="118" y="72" width="316" height="64" rx="8" class="box"/>
+  <text x="276" y="98" class="m" text-anchor="middle">kafka-topics.sh --create</text>
+  <text x="276" y="118" class="sub" text-anchor="middle">파티션 개수 옵션 없음</text>
+  <rect x="456" y="72" width="148" height="64" rx="8" class="hold"/>
+  <text x="530" y="98" class="val" text-anchor="middle">브로커 기본값</text>
+  <text x="530" y="118" class="m" text-anchor="middle">num.partitions=10</text>
+  <rect x="626" y="72" width="104" height="64" rx="8" class="bad"/>
+  <text x="678" y="109" class="badt" text-anchor="middle">파티션 10개</text>
+  <line x1="436" y1="104" x2="452" y2="104" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="606" y1="104" x2="622" y2="104" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="190" class="lane">지정함</text>
+  <text x="30" y="210" class="sub">5개를 원함</text>
+  <rect x="118" y="158" width="316" height="64" rx="8" class="box"/>
+  <text x="276" y="184" class="m" text-anchor="middle">kafka-topics.sh --create --partitions 5</text>
+  <text x="276" y="204" class="sub" text-anchor="middle">파티션 개수를 직접 지정</text>
+  <rect x="456" y="158" width="148" height="64" rx="8" class="hold"/>
+  <text x="530" y="184" class="val" text-anchor="middle">지정한 값 사용</text>
+  <text x="530" y="204" class="m" text-anchor="middle">--partitions 5</text>
+  <rect x="626" y="158" width="104" height="64" rx="8" class="ok"/>
+  <text x="678" y="195" class="okt" text-anchor="middle">파티션 5개</text>
+  <line x1="436" y1="190" x2="452" y2="190" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="606" y1="190" x2="622" y2="190" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="262" class="foot">선택 옵션을 지정하지 않으면 브로커에 설정된 기본값(또는 커맨드 라인 툴의 기본값)이 적용됩니다.</text>
+</svg>

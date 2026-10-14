@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 602" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 트랜잭션 1이 트랜잭션 2가 쓴 H 잔액 230만 원을 읽고 250만 원을 쓴 뒤 먼저 커밋하고, 이후 트랜잭션 2가 abort되어 H가 200만 원으로 돌아가 회복할 수 없는 unrecoverable schedule, 아래쪽은 트랜잭션 1이 트랜잭션 2가 끝날 때까지 커밋하지 않아 트랜잭션 2가 abort되자 트랜잭션 1도 연쇄적으로 abort되는 recoverable schedule</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .lanec { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .gflow { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .glbl { font-size: 12px; font-weight: 700; fill: #15803d; }
+    .rlbl { font-size: 12px; font-weight: 700; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="602" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="284" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">unrecoverable schedule — 롤백된 값을 읽고 먼저 커밋</text>
+  <text x="208.5" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="325.5" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="442.5" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="559.5" y="68" class="step" text-anchor="middle">4단계</text>
+  <text x="676.5" y="68" class="step" text-anchor="middle">5단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">트랜잭션 1</text>
+  <text x="30" y="126" class="sub">K → H 20만 원 이체</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="168" class="lane">트랜잭션 2</text>
+  <text x="30" y="186" class="sub">H에 30만 원 입금</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="155.5" y="88" width="106" height="48" rx="8" class="box"/>
+  <text x="208.5" y="107" class="op" text-anchor="middle">W(K)</text>
+  <text x="208.5" y="126" class="val" text-anchor="middle">100만 → 80만</text>
+  <rect x="389.5" y="88" width="106" height="48" rx="8" class="box"/>
+  <text x="442.5" y="107" class="op" text-anchor="middle">R(H) W(H)</text>
+  <text x="442.5" y="126" class="val" text-anchor="middle">230만 → 250만</text>
+  <rect x="506.5" y="88" width="106" height="48" rx="8" class="bad"/>
+  <text x="559.5" y="107" class="badc" text-anchor="middle">commit</text>
+  <text x="559.5" y="126" class="val" text-anchor="middle">먼저 커밋</text>
+  <rect x="272.5" y="148" width="106" height="48" rx="8" class="box"/>
+  <text x="325.5" y="167" class="op" text-anchor="middle">W(H)</text>
+  <text x="325.5" y="186" class="val" text-anchor="middle">200만 → 230만</text>
+  <rect x="623.5" y="148" width="106" height="48" rx="8" class="bad"/>
+  <text x="676.5" y="167" class="badc" text-anchor="middle">abort</text>
+  <text x="676.5" y="186" class="val" text-anchor="middle">H를 200만으로</text>
+  <text x="30" y="235" class="db">H 잔액</text>
+  <rect x="168.5" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="208.5" y="235" class="db" text-anchor="middle">200만</text>
+  <rect x="285.5" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="325.5" y="235" class="db" text-anchor="middle">230만</text>
+  <rect x="402.5" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="442.5" y="235" class="db" text-anchor="middle">250만</text>
+  <rect x="519.5" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="559.5" y="235" class="db" text-anchor="middle">250만</text>
+  <rect x="636.5" y="214" width="80" height="32" rx="6" class="bad"/>
+  <text x="676.5" y="235" class="badt" text-anchor="middle">200만</text>
+  <text x="150" y="276" class="note">T1은 이미 커밋되어 되돌릴 수 없고, T1이 H에 더한 20만 원이 사라집니다</text>
+  <rect x="10" y="310" width="740" height="284" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="342" class="h">recoverable schedule — T2가 끝날 때까지 T1은 커밋하지 않음</text>
+  <text x="208.5" y="368" class="step" text-anchor="middle">1단계</text>
+  <text x="325.5" y="368" class="step" text-anchor="middle">2단계</text>
+  <text x="442.5" y="368" class="step" text-anchor="middle">3단계</text>
+  <text x="559.5" y="368" class="step" text-anchor="middle">4단계</text>
+  <text x="676.5" y="368" class="step" text-anchor="middle">5단계</text>
+  <line x1="160" y1="376" x2="722" y2="376" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="408" class="lane">트랜잭션 1</text>
+  <text x="30" y="426" class="sub">K → H 20만 원 이체</text>
+  <rect x="150" y="386" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="468" class="lane">트랜잭션 2</text>
+  <text x="30" y="486" class="sub">H에 30만 원 입금</text>
+  <rect x="150" y="446" width="585" height="52" rx="6" class="track"/>
+  <rect x="155.5" y="388" width="106" height="48" rx="8" class="box"/>
+  <text x="208.5" y="407" class="op" text-anchor="middle">W(K)</text>
+  <text x="208.5" y="426" class="val" text-anchor="middle">100만 → 80만</text>
+  <rect x="389.5" y="388" width="106" height="48" rx="8" class="box"/>
+  <text x="442.5" y="407" class="op" text-anchor="middle">R(H) W(H)</text>
+  <text x="442.5" y="426" class="val" text-anchor="middle">230만 → 250만</text>
+  <rect x="623.5" y="388" width="106" height="48" rx="8" class="bad"/>
+  <text x="676.5" y="407" class="badc" text-anchor="middle">abort</text>
+  <text x="676.5" y="426" class="val" text-anchor="middle">연쇄 롤백</text>
+  <rect x="272.5" y="448" width="106" height="48" rx="8" class="box"/>
+  <text x="325.5" y="467" class="op" text-anchor="middle">W(H)</text>
+  <text x="325.5" y="486" class="val" text-anchor="middle">200만 → 230만</text>
+  <rect x="506.5" y="448" width="106" height="48" rx="8" class="bad"/>
+  <text x="559.5" y="467" class="badc" text-anchor="middle">abort</text>
+  <text x="559.5" y="486" class="val" text-anchor="middle">H를 200만으로</text>
+  <text x="30" y="535" class="db">H 잔액</text>
+  <rect x="168.5" y="514" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="208.5" y="535" class="db" text-anchor="middle">200만</text>
+  <rect x="285.5" y="514" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="325.5" y="535" class="db" text-anchor="middle">230만</text>
+  <rect x="402.5" y="514" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="442.5" y="535" class="db" text-anchor="middle">250만</text>
+  <rect x="519.5" y="514" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="559.5" y="535" class="db" text-anchor="middle">200만</text>
+  <rect x="636.5" y="514" width="80" height="32" rx="6" class="ok"/>
+  <text x="676.5" y="535" class="okt" text-anchor="middle">200만</text>
+  <text x="150" y="576" class="gnote">T1도 롤백할 수 있어 회복할 수 있지만, 롤백이 연쇄적으로 일어납니다(cascading rollback)</text>
+</svg>

@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 626" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 락 없이 컨슈머 1, 2, 3이 같은 code를 거의 동시에 findByCode로 조회해 모두 결과 없음을 받고 각각 insert해 같은 code가 3건 쌓이는 흐름, 아래쪽은 분산락을 적용해 컨슈머 1이 락을 얻어 조회와 insert를 마치고 트랜잭션이 끝난 뒤 락을 놓을 때까지 컨슈머 2가 기다렸다가, 락을 얻은 뒤 이미 있는 행을 조회하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .lanec { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .gflow { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .glbl { font-size: 12px; font-weight: 700; fill: #15803d; }
+    .rlbl { font-size: 12px; font-weight: 700; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="626" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="334" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">락 없이 적재 — 세 컨슈머가 같은 code를 동시에 조회</text>
+  <text x="730" y="42" class="code" text-anchor="end">findByCode</text>
+  <text x="260" y="68" class="step" text-anchor="middle">조회</text>
+  <text x="440" y="68" class="step" text-anchor="middle">판단</text>
+  <text x="620" y="68" class="step" text-anchor="middle">적재</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">컨슈머 1</text>
+  <text x="30" y="126" class="sub">같은 code 메시지</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="190" y="88" width="140" height="48" rx="8" class="box"/>
+  <text x="260" y="107" class="op" text-anchor="middle">findByCode</text>
+  <text x="260" y="126" class="val" text-anchor="middle">결과 없음</text>
+  <rect x="370" y="88" width="140" height="48" rx="8" class="box"/>
+  <text x="440" y="107" class="t" text-anchor="middle">없다고 판단</text>
+  <text x="440" y="126" class="val" text-anchor="middle">insert 하기로 함</text>
+  <rect x="550" y="88" width="140" height="48" rx="8" class="bad"/>
+  <text x="620" y="107" class="badc" text-anchor="middle">insert</text>
+  <text x="620" y="126" class="val" text-anchor="middle">행 추가</text>
+  <text x="30" y="168" class="lane">컨슈머 2</text>
+  <text x="30" y="186" class="sub">같은 code 메시지</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="190" y="148" width="140" height="48" rx="8" class="box"/>
+  <text x="260" y="167" class="op" text-anchor="middle">findByCode</text>
+  <text x="260" y="186" class="val" text-anchor="middle">결과 없음</text>
+  <rect x="370" y="148" width="140" height="48" rx="8" class="box"/>
+  <text x="440" y="167" class="t" text-anchor="middle">없다고 판단</text>
+  <text x="440" y="186" class="val" text-anchor="middle">insert 하기로 함</text>
+  <rect x="550" y="148" width="140" height="48" rx="8" class="bad"/>
+  <text x="620" y="167" class="badc" text-anchor="middle">insert</text>
+  <text x="620" y="186" class="val" text-anchor="middle">행 추가</text>
+  <text x="30" y="228" class="lane">컨슈머 3</text>
+  <text x="30" y="246" class="sub">같은 code 메시지</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="190" y="208" width="140" height="48" rx="8" class="box"/>
+  <text x="260" y="227" class="op" text-anchor="middle">findByCode</text>
+  <text x="260" y="246" class="val" text-anchor="middle">결과 없음</text>
+  <rect x="370" y="208" width="140" height="48" rx="8" class="box"/>
+  <text x="440" y="227" class="t" text-anchor="middle">없다고 판단</text>
+  <text x="440" y="246" class="val" text-anchor="middle">insert 하기로 함</text>
+  <rect x="550" y="208" width="140" height="48" rx="8" class="bad"/>
+  <text x="620" y="227" class="badc" text-anchor="middle">insert</text>
+  <text x="620" y="246" class="val" text-anchor="middle">행 추가</text>
+  <text x="30" y="295" class="db">DB의 code 행</text>
+  <rect x="220" y="274" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="260" y="295" class="db" text-anchor="middle">0건</text>
+  <rect x="400" y="274" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="440" y="295" class="db" text-anchor="middle">0건</text>
+  <rect x="580" y="274" width="80" height="32" rx="6" class="bad"/>
+  <text x="620" y="295" class="badt" text-anchor="middle">3건</text>
+  <text x="150" y="330" class="note">세 컨슈머 모두 조회한 시점에는 행이 없어서, 같은 code가 3건 쌓입니다</text>
+  <rect x="10" y="360" width="740" height="256" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="392" class="h">분산락 적용 — 락을 얻은 컨슈머만 조회하고 적재</text>
+  <text x="730" y="392" class="code" text-anchor="end">Redisson</text>
+  <text x="220" y="418" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="418" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="418" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="418" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="426" x2="722" y2="426" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="458" class="lane">컨슈머 1</text>
+  <text x="30" y="476" class="sub">먼저 락 획득</text>
+  <rect x="150" y="436" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="438" width="116" height="48" rx="8" class="hold"/>
+  <text x="220" y="457" class="t" text-anchor="middle">락 획득</text>
+  <text x="220" y="476" class="val" text-anchor="middle">code 키</text>
+  <rect x="302" y="438" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="457" class="op" text-anchor="middle">findByCode</text>
+  <text x="360" y="476" class="val" text-anchor="middle">결과 없음</text>
+  <rect x="442" y="438" width="116" height="48" rx="8" class="ok"/>
+  <text x="500" y="457" class="okc" text-anchor="middle">insert</text>
+  <text x="500" y="476" class="val" text-anchor="middle">행 추가</text>
+  <rect x="582" y="438" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="457" class="okt" text-anchor="middle">락 해제</text>
+  <text x="640" y="476" class="val" text-anchor="middle">트랜잭션 종료 후</text>
+  <text x="30" y="518" class="lane">컨슈머 2</text>
+  <text x="30" y="536" class="sub">같은 code 키</text>
+  <rect x="150" y="496" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="506" width="396" height="32" rx="6" class="wait"/>
+  <text x="360" y="527" class="waitt" text-anchor="middle">락 대기 — 컨슈머 1이 락을 놓을 때까지</text>
+  <rect x="582" y="498" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="517" class="t" text-anchor="middle">락 획득 후 조회</text>
+  <text x="640" y="536" class="val" text-anchor="middle">결과 있음</text>
+  <line x1="640" y1="486" x2="640" y2="498" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="150" y="564" width="585" height="32" rx="15" class="ok"/>
+  <text x="442.5" y="585" class="okt" text-anchor="middle">컨슈머 2, 3은 이미 있는 행의 라벨을 비교해 update하거나 바로 return</text>
+</svg>

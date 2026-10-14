@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>커밋 메시지의 제목, 빈 행, 본문, 이슈 번호 부분을 위에서 아래로 놓고, 제목에는 2~5번, 빈 행에는 1번, 본문에는 6~7번 규칙이 적용된다는 것을 보여 주는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">커밋 메시지 구조 — 부분마다 적용되는 규칙</text>
+  <text x="180" y="70" class="sub" text-anchor="middle">메시지 구조</text>
+  <text x="550" y="70" class="sub" text-anchor="middle">적용되는 규칙</text>
+
+  <rect x="30" y="80" width="300" height="100" rx="8" class="box"/>
+  <text x="180" y="120" class="db" text-anchor="middle">제목</text>
+  <text x="180" y="144" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">type</tspan>(타입) : <tspan font-family="Menlo, Consolas, monospace">title</tspan>(제목)</text>
+  <line x1="336" y1="130" x2="364" y2="130" class="axis" marker-end="url(#ar)"/>
+  <rect x="370" y="80" width="360" height="100" rx="8" class="hold"/>
+  <text x="390" y="104" class="val">2. 제목을 50글자 내로 제한</text>
+  <text x="390" y="125" class="val">3. 제목 첫 글자는 대문자로 작성</text>
+  <text x="390" y="146" class="val">4. 제목 끝에 마침표 넣지 않기</text>
+  <text x="390" y="167" class="val">5. 명령문으로 쓰고 과거형을 사용하지 않음</text>
+
+  <rect x="30" y="192" width="300" height="40" rx="8" class="wait"/>
+  <text x="180" y="217" class="waitt" text-anchor="middle">빈 행</text>
+  <line x1="336" y1="212" x2="364" y2="212" class="axis" marker-end="url(#ar)"/>
+  <rect x="370" y="192" width="360" height="40" rx="8" class="hold"/>
+  <text x="390" y="217" class="val">1. 제목과 본문을 빈 행으로 구분</text>
+
+  <rect x="30" y="244" width="300" height="64" rx="8" class="box"/>
+  <text x="180" y="270" class="db" text-anchor="middle">본문 (생략 가능)</text>
+  <text x="180" y="292" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">body</tspan>(본문)</text>
+  <line x1="336" y1="276" x2="364" y2="276" class="axis" marker-end="url(#ar)"/>
+  <rect x="370" y="244" width="360" height="64" rx="8" class="hold"/>
+  <text x="390" y="270" class="val">6. 본문의 각 행은 72글자 내로 제한</text>
+  <text x="390" y="292" class="val">7. 어떻게보다는 무엇과 왜를 설명</text>
+
+  <rect x="30" y="320" width="300" height="52" rx="8" class="box"/>
+  <text x="180" y="341" class="db" text-anchor="middle">이슈 번호 (생략 가능)</text>
+  <text x="180" y="361" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">Resolves : #issue</tspan>, <tspan font-family="Menlo, Consolas, monospace">See also : #issue</tspan></text>
+  <line x1="336" y1="346" x2="364" y2="346" class="axis" marker-end="url(#ar)"/>
+  <rect x="370" y="320" width="360" height="52" rx="8" class="hold"/>
+  <text x="390" y="351" class="val">해결한 이슈와 참고 이슈를 적음</text>
+</svg>

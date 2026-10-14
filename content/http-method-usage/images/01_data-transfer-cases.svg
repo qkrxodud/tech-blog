@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>정적 데이터 조회는 리소스 경로로, 동적 데이터 조회는 GET 쿼리 파라미터로, HTML Form(주로 POST)과 HTTP API 데이터 전송은 주로 메시지 바디로 데이터를 전달한다는 것을 네 줄로 나눠 보여 주는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">데이터를 전송하는 4가지 상황 — 데이터를 어디에 담는가</text>
+  <text x="30" y="76" class="lane">GET으로 조회</text>
+  <rect x="30" y="88" width="340" height="52" rx="8" class="box"/>
+  <text x="200" y="109" class="db" text-anchor="middle">정적 데이터 조회</text>
+  <text x="200" y="128" class="val" text-anchor="middle">이미지, 정적 텍스트 문서</text>
+  <line x1="376" y1="114" x2="414" y2="114" class="axis" marker-end="url(#ar)"/>
+  <rect x="420" y="88" width="310" height="52" rx="8" class="hold"/>
+  <text x="575" y="109" class="db" text-anchor="middle">리소스 경로로 조회</text>
+  <text x="575" y="128" class="val" text-anchor="middle">쿼리 파라미터 사용 안 함</text>
+  <rect x="30" y="148" width="340" height="52" rx="8" class="box"/>
+  <text x="200" y="169" class="db" text-anchor="middle">동적 데이터 조회</text>
+  <text x="200" y="188" class="val" text-anchor="middle">검색, 게시판 목록의 정렬 필터(검색어)</text>
+  <line x1="376" y1="174" x2="414" y2="174" class="axis" marker-end="url(#ar)"/>
+  <rect x="420" y="148" width="310" height="52" rx="8" class="hold"/>
+  <text x="575" y="169" class="db" text-anchor="middle">쿼리 파라미터로 전달</text>
+  <text x="575" y="188" class="val" text-anchor="middle">필터, 정렬 조건</text>
+  <line x1="30" y1="220" x2="730" y2="220" stroke="#e5e7eb" stroke-width="1.2"/>
+  <text x="30" y="250" class="lane">주로 메시지 바디로 전송</text>
+  <rect x="30" y="262" width="340" height="52" rx="8" class="box"/>
+  <text x="200" y="283" class="db" text-anchor="middle">HTML Form 데이터 전송</text>
+  <text x="200" y="302" class="val" text-anchor="middle">회원 가입, 상품 주문, 데이터 변경</text>
+  <line x1="376" y1="288" x2="414" y2="288" class="axis" marker-end="url(#ar)"/>
+  <rect x="420" y="262" width="310" height="52" rx="8" class="hold"/>
+  <text x="575" y="293" class="db" text-anchor="middle">주로 POST — 메시지 바디로 전달</text>
+  <rect x="30" y="322" width="340" height="52" rx="8" class="box"/>
+  <text x="200" y="343" class="db" text-anchor="middle">HTTP API 데이터 전송</text>
+  <text x="200" y="362" class="val" text-anchor="middle">서버 to 서버, 앱 클라이언트, 웹 클라이언트(Ajax)</text>
+  <line x1="376" y1="348" x2="414" y2="348" class="axis" marker-end="url(#ar)"/>
+  <rect x="420" y="322" width="310" height="52" rx="8" class="hold"/>
+  <text x="575" y="353" class="db" text-anchor="middle">메시지 바디로 전달</text>
+  <text x="30" y="408" class="sub">조회는 GET으로 하고, 회원 가입·상품 주문·데이터 변경처럼 데이터를 보내는 경우는 주로 메시지 바디에 담습니다.</text>
+</svg>

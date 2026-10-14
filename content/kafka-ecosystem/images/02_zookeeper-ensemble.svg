@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>주키퍼 여러 대로 구성된 하나의 주키퍼 앙상블에 주문, 배송, 결제 카프카 클러스터가 연결되고, 각 클러스터는 브로커 3대로 운영되는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .grp { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">주키퍼 앙상블 — 하나의 앙상블로 여러 클러스터 운영</text>
+  <rect x="200" y="62" width="360" height="80" rx="10" class="grp"/>
+  <text x="380" y="84" class="t" text-anchor="middle">주키퍼 앙상블</text>
+  <rect x="218" y="98" width="96" height="32" rx="6" class="hold"/>
+  <text x="266" y="119" class="val" text-anchor="middle">주키퍼</text>
+  <rect x="332" y="98" width="96" height="32" rx="6" class="hold"/>
+  <text x="380" y="119" class="val" text-anchor="middle">주키퍼</text>
+  <rect x="446" y="98" width="96" height="32" rx="6" class="hold"/>
+  <text x="494" y="119" class="val" text-anchor="middle">주키퍼</text>
+  <line x1="380" y1="144" x2="140" y2="182" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="30" y="186" width="220" height="110" rx="10" class="box"/>
+  <text x="140" y="210" class="t" text-anchor="middle">카프카 클러스터 (주문)</text>
+  <rect x="44" y="226" width="60" height="40" rx="6" class="chip"/>
+  <text x="74" y="251" class="val" text-anchor="middle">브로커 0</text>
+  <rect x="110" y="226" width="60" height="40" rx="6" class="chip"/>
+  <text x="140" y="251" class="val" text-anchor="middle">브로커 1</text>
+  <rect x="176" y="226" width="60" height="40" rx="6" class="chip"/>
+  <text x="206" y="251" class="val" text-anchor="middle">브로커 2</text>
+  <text x="140" y="286" class="sub" text-anchor="middle">서버 하나에 브로커 하나</text>
+  <line x1="380" y1="144" x2="380" y2="182" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="270" y="186" width="220" height="110" rx="10" class="box"/>
+  <text x="380" y="210" class="t" text-anchor="middle">카프카 클러스터 (배송)</text>
+  <rect x="284" y="226" width="60" height="40" rx="6" class="chip"/>
+  <text x="314" y="251" class="val" text-anchor="middle">브로커 0</text>
+  <rect x="350" y="226" width="60" height="40" rx="6" class="chip"/>
+  <text x="380" y="251" class="val" text-anchor="middle">브로커 1</text>
+  <rect x="416" y="226" width="60" height="40" rx="6" class="chip"/>
+  <text x="446" y="251" class="val" text-anchor="middle">브로커 2</text>
+  <text x="380" y="286" class="sub" text-anchor="middle">서버 하나에 브로커 하나</text>
+  <line x1="380" y1="144" x2="620" y2="182" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="510" y="186" width="220" height="110" rx="10" class="box"/>
+  <text x="620" y="210" class="t" text-anchor="middle">카프카 클러스터 (결제)</text>
+  <rect x="524" y="226" width="60" height="40" rx="6" class="chip"/>
+  <text x="554" y="251" class="val" text-anchor="middle">브로커 0</text>
+  <rect x="590" y="226" width="60" height="40" rx="6" class="chip"/>
+  <text x="620" y="251" class="val" text-anchor="middle">브로커 1</text>
+  <rect x="656" y="226" width="60" height="40" rx="6" class="chip"/>
+  <text x="686" y="251" class="val" text-anchor="middle">브로커 2</text>
+  <text x="620" y="286" class="sub" text-anchor="middle">서버 하나에 브로커 하나</text>
+  <text x="30" y="326" class="foot">클러스터마다 주키퍼를 따로 두면 리소스가 낭비되므로, 하나의 앙상블에 여러 클러스터를 연결해 운영하기도 합니다.</text>
+</svg>

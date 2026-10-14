@@ -366,7 +366,8 @@ const tagSlug = t => {
   if (TAG_SLUGS[t]) return TAG_SLUGS[t];
   const s = t.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9._-]/g, '');
   // 영문이 하나도 남지 않는 태그(순한글)는 위 표에 넣어 두어야 한다.
-  if (!s) console.warn(`태그 주소 없음: "${t}" — data/tag-slugs.json에 영문 이름을 적어 주세요`);
+  // 한글이 섞인 태그는 한글이 지워져 "-"나 "http-" 같은 주소가 되고, 서로 다른 태그가 같은 주소를 쓰게 된다.
+  if (!/[a-z0-9]/.test(s) || /[가-힣]/.test(t)) console.warn(`태그 주소 없음: "${t}" — data/tag-slugs.json에 영문 이름을 적어 주세요`);
   return s || encodeURIComponent(t);
 };
 const tagHref = t => encodeURIComponent(tagSlug(t));
@@ -376,6 +377,15 @@ const tagPages = Object.entries(byTag)
   .filter(([, list]) => list.length > 1)
   .sort((a, b) => b[1].length - a[1].length);
 const tagLinked = new Set(tagPages.map(([t]) => t));
+// 서로 다른 태그가 같은 주소를 쓰면 태그 페이지가 서로 덮어쓴다(예: Transactional과 @Transactional).
+{
+  const seen = new Map();
+  for (const [t] of tagPages) {
+    const s = tagSlug(t);
+    if (seen.has(s)) console.warn(`태그 주소 겹침: "${seen.get(s)}"와 "${t}"가 모두 tag/${s}/ — data/tag-slugs.json에서 하나를 바꿔 주세요`);
+    else seen.set(s, t);
+  }
+}
 const seriesMap = {};
 for (const p of posts) if (p.series) (seriesMap[p.series] ??= []).push(p);
 for (const s of Object.values(seriesMap)) s.sort((a, b) => a.seriesOrder - b.seriesOrder);

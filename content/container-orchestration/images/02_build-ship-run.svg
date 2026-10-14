@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>프로그램으로 도커 이미지를 만들고(Build), 도커 허브나 저장소에 저장하고(Ship), 이미지를 실행해 컨테이너를 띄우는(Run) 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .card { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .lbl { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .badl { fill: #fef2f2; stroke: #fca5a5; stroke-width: 1.2; }
+    .okl { fill: #f0fdf4; stroke: #86efac; stroke-width: 1.2; }
+    .gval { font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="300" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="280" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">컨테이너의 흐름 — Build, Ship, Run</text>
+  <rect x="30" y="62" width="200" height="172" rx="10" class="card"/>
+  <text x="130.0" y="90" class="op" text-anchor="middle">Build</text>
+  <text x="130.0" y="110" class="sub" text-anchor="middle">도커 이미지를 만듭니다</text>
+  <rect x="60" y="124" width="140" height="34" rx="6" class="box"/>
+  <text x="130.0" y="146" class="val" text-anchor="middle">프로그램</text>
+  <line x1="130.0" y1="160" x2="130.0" y2="178" class="axis" marker-end="url(#ar)"/>
+  <rect x="60" y="182" width="140" height="36" rx="6" class="box"/>
+  <text x="130.0" y="205" class="lbl" text-anchor="middle">도커 이미지</text>
+  <line x1="234" y1="148" x2="276" y2="148" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="280" y="62" width="200" height="172" rx="10" class="card"/>
+  <text x="380.0" y="90" class="op" text-anchor="middle">Ship</text>
+  <text x="380.0" y="110" class="sub" text-anchor="middle">저장소에 저장합니다</text>
+  <rect x="310" y="124" width="140" height="34" rx="6" class="box"/>
+  <text x="380.0" y="146" class="val" text-anchor="middle">도커 이미지</text>
+  <line x1="380.0" y1="160" x2="380.0" y2="178" class="axis" marker-end="url(#ar)"/>
+  <rect x="310" y="182" width="140" height="36" rx="6" class="hold"/>
+  <text x="380.0" y="205" class="lbl" text-anchor="middle">도커 허브 · 저장소</text>
+  <line x1="484" y1="148" x2="526" y2="148" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="530" y="62" width="200" height="172" rx="10" class="card"/>
+  <text x="630.0" y="90" class="op" text-anchor="middle">Run</text>
+  <text x="630.0" y="110" class="sub" text-anchor="middle">이미지를 실행합니다</text>
+  <rect x="560" y="124" width="140" height="34" rx="6" class="box"/>
+  <text x="630.0" y="146" class="val" text-anchor="middle">도커 이미지</text>
+  <line x1="630.0" y1="160" x2="630.0" y2="178" class="axis" marker-end="url(#ar)"/>
+  <rect x="560" y="182" width="140" height="36" rx="6" class="ok"/>
+  <text x="630.0" y="205" class="okt" text-anchor="middle">컨테이너</text>
+  <text x="30" y="262" class="sub">어떤 언어로 만든 프로그램이든 이미지만 만들면, 저장하고 실행하는 방식은 모두 같습니다.</text>
+</svg>

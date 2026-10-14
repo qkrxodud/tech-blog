@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>애플리케이션의 메시지를 TCP가 TCP 세그먼트로, IP가 IP 패킷으로, 네트워크 인터페이스가 Ethernet frame으로 차례로 감싸는 프로토콜 계층</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .mv { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">프로토콜 계층 — 계층을 내려갈 때마다 앞 계층의 데이터를 감싼다</text>
+  <text x="30" y="84" class="t">애플리케이션 계층</text>
+  <text x="30" y="102" class="sub">웹 브라우저, 게임, 채팅 → Socket</text>
+  <rect x="250" y="60" width="490" height="52" rx="6" class="track"/>
+  <rect x="610" y="64" width="120" height="44" rx="6" class="box"/>
+  <text x="670" y="91" class="t" text-anchor="middle">메시지</text>
+  <line x1="670" y1="110" x2="670" y2="130" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="156" class="t">OS 계층 — TCP</text>
+  <text x="30" y="174" class="sub">TCP 세그먼트로 감쌈</text>
+  <rect x="250" y="132" width="490" height="52" rx="6" class="track"/>
+  <rect x="610" y="136" width="120" height="44" rx="6" class="box"/>
+  <text x="670" y="163" class="t" text-anchor="middle">메시지</text>
+  <rect x="496" y="136" width="110" height="44" rx="6" class="ok"/>
+  <text x="551" y="163" class="okt" text-anchor="middle">TCP 정보</text>
+  <line x1="670" y1="182" x2="670" y2="202" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="228" class="t">OS 계층 — IP</text>
+  <text x="30" y="246" class="sub">IP 패킷으로 감쌈</text>
+  <rect x="250" y="204" width="490" height="52" rx="6" class="track"/>
+  <rect x="610" y="208" width="120" height="44" rx="6" class="box"/>
+  <text x="670" y="235" class="t" text-anchor="middle">메시지</text>
+  <rect x="496" y="208" width="110" height="44" rx="6" class="hold"/>
+  <text x="551" y="235" class="val" text-anchor="middle">TCP 정보</text>
+  <rect x="382" y="208" width="110" height="44" rx="6" class="ok"/>
+  <text x="437" y="235" class="okt" text-anchor="middle">IP 정보</text>
+  <line x1="670" y1="254" x2="670" y2="274" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="300" class="t">네트워크 인터페이스</text>
+  <text x="30" y="318" class="sub">Ethernet frame으로 감쌈</text>
+  <rect x="250" y="276" width="490" height="52" rx="6" class="track"/>
+  <rect x="610" y="280" width="120" height="44" rx="6" class="box"/>
+  <text x="670" y="307" class="t" text-anchor="middle">메시지</text>
+  <rect x="496" y="280" width="110" height="44" rx="6" class="hold"/>
+  <text x="551" y="307" class="val" text-anchor="middle">TCP 정보</text>
+  <rect x="382" y="280" width="110" height="44" rx="6" class="hold"/>
+  <text x="437" y="307" class="val" text-anchor="middle">IP 정보</text>
+  <rect x="268" y="280" width="110" height="44" rx="6" class="ok"/>
+  <text x="323" y="307" class="okt" text-anchor="middle">Ethernet 정보</text>
+  <text x="30" y="352" class="foot">초록 칸이 그 계층에서 새로 붙는 정보입니다. 안쪽의 메시지는 그대로 담겨 전달됩니다.</text>
+</svg>

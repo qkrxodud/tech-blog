@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Controller가 API Server를 거쳐 etcd의 정보를 조회하고, 원하는 상태 변경을 전달받아 리소스를 바꾼 뒤, 다시 API Server의 권한 체크를 거쳐 etcd에 갱신하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .card { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .lbl { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .badl { fill: #fef2f2; stroke: #fca5a5; stroke-width: 1.2; }
+    .okl { fill: #f0fdf4; stroke: #86efac; stroke-width: 1.2; }
+    .gval { font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="560" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="540" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Controller의 조회 흐름 — etcd 접근은 API Server를 거쳐서</text>
+  <rect x="120" y="60" width="140" height="40" rx="8" class="box"/>
+  <text x="190" y="85" class="lbl" text-anchor="middle">Controller</text>
+  <line x1="190" y1="100" x2="190" y2="512" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="330" y="60" width="140" height="40" rx="8" class="ok"/>
+  <text x="400" y="85" class="okt" text-anchor="middle">API Server</text>
+  <line x1="400" y1="100" x2="400" y2="512" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="540" y="60" width="140" height="40" rx="8" class="hold"/>
+  <text x="610" y="85" class="lbl" text-anchor="middle">etcd</text>
+  <line x1="610" y1="100" x2="610" y2="512" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="198" y1="142" x2="390" y2="142" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="295.0" y="134" class="val" text-anchor="middle">정보 조회</text>
+  <rect x="325.0" y="152" width="150" height="30" rx="6" class="box"/>
+  <text x="400" y="172" class="val" text-anchor="middle">조회 권한 체크</text>
+  <line x1="408" y1="214" x2="600" y2="214" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="505.0" y="206" class="val" text-anchor="middle">정보 조회</text>
+  <text x="30" y="179.0" class="step">1. 조회</text>
+  <line x1="24" y1="124" x2="24" y2="224" class="axis"/>
+  <line x1="602" y1="268" x2="410" y2="268" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="505.0" y="260" class="val" text-anchor="middle">원하는 상태 변경</text>
+  <line x1="392" y1="318" x2="200" y2="318" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="295.0" y="310" class="val" text-anchor="middle">원하는 상태 변경</text>
+  <rect x="115.0" y="328" width="150" height="30" rx="6" class="hold"/>
+  <text x="190" y="348" class="val" text-anchor="middle">원하는 상태로 리소스 변경</text>
+  <text x="30" y="311.0" class="step">2. 변경</text>
+  <line x1="24" y1="250" x2="24" y2="362" class="axis"/>
+  <line x1="198" y1="406" x2="390" y2="406" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="295.0" y="398" class="val" text-anchor="middle">변경 사항 전달</text>
+  <rect x="325.0" y="416" width="150" height="30" rx="6" class="box"/>
+  <text x="400" y="436" class="val" text-anchor="middle">갱신 권한 체크</text>
+  <line x1="408" y1="478" x2="600" y2="478" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="505.0" y="470" class="val" text-anchor="middle">정보 갱신</text>
+  <rect x="535.0" y="488" width="150" height="30" rx="6" class="ok"/>
+  <text x="610" y="508" class="gval" text-anchor="middle">정보 갱신</text>
+  <text x="30" y="459.0" class="step">3. 갱신</text>
+  <line x1="24" y1="388" x2="24" y2="520" class="axis"/>
+</svg>

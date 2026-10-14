@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>zookeeper-server-start.sh와 kafka-server-start.sh는 설정 파일로 주키퍼와 브로커를 실행하고, kafka-broker-api-versions.sh와 kafka-topics.sh는 bootstrap-server로 지정한 브로커에 접속해 확인, 토픽 생성, 확인, 파티션 개수 변경을 하는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .grp { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">로컬 환경 설정 — 명령어별 역할</text>
+  <rect x="30" y="70" width="440" height="46" rx="6" class="box"/>
+  <text x="46" y="89" class="m">bin/zookeeper-server-start.sh config/zookeeper.properties</text>
+  <text x="46" y="107" class="sub">주키퍼 실행</text>
+  <line x1="472" y1="93" x2="556" y2="93" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="514" y="86" class="gnote" text-anchor="middle">실행</text>
+  <rect x="30" y="124" width="440" height="46" rx="6" class="box"/>
+  <text x="46" y="143" class="m">bin/kafka-server-start.sh config/server.properties</text>
+  <text x="46" y="161" class="sub">카프카 브로커 실행</text>
+  <line x1="472" y1="147" x2="556" y2="147" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="514" y="140" class="gnote" text-anchor="middle">실행</text>
+  <rect x="30" y="178" width="440" height="46" rx="6" class="box"/>
+  <text x="46" y="197" class="m">bin/kafka-broker-api-versions.sh --bootstrap-server</text>
+  <text x="46" y="215" class="sub">브로커가 정상 실행됐는지 확인</text>
+  <line x1="472" y1="201" x2="556" y2="201" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="514" y="194" class="val" text-anchor="middle">접속</text>
+  <rect x="30" y="232" width="440" height="46" rx="6" class="box"/>
+  <text x="46" y="251" class="m">bin/kafka-topics.sh --create</text>
+  <text x="46" y="269" class="sub">토픽 생성</text>
+  <line x1="472" y1="255" x2="556" y2="255" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="514" y="248" class="val" text-anchor="middle">접속</text>
+  <rect x="30" y="286" width="440" height="46" rx="6" class="box"/>
+  <text x="46" y="305" class="m">bin/kafka-topics.sh --describe</text>
+  <text x="46" y="323" class="sub">토픽 확인</text>
+  <line x1="472" y1="309" x2="556" y2="309" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="514" y="302" class="val" text-anchor="middle">접속</text>
+  <rect x="30" y="340" width="440" height="46" rx="6" class="box"/>
+  <text x="46" y="359" class="m">bin/kafka-topics.sh --alter --partitions 10</text>
+  <text x="46" y="377" class="sub">파티션 개수 늘리기</text>
+  <line x1="472" y1="363" x2="556" y2="363" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="514" y="356" class="val" text-anchor="middle">접속</text>
+  <rect x="560" y="70" width="170" height="46" rx="8" class="hold"/>
+  <text x="645" y="98" class="t" text-anchor="middle">주키퍼</text>
+  <rect x="560" y="124" width="170" height="262" rx="8" class="hold"/>
+  <text x="645" y="250" class="t" text-anchor="middle">카프카 브로커</text>
+  <text x="645" y="270" class="sub" text-anchor="middle">포트 9092</text>
+  <text x="30" y="414" class="foot">주키퍼와 브로커는 설정 파일로 실행하고, 나머지 명령어는 <tspan font-family="Menlo, Consolas, monospace">--bootstrap-server</tspan>로 지정한 브로커에 접속합니다.</text>
+</svg>

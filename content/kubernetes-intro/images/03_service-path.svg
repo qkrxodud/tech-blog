@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>외부 사용자의 요청이 LoadBalancer, NodePort, ClusterIP를 거쳐 Pod으로 전달되고, 1번 노드가 죽으면 LoadBalancer가 2번 노드의 NodePort로 보내는 경로</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .card { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .lbl { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .badl { fill: #fef2f2; stroke: #fca5a5; stroke-width: 1.2; }
+    .okl { fill: #f0fdf4; stroke: #86efac; stroke-width: 1.2; }
+    .gval { font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Service 요청 경로 — LoadBalancer → NodePort → ClusterIP → Pod</text>
+  <rect x="290" y="62" width="446" height="250" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-dasharray="6 4"/>
+  <text x="304" y="84" class="sub">클러스터</text>
+  <rect x="26" y="166" width="92" height="52" rx="8" class="box"/>
+  <text x="72.0" y="189.0" class="lbl" text-anchor="middle">사용자</text>
+  <text x="72.0" y="207.0" class="val" text-anchor="middle">브라우저</text>
+  <rect x="140" y="160" width="120" height="64" rx="8" class="ok"/>
+  <text x="200.0" y="189.0" class="okt" text-anchor="middle">LoadBalancer</text>
+  <text x="200.0" y="207.0" class="val" text-anchor="middle">NodePort 앞</text>
+  <text x="304" y="112" class="lane">1번 노드</text>
+  <rect x="304" y="122" width="120" height="52" rx="8" class="bad"/>
+  <text x="364.0" y="145.0" class="badt" text-anchor="middle">NodePort</text>
+  <text x="364.0" y="163.0" class="note" text-anchor="middle">노드가 죽음</text>
+  <text x="304" y="218" class="lane">2번 노드</text>
+  <rect x="304" y="228" width="120" height="52" rx="8" class="box"/>
+  <text x="364.0" y="251.0" class="lbl" text-anchor="middle">NodePort</text>
+  <text x="364.0" y="269.0" class="val" text-anchor="middle">노드의 포트</text>
+  <rect x="458" y="168" width="120" height="52" rx="8" class="box"/>
+  <text x="518.0" y="191.0" class="lbl" text-anchor="middle">ClusterIP</text>
+  <text x="518.0" y="209.0" class="val" text-anchor="middle">내부 로드밸런싱</text>
+  <rect x="612" y="106" width="108" height="38" rx="8" class="hold"/>
+  <text x="666.0" y="130.0" class="lbl" text-anchor="middle">Pod 1</text>
+  <rect x="612" y="174" width="108" height="38" rx="8" class="hold"/>
+  <text x="666.0" y="198.0" class="lbl" text-anchor="middle">Pod 2</text>
+  <rect x="612" y="242" width="108" height="38" rx="8" class="hold"/>
+  <text x="666.0" y="266.0" class="lbl" text-anchor="middle">Pod 3</text>
+  <line x1="120" y1="192" x2="137" y2="192" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="262" y1="180" x2="301" y2="154" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <line x1="262" y1="206" x2="301" y2="246" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="426" y1="250" x2="455" y2="210" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="580" y1="194" x2="609" y2="125" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="580" y1="194" x2="609" y2="193" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="580" y1="194" x2="609" y2="261" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="340" class="sub">LoadBalancer가 살아 있는 2번 노드의 NodePort로 요청을 보내고, ClusterIP가 3개의 Pod 중 하나로 전달합니다.</text>
+</svg>

@@ -87,5 +87,17 @@
   "오케스트레이션": "orchestration",
   "인덱스": "index",
   "격리수준": "isolation-level",
-  "데드락": "deadlock"
+  "데드락": "deadlock",
+  "네이밍 컨벤션": "naming-convention",
+  "정적 팩토리 메서드": "static-factory-method",
+  "웹 네트워크": "web-network",
+  "HTTP 메서드": "http-method",
+  "방어 코드": "defensive-code",
+  "메시지 큐": "message-queue",
+  "분산 시스템": "distributed-system",
+  "로컬 환경": "local-environment",
+  "관심사 분리": "separation-of-concerns",
+  "통합 테스트": "integration-test",
+  "자기 호출": "self-call",
+  "@Transactional": "transactional-annotation"
 }

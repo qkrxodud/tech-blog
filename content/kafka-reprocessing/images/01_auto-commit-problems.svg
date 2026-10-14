@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 626" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 자동 커밋을 사용할 때 poll로 1~5번을 가져와 1~3번을 처리했지만 커밋 시점 전에 오류가 나서, 재시작 후 1번부터 다시 가져와 1~3번을 중복 처리하는 흐름, 아래쪽은 1~2번만 처리한 상태에서 자동 커밋이 5번까지 기록되고 3번 처리 중 오류가 나서, 재시작 후 6번부터 가져와 3~5번이 유실되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .lanec { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .gflow { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .glbl { font-size: 12px; font-weight: 700; fill: #15803d; }
+    .rlbl { font-size: 12px; font-weight: 700; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="626" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">메시지 중복 처리 — 커밋 전에 오류 발생</text>
+  <text x="730" y="42" class="code" text-anchor="end">enable.auto.commit=true</text>
+  <text x="220" y="68" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="68" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="68" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="68" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">Consumer</text>
+  <text x="30" y="126" class="sub">메시지 처리</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="107" class="op" text-anchor="middle">poll()</text>
+  <text x="220" y="126" class="val" text-anchor="middle">1~5번 가져옴</text>
+  <rect x="302" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="107" class="t" text-anchor="middle">1~3번 처리</text>
+  <text x="360" y="126" class="val" text-anchor="middle">처리 완료</text>
+  <rect x="442" y="88" width="116" height="48" rx="8" class="bad"/>
+  <text x="500" y="107" class="badt" text-anchor="middle">오류</text>
+  <text x="500" y="126" class="val" text-anchor="middle">컨슈머 재시작</text>
+  <rect x="582" y="88" width="116" height="48" rx="8" class="bad"/>
+  <text x="640" y="107" class="badc" text-anchor="middle">poll()</text>
+  <text x="640" y="126" class="val" text-anchor="middle">1~5번 다시</text>
+  <text x="30" y="168" class="lane">자동 커밋</text>
+  <text x="30" y="186" class="sub">주기적으로 커밋</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="156" width="396" height="32" rx="6" class="wait"/>
+  <text x="360" y="177" class="waitt" text-anchor="middle">아직 커밋 시점이 아님 — offset 그대로</text>
+  <text x="30" y="235" class="db">커밋된 위치</text>
+  <text x="30" y="253" class="sub">다음에 읽을 번호</text>
+  <rect x="180" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="220" y="235" class="db" text-anchor="middle">1번</text>
+  <rect x="320" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="360" y="235" class="db" text-anchor="middle">1번</text>
+  <rect x="460" y="214" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="500" y="235" class="db" text-anchor="middle">1번</text>
+  <rect x="600" y="214" width="80" height="32" rx="6" class="bad"/>
+  <text x="640" y="235" class="badt" text-anchor="middle">1번</text>
+  <text x="150" y="290" class="note">이미 처리한 1~3번을 다시 가져와 처리합니다 — 중복 처리</text>
+  <rect x="10" y="326" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="358" class="h">메시지 유실 — 처리를 마치기 전에 커밋</text>
+  <text x="730" y="358" class="code" text-anchor="end">enable.auto.commit=true</text>
+  <text x="220" y="384" class="step" text-anchor="middle">1단계</text>
+  <text x="360" y="384" class="step" text-anchor="middle">2단계</text>
+  <text x="500" y="384" class="step" text-anchor="middle">3단계</text>
+  <text x="640" y="384" class="step" text-anchor="middle">4단계</text>
+  <line x1="160" y1="392" x2="722" y2="392" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="424" class="lane">Consumer</text>
+  <text x="30" y="442" class="sub">메시지 처리</text>
+  <rect x="150" y="402" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="404" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="423" class="op" text-anchor="middle">poll()</text>
+  <text x="220" y="442" class="val" text-anchor="middle">1~5번 가져옴</text>
+  <rect x="302" y="404" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="423" class="t" text-anchor="middle">1~2번 처리</text>
+  <text x="360" y="442" class="val" text-anchor="middle">3~5번 남음</text>
+  <rect x="442" y="404" width="116" height="48" rx="8" class="bad"/>
+  <text x="500" y="423" class="badt" text-anchor="middle">3번 처리 중</text>
+  <text x="500" y="442" class="val" text-anchor="middle">오류, 재시작</text>
+  <rect x="582" y="404" width="116" height="48" rx="8" class="bad"/>
+  <text x="640" y="423" class="badc" text-anchor="middle">poll()</text>
+  <text x="640" y="442" class="val" text-anchor="middle">6번부터</text>
+  <text x="30" y="484" class="lane">자동 커밋</text>
+  <text x="30" y="502" class="sub">주기적으로 커밋</text>
+  <rect x="150" y="462" width="585" height="52" rx="6" class="track"/>
+  <rect x="302" y="464" width="116" height="48" rx="8" class="bad"/>
+  <text x="360" y="483" class="badc" text-anchor="middle">commit</text>
+  <text x="360" y="502" class="val" text-anchor="middle">5번까지 기록</text>
+  <text x="30" y="551" class="db">커밋된 위치</text>
+  <text x="30" y="569" class="sub">다음에 읽을 번호</text>
+  <rect x="180" y="530" width="80" height="32" rx="6" class="dbbox"/>
+  <text x="220" y="551" class="db" text-anchor="middle">1번</text>
+  <rect x="320" y="530" width="80" height="32" rx="6" class="bad"/>
+  <text x="360" y="551" class="badt" text-anchor="middle">6번</text>
+  <rect x="460" y="530" width="80" height="32" rx="6" class="bad"/>
+  <text x="500" y="551" class="badt" text-anchor="middle">6번</text>
+  <rect x="600" y="530" width="80" height="32" rx="6" class="bad"/>
+  <text x="640" y="551" class="badt" text-anchor="middle">6번</text>
+  <text x="150" y="606" class="note">처리하지 못한 3~5번을 다시 읽어 오지 않습니다 — 유실</text>
+</svg>

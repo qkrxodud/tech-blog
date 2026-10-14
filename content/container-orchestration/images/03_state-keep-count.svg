@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>컨테이너 개수를 3개로 설정해 두면 하나가 사라져 2개가 되었을 때 새 컨테이너를 자동으로 만들어 다시 3개를 맞추는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .card { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .lbl { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .badl { fill: #fef2f2; stroke: #fca5a5; stroke-width: 1.2; }
+    .okl { fill: #f0fdf4; stroke: #86efac; stroke-width: 1.2; }
+    .gval { font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">상태 관리 — 설정한 컨테이너 개수 유지</text>
+  <text x="730" y="42" class="sub" text-anchor="end">설정한 개수: 3개</text>
+  <text x="230" y="72" class="step" text-anchor="middle">1. 정상 실행</text>
+  <text x="375" y="72" class="step" text-anchor="middle">2. 하나가 사라짐</text>
+  <text x="520" y="72" class="step" text-anchor="middle">3. 개수 차이 확인</text>
+  <text x="665" y="72" class="step" text-anchor="middle">4. 새로 생성</text>
+  <line x1="160" y1="82" x2="735" y2="82" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="150" class="lane">컨테이너</text>
+  <text x="30" y="168" class="sub">클러스터에서 실행 중</text>
+  <rect x="150" y="92" width="585" height="138" rx="6" class="track"/>
+  <rect x="172" y="102" width="116" height="32" rx="6" class="ok"/>
+  <text x="230" y="123" class="gval" text-anchor="middle">컨테이너 1</text>
+  <rect x="172" y="142" width="116" height="32" rx="6" class="ok"/>
+  <text x="230" y="163" class="gval" text-anchor="middle">컨테이너 2</text>
+  <rect x="172" y="182" width="116" height="32" rx="6" class="ok"/>
+  <text x="230" y="203" class="gval" text-anchor="middle">컨테이너 3</text>
+  <rect x="317" y="102" width="116" height="32" rx="6" class="ok"/>
+  <text x="375" y="123" class="gval" text-anchor="middle">컨테이너 1</text>
+  <rect x="317" y="142" width="116" height="32" rx="6" class="ok"/>
+  <text x="375" y="163" class="gval" text-anchor="middle">컨테이너 2</text>
+  <rect x="317" y="182" width="116" height="32" rx="6" class="bad"/>
+  <text x="375" y="203" class="note" text-anchor="middle">사라짐</text>
+  <rect x="462" y="102" width="116" height="32" rx="6" class="ok"/>
+  <text x="520" y="123" class="gval" text-anchor="middle">컨테이너 1</text>
+  <rect x="462" y="142" width="116" height="32" rx="6" class="ok"/>
+  <text x="520" y="163" class="gval" text-anchor="middle">컨테이너 2</text>
+  <rect x="462" y="182" width="116" height="32" rx="6" class="wait"/>
+  <text x="520" y="203" class="waitt" text-anchor="middle">비어 있음</text>
+  <rect x="607" y="102" width="116" height="32" rx="6" class="ok"/>
+  <text x="665" y="123" class="gval" text-anchor="middle">컨테이너 1</text>
+  <rect x="607" y="142" width="116" height="32" rx="6" class="ok"/>
+  <text x="665" y="163" class="gval" text-anchor="middle">컨테이너 2</text>
+  <rect x="607" y="182" width="116" height="32" rx="6" class="ok"/>
+  <text x="665" y="203" class="okt" text-anchor="middle">새 컨테이너</text>
+  <text x="30" y="270" class="db">현재 개수</text>
+  <rect x="198.0" y="250" width="64" height="32" rx="6" class="dbbox"/>
+  <text x="230" y="271" class="db" text-anchor="middle">3</text>
+  <rect x="343.0" y="250" width="64" height="32" rx="6" class="bad"/>
+  <text x="375" y="271" class="badt" text-anchor="middle">2</text>
+  <rect x="462.0" y="250" width="116" height="32" rx="6" class="dbbox"/>
+  <text x="520" y="271" class="db" text-anchor="middle">2 (설정 3)</text>
+  <rect x="633.0" y="250" width="64" height="32" rx="6" class="ok"/>
+  <text x="665" y="271" class="okt" text-anchor="middle">3</text>
+  <line x1="580" y1="198" x2="604" y2="198" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="318" class="sub">컨테이너 하나가 문제로 사라지면 현재 개수(2개)가 설정한 개수(3개)보다 적어지고,</text>
+  <text x="150" y="338" class="sub">관리자가 손대지 않아도 새 컨테이너가 자동으로 생성되어 다시 3개를 맞춥니다.</text>
+</svg>

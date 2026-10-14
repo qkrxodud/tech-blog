@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>프로듀서와 소스 커넥트가 카프카 클러스터로 데이터를 보내고, 컨슈머와 싱크 커넥트가 가져가며, 스트림즈는 클러스터의 데이터를 가져와 신규 토픽으로 다시 저장하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .chip { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .grp { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">카프카 생태계 — 구성 요소 사이의 데이터 흐름</text>
+  <rect x="30" y="76" width="170" height="60" rx="8" class="box"/>
+  <text x="115.0" y="104.0" class="t" text-anchor="middle">프로듀서</text>
+  <text x="115.0" y="123.0" class="sub" text-anchor="middle">데이터를 보냄</text>
+  <rect x="30" y="160" width="170" height="60" rx="8" class="box"/>
+  <text x="115.0" y="188.0" class="t" text-anchor="middle">커넥트(소스)</text>
+  <text x="115.0" y="207.0" class="sub" text-anchor="middle">프로듀서와 비슷한 역할</text>
+  <rect x="290" y="70" width="180" height="156" rx="8" class="hold"/>
+  <text x="380.0" y="146.0" class="t" text-anchor="middle">카프카 클러스터</text>
+  <text x="380.0" y="165.0" class="sub" text-anchor="middle">브로커 여러 대</text>
+  <rect x="560" y="76" width="170" height="60" rx="8" class="box"/>
+  <text x="645.0" y="104.0" class="t" text-anchor="middle">컨슈머</text>
+  <text x="645.0" y="123.0" class="sub" text-anchor="middle">데이터를 가져감</text>
+  <rect x="560" y="160" width="170" height="60" rx="8" class="box"/>
+  <text x="645.0" y="188.0" class="t" text-anchor="middle">커넥트(싱크)</text>
+  <text x="645.0" y="207.0" class="sub" text-anchor="middle">컨슈머와 비슷한 역할</text>
+  <rect x="290" y="270" width="180" height="56" rx="8" class="ok"/>
+  <text x="380" y="303" class="okt" text-anchor="middle">스트림즈</text>
+  <line x1="202" y1="106" x2="286" y2="106" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="472" y1="106" x2="556" y2="106" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="202" y1="190" x2="286" y2="190" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="472" y1="190" x2="556" y2="190" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="350" y1="228" x2="350" y2="266" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="410" y1="268" x2="410" y2="230" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="342" y="252" class="val" text-anchor="end">데이터를 가져옴</text>
+  <text x="418" y="252" class="gnote">신규 토픽으로 저장</text>
+  <text x="30" y="356" class="foot">커넥트는 일반 프로듀서·컨슈머와 달리 클러스터 단위로 운영하고, 템플릿으로 반복 생성해 사용합니다.</text>
+</svg>

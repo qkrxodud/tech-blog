@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 336" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>요청 메시지는 GET /search?q=hello&amp;hl=ko HTTP/1.1 시작 라인과 Host 헤더로, 응답 메시지는 HTTP/1.1 200 OK 시작 라인과 Content-Type 헤더, 빈 줄 다음의 HTML 메시지 바디로 구성되는 HTTP 메시지 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .mv { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="336" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="316" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">HTTP 메시지 — 시작 라인, 헤더, 빈 줄, 메시지 바디</text>
+  <text x="275" y="70" class="step" text-anchor="middle">요청 메시지</text>
+  <text x="580" y="70" class="step" text-anchor="middle">응답 메시지</text>
+
+  <text x="30" y="106" class="t">시작 라인</text>
+  <rect x="130" y="82" width="290" height="40" rx="6" class="ok"/>
+  <text x="142" y="107" class="mv">GET /search?q=hello&amp;hl=ko HTTP/1.1</text>
+  <rect x="430" y="82" width="300" height="40" rx="6" class="ok"/>
+  <text x="442" y="107" class="mv">HTTP/1.1 200 OK</text>
+
+  <text x="30" y="154" class="t">헤더</text>
+  <rect x="130" y="130" width="290" height="40" rx="6" class="box"/>
+  <text x="142" y="155" class="mv">Host: www.google.com</text>
+  <rect x="430" y="130" width="300" height="40" rx="6" class="box"/>
+  <text x="442" y="155" class="mv">Content-Type: text/html;charset=UTF-8</text>
+
+  <text x="30" y="198" class="t">빈 줄</text>
+  <rect x="130" y="178" width="290" height="30" rx="6" class="wait"/>
+  <text x="275" y="198" class="mv" text-anchor="middle">CRLF</text>
+  <rect x="430" y="178" width="300" height="30" rx="6" class="wait"/>
+  <text x="580" y="198" class="mv" text-anchor="middle">CRLF</text>
+
+  <text x="30" y="244" class="t">메시지 바디</text>
+  <rect x="130" y="216" width="290" height="48" rx="6" class="hold"/>
+  <text x="275" y="245" class="sub" text-anchor="middle">이 예시에는 바디가 없음</text>
+  <rect x="430" y="216" width="300" height="48" rx="6" class="hold"/>
+  <text x="442" y="236" class="mv">&lt;html&gt;</text>
+  <text x="442" y="254" class="mv">...&lt;/html&gt;</text>
+
+  <text x="30" y="292" class="foot">시작 라인은 요청이면 request-line, 응답이면 status-line이고, 헤더와 바디의 형식은 같습니다.</text>
+  <text x="30" y="312" class="foot">바디에는 HTML, 이미지, 영상, JSON 등 byte로 표현할 수 있는 모든 데이터를 담을 수 있습니다.</text>
+</svg>

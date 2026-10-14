@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>클라이언트가 출발 IP와 목적 IP를 담은 요청 패킷을 보내면 여러 노드를 거쳐 서버에 도착하고, 서버의 응답 패킷은 다른 경로로 클라이언트에 돌아오는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .mv { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="370" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="350" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">IP 패킷 전달 — 출발 IP와 목적 IP를 보고 노드를 거쳐 전달된다</text>
+
+  <rect x="30" y="110" width="120" height="80" rx="8" class="box"/>
+  <text x="90" y="146" class="t" text-anchor="middle">클라이언트</text>
+  <text x="90" y="166" class="sub" text-anchor="middle">출발지</text>
+  <rect x="610" y="110" width="120" height="80" rx="8" class="box"/>
+  <text x="670" y="146" class="t" text-anchor="middle">서버</text>
+  <text x="670" y="166" class="sub" text-anchor="middle">목적지</text>
+
+  <polyline points="150,128 240,100 330,84 420,100 510,92 608,126" fill="none" stroke="#16a34a" stroke-width="1.8" marker-end="url(#agr)"/>
+  <polyline points="610,174 540,206 460,200 360,218 260,200 152,174" fill="none" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#ag)"/>
+  <line x1="300" y1="150" x2="400" y2="150" stroke="#e5e7eb" stroke-width="1.2"/>
+  <line x1="400" y1="150" x2="480" y2="150" stroke="#e5e7eb" stroke-width="1.2"/>
+  <line x1="330" y1="84" x2="300" y2="150" stroke="#e5e7eb" stroke-width="1.2"/>
+  <line x1="300" y1="150" x2="260" y2="200" stroke="#e5e7eb" stroke-width="1.2"/>
+  <line x1="420" y1="100" x2="400" y2="150" stroke="#e5e7eb" stroke-width="1.2"/>
+  <line x1="400" y1="150" x2="360" y2="218" stroke="#e5e7eb" stroke-width="1.2"/>
+  <line x1="510" y1="92" x2="480" y2="150" stroke="#e5e7eb" stroke-width="1.2"/>
+  <line x1="480" y1="150" x2="540" y2="206" stroke="#e5e7eb" stroke-width="1.2"/>
+
+  <circle cx="240" cy="100" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="330" cy="84" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="420" cy="100" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="510" cy="92" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="300" cy="150" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="400" cy="150" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="480" cy="150" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="260" cy="200" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="360" cy="218" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="460" cy="200" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <circle cx="540" cy="206" r="13" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="222" y="154" class="step" text-anchor="middle">인터넷망의 노드</text>
+  <text x="465" y="74" class="gnote" text-anchor="middle">요청 경로</text>
+  <text x="400" y="250" class="sub" text-anchor="middle">응답 경로 (요청과 다른 경로일 수 있음)</text>
+
+  <rect x="30" y="266" width="340" height="56" rx="8" class="ok"/>
+  <text x="46" y="288" class="okt">요청 패킷</text>
+  <text x="46" y="310" class="val">출발 IP: 클라이언트 IP · 목적 IP: 서버 IP</text>
+  <rect x="390" y="266" width="340" height="56" rx="8" class="hold"/>
+  <text x="406" y="288" class="t">응답 패킷</text>
+  <text x="406" y="310" class="val">출발 IP: 서버 IP · 목적 IP: 클라이언트 IP</text>
+  <text x="30" y="346" class="foot">패킷에 담긴 출발 IP와 목적 IP를 보고 노드들이 패킷을 목적지까지 전달합니다.</text>
+</svg>

@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>https://www.google.com:443/search?q=hello&amp;hl=ko를 scheme, host, port, path, query로 나누고, fragment는 서버로 전송되지 않는다는 것을 표시한 URL 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .mv { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">URL 구조 — 예시 URL을 문법의 각 부분으로 나누기</text>
+  <rect x="40" y="70" width="62" height="38" rx="6" class="box"/>
+  <text x="71" y="94" class="m" text-anchor="middle">https</text>
+  <text x="71" y="128" class="sub" text-anchor="middle">scheme</text>
+  <text x="121" y="94" class="m" text-anchor="middle">://</text>
+  <rect x="140" y="70" width="138" height="38" rx="6" class="box"/>
+  <text x="209" y="94" class="m" text-anchor="middle">www.google.com</text>
+  <text x="209" y="128" class="sub" text-anchor="middle">host</text>
+  <text x="288" y="94" class="m" text-anchor="middle">:</text>
+  <rect x="298" y="70" width="45" height="38" rx="6" class="box"/>
+  <text x="321" y="94" class="m" text-anchor="middle">443</text>
+  <text x="321" y="128" class="sub" text-anchor="middle">port</text>
+  <rect x="348" y="70" width="79" height="38" rx="6" class="box"/>
+  <text x="387" y="94" class="m" text-anchor="middle">/search</text>
+  <text x="387" y="128" class="sub" text-anchor="middle">path</text>
+  <text x="437" y="94" class="m" text-anchor="middle">?</text>
+  <rect x="447" y="70" width="130" height="38" rx="6" class="box"/>
+  <text x="512" y="94" class="m" text-anchor="middle">q=hello&amp;hl=ko</text>
+  <text x="512" y="128" class="sub" text-anchor="middle">query</text>
+  <rect x="581" y="70" width="96" height="38" rx="6" class="wait"/>
+  <text x="629" y="94" class="mv" text-anchor="middle">#fragment</text>
+  <text x="629" y="128" class="note" text-anchor="middle">fragment</text>
+  <rect x="30" y="150" width="345" height="42" rx="8" class="hold"/>
+  <text x="44" y="176" class="m">scheme</text>
+  <text x="130" y="176" class="val">주로 프로토콜 사용 (http, https, ftp 등)</text>
+  <rect x="385" y="150" width="345" height="42" rx="8" class="hold"/>
+  <text x="399" y="176" class="m">host</text>
+  <text x="485" y="176" class="val">도메인명 또는 IP 주소</text>
+  <rect x="30" y="202" width="345" height="42" rx="8" class="hold"/>
+  <text x="44" y="228" class="m">port</text>
+  <text x="130" y="228" class="val">일반적으로 생략, http는 80, https는 443</text>
+  <rect x="385" y="202" width="345" height="42" rx="8" class="hold"/>
+  <text x="399" y="228" class="m">path</text>
+  <text x="485" y="228" class="val">리소스 경로, 계층적 구조</text>
+  <rect x="30" y="254" width="345" height="42" rx="8" class="hold"/>
+  <text x="44" y="280" class="m">query</text>
+  <text x="130" y="280" class="val">key=value 형태, ?로 시작하고 &amp;로 추가</text>
+  <rect x="385" y="254" width="345" height="42" rx="8" class="bad"/>
+  <text x="399" y="280" class="badc">fragment</text>
+  <text x="485" y="280" class="val">html 내부 북마크, 서버에 전송하지 않음</text>
+  <text x="30" y="322" class="foot">fragment를 뺀 나머지는 서버로 요청을 보낼 때 사용됩니다. 예시에서 userinfo는 생략되어 있습니다.</text>
+</svg>

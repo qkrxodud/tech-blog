@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>서버 관리 방식이 문서화, 서버 관리 도구, 가상 머신을 거쳐 도커 컨테이너로 바뀌어 왔고, 앞의 세 방식에는 각각 문제점이 남아 있었다는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .card { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .lbl { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .badl { fill: #fef2f2; stroke: #fca5a5; stroke-width: 1.2; }
+    .okl { fill: #f0fdf4; stroke: #86efac; stroke-width: 1.2; }
+    .gval { font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">서버 관리 방식의 변화 — 방식마다 남은 문제점</text>
+  <rect x="25" y="66" width="160" height="58" rx="8" class="box"/>
+  <text x="105.0" y="90" class="lbl" text-anchor="middle">문서화</text>
+  <text x="105.0" y="110" class="sub" text-anchor="middle">환경 설정을 문서로</text>
+  <line x1="187" y1="95" x2="205" y2="95" class="axis" marker-end="url(#ar)"/>
+  <text x="29" y="152" class="step">문제점</text>
+  <rect x="25" y="162" width="160" height="102" rx="8" class="badl"/>
+  <text x="35" y="186" class="note">· 환경 설정에 따라</text>
+  <text x="44" y="210" class="note">다르게 동작</text>
+  <rect x="208" y="66" width="160" height="58" rx="8" class="box"/>
+  <text x="288.0" y="90" class="lbl" text-anchor="middle">서버 관리 도구</text>
+  <text x="288.0" y="110" class="sub" text-anchor="middle">Chef · Puppet · Ansible</text>
+  <line x1="370" y1="95" x2="388" y2="95" class="axis" marker-end="url(#ar)"/>
+  <text x="212" y="152" class="step">문제점</text>
+  <rect x="208" y="162" width="160" height="102" rx="8" class="badl"/>
+  <text x="218" y="186" class="note">· 도구를 따로 배워야 함</text>
+  <text x="218" y="210" class="note">· 복잡해지면 어려워짐</text>
+  <rect x="391" y="66" width="160" height="58" rx="8" class="box"/>
+  <text x="471.0" y="90" class="lbl" text-anchor="middle">가상 머신</text>
+  <text x="471.0" y="110" class="sub" text-anchor="middle">서버를 VM으로</text>
+  <line x1="553" y1="95" x2="571" y2="95" class="axis" marker-end="url(#ar)"/>
+  <text x="395" y="152" class="step">문제점</text>
+  <rect x="391" y="162" width="160" height="102" rx="8" class="badl"/>
+  <text x="401" y="186" class="note">· 특정 벤더에 의존</text>
+  <text x="401" y="210" class="note">· 느림</text>
+  <text x="401" y="234" class="note">· 클라우드에 맞지 않음</text>
+  <rect x="574" y="66" width="160" height="58" rx="8" class="ok"/>
+  <text x="654.0" y="90" class="okt" text-anchor="middle">도커 컨테이너</text>
+  <text x="654.0" y="110" class="sub" text-anchor="middle">컨테이너 이미지로</text>
+  <text x="578" y="152" class="step">특징</text>
+  <rect x="574" y="162" width="160" height="102" rx="8" class="okl"/>
+  <text x="584" y="186" class="gval">· 생성이 쉽고 효율적</text>
+  <text x="584" y="210" class="gval">· 이미지로 배포·롤백</text>
+  <text x="584" y="234" class="gval">· 벤더 종속 없음</text>
+  <text x="30" y="300" class="sub">문서·도구·VM으로 관리하던 서버의 복잡함을 컨테이너가 대부분 해결하지만, 컨테이너가 많아지면 관리할 포인트가 다시 늘어납니다.</text>
+</svg>

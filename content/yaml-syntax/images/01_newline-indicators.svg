@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 388" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>같은 내용을 |, |-, > 지시어로 작성했을 때 |는 빈 줄과 마지막 줄바꿈을 모두 남기고, |-는 마지막 줄바꿈을 빼며, >는 빈 줄을 줄바꿈 하나로 바꾸는 결과 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .card { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .lbl { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .badl { fill: #fef2f2; stroke: #fca5a5; stroke-width: 1.2; }
+    .okl { fill: #f0fdf4; stroke: #86efac; stroke-width: 1.2; }
+    .gval { font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="388" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="368" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">줄바꿈 지시어 — 같은 세 줄이 문자열로 들어가는 모습</text>
+  <text x="30" y="72" class="sub">작성한 내용: number one line, 빈 줄, second line, 빈 줄, last line</text>
+  <rect x="26" y="92" width="708" height="72" rx="8" class="card"/>
+  <rect x="40" y="108" width="52" height="40" rx="6" class="hold"/>
+  <text x="66" y="134" class="op" text-anchor="middle">|</text>
+  <text x="108" y="120" class="val">빈 줄 유지, 마지막 줄바꿈 포함</text>
+  <text x="108" y="146" font-family="Menlo, Consolas, monospace" font-size="13" fill="#1f2937">"<tspan fill="#1f2937">number one line</tspan><tspan class="okc" fill="#15803d">\n</tspan><tspan class="okc" fill="#15803d">\n</tspan><tspan fill="#1f2937">second line</tspan><tspan class="okc" fill="#15803d">\n</tspan><tspan class="okc" fill="#15803d">\n</tspan><tspan fill="#1f2937">last line</tspan><tspan class="okc" fill="#15803d">\n</tspan>"</text>
+  <rect x="26" y="176" width="708" height="72" rx="8" class="card"/>
+  <rect x="40" y="192" width="52" height="40" rx="6" class="hold"/>
+  <text x="66" y="218" class="op" text-anchor="middle">|-</text>
+  <text x="108" y="204" class="val">빈 줄 유지, 마지막 줄바꿈 제외</text>
+  <text x="108" y="230" font-family="Menlo, Consolas, monospace" font-size="13" fill="#1f2937">"<tspan fill="#1f2937">number one line</tspan><tspan class="okc" fill="#15803d">\n</tspan><tspan class="okc" fill="#15803d">\n</tspan><tspan fill="#1f2937">second line</tspan><tspan class="okc" fill="#15803d">\n</tspan><tspan class="okc" fill="#15803d">\n</tspan><tspan fill="#1f2937">last line</tspan>"</text>
+  <rect x="26" y="260" width="708" height="72" rx="8" class="card"/>
+  <rect x="40" y="276" width="52" height="40" rx="6" class="hold"/>
+  <text x="66" y="302" class="op" text-anchor="middle">></text>
+  <text x="108" y="288" class="val">줄바꿈은 공백으로, 빈 줄은 줄바꿈 하나로</text>
+  <text x="108" y="314" font-family="Menlo, Consolas, monospace" font-size="13" fill="#1f2937">"<tspan fill="#1f2937">number one line</tspan><tspan class="okc" fill="#15803d">\n</tspan><tspan fill="#1f2937">second line</tspan><tspan class="okc" fill="#15803d">\n</tspan><tspan fill="#1f2937">last line</tspan><tspan class="okc" fill="#15803d">\n</tspan>"</text>
+  <text x="30" y="360" class="sub">빈 줄은 |와 |-에서 그대로 남고, >에서는 줄바꿈 하나로 바뀌어 사라집니다.</text>
+</svg>

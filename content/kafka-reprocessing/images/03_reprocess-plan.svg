@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 372" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>토픽에서 메시지를 받아 try-catch로 처리하고, 성공하면 acknowledge로 offset을 커밋하며, 실패하면 재시도 횟수를 확인해 남았으면 다시 처리하고, 문제가 계속되면 프로듀서에 데이터를 재요청하는 재처리 방식</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .lanec { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .gflow { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .glbl { font-size: 12px; font-weight: 700; fill: #15803d; }
+    .rlbl { font-size: 12px; font-weight: 700; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="372" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="352" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">재처리 방식 — MANUAL과 재시도 횟수 제한</text>
+  <text x="730" y="42" class="code" text-anchor="end">AckMode.MANUAL</text>
+  <rect x="40" y="90" width="150" height="52" rx="8" class="box"/>
+  <text x="115" y="111" class="t" text-anchor="middle">메시지 수신</text>
+  <text x="115" y="130" class="val" text-anchor="middle">토픽 단위</text>
+  <rect x="270" y="90" width="180" height="52" rx="8" class="box"/>
+  <text x="360" y="111" class="t" text-anchor="middle">처리</text>
+  <text x="360" y="130" class="val" text-anchor="middle">try-catch</text>
+  <rect x="540" y="90" width="180" height="52" rx="8" class="ok"/>
+  <text x="630" y="111" class="okc" text-anchor="middle">acknowledge()</text>
+  <text x="630" y="130" class="val" text-anchor="middle">offset 커밋</text>
+  <line x1="190" y1="116" x2="268" y2="116" class="flow" marker-end="url(#ag)"/>
+  <line x1="450" y1="116" x2="538" y2="116" class="gflow" marker-end="url(#agr)"/>
+  <text x="494" y="108" class="glbl" text-anchor="middle">성공</text>
+  <rect x="270" y="210" width="180" height="52" rx="8" class="hold"/>
+  <text x="360" y="231" class="t" text-anchor="middle">재시도 횟수 확인</text>
+  <text x="360" y="250" class="val" text-anchor="middle">남았으면 다시 처리</text>
+  <rect x="540" y="210" width="180" height="52" rx="8" class="bad"/>
+  <text x="630" y="231" class="t" text-anchor="middle">프로듀서에 재요청</text>
+  <text x="630" y="250" class="val" text-anchor="middle">문제가 계속될 때</text>
+  <line x1="390" y1="142" x2="390" y2="208" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="400" y="180" class="rlbl">실패</text>
+  <path d="M 270 236 L 236 236 L 236 128 L 268 128" class="flow" marker-end="url(#ag)"/>
+  <text x="228" y="186" class="glbl" text-anchor="end">남음</text>
+  <line x1="450" y1="236" x2="538" y2="236" class="flow" marker-end="url(#ag)"/>
+  <text x="494" y="228" class="rlbl" text-anchor="middle">다 씀</text>
+  <text x="40" y="300" class="foot">Consumer는 Upsert로 멱등하게 구현되어 있어, 같은 메시지를 다시 처리해도 정합성에는 문제가 없습니다</text>
+  <text x="40" y="322" class="foot">MANUAL은 acknowledge() 뒤 poll()로 가져온 레코드 처리를 마치면 커밋합니다</text>
+</svg>

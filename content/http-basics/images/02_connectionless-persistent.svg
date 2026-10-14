@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 356" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>연결을 유지하지 않으면 HTML, 자바스크립트, 이미지를 받을 때마다 3-way handshake로 연결하고 종료하기를 반복하고, 지속 연결을 사용하면 한 번 맺은 연결로 여러 자원을 차례로 요청하고 응답받는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .m { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .mv { font-size: 12px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="356" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">연결을 유지하지 않을 때 — 자원마다 연결하고 종료한다</text>
+  <rect x="30" y="64" width="60" height="46" rx="6" class="bad"/>
+  <text x="60" y="92" class="badt" text-anchor="middle">연결</text>
+  <rect x="94" y="64" width="104" height="46" rx="6" class="box"/>
+  <text x="146" y="84" class="t" text-anchor="middle">HTML</text>
+  <text x="146" y="101" class="sub" text-anchor="middle">요청 · 응답</text>
+  <rect x="202" y="64" width="56" height="46" rx="6" class="hold"/>
+  <text x="230" y="92" class="val" text-anchor="middle">종료</text>
+  <rect x="266" y="64" width="60" height="46" rx="6" class="bad"/>
+  <text x="296" y="92" class="badt" text-anchor="middle">연결</text>
+  <rect x="330" y="64" width="104" height="46" rx="6" class="box"/>
+  <text x="382" y="84" class="t" text-anchor="middle">자바스크립트</text>
+  <text x="382" y="101" class="sub" text-anchor="middle">요청 · 응답</text>
+  <rect x="438" y="64" width="56" height="46" rx="6" class="hold"/>
+  <text x="466" y="92" class="val" text-anchor="middle">종료</text>
+  <rect x="502" y="64" width="60" height="46" rx="6" class="bad"/>
+  <text x="532" y="92" class="badt" text-anchor="middle">연결</text>
+  <rect x="566" y="64" width="104" height="46" rx="6" class="box"/>
+  <text x="618" y="84" class="t" text-anchor="middle">이미지</text>
+  <text x="618" y="101" class="sub" text-anchor="middle">요청 · 응답</text>
+  <rect x="674" y="64" width="56" height="46" rx="6" class="hold"/>
+  <text x="702" y="92" class="val" text-anchor="middle">종료</text>
+  <line x1="30" y1="126" x2="726" y2="126" class="axis" marker-end="url(#ar)"/>
+  <text x="726" y="144" class="step" text-anchor="end">시간</text>
+  <text x="30" y="154" class="note">자원마다 3-way handshake 시간이 추가됩니다.</text>
+  <rect x="10" y="186" width="740" height="160" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="218" class="h">지속 연결 — 한 번 맺은 연결로 여러 자원을 주고받는다</text>
+  <rect x="30" y="240" width="60" height="46" rx="6" class="ok"/>
+  <text x="60" y="268" class="okt" text-anchor="middle">연결</text>
+  <rect x="94" y="240" width="104" height="46" rx="6" class="box"/>
+  <text x="146" y="260" class="t" text-anchor="middle">HTML</text>
+  <text x="146" y="277" class="sub" text-anchor="middle">요청 · 응답</text>
+  <rect x="202" y="240" width="104" height="46" rx="6" class="box"/>
+  <text x="254" y="260" class="t" text-anchor="middle">자바스크립트</text>
+  <text x="254" y="277" class="sub" text-anchor="middle">요청 · 응답</text>
+  <rect x="310" y="240" width="104" height="46" rx="6" class="box"/>
+  <text x="362" y="260" class="t" text-anchor="middle">이미지</text>
+  <text x="362" y="277" class="sub" text-anchor="middle">요청 · 응답</text>
+  <rect x="418" y="240" width="56" height="46" rx="6" class="hold"/>
+  <text x="446" y="268" class="val" text-anchor="middle">종료</text>
+  <line x1="30" y1="302" x2="726" y2="302" class="axis" marker-end="url(#ar)"/>
+  <text x="726" y="320" class="step" text-anchor="end">시간</text>
+  <text x="30" y="330" class="gnote">연결은 한 번만 맺고, 그 연결로 자원을 차례로 요청합니다.</text>
+</svg>

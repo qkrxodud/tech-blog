@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>poll로 레코드 1~3번을 가져왔을 때 RECORD는 레코드마다 처리 직후 커밋하고, BATCH는 세 건을 모두 처리한 뒤 한 번에 커밋하며, MANUAL은 레코드마다 acknowledge를 호출하고 묶음 처리가 끝난 뒤 커밋하고, MANUAL_IMMEDIATE는 acknowledge를 호출할 때마다 즉시 커밋하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .grp { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ko { font-size: 13px; fill: #374151; }
+    .mono { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .monob { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .colh { font-size: 12px; font-weight: 700; fill: #9ca3af; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .flow { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .edge { stroke: #c4c8ce; stroke-width: 1.4; fill: none; }
+    .gedge { stroke: #16a34a; stroke-width: 2.2; fill: none; }
+    .redge { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .lanec { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .gflow { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .glbl { font-size: 12px; font-weight: 700; fill: #15803d; }
+    .rlbl { font-size: 12px; font-weight: 700; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">AckMode별 커밋 시점 — poll()로 1~3번을 가져왔을 때</text>
+  <text x="250" y="68" class="step" text-anchor="middle">1번 처리</text>
+  <text x="388" y="68" class="step" text-anchor="middle">2번 처리</text>
+  <text x="526" y="68" class="step" text-anchor="middle">3번 처리</text>
+  <text x="664" y="68" class="step" text-anchor="middle">묶음 처리 끝</text>
+  <line x1="190" y1="76" x2="730" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lanec">RECORD</text>
+  <text x="30" y="126" class="sub">레코드마다</text>
+  <rect x="182" y="86" width="553" height="52" rx="6" class="track"/>
+  <text x="30" y="168" class="lanec">BATCH</text>
+  <text x="30" y="186" class="sub">기본값</text>
+  <rect x="182" y="146" width="553" height="52" rx="6" class="track"/>
+  <text x="30" y="228" class="lanec">MANUAL</text>
+  <text x="30" y="246" class="sub">ack 후 묶음 끝에</text>
+  <rect x="182" y="206" width="553" height="52" rx="6" class="track"/>
+  <text x="30" y="288" class="lanec">MANUAL_IMMEDIATE</text>
+  <text x="30" y="306" class="sub">ack 즉시</text>
+  <rect x="182" y="266" width="553" height="52" rx="6" class="track"/>
+  <rect x="192" y="88" width="116" height="48" rx="8" class="ok"/>
+  <text x="250" y="107" class="okc" text-anchor="middle">commit</text>
+  <text x="250" y="126" class="val" text-anchor="middle">1번 처리 직후</text>
+  <rect x="330" y="88" width="116" height="48" rx="8" class="ok"/>
+  <text x="388" y="107" class="okc" text-anchor="middle">commit</text>
+  <text x="388" y="126" class="val" text-anchor="middle">2번 처리 직후</text>
+  <rect x="468" y="88" width="116" height="48" rx="8" class="ok"/>
+  <text x="526" y="107" class="okc" text-anchor="middle">commit</text>
+  <text x="526" y="126" class="val" text-anchor="middle">3번 처리 직후</text>
+  <rect x="192" y="156" width="392" height="32" rx="6" class="hold"/>
+  <text x="388" y="177" class="val" text-anchor="middle">1~3번 처리 — 아직 커밋하지 않음</text>
+  <rect x="606" y="148" width="116" height="48" rx="8" class="ok"/>
+  <text x="664" y="167" class="okc" text-anchor="middle">commit</text>
+  <text x="664" y="186" class="val" text-anchor="middle">1~3번 한 번에</text>
+  <rect x="192" y="208" width="116" height="48" rx="8" class="box"/>
+  <text x="250" y="227" class="op" text-anchor="middle">ack()</text>
+  <text x="250" y="246" class="val" text-anchor="middle">1번 처리 후</text>
+  <rect x="330" y="208" width="116" height="48" rx="8" class="box"/>
+  <text x="388" y="227" class="op" text-anchor="middle">ack()</text>
+  <text x="388" y="246" class="val" text-anchor="middle">2번 처리 후</text>
+  <rect x="468" y="208" width="116" height="48" rx="8" class="box"/>
+  <text x="526" y="227" class="op" text-anchor="middle">ack()</text>
+  <text x="526" y="246" class="val" text-anchor="middle">3번 처리 후</text>
+  <rect x="606" y="208" width="116" height="48" rx="8" class="ok"/>
+  <text x="664" y="227" class="okc" text-anchor="middle">commit</text>
+  <text x="664" y="246" class="val" text-anchor="middle">ack한 offset</text>
+  <rect x="192" y="268" width="116" height="48" rx="8" class="ok"/>
+  <text x="250" y="287" class="okc" text-anchor="middle">ack()</text>
+  <text x="250" y="306" class="val" text-anchor="middle">바로 커밋</text>
+  <rect x="330" y="268" width="116" height="48" rx="8" class="ok"/>
+  <text x="388" y="287" class="okc" text-anchor="middle">ack()</text>
+  <text x="388" y="306" class="val" text-anchor="middle">바로 커밋</text>
+  <rect x="468" y="268" width="116" height="48" rx="8" class="ok"/>
+  <text x="526" y="287" class="okc" text-anchor="middle">ack()</text>
+  <text x="526" y="306" class="val" text-anchor="middle">바로 커밋</text>
+  <text x="30" y="350" class="foot">TIME·COUNT·COUNT_TIME도 묶음 처리를 마친 뒤, ackTime·ackCount 조건을 만족하면 커밋합니다</text>
+  <text x="30" y="370" class="foot">트랜잭션을 사용하지 않을 때 기준</text>
+</svg>
