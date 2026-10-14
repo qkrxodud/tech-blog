@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 372" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>엔티티 상태 변화로 Hibernate가 만든 SQL은 JBoss Logging을 거쳐 로깅 프레임워크로 남고, P6Spy는 DataSource나 JDBC 드라이버를 프록시로 감싸 실제로 실행되는 Statement와 바인드 파라미터 값을 남긴다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="372" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="352" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">SQL 로깅 — 어디에서 SQL을 남기는가</text>
+  <rect x="30" y="64" width="128" height="58" rx="10" class="box"/>
+  <text x="94" y="88" class="t" text-anchor="middle">애플리케이션</text>
+  <text x="94" y="108" class="sub" text-anchor="middle">엔티티 상태 변화</text>
+  <rect x="173" y="64" width="128" height="58" rx="10" class="box"/>
+  <text x="237" y="88" class="t" text-anchor="middle">Hibernate</text>
+  <text x="237" y="108" class="sub" text-anchor="middle">SQL 자동 생성</text>
+  <rect x="316" y="64" width="128" height="58" rx="10" class="ok"/>
+  <text x="380" y="88" class="okt" text-anchor="middle">P6Spy</text>
+  <text x="380" y="108" class="sub" text-anchor="middle">JDBC 프록시</text>
+  <rect x="459" y="64" width="128" height="58" rx="10" class="box"/>
+  <text x="523" y="88" class="t" text-anchor="middle">JDBC 드라이버</text>
+  <text x="523" y="108" class="sub" text-anchor="middle">Statement 전송</text>
+  <rect x="602" y="64" width="128" height="58" rx="10" class="dbbox"/>
+  <text x="666" y="88" class="db" text-anchor="middle">DB</text>
+  <text x="666" y="108" class="sub" text-anchor="middle">Statement 실행</text>
+  <line x1="159" y1="93" x2="171" y2="93" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="302" y1="93" x2="314" y2="93" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="445" y1="93" x2="457" y2="93" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="588" y1="93" x2="600" y2="93" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="237" y1="123" x2="237" y2="160" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="380" y1="123" x2="520" y2="160" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="30" y="162" width="340" height="150" rx="10" class="box"/>
+  <text x="46" y="186" class="t">Hibernate 로그 — JBoss Logging 경유</text>
+  <text x="46" y="212" class="s"><tspan font-family="Menlo, Consolas, monospace">show_sql</tspan>: 표준 출력, 사용을 권장하지 않음</text>
+  <text x="46" y="236" class="s"><tspan font-family="Menlo, Consolas, monospace">format_sql</tspan>: SQL을 여러 줄로 정리해 출력</text>
+  <text x="46" y="260" class="s"><tspan font-family="Menlo, Consolas, monospace">use_sql_comments</tspan>: 주석도 드라이버로 전송</text>
+  <text x="46" y="284" class="s">바인드 파라미터: 타입 디스크립터 로거에</text>
+  <text x="46" y="302" class="s">새 Appender 추가</text>
+  <rect x="390" y="162" width="340" height="150" rx="10" class="ok"/>
+  <text x="406" y="186" class="okt">P6Spy — Statement 실행을 가로챔</text>
+  <text x="406" y="212" class="s">실제 실행된 SQL과 바인드 파라미터 값</text>
+  <text x="406" y="236" class="s">장시간 실행되는 Statement 감지</text>
+  <text x="406" y="260" class="s">실행된 Statement 수 검증</text>
+  <text x="406" y="284" class="s">JDBC URL에 p6spy 추가,</text>
+  <text x="406" y="302" class="s"><tspan font-family="Menlo, Consolas, monospace">spy.properties</tspan> 파일 구성</text>
+  <text x="30" y="342" class="foot">Hibernate 로그는 Hibernate가 생성한 SQL을, P6Spy는 드라이버로 넘어가는 Statement를 가로채서 남깁니다.</text>
+</svg>

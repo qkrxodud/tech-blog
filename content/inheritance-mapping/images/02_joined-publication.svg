@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>조인 전략에서 Publication 테이블에 id, title, publishingDate를 두고, Book과 BlogPost 테이블이 Publication의 id를 기본 키이자 외래 키로 가져 조회할 때 조인하는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">조인 전략 — 부모와 자식마다 테이블을 만든다</text>
+  <text x="730" y="42" class="code" text-anchor="end">JOINED</text>
+  <text x="30" y="80" class="mb">Publication</text>
+  <rect x="30" y="88" width="90" height="26" class="thead"/>
+  <text x="75.0" y="105.5" class="m" text-anchor="middle">id (PK)</text>
+  <rect x="120" y="88" width="130" height="26" class="thead"/>
+  <text x="185.0" y="105.5" class="m" text-anchor="middle">title</text>
+  <rect x="250" y="88" width="160" height="26" class="thead"/>
+  <text x="330.0" y="105.5" class="m" text-anchor="middle">publishingDate</text>
+  <rect x="30" y="114" width="90" height="26" class="cell"/>
+  <text x="75.0" y="131.5" class="m" text-anchor="middle">1</text>
+  <rect x="120" y="114" width="130" height="26" class="cell"/>
+  <text x="185.0" y="131.5" class="s" text-anchor="middle">값</text>
+  <rect x="250" y="114" width="160" height="26" class="cell"/>
+  <text x="330.0" y="131.5" class="s" text-anchor="middle">값</text>
+  <rect x="30" y="140" width="90" height="26" class="cell"/>
+  <text x="75.0" y="157.5" class="m" text-anchor="middle">2</text>
+  <rect x="120" y="140" width="130" height="26" class="cell"/>
+  <text x="185.0" y="157.5" class="s" text-anchor="middle">값</text>
+  <rect x="250" y="140" width="160" height="26" class="cell"/>
+  <text x="330.0" y="157.5" class="s" text-anchor="middle">값</text>
+  <text x="500" y="80" class="mb">Book</text>
+  <rect x="500" y="88" width="110" height="26" class="thead"/>
+  <text x="555.0" y="105.5" class="m" text-anchor="middle">id (PK·FK)</text>
+  <rect x="610" y="88" width="120" height="26" class="thead"/>
+  <text x="670.0" y="105.5" class="m" text-anchor="middle">pages</text>
+  <rect x="500" y="114" width="110" height="26" class="cell"/>
+  <text x="555.0" y="131.5" class="m" text-anchor="middle">1</text>
+  <rect x="610" y="114" width="120" height="26" class="cell"/>
+  <text x="670.0" y="131.5" class="s" text-anchor="middle">값</text>
+  <text x="500" y="182" class="mb">BlogPost</text>
+  <rect x="500" y="190" width="110" height="26" class="thead"/>
+  <text x="555.0" y="207.5" class="m" text-anchor="middle">id (PK·FK)</text>
+  <rect x="610" y="190" width="120" height="26" class="thead"/>
+  <text x="670.0" y="207.5" class="s" text-anchor="middle">고유 컬럼</text>
+  <rect x="500" y="216" width="110" height="26" class="cell"/>
+  <text x="555.0" y="233.5" class="m" text-anchor="middle">2</text>
+  <rect x="610" y="216" width="120" height="26" class="cell"/>
+  <text x="670.0" y="233.5" class="s" text-anchor="middle">값</text>
+  <line x1="498" y1="127" x2="414" y2="127" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="498" y1="229" x2="414" y2="157" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="456" y="119" class="sub" text-anchor="middle">FK</text>
+  <text x="30" y="200" class="sub">하위 테이블은 부모 테이블의 id를</text>
+  <text x="30" y="218" class="sub">기본 키이자 외래 키로 사용합니다.</text>
+  <text x="30" y="268" class="gnote">테이블이 정규화되어 하위 클래스 컬럼에도 NOT NULL 제약을 걸 수 있습니다.</text>
+  <text x="30" y="292" class="note">Book을 조회하면 Publication과 조인하고, 부모 타입으로 조회하면 하위 테이블과의 조인이 늘어납니다.</text>
+  <text x="30" y="320" class="foot">BlogPost의 고유 컬럼은 이름을 생략하고 고유 컬럼으로만 표시했습니다.</text>
+</svg>

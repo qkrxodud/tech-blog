@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 582" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 Spring MVC에서 요청마다 스레드를 하나씩 할당하고 I/O를 기다리는 동안에도 점유하는 흐름, 아래쪽은 WebFlux의 이벤트 루프 스레드가 Req1부터 Req3까지 I/O를 시작한 뒤 스레드를 해제하고, I/O가 끝나면 각 요청의 응답을 처리하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="582" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Spring MVC — 요청 1개에 스레드 1개 할당</text>
+  <text x="730" y="42" class="code" text-anchor="end">Thread-per-Request</text>
+  <text x="220" y="68" class="step" text-anchor="middle">스레드 할당</text>
+  <text x="431" y="68" class="step" text-anchor="middle">작업 · I/O 대기</text>
+  <text x="640" y="68" class="step" text-anchor="middle">응답</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">요청 1</text>
+  <text x="30" y="126" class="sub">스레드 1 사용</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="t" text-anchor="middle">스레드 1</text>
+  <text x="220" y="127" class="val" text-anchor="middle">할당</text>
+  <rect x="290" y="88" width="282" height="48" rx="8" class="hold"/>
+  <text x="431" y="108" class="t" text-anchor="middle">스레드 1 점유</text>
+  <text x="431" y="127" class="val" text-anchor="middle">DB·외부 API 응답을 기다리는 동안에도</text>
+  <rect x="582" y="88" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="108" class="okt" text-anchor="middle">응답</text>
+  <text x="640" y="127" class="val" text-anchor="middle">스레드 반납</text>
+  <text x="30" y="168" class="lane">요청 2</text>
+  <text x="30" y="186" class="sub">스레드 2 사용</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="148" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="168" class="t" text-anchor="middle">스레드 2</text>
+  <text x="220" y="187" class="val" text-anchor="middle">할당</text>
+  <rect x="290" y="148" width="282" height="48" rx="8" class="hold"/>
+  <text x="431" y="168" class="t" text-anchor="middle">스레드 2 점유</text>
+  <text x="431" y="187" class="val" text-anchor="middle">DB·외부 API 응답을 기다리는 동안에도</text>
+  <rect x="582" y="148" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="168" class="okt" text-anchor="middle">응답</text>
+  <text x="640" y="187" class="val" text-anchor="middle">스레드 반납</text>
+  <text x="30" y="228" class="lane">요청 3</text>
+  <text x="30" y="246" class="sub">스레드 3 사용</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="208" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="228" class="t" text-anchor="middle">스레드 3</text>
+  <text x="220" y="247" class="val" text-anchor="middle">할당</text>
+  <rect x="290" y="208" width="282" height="48" rx="8" class="hold"/>
+  <text x="431" y="228" class="t" text-anchor="middle">스레드 3 점유</text>
+  <text x="431" y="247" class="val" text-anchor="middle">DB·외부 API 응답을 기다리는 동안에도</text>
+  <rect x="582" y="208" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="228" class="okt" text-anchor="middle">응답</text>
+  <text x="640" y="247" class="val" text-anchor="middle">스레드 반납</text>
+  <text x="150" y="282" class="foot">동시 요청이 늘어나면 스레드도 그만큼 필요합니다 (동시 접속 10,000명이면 스레드 10,000개).</text>
+  <rect x="10" y="316" width="740" height="250" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="348" class="h">Spring WebFlux — 소수의 스레드를 요청 N개가 공유</text>
+  <text x="730" y="348" class="code" text-anchor="end">Event Loop</text>
+  <text x="30" y="390" class="lane">이벤트 루프</text>
+  <text x="30" y="408" class="sub">소수의 스레드</text>
+  <rect x="150" y="368" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="370" width="80" height="48" rx="8" class="box"/>
+  <text x="202" y="390" class="op" text-anchor="middle">Req1</text>
+  <text x="202" y="409" class="val" text-anchor="middle">I/O 시작</text>
+  <rect x="252" y="370" width="80" height="48" rx="8" class="box"/>
+  <text x="292" y="390" class="op" text-anchor="middle">Req2</text>
+  <text x="292" y="409" class="val" text-anchor="middle">I/O 시작</text>
+  <rect x="342" y="370" width="80" height="48" rx="8" class="box"/>
+  <text x="382" y="390" class="op" text-anchor="middle">Req3</text>
+  <text x="382" y="409" class="val" text-anchor="middle">I/O 시작</text>
+  <rect x="432" y="370" width="80" height="48" rx="8" class="ok"/>
+  <text x="472" y="390" class="okc" text-anchor="middle">Req1</text>
+  <text x="472" y="409" class="val" text-anchor="middle">응답</text>
+  <rect x="522" y="370" width="80" height="48" rx="8" class="ok"/>
+  <text x="562" y="390" class="okc" text-anchor="middle">Req2</text>
+  <text x="562" y="409" class="val" text-anchor="middle">응답</text>
+  <rect x="612" y="370" width="80" height="48" rx="8" class="ok"/>
+  <text x="652" y="390" class="okc" text-anchor="middle">Req3</text>
+  <text x="652" y="409" class="val" text-anchor="middle">응답</text>
+  <text x="30" y="456" class="lane">I/O 작업</text>
+  <text x="30" y="474" class="sub">비동기로 진행</text>
+  <rect x="150" y="430" width="585" height="82" rx="6" class="track"/>
+  <rect x="202" y="438" width="270" height="20" rx="5" class="wait"/>
+  <text x="337" y="452" class="waitt" text-anchor="middle">Req1 — DB 조회 중</text>
+  <line x1="472" y1="438" x2="472" y2="420" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="292" y="462" width="270" height="20" rx="5" class="wait"/>
+  <text x="427" y="476" class="waitt" text-anchor="middle">Req2 — API 호출 중</text>
+  <line x1="562" y1="462" x2="562" y2="420" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="382" y="486" width="270" height="20" rx="5" class="wait"/>
+  <text x="517" y="500" class="waitt" text-anchor="middle">Req3 — 파일 읽기 중</text>
+  <line x1="652" y1="486" x2="652" y2="420" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="544" class="foot">I/O를 시작하면 스레드를 바로 해제하고, I/O가 끝나면 이벤트 루프가 응답을 이어서 처리합니다.</text>
+</svg>

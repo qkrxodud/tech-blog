@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 390" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>여러 Client의 요청이 요청 핸들러로 들어오고, 요청 핸들러가 이벤트 루프에 요청 이벤트를 푸시하면 이벤트 루프가 Network I/O, Database Query, File System, External API Call 작업에 콜백을 등록하며, 작업 완료 이벤트가 푸시되면 요청 핸들러의 콜백을 호출하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="390" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="370" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">WebFlux 이벤트 루프 — 요청이 처리되는 순서</text>
+  <text x="730" y="42" class="code" text-anchor="end">Netty</text>
+  <rect x="30" y="68" width="92" height="34" rx="7" class="box"/>
+  <text x="76" y="90" class="op" text-anchor="middle">Client</text>
+  <rect x="30" y="116" width="92" height="34" rx="7" class="box"/>
+  <text x="76" y="138" class="op" text-anchor="middle">Client</text>
+  <rect x="30" y="164" width="92" height="34" rx="7" class="box"/>
+  <text x="76" y="186" class="op" text-anchor="middle">Client</text>
+  <rect x="30" y="212" width="92" height="34" rx="7" class="box"/>
+  <text x="76" y="234" class="op" text-anchor="middle">Client</text>
+  <rect x="30" y="260" width="92" height="34" rx="7" class="box"/>
+  <text x="76" y="282" class="op" text-anchor="middle">Client</text>
+  <rect x="150" y="62" width="592" height="244" rx="10" fill="#ffffff" stroke="#d1d5db"/>
+  <text x="166" y="84" class="sub">WebFlux 서버</text>
+  <rect x="168" y="150" width="112" height="66" rx="10" class="box"/>
+  <text x="224" y="188" class="t" text-anchor="middle">요청 핸들러</text>
+  <line x1="124" y1="85" x2="165" y2="160.0" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="124" y1="133" x2="165" y2="171.5" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="124" y1="181" x2="165" y2="183.0" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="124" y1="229" x2="165" y2="194.5" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ag)"/>
+  <line x1="124" y1="277" x2="165" y2="206.0" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ag)"/>
+  <circle cx="460" cy="183" r="60" class="wait"/>
+  <text x="460" y="181" class="t" text-anchor="middle">이벤트 루프</text>
+  <text x="460" y="200" class="sub" text-anchor="middle">소수의 스레드</text>
+  <rect x="578" y="104" width="156" height="158" rx="10" class="hold"/>
+  <text x="656" y="130" class="t" text-anchor="middle">I/O 작업</text>
+  <text x="656" y="160" class="subc" text-anchor="middle">Network I/O</text>
+  <text x="656" y="184" class="subc" text-anchor="middle">Database Query</text>
+  <text x="656" y="208" class="subc" text-anchor="middle">File System</text>
+  <text x="656" y="232" class="subc" text-anchor="middle">External API Call</text>
+  <line x1="282" y1="163" x2="397" y2="163" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="340" y="154" class="lbl" text-anchor="middle">요청 이벤트 푸시</text>
+  <line x1="518" y1="163" x2="575" y2="163" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="547" y="154" class="lbl" text-anchor="middle">콜백 등록</text>
+  <line x1="576" y1="203" x2="520" y2="203" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="547" y="224" class="gnote" text-anchor="middle">작업 완료</text>
+  <text x="547" y="240" class="gnote" text-anchor="middle">이벤트 푸시</text>
+  <line x1="402" y1="203" x2="284" y2="203" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="340" y="224" class="gnote" text-anchor="middle">콜백 호출</text>
+  <text x="30" y="338" class="foot">Client 요청 → 요청 핸들러 → 이벤트 루프에 푸시 → 콜백 등록 → 비동기 작업 → 완료 이벤트 푸시 → 콜백 호출</text>
+  <text x="30" y="360" class="foot">이벤트 루프는 I/O가 끝나기를 기다리지 않고 콜백만 등록한 뒤 다음 이벤트를 처리합니다.</text>
+</svg>

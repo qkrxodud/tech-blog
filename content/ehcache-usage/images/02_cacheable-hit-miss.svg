@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 getCategoryCache에 using 값에 해당하는 캐시가 있어 getCategories()를 실행하지 않고 캐시 값을 반환하는 hit 흐름, 아래쪽은 캐시가 없어 getCategories()를 실행해 DB에서 조회하고 결과를 캐시에 저장한 뒤 반환하는 miss 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="172" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">cache hit — 메서드를 실행하지 않고 캐시 값 반환</text>
+  <text x="730" y="42" class="code" text-anchor="end">@Cacheable</text>
+  <rect x="30" y="64" width="140" height="56" rx="8" class="box"/>
+  <text x="100" y="88" class="t" text-anchor="middle">호출하는 쪽</text>
+  <text x="100" y="107" class="sub" text-anchor="middle">using 값 전달</text>
+  <rect x="214" y="64" width="140" height="56" rx="8" class="dbbox"/>
+  <text x="284" y="88" class="t" text-anchor="middle">캐시</text>
+  <text x="284" y="107" class="subc" text-anchor="middle">getCategoryCache</text>
+  <rect x="398" y="64" width="140" height="56" rx="8" class="wait"/>
+  <text x="468" y="88" class="t" text-anchor="middle">메서드</text>
+  <text x="468" y="107" class="sub" text-anchor="middle">실행하지 않음</text>
+  <rect x="582" y="64" width="140" height="56" rx="8" class="wait"/>
+  <text x="652" y="88" class="t" text-anchor="middle">DB</text>
+  <text x="652" y="107" class="sub" text-anchor="middle">조회하지 않음</text>
+  <line x1="172" y1="82" x2="212" y2="82" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="192" y="76" class="lbl" text-anchor="middle">조회</text>
+  <line x1="212" y1="104" x2="172" y2="104" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="192" y="120" class="gnote" text-anchor="middle">hit</text>
+  <text x="30" y="160" class="foot">using 값에 해당하는 캐시가 있으면 getCategories()를 실행하지 않고 캐시된 값을 반환합니다.</text>
+  <rect x="10" y="198" width="740" height="172" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="230" class="h">cache miss — 메서드를 실행하고 결과를 캐시에 저장</text>
+  <text x="730" y="230" class="code" text-anchor="end">@Cacheable</text>
+  <rect x="30" y="252" width="140" height="56" rx="8" class="box"/>
+  <text x="100" y="276" class="t" text-anchor="middle">호출하는 쪽</text>
+  <text x="100" y="295" class="sub" text-anchor="middle">using 값 전달</text>
+  <rect x="214" y="252" width="140" height="56" rx="8" class="dbbox"/>
+  <text x="284" y="276" class="t" text-anchor="middle">캐시</text>
+  <text x="284" y="295" class="subc" text-anchor="middle">getCategoryCache</text>
+  <rect x="398" y="252" width="140" height="56" rx="8" class="box"/>
+  <text x="468" y="276" class="t" text-anchor="middle">메서드</text>
+  <text x="468" y="295" class="subc" text-anchor="middle">getCategories()</text>
+  <rect x="582" y="252" width="140" height="56" rx="8" class="box"/>
+  <text x="652" y="276" class="t" text-anchor="middle">DB</text>
+  <text x="652" y="295" class="sub" text-anchor="middle">카테고리 조회</text>
+  <line x1="172" y1="270" x2="212" y2="270" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="192" y="264" class="lbl" text-anchor="middle">조회</text>
+  <line x1="356" y1="270" x2="396" y2="270" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="376" y="264" class="note" text-anchor="middle">miss</text>
+  <line x1="540" y1="270" x2="580" y2="270" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="560" y="264" class="lbl" text-anchor="middle">조회</text>
+  <line x1="580" y1="292" x2="540" y2="292" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="560" y="308" class="lbl" text-anchor="middle">결과</text>
+  <line x1="396" y1="292" x2="356" y2="292" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="376" y="308" class="gnote" text-anchor="middle">저장</text>
+  <line x1="212" y1="292" x2="172" y2="292" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="192" y="308" class="gnote" text-anchor="middle">반환</text>
+  <text x="30" y="348" class="foot">캐시가 없으면 메서드를 실행해 DB에서 조회하고, 결과를 using 값을 key로 캐시에 저장한 뒤 반환합니다.</text>
+</svg>

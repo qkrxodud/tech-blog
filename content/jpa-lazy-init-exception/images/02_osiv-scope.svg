@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>open-in-view는 웹 요청을 처리하는 동안 영속성 컨텍스트를 유지하지만, Quartz 스레드에서 실행되는 배치는 웹 요청이 아니어서 적용되지 않고 리포지토리 조회가 끝나면 영속성 컨텍스트가 닫혀 지연 로딩 시 예외가 발생한다는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="300" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="280" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h" text-anchor="start">open-in-view의 적용 범위 — 웹 요청만</text>
+  <text x="730" y="42" class="code" text-anchor="end">spring.jpa.open-in-view=true</text>
+  <text x="220" y="68" class="step" text-anchor="middle">시작</text>
+  <text x="360" y="68" class="step" text-anchor="middle">리포지토리 조회</text>
+  <text x="500" y="68" class="step" text-anchor="middle">연관 객체 접근</text>
+  <text x="640" y="68" class="step" text-anchor="middle">끝</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane" text-anchor="start">웹 요청</text>
+  <text x="30" y="126" class="sub" text-anchor="start">OSIV 적용</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="556" height="48" rx="8" class="ok"/>
+  <text x="440.0" y="108.0" class="okt" text-anchor="middle">요청이 끝날 때까지 영속성 컨텍스트 유지</text>
+  <text x="440.0" y="127.0" class="val" text-anchor="middle">컨트롤러·뷰에서도 지연 로딩 가능</text>
+  <text x="30" y="168" class="lane" text-anchor="start">Quartz Job</text>
+  <text x="30" y="186" class="sub" text-anchor="start">OSIV 적용 안 됨</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="295.0" y="148" width="130" height="48" rx="8" class="hold"/>
+  <text x="360.0" y="168.0" class="t" text-anchor="middle">조회</text>
+  <text x="360.0" y="187.0" class="val" text-anchor="middle">컨텍스트 잠시 열림</text>
+  <rect x="442" y="148" width="276" height="48" rx="8" class="bad"/>
+  <text x="580.0" y="168.0" class="badt" text-anchor="middle">영속성 컨텍스트 없음</text>
+  <text x="580.0" y="187.0" class="val" text-anchor="middle">지연 로딩 시 LazyInitializationException</text>
+  <text x="150" y="236" class="sub" text-anchor="start">open-in-view는 웹 요청을 처리하는 동안에만 영속성 컨텍스트를 열어 둡니다.</text>
+  <text x="150" y="254" class="sub" text-anchor="start">Quartz 스레드에서 실행되는 배치는 웹 요청이 아니므로 이 설정과 상관없이</text>
+  <text x="150" y="272" class="sub" text-anchor="start">트랜잭션 안에서 연관 객체를 불러와야 합니다.</text>
+</svg>

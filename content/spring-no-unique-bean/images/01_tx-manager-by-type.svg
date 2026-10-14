@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>트랜잭션 매니저 이름을 지정하지 않은 테스트가 PlatformTransactionManager 타입으로 빈을 조회하자 transactionManager, transactionManagerSlave, transactionManagerRecall, transactionManagerRecallSlave 4개가 발견되어 NoUniqueBeanDefinitionException이 발생하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .desc { font-size: 13px; fill: #374151; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .dimt { font-size: 12px; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dim { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okms { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badms { font-size: 12px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="340" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="320" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">이름 없이 타입으로 조회 — 트랜잭션 매니저가 4개</text>
+  <rect x="30" y="76" width="300" height="160" rx="8" class="box"/>
+  <text x="180" y="104" class="t" text-anchor="middle">테스트 클래스</text>
+  <rect x="46" y="122" width="268" height="40" rx="6" class="chip"/>
+  <text x="180" y="147" class="mb" text-anchor="middle">@Transactional</text>
+  <text x="180" y="192" class="sub" text-anchor="middle">트랜잭션 매니저 이름을</text>
+  <text x="180" y="210" class="sub" text-anchor="middle">지정하지 않음</text>
+  <text x="365" y="134" class="sub" text-anchor="middle">타입으로</text>
+  <text x="365" y="150" class="sub" text-anchor="middle">조회</text>
+  <line x1="332" y1="162" x2="396" y2="162" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="400" y="66" width="330" height="180" rx="10" class="scope"/>
+  <text x="416" y="88" class="sub"><tspan font-family="Menlo, Consolas, monospace">PlatformTransactionManager</tspan> 타입 빈 4개</text>
+  <rect x="416" y="100" width="298" height="30" rx="6" class="bad"/>
+  <text x="565" y="120" class="badms" text-anchor="middle">transactionManager</text>
+  <rect x="416" y="136" width="298" height="30" rx="6" class="bad"/>
+  <text x="565" y="156" class="badms" text-anchor="middle">transactionManagerSlave</text>
+  <rect x="416" y="172" width="298" height="30" rx="6" class="bad"/>
+  <text x="565" y="192" class="badms" text-anchor="middle">transactionManagerRecall</text>
+  <rect x="416" y="208" width="298" height="30" rx="6" class="bad"/>
+  <text x="565" y="228" class="badms" text-anchor="middle">transactionManagerRecallSlave</text>
+  <line x1="565" y1="248" x2="565" y2="262" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="30" y="266" width="700" height="50" rx="8" class="bad"/>
+  <text x="380" y="287" class="badm" text-anchor="middle">NoUniqueBeanDefinitionException</text>
+  <text x="380" y="306" class="note" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">PlatformTransactionManager</tspan> 하나를 기대했는데 4개가 발견됨</text>
+</svg>

@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 446" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>@ManyToMany는 User와 Role 사이에 외래 키 두 개만 가진 조인 테이블을 자동으로 만들고, 관계 엔티티 UserRole을 명시하면 assignedAt처럼 관계에 속성을 추가할 수 있는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="446" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="196" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">@ManyToMany — 조인 테이블에 외래 키만 둔다</text>
+  <text x="730" y="42" class="code" text-anchor="end">@ManyToMany</text>
+  <text x="30" y="82" class="mb">User</text>
+  <rect x="30" y="90" width="80" height="26" class="thead"/>
+  <text x="70.0" y="107.5" class="m" text-anchor="middle">id</text>
+  <rect x="110" y="90" width="80" height="26" class="thead"/>
+  <text x="150.0" y="107.5" class="m" text-anchor="middle">…</text>
+  <rect x="30" y="116" width="80" height="26" class="cell"/>
+  <text x="70.0" y="133.5" class="m" text-anchor="middle">1</text>
+  <rect x="110" y="116" width="80" height="26" class="cell"/>
+  <text x="150.0" y="133.5" class="s" text-anchor="middle">값</text>
+  <text x="270" y="82" class="t">조인 테이블 (자동 생성)</text>
+  <rect x="270" y="90" width="110" height="26" class="thead"/>
+  <text x="325.0" y="107.5" class="m" text-anchor="middle">user_id</text>
+  <rect x="380" y="90" width="110" height="26" class="thead"/>
+  <text x="435.0" y="107.5" class="m" text-anchor="middle">role_id</text>
+  <rect x="270" y="116" width="110" height="26" class="cell"/>
+  <text x="325.0" y="133.5" class="m" text-anchor="middle">1</text>
+  <rect x="380" y="116" width="110" height="26" class="cell"/>
+  <text x="435.0" y="133.5" class="m" text-anchor="middle">10</text>
+  <text x="570" y="82" class="mb">Role</text>
+  <rect x="570" y="90" width="80" height="26" class="thead"/>
+  <text x="610.0" y="107.5" class="m" text-anchor="middle">id</text>
+  <rect x="650" y="90" width="80" height="26" class="thead"/>
+  <text x="690.0" y="107.5" class="m" text-anchor="middle">…</text>
+  <rect x="570" y="116" width="80" height="26" class="cell"/>
+  <text x="610.0" y="133.5" class="m" text-anchor="middle">10</text>
+  <rect x="650" y="116" width="80" height="26" class="cell"/>
+  <text x="690.0" y="133.5" class="s" text-anchor="middle">값</text>
+  <line x1="268" y1="129" x2="194" y2="129" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="492" y1="129" x2="566" y2="129" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="30" y="178" class="note">관계에 속성(예: 역할을 부여한 시점)을 추가할 자리가 없고, 조인 테이블을 엔티티로 다룰 수 없습니다.</text>
+  <rect x="10" y="222" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="254" class="h">관계 엔티티 — 관계를 엔티티로 명시한다</text>
+  <text x="730" y="254" class="code" text-anchor="end">UserRole</text>
+  <text x="30" y="294" class="mb">User</text>
+  <rect x="30" y="302" width="80" height="26" class="thead"/>
+  <text x="70.0" y="319.5" class="m" text-anchor="middle">id</text>
+  <rect x="110" y="302" width="80" height="26" class="thead"/>
+  <text x="150.0" y="319.5" class="m" text-anchor="middle">…</text>
+  <rect x="30" y="328" width="80" height="26" class="cell"/>
+  <text x="70.0" y="345.5" class="m" text-anchor="middle">1</text>
+  <rect x="110" y="328" width="80" height="26" class="cell"/>
+  <text x="150.0" y="345.5" class="s" text-anchor="middle">값</text>
+  <text x="230" y="294" class="mb">UserRole</text>
+  <rect x="230" y="302" width="90" height="26" class="thead"/>
+  <text x="275.0" y="319.5" class="m" text-anchor="middle">user_id</text>
+  <rect x="320" y="302" width="90" height="26" class="thead"/>
+  <text x="365.0" y="319.5" class="m" text-anchor="middle">role_id</text>
+  <rect x="410" y="302" width="120" height="26" class="thead"/>
+  <text x="470.0" y="319.5" class="m" text-anchor="middle">assignedAt</text>
+  <rect x="230" y="328" width="90" height="26" class="cell"/>
+  <text x="275.0" y="345.5" class="m" text-anchor="middle">1</text>
+  <rect x="320" y="328" width="90" height="26" class="cell"/>
+  <text x="365.0" y="345.5" class="m" text-anchor="middle">10</text>
+  <rect x="410" y="328" width="120" height="26" class="ok"/>
+  <text x="470.0" y="345.5" class="s" text-anchor="middle">값</text>
+  <text x="570" y="294" class="mb">Role</text>
+  <rect x="570" y="302" width="80" height="26" class="thead"/>
+  <text x="610.0" y="319.5" class="m" text-anchor="middle">id</text>
+  <rect x="650" y="302" width="80" height="26" class="thead"/>
+  <text x="690.0" y="319.5" class="m" text-anchor="middle">…</text>
+  <rect x="570" y="328" width="80" height="26" class="cell"/>
+  <text x="610.0" y="345.5" class="m" text-anchor="middle">10</text>
+  <rect x="650" y="328" width="80" height="26" class="cell"/>
+  <text x="690.0" y="345.5" class="s" text-anchor="middle">값</text>
+  <line x1="228" y1="341" x2="194" y2="341" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="532" y1="341" x2="566" y2="341" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="390" class="gnote">assignedAt처럼 생성·수정 시간, 상태, 권한 수준, 만료일 같은 속성을 관계에 추가할 수 있습니다.</text>
+  <text x="30" y="412" class="foot">관계 엔티티의 식별자 컬럼은 그림에서 생략했습니다.</text>
+</svg>

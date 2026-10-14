@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>같은 ID로 두 번 find하면 첫 번째는 1차 캐시에 없어 SELECT를 실행하고 결과를 로드된 상태와 함께 1차 캐시에 저장하며, 두 번째는 1차 캐시에서 바로 반환해 쿼리가 실행되지 않는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h" text-anchor="start">1차 캐시 — 같은 ID를 두 번 조회</text>
+  <text x="730" y="42" class="code" text-anchor="end">entityManager.find(Post.class, 1L)</text>
+  <text x="220" y="68" class="step" text-anchor="middle">첫 번째 find</text>
+  <text x="360" y="68" class="step" text-anchor="middle">DB 조회</text>
+  <text x="500" y="68" class="step" text-anchor="middle">캐시에 저장</text>
+  <text x="640" y="68" class="step" text-anchor="middle">두 번째 find</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="117" class="lane" text-anchor="start">애플리케이션</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="177" class="lane" text-anchor="start">1차 캐시</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="237" class="lane" text-anchor="start">DB</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="155.0" y="88" width="130" height="48" rx="8" class="box"/>
+  <text x="220.0" y="108.0" class="op" text-anchor="middle">find(1L)</text>
+  <text x="220.0" y="127.0" class="val" text-anchor="middle">첫 번째 조회</text>
+  <rect x="155.0" y="148" width="130" height="48" rx="8" class="bad"/>
+  <text x="220.0" y="168.0" class="badt" text-anchor="middle">없음</text>
+  <text x="220.0" y="187.0" class="val" text-anchor="middle">Post#1 미보관</text>
+  <rect x="295.0" y="208" width="130" height="48" rx="8" class="box"/>
+  <text x="360.0" y="228.0" class="op" text-anchor="middle">SELECT</text>
+  <text x="360.0" y="247.0" class="val" text-anchor="middle">id = 1 조회</text>
+  <rect x="435.0" y="148" width="130" height="48" rx="8" class="hold"/>
+  <text x="500.0" y="168.0" class="t" text-anchor="middle">Post#1 저장</text>
+  <text x="500.0" y="187.0" class="val" text-anchor="middle">로드된 상태 함께</text>
+  <rect x="435.0" y="88" width="130" height="48" rx="8" class="box"/>
+  <text x="500.0" y="108.0" class="t" text-anchor="middle">Post 반환</text>
+  <text x="500.0" y="127.0" class="val" text-anchor="middle">post</text>
+  <rect x="575.0" y="88" width="130" height="48" rx="8" class="box"/>
+  <text x="640.0" y="108.0" class="op" text-anchor="middle">find(1L)</text>
+  <text x="640.0" y="127.0" class="val" text-anchor="middle">두 번째 조회</text>
+  <rect x="575.0" y="148" width="130" height="48" rx="8" class="ok"/>
+  <text x="640.0" y="168.0" class="okt" text-anchor="middle">캐시에서 반환</text>
+  <text x="640.0" y="187.0" class="val" text-anchor="middle">samePost</text>
+  <rect x="580" y="216" width="120" height="32" rx="6" class="wait"/>
+  <text x="640" y="237" class="waitt" text-anchor="middle">쿼리 없음</text>
+  <line x1="220" y1="136" x2="220" y2="146" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="250" y1="196" x2="330" y2="206" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <line x1="390" y1="208" x2="470" y2="198" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="500" y1="146" x2="500" y2="138" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="640" y1="136" x2="640" y2="146" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="284" class="sub" text-anchor="start">두 번째 find는 1차 캐시에서 반환되어 SELECT가 실행되지 않습니다.</text>
+  <text x="150" y="302" class="sub" text-anchor="start">함께 저장한 로드된 상태(스냅샷)는 플러시할 때 더티 체킹의 비교 기준이 됩니다.</text>
+</svg>

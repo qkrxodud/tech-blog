@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>반복문에서 i가 1000의 배수일 때마다 flush로 쌓인 INSERT를 전송하고 clear로 영속성 컨텍스트를 비워, 영속성 컨텍스트에 쌓이는 엔티티가 1000개를 넘지 않게 유지하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h" text-anchor="start">주기적 flush와 clear — 영속성 컨텍스트 크기 관리</text>
+  <text x="730" y="42" class="code" text-anchor="end">i % 1000 == 0</text>
+  <text x="220" y="68" class="step" text-anchor="middle">i = 0</text>
+  <text x="360" y="68" class="step" text-anchor="middle">i = 1 ~ 999</text>
+  <text x="500" y="68" class="step" text-anchor="middle">i = 1000</text>
+  <text x="640" y="68" class="step" text-anchor="middle">i = 1001 ~ 1999</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="117" class="lane" text-anchor="start">반복문</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="168" class="lane" text-anchor="start">영속성</text>
+  <text x="30" y="186" class="sub" text-anchor="start">컨텍스트 엔티티 수</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="237" class="lane" text-anchor="start">DB</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="155.0" y="88" width="130" height="48" rx="8" class="box"/>
+  <text x="220.0" y="108.0" class="t" text-anchor="middle">persist 1건</text>
+  <text x="220.0" y="127.0" class="val" text-anchor="middle">조건 true</text>
+  <rect x="295.0" y="88" width="130" height="48" rx="8" class="box"/>
+  <text x="360.0" y="108.0" class="t" text-anchor="middle">persist 999건</text>
+  <text x="360.0" y="127.0" class="val" text-anchor="middle">조건 false</text>
+  <rect x="435.0" y="88" width="130" height="48" rx="8" class="box"/>
+  <text x="500.0" y="108.0" class="t" text-anchor="middle">persist 1건</text>
+  <text x="500.0" y="127.0" class="val" text-anchor="middle">조건 true</text>
+  <rect x="575.0" y="88" width="130" height="48" rx="8" class="box"/>
+  <text x="640.0" y="108.0" class="t" text-anchor="middle">persist 999건</text>
+  <text x="640.0" y="127.0" class="val" text-anchor="middle">조건 false</text>
+  <rect x="155.0" y="148" width="130" height="48" rx="8" class="ok"/>
+  <text x="220.0" y="168.0" class="okt" text-anchor="middle">1 → 0</text>
+  <text x="220.0" y="187.0" class="val" text-anchor="middle">flush·clear</text>
+  <rect x="295.0" y="148" width="130" height="48" rx="8" class="hold"/>
+  <text x="360.0" y="168.0" class="t" text-anchor="middle">999</text>
+  <text x="360.0" y="187.0" class="val" text-anchor="middle">계속 쌓임</text>
+  <rect x="435.0" y="148" width="130" height="48" rx="8" class="ok"/>
+  <text x="500.0" y="168.0" class="okt" text-anchor="middle">1000 → 0</text>
+  <text x="500.0" y="187.0" class="val" text-anchor="middle">flush·clear</text>
+  <rect x="575.0" y="148" width="130" height="48" rx="8" class="hold"/>
+  <text x="640.0" y="168.0" class="t" text-anchor="middle">999</text>
+  <text x="640.0" y="187.0" class="val" text-anchor="middle">계속 쌓임</text>
+  <rect x="155.0" y="208" width="130" height="48" rx="8" class="box"/>
+  <text x="220.0" y="228.0" class="op" text-anchor="middle">INSERT</text>
+  <text x="220.0" y="247.0" class="val" text-anchor="middle">1건 전송</text>
+  <rect x="435.0" y="208" width="130" height="48" rx="8" class="box"/>
+  <text x="500.0" y="228.0" class="op" text-anchor="middle">INSERT</text>
+  <text x="500.0" y="247.0" class="val" text-anchor="middle">1000건 전송</text>
+  <rect x="300" y="216" width="120" height="32" rx="6" class="wait"/>
+  <text x="360" y="237" class="waitt" text-anchor="middle">전송 없음</text>
+  <rect x="580" y="216" width="120" height="32" rx="6" class="wait"/>
+  <text x="640" y="237" class="waitt" text-anchor="middle">전송 없음</text>
+  <line x1="220" y1="196" x2="220" y2="206" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="500" y1="196" x2="500" y2="206" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="284" class="sub" text-anchor="start">flush로 쌓인 INSERT를 전송하고 clear로 영속성 컨텍스트를 비워,</text>
+  <text x="150" y="302" class="sub" text-anchor="start">영속성 컨텍스트에 쌓이는 엔티티가 1,000개를 넘지 않게 유지합니다.</text>
+</svg>

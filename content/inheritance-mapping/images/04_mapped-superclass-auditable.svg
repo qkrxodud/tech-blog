@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>@MappedSuperclass인 Auditable의 createdAt, updatedAt 매핑 정보를 상속받은 Post 엔티티의 테이블에 컬럼으로 들어가고, Auditable 자체는 테이블이 없어 조회할 수 없는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">@MappedSuperclass — 매핑 정보만 물려준다</text>
+  <rect x="30" y="64" width="230" height="86" rx="10" class="wait"/>
+  <text x="46" y="86" class="code">@MappedSuperclass</text>
+  <text x="46" y="106" class="mb">Auditable</text>
+  <text x="46" y="126" class="m">createdAt</text>
+  <text x="46" y="142" class="m">updatedAt</text>
+  <line x1="145" y1="190" x2="145" y2="153" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <text x="155" y="176" class="sub">extends</text>
+  <rect x="30" y="192" width="230" height="70" rx="10" class="box"/>
+  <text x="46" y="214" class="code">@Entity</text>
+  <text x="46" y="234" class="mb">Post</text>
+  <text x="46" y="252" class="m">id, title</text>
+  <line x1="262" y1="220" x2="324" y2="146" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="330" y="96" class="mb">Post</text>
+  <rect x="330" y="104" width="60" height="26" class="thead"/>
+  <text x="360.0" y="121.5" class="m" text-anchor="middle">id</text>
+  <rect x="390" y="104" width="110" height="26" class="thead"/>
+  <text x="445.0" y="121.5" class="m" text-anchor="middle">title</text>
+  <rect x="500" y="104" width="115" height="26" class="thead"/>
+  <text x="557.5" y="121.5" class="m" text-anchor="middle">createdAt</text>
+  <rect x="615" y="104" width="115" height="26" class="thead"/>
+  <text x="672.5" y="121.5" class="m" text-anchor="middle">updatedAt</text>
+  <rect x="330" y="130" width="60" height="26" class="cell"/>
+  <text x="360.0" y="147.5" class="m" text-anchor="middle">1</text>
+  <rect x="390" y="130" width="110" height="26" class="cell"/>
+  <text x="445.0" y="147.5" class="s" text-anchor="middle">값</text>
+  <rect x="500" y="130" width="115" height="26" class="ok"/>
+  <text x="557.5" y="147.5" class="s" text-anchor="middle">값</text>
+  <rect x="615" y="130" width="115" height="26" class="ok"/>
+  <text x="672.5" y="147.5" class="s" text-anchor="middle">값</text>
+  <text x="330" y="182" class="gnote">Auditable의 createdAt, updatedAt이 Post 테이블의 컬럼이 됩니다.</text>
+  <text x="330" y="206" class="sub">Auditable 테이블은 만들어지지 않습니다.</text>
+  <text x="330" y="244" class="note">Auditable 타입으로는 조회할 수 없습니다(다형성 쿼리 불가).</text>
+  <text x="30" y="292" class="foot">상속 계층이 아니라 생성일·수정일 같은 공통 속성을 여러 엔티티에서 재사용할 때 사용합니다.</text>
+</svg>

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>ehcache.xml의 getCategoryCache 설정을 EhCacheManagerFactoryBean이 읽어 Ehcache CacheManager를 만들고, EhCacheCacheManager가 이를 Spring CacheManager로 감싸며, @EnableCaching으로 켜진 캐시를 서비스 메서드의 @Cacheable이 사용하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Ehcache 설정 — ehcache.xml에서 @Cacheable까지</text>
+  <text x="730" y="42" class="code" text-anchor="end">CacheConfiguration</text>
+  <rect x="30" y="64" width="290" height="56" rx="8" class="box"/>
+  <text x="175" y="98" class="op" text-anchor="middle">ehcache.xml</text>
+  <text x="350" y="88" class="t">getCategoryCache 캐시 정의</text>
+  <text x="350" y="108" class="val">힙 1000개, 디스크 10000개, TTI·TTL 1800초</text>
+  <line x1="175" y1="122" x2="175" y2="142" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="30" y="144" width="290" height="56" rx="8" class="box"/>
+  <text x="175" y="178" class="op" text-anchor="middle">EhCacheManagerFactoryBean</text>
+  <text x="350" y="168" class="t">ehcache.xml을 읽어 Ehcache CacheManager 생성</text>
+  <text x="350" y="188" class="valc">setConfigLocation(), setShared(true)</text>
+  <line x1="175" y1="202" x2="175" y2="222" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="30" y="224" width="290" height="56" rx="8" class="box"/>
+  <text x="175" y="258" class="op" text-anchor="middle">EhCacheCacheManager</text>
+  <text x="350" y="248" class="t">Spring CacheManager로 감싸 등록</text>
+  <text x="350" y="268" class="valc">setCacheManager(factoryBean.getObject())</text>
+  <line x1="175" y1="282" x2="175" y2="302" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <rect x="30" y="304" width="290" height="56" rx="8" class="ok"/>
+  <text x="175" y="338" class="okc" text-anchor="middle">@Cacheable</text>
+  <text x="350" y="328" class="t">@EnableCaching으로 켜진 캐시를 서비스 메서드에서 사용</text>
+  <text x="350" y="348" class="valc">value="getCategoryCache", key="#using"</text>
+  <text x="30" y="386" class="foot">설정 파일 → Ehcache CacheManager → Spring CacheManager 순으로 연결되고, 서비스는 캐시 이름으로 사용합니다.</text>
+</svg>

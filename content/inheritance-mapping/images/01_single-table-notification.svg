@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 310" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>단일 테이블 전략에서 Notification 테이블 하나에 id, 판별자 컬럼 notification_type, firstName, lastName, emailAddress를 모두 두고, SmsNotification 행은 emailAddress가 null로 남는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="310" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="290" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">단일 테이블 전략 — Notification 계층을 한 테이블에</text>
+  <text x="730" y="42" class="code" text-anchor="end">SINGLE_TABLE</text>
+  <text x="30" y="80" class="mb">Notification</text>
+  <rect x="30" y="88" width="60" height="26" class="thead"/>
+  <text x="60.0" y="105.5" class="m" text-anchor="middle">id</text>
+  <rect x="90" y="88" width="180" height="26" class="thead"/>
+  <text x="180.0" y="105.5" class="m" text-anchor="middle">notification_type</text>
+  <rect x="270" y="88" width="125" height="26" class="thead"/>
+  <text x="332.5" y="105.5" class="m" text-anchor="middle">firstName</text>
+  <rect x="395" y="88" width="125" height="26" class="thead"/>
+  <text x="457.5" y="105.5" class="m" text-anchor="middle">lastName</text>
+  <rect x="520" y="88" width="150" height="26" class="thead"/>
+  <text x="595.0" y="105.5" class="m" text-anchor="middle">emailAddress</text>
+  <rect x="30" y="114" width="60" height="26" class="cell"/>
+  <text x="60.0" y="131.5" class="m" text-anchor="middle">1</text>
+  <rect x="90" y="114" width="180" height="26" class="ok"/>
+  <text x="180.0" y="131.5" class="okm" text-anchor="middle">EMAIL</text>
+  <rect x="270" y="114" width="125" height="26" class="cell"/>
+  <text x="332.5" y="131.5" class="s" text-anchor="middle">값</text>
+  <rect x="395" y="114" width="125" height="26" class="cell"/>
+  <text x="457.5" y="131.5" class="s" text-anchor="middle">값</text>
+  <rect x="520" y="114" width="150" height="26" class="cell"/>
+  <text x="595.0" y="131.5" class="s" text-anchor="middle">값</text>
+  <rect x="30" y="140" width="60" height="26" class="cell"/>
+  <text x="60.0" y="157.5" class="m" text-anchor="middle">2</text>
+  <rect x="90" y="140" width="180" height="26" class="ok"/>
+  <text x="180.0" y="157.5" class="okm" text-anchor="middle">SmsNotification</text>
+  <rect x="270" y="140" width="125" height="26" class="cell"/>
+  <text x="332.5" y="157.5" class="s" text-anchor="middle">값</text>
+  <rect x="395" y="140" width="125" height="26" class="cell"/>
+  <text x="457.5" y="157.5" class="s" text-anchor="middle">값</text>
+  <rect x="520" y="140" width="150" height="26" class="bad"/>
+  <text x="595.0" y="157.5" class="badm" text-anchor="middle">null</text>
+  <text x="30" y="190" class="sub">SmsNotification은 판별자 값을 따로 정하지 않았다고 보고, 기본값인 엔티티 이름으로 그렸습니다.</text>
+  <text x="30" y="220" class="note">emailAddress처럼 하위 클래스에만 있는 컬럼은 다른 타입의 행에서 null이므로 NOT NULL 제약을 걸 수 없습니다.</text>
+  <text x="30" y="244" class="gnote">조인 없이 한 테이블만 조회하므로 쿼리 성능이 빠릅니다.</text>
+  <text x="30" y="280" class="foot">판별자 컬럼 이름은 @DiscriminatorColumn으로 정하고, 지정하지 않으면 DTYPE입니다.</text>
+</svg>

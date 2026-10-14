@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 454" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>위쪽은 Spring MVC에서 스레드 200개가 1초씩 걸리는 요청을 200개씩 다섯 번 처리해 약 5초가 걸리는 타임라인, 아래쪽은 WebFlux에서 요청 1000개가 거의 동시에 시작되고 I/O가 병렬로 진행되어 약 1.2초에 끝나는 타임라인</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .subc { font-size: 12px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .valc { font-size: 12.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .lbl { font-size: 12px; font-weight: 700; fill: #6b7280; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="454" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="176" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Spring MVC — 스레드 200개로 요청 1000개 처리</text>
+  <text x="730" y="42" class="sub" text-anchor="end">약 5초</text>
+  <text x="152" y="68" class="step" text-anchor="middle">0초</text>
+  <text x="267" y="68" class="step" text-anchor="middle">1초</text>
+  <text x="382" y="68" class="step" text-anchor="middle">2초</text>
+  <text x="498" y="68" class="step" text-anchor="middle">3초</text>
+  <text x="613" y="68" class="step" text-anchor="middle">4초</text>
+  <text x="728" y="68" class="step" text-anchor="middle">5초</text>
+  <line x1="152" y1="76" x2="735" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">스레드</text>
+  <text x="30" y="128" class="sub">200개가 동시에</text>
+  <rect x="150" y="88" width="585" height="52" rx="6" class="track"/>
+  <rect x="154" y="90" width="111" height="48" rx="8" class="hold"/>
+  <text x="210" y="110" class="t" text-anchor="middle">1~200번</text>
+  <text x="210" y="129" class="val" text-anchor="middle">I/O 대기 95%</text>
+  <rect x="269" y="90" width="111" height="48" rx="8" class="hold"/>
+  <text x="325" y="110" class="t" text-anchor="middle">201~400번</text>
+  <text x="325" y="129" class="val" text-anchor="middle">I/O 대기 95%</text>
+  <rect x="384" y="90" width="111" height="48" rx="8" class="hold"/>
+  <text x="440" y="110" class="t" text-anchor="middle">401~600번</text>
+  <text x="440" y="129" class="val" text-anchor="middle">I/O 대기 95%</text>
+  <rect x="500" y="90" width="111" height="48" rx="8" class="hold"/>
+  <text x="555" y="110" class="t" text-anchor="middle">601~800번</text>
+  <text x="555" y="129" class="val" text-anchor="middle">I/O 대기 95%</text>
+  <rect x="615" y="90" width="111" height="48" rx="8" class="hold"/>
+  <text x="670" y="110" class="t" text-anchor="middle">801~1000번</text>
+  <text x="670" y="129" class="val" text-anchor="middle">I/O 대기 95%</text>
+  <text x="150" y="168" class="foot">I/O를 기다리는 동안 스레드가 묶여 있어 200개씩 다섯 번 처리합니다 — 처리량 200 req/sec</text>
+  <rect x="10" y="202" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="234" class="h">Spring WebFlux — 소수의 스레드로 요청 1000개 처리</text>
+  <text x="730" y="234" class="sub" text-anchor="end">약 1.2초</text>
+  <text x="152" y="260" class="step" text-anchor="middle">0초</text>
+  <text x="267" y="260" class="step" text-anchor="middle">1초</text>
+  <text x="382" y="260" class="step" text-anchor="middle">2초</text>
+  <text x="498" y="260" class="step" text-anchor="middle">3초</text>
+  <text x="613" y="260" class="step" text-anchor="middle">4초</text>
+  <text x="728" y="260" class="step" text-anchor="middle">5초</text>
+  <line x1="152" y1="268" x2="735" y2="268" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="302" class="lane">이벤트 루프</text>
+  <text x="30" y="320" class="sub">소수의 스레드</text>
+  <rect x="150" y="280" width="585" height="52" rx="6" class="track"/>
+  <rect x="154" y="282" width="134" height="48" rx="8" class="ok"/>
+  <text x="221" y="302" class="okt" text-anchor="middle">요청 1000개</text>
+  <text x="221" y="321" class="val" text-anchor="middle">시작 → 응답</text>
+  <text x="310" y="302" class="val">모든 요청이 거의 동시에 시작하고</text>
+  <text x="310" y="321" class="val">I/O를 시작하면 스레드를 바로 해제합니다</text>
+  <text x="30" y="364" class="lane">I/O 작업</text>
+  <text x="30" y="382" class="sub">비동기로 진행</text>
+  <rect x="150" y="342" width="585" height="52" rx="6" class="track"/>
+  <rect x="160" y="352" width="120" height="32" rx="6" class="wait"/>
+  <text x="221" y="373" class="waitt" text-anchor="middle">I/O 병렬 진행</text>
+  <text x="310" y="373" class="val">DB 조회, API 호출, 파일 읽기가 동시에 진행됩니다</text>
+  <text x="150" y="418" class="foot">스레드가 I/O를 기다리지 않으므로 요청 1000개가 약 1.2초에 끝납니다 — 처리량 833 req/sec</text>
+</svg>

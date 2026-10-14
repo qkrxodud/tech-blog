@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 396" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>클래스에 없는 password가 담긴 JSON을 역직렬화할 때, 어노테이션이 없으면 UnrecognizedPropertyException이 발생하고 ignoreUnknown = true를 붙이면 password를 무시하고 username과 email만 담긴 User 객체가 만들어지는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .desc { font-size: 13px; fill: #374151; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .dimt { font-size: 12px; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dim { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okms { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badms { font-size: 12px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="396" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">어노테이션 없음 — 모르는 프로퍼티에서 예외</text>
+  <text x="730" y="42" class="code" text-anchor="end">new ObjectMapper()</text>
+
+  <rect x="30" y="64" width="222" height="110" rx="8" class="box"/>
+  <text x="141" y="86" class="sub" text-anchor="middle">요청 JSON</text>
+  <text x="44" y="110" class="ms">"username": "john",</text>
+  <text x="44" y="132" class="ms">"email": "john@example.com",</text>
+  <text x="44" y="154" class="badms">"password": "secret"</text>
+
+  <line x1="254" y1="119" x2="278" y2="119" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+
+  <rect x="282" y="64" width="200" height="110" rx="8" class="box"/>
+  <text x="382" y="92" class="mb" text-anchor="middle">User</text>
+  <text x="382" y="118" class="m" text-anchor="middle">username</text>
+  <text x="382" y="138" class="m" text-anchor="middle">email</text>
+  <text x="382" y="162" class="sub" text-anchor="middle">password 없음</text>
+
+  <line x1="484" y1="119" x2="502" y2="119" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+
+  <rect x="506" y="64" width="224" height="110" rx="8" class="bad"/>
+  <text x="618" y="104" class="badms" text-anchor="middle">UnrecognizedProperty</text>
+  <text x="618" y="122" class="badms" text-anchor="middle">Exception</text>
+  <text x="618" y="150" class="note" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">password</tspan>에서 역직렬화 실패</text>
+
+  <rect x="10" y="206" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="238" class="h"><tspan font-family="Menlo, Consolas, monospace">ignoreUnknown = true</tspan> — 모르는 프로퍼티는 무시</text>
+
+  <rect x="30" y="260" width="222" height="110" rx="8" class="box"/>
+  <text x="141" y="282" class="sub" text-anchor="middle">요청 JSON</text>
+  <text x="44" y="306" class="ms">"username": "john",</text>
+  <text x="44" y="328" class="ms">"email": "john@example.com",</text>
+  <text x="44" y="350" class="dimt">"password": "secret"</text>
+
+  <line x1="254" y1="315" x2="278" y2="315" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+
+  <rect x="282" y="260" width="200" height="110" rx="8" class="box"/>
+  <text x="382" y="284" class="mb" text-anchor="middle">User</text>
+  <rect x="292" y="294" width="180" height="40" rx="6" class="ok"/>
+  <text x="382" y="310" class="okms" text-anchor="middle">@JsonIgnoreProperties</text>
+  <text x="382" y="326" class="okms" text-anchor="middle">(ignoreUnknown = true)</text>
+  <text x="382" y="356" class="m" text-anchor="middle">username, email</text>
+
+  <line x1="484" y1="315" x2="502" y2="315" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+
+  <rect x="506" y="260" width="224" height="110" rx="8" class="ok"/>
+  <text x="618" y="290" class="okt" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">User</tspan> 객체 생성</text>
+  <text x="618" y="314" class="ms" text-anchor="middle">username = "john"</text>
+  <text x="618" y="334" class="ms" text-anchor="middle">email = "john@example.com"</text>
+  <text x="618" y="356" class="gnote" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">password</tspan>는 무시</text>
+</svg>

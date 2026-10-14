@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 386" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>save를 반복하면 회원 한 명을 저장할 때마다 save() 프록시가 호출을 가로채 트랜잭션을 시작하거나 참여한 뒤 persist하고, saveAll은 프록시를 한 번만 거친 뒤 안쪽에서 save를 직접 호출해 10,000번 persist한다는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="386" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h" text-anchor="start">save 반복 — 회원마다 프록시를 거침</text>
+  <text x="730" y="42" class="code" text-anchor="end">memberService.join(member)</text>
+  <text x="110.0" y="70" class="step" text-anchor="middle">서비스 호출</text>
+  <text x="286.0" y="70" class="step" text-anchor="middle">save() 프록시</text>
+  <text x="462.0" y="70" class="step" text-anchor="middle">SimpleJpaRepository</text>
+  <text x="638.0" y="70" class="step" text-anchor="middle">EntityManager</text>
+  <rect x="30" y="82" width="160" height="52" rx="8" class="box"/>
+  <text x="110.0" y="104.0" class="op" text-anchor="middle">join(member)</text>
+  <text x="110.0" y="123.0" class="val" text-anchor="middle">회원 1명 저장 요청</text>
+  <rect x="206" y="82" width="160" height="52" rx="8" class="bad"/>
+  <text x="286.0" y="104.0" class="badt" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">save()</tspan> 프록시</text>
+  <text x="286.0" y="123.0" class="val" text-anchor="middle">트랜잭션 시작·참여</text>
+  <line x1="192" y1="108.0" x2="203" y2="108.0" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="382" y="82" width="160" height="52" rx="8" class="box"/>
+  <text x="462.0" y="104.0" class="op" text-anchor="middle">isNew()</text>
+  <text x="462.0" y="123.0" class="val" text-anchor="middle">persist·merge 판단</text>
+  <line x1="368" y1="108.0" x2="379" y2="108.0" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="558" y="82" width="160" height="52" rx="8" class="box"/>
+  <text x="638.0" y="104.0" class="op" text-anchor="middle">em.persist()</text>
+  <text x="638.0" y="123.0" class="val" text-anchor="middle">회원 1명 저장</text>
+  <line x1="544" y1="108.0" x2="555" y2="108.0" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="162" class="note" text-anchor="start">위 네 단계가 회원 한 명마다 실행되어, 10,000명을 저장하면 프록시도 10,000번 거칩니다.</text>
+  <rect x="10" y="196" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="228" class="h" text-anchor="start">saveAll — 프록시는 한 번만 거침</text>
+  <text x="730" y="228" class="code" text-anchor="end">memberService.joinAll(members)</text>
+  <text x="110.0" y="256" class="step" text-anchor="middle">서비스 호출</text>
+  <text x="286.0" y="256" class="step" text-anchor="middle">saveAll() 프록시</text>
+  <text x="462.0" y="256" class="step" text-anchor="middle">saveAll() 안쪽</text>
+  <text x="638.0" y="256" class="step" text-anchor="middle">EntityManager</text>
+  <rect x="30" y="268" width="160" height="52" rx="8" class="box"/>
+  <text x="110.0" y="290.0" class="op" text-anchor="middle">joinAll(members)</text>
+  <text x="110.0" y="309.0" class="val" text-anchor="middle">10,000명 리스트</text>
+  <rect x="206" y="268" width="160" height="52" rx="8" class="ok"/>
+  <text x="286.0" y="290.0" class="okt" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">saveAll()</tspan> 프록시</text>
+  <text x="286.0" y="309.0" class="val" text-anchor="middle">트랜잭션 시작 1번</text>
+  <line x1="192" y1="294.0" x2="203" y2="294.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="382" y="268" width="160" height="52" rx="8" class="ok"/>
+  <text x="462.0" y="290.0" class="okc" text-anchor="middle">save(entity)</text>
+  <text x="462.0" y="309.0" class="val" text-anchor="middle">내부 호출, 프록시 없음</text>
+  <line x1="368" y1="294.0" x2="379" y2="294.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="558" y="268" width="160" height="52" rx="8" class="box"/>
+  <text x="638.0" y="290.0" class="op" text-anchor="middle">em.persist()</text>
+  <text x="638.0" y="309.0" class="val" text-anchor="middle">10,000번 저장</text>
+  <line x1="544" y1="294.0" x2="555" y2="294.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="462" y="340" class="gnote" text-anchor="middle">for 문으로 10,000번 반복</text>
+  <text x="30" y="362" class="sub" text-anchor="start">트랜잭션 처리는 saveAll() 호출 한 번에만 일어나고, 안쪽 save()는 프록시를 거치지 않습니다.</text>
+</svg>

@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>null, 빈 문자열, 공백 한 칸, abc 네 가지 값에 @NotNull, @NotEmpty, @NotBlank를 적용했을 때의 통과 여부 비교. 빈 문자열은 @NotNull만 통과하고, 공백 한 칸은 @NotBlank만 실패한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .desc { font-size: 13px; fill: #374151; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .dimt { font-size: 12px; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dim { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okms { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badms { font-size: 12px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">문자열 값별 검증 결과 — <tspan font-family="Menlo, Consolas, monospace">@NotNull</tspan>, <tspan font-family="Menlo, Consolas, monospace">@NotEmpty</tspan>, <tspan font-family="Menlo, Consolas, monospace">@NotBlank</tspan></text>
+  <text x="40" y="84" class="sub">검증할 값</text>
+  <text x="325" y="84" class="mb" text-anchor="middle">@NotNull</text>
+  <text x="485" y="84" class="mb" text-anchor="middle">@NotEmpty</text>
+  <text x="645" y="84" class="mb" text-anchor="middle">@NotBlank</text>
+  <line x1="30" y1="96" x2="730" y2="96" class="axis" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="30" y="108" width="200" height="44" rx="8" class="box"/>
+  <text x="48" y="135" class="mb">null</text>
+  <rect x="255" y="108" width="140" height="44" rx="8" class="bad"/>
+  <text x="325" y="135" class="badt" text-anchor="middle">실패</text>
+  <rect x="415" y="108" width="140" height="44" rx="8" class="bad"/>
+  <text x="485" y="135" class="badt" text-anchor="middle">실패</text>
+  <rect x="575" y="108" width="140" height="44" rx="8" class="bad"/>
+  <text x="645" y="135" class="badt" text-anchor="middle">실패</text>
+  <rect x="30" y="162" width="200" height="44" rx="8" class="box"/>
+  <text x="48" y="189" class="mb">&quot;&quot;</text>
+  <text x="212" y="189" class="sub" text-anchor="end">빈 문자열</text>
+  <rect x="255" y="162" width="140" height="44" rx="8" class="ok"/>
+  <text x="325" y="189" class="okt" text-anchor="middle">통과</text>
+  <rect x="415" y="162" width="140" height="44" rx="8" class="bad"/>
+  <text x="485" y="189" class="badt" text-anchor="middle">실패</text>
+  <rect x="575" y="162" width="140" height="44" rx="8" class="bad"/>
+  <text x="645" y="189" class="badt" text-anchor="middle">실패</text>
+  <rect x="30" y="216" width="200" height="44" rx="8" class="box"/>
+  <text x="48" y="243" class="mb">&quot; &quot;</text>
+  <text x="212" y="243" class="sub" text-anchor="end">공백 한 칸</text>
+  <rect x="255" y="216" width="140" height="44" rx="8" class="ok"/>
+  <text x="325" y="243" class="okt" text-anchor="middle">통과</text>
+  <rect x="415" y="216" width="140" height="44" rx="8" class="ok"/>
+  <text x="485" y="243" class="okt" text-anchor="middle">통과</text>
+  <rect x="575" y="216" width="140" height="44" rx="8" class="bad"/>
+  <text x="645" y="243" class="badt" text-anchor="middle">실패</text>
+  <rect x="30" y="270" width="200" height="44" rx="8" class="box"/>
+  <text x="48" y="297" class="mb">&quot;abc&quot;</text>
+  <rect x="255" y="270" width="140" height="44" rx="8" class="ok"/>
+  <text x="325" y="297" class="okt" text-anchor="middle">통과</text>
+  <rect x="415" y="270" width="140" height="44" rx="8" class="ok"/>
+  <text x="485" y="297" class="okt" text-anchor="middle">통과</text>
+  <rect x="575" y="270" width="140" height="44" rx="8" class="ok"/>
+  <text x="645" y="297" class="okt" text-anchor="middle">통과</text>
+  <text x="380" y="344" class="foot" text-anchor="middle">빈 문자열과 공백만 있는 문자열까지 막으려면 <tspan font-family="Menlo, Consolas, monospace">@NotBlank</tspan>를 사용합니다</text>
+</svg>

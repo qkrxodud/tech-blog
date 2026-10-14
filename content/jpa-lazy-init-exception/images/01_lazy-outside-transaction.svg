@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 386" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>트랜잭션 안에서는 영속성 컨텍스트가 열려 있어 프록시를 초기화할 때 SELECT로 값을 가져오지만, Quartz 스레드처럼 트랜잭션이 적용되지 않으면 리포지토리 조회가 끝나면서 영속성 컨텍스트가 닫혀, 나중에 연관 객체에 접근할 때 LazyInitializationException이 발생하는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="386" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h" text-anchor="start">트랜잭션 안에서 지연 로딩 — 정상</text>
+  <text x="730" y="42" class="code" text-anchor="end">@Transactional</text>
+  <text x="110.0" y="70" class="step" text-anchor="middle">조회</text>
+  <text x="286.0" y="70" class="step" text-anchor="middle">영속성 컨텍스트</text>
+  <text x="462.0" y="70" class="step" text-anchor="middle">연관 객체 접근</text>
+  <text x="638.0" y="70" class="step" text-anchor="middle">결과</text>
+  <rect x="30" y="82" width="160" height="52" rx="8" class="box"/>
+  <text x="110.0" y="104.0" class="t" text-anchor="middle">조회</text>
+  <text x="110.0" y="123.0" class="val" text-anchor="middle">연관 객체는 프록시</text>
+  <rect x="206" y="82" width="160" height="52" rx="8" class="hold"/>
+  <text x="286.0" y="104.0" class="t" text-anchor="middle">영속성 컨텍스트 열림</text>
+  <text x="286.0" y="123.0" class="val" text-anchor="middle">트랜잭션 진행 중</text>
+  <line x1="192" y1="108.0" x2="203" y2="108.0" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="382" y="82" width="160" height="52" rx="8" class="box"/>
+  <text x="462.0" y="104.0" class="t" text-anchor="middle">연관 객체 접근</text>
+  <text x="462.0" y="123.0" class="val" text-anchor="middle">프록시 초기화</text>
+  <line x1="368" y1="108.0" x2="379" y2="108.0" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="558" y="82" width="160" height="52" rx="8" class="ok"/>
+  <text x="638.0" y="104.0" class="okt" text-anchor="middle">값 조회 성공</text>
+  <text x="638.0" y="123.0" class="val" text-anchor="middle">SELECT 후 반환</text>
+  <line x1="544" y1="108.0" x2="555" y2="108.0" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="162" class="sub" text-anchor="start">트랜잭션이 끝나기 전에 접근하므로 프록시가 영속성 컨텍스트를 통해 실제 값을 불러옵니다.</text>
+  <rect x="10" y="206" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="238" class="h" text-anchor="start">Quartz 스레드에서 지연 로딩 — 예외</text>
+  <text x="730" y="238" class="note" text-anchor="end">@Transactional 적용 안 됨</text>
+  <text x="110.0" y="266" class="step" text-anchor="middle">조회</text>
+  <text x="286.0" y="266" class="step" text-anchor="middle">영속성 컨텍스트</text>
+  <text x="462.0" y="266" class="step" text-anchor="middle">연관 객체 접근</text>
+  <text x="638.0" y="266" class="step" text-anchor="middle">결과</text>
+  <rect x="30" y="278" width="160" height="52" rx="8" class="box"/>
+  <text x="110.0" y="300.0" class="t" text-anchor="middle">조회</text>
+  <text x="110.0" y="319.0" class="val" text-anchor="middle">연관 객체는 프록시</text>
+  <rect x="206" y="278" width="160" height="52" rx="8" class="bad"/>
+  <text x="286.0" y="300.0" class="badt" text-anchor="middle">영속성 컨텍스트 닫힘</text>
+  <text x="286.0" y="319.0" class="val" text-anchor="middle">리포지토리 호출 후 종료</text>
+  <line x1="192" y1="304.0" x2="203" y2="304.0" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="382" y="278" width="160" height="52" rx="8" class="box"/>
+  <text x="462.0" y="300.0" class="t" text-anchor="middle">연관 객체 접근</text>
+  <text x="462.0" y="319.0" class="val" text-anchor="middle">프록시 초기화 시도</text>
+  <line x1="368" y1="304.0" x2="379" y2="304.0" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="558" y="278" width="160" height="52" rx="8" class="bad"/>
+  <text x="638.0" y="300.0" class="badt" text-anchor="middle">예외 발생</text>
+  <text x="638.0" y="319.0" class="val" text-anchor="middle">값을 불러오지 못함</text>
+  <line x1="544" y1="304.0" x2="555" y2="304.0" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="30" y="358" class="note" text-anchor="start">준영속 상태의 프록시를 초기화하면서 <tspan font-family="Menlo, Consolas, monospace">org.hibernate.LazyInitializationException</tspan>이 발생합니다.</text>
+</svg>

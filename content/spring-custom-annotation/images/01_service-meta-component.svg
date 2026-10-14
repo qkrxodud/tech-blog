@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>@Service 선언부에 메타 어노테이션으로 @Component가 붙어 있어, @Service가 붙은 클래스도 @Component가 붙은 클래스처럼 컴포넌트 스캔 대상이 되는 관계</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .desc { font-size: 13px; fill: #374151; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .dimt { font-size: 12px; fill: #9ca3af; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .chip { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dim { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .scope { fill: none; stroke: #9ca3af; stroke-width: 1.3; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .okms { font-size: 12px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .badms { font-size: 12px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h"><tspan font-family="Menlo, Consolas, monospace">@Service</tspan> — 메타 어노테이션으로 붙은 <tspan font-family="Menlo, Consolas, monospace">@Component</tspan></text>
+
+  <rect x="30" y="70" width="170" height="170" rx="8" class="box"/>
+  <text x="115" y="98" class="t" text-anchor="middle">클래스</text>
+  <rect x="46" y="124" width="138" height="34" rx="6" class="chip"/>
+  <text x="115" y="146" class="mb" text-anchor="middle">@Service</text>
+  <text x="115" y="186" class="sub" text-anchor="middle">클래스에는</text>
+  <text x="115" y="204" class="sub" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">@Service</tspan>만 적음</text>
+
+  <line x1="202" y1="141" x2="246" y2="141" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+
+  <rect x="250" y="70" width="210" height="170" rx="8" class="box"/>
+  <text x="355" y="98" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">@Service</tspan> 선언부</text>
+  <text x="270" y="126" class="m">@Target(TYPE)</text>
+  <text x="270" y="148" class="m">@Retention(RUNTIME)</text>
+  <text x="270" y="170" class="m">@Documented</text>
+  <rect x="262" y="184" width="186" height="34" rx="6" class="ok"/>
+  <text x="355" y="206" class="okm" text-anchor="middle">@Component</text>
+
+  <text x="500" y="176" class="sub" text-anchor="middle">메타</text>
+  <text x="500" y="192" class="sub" text-anchor="middle">어노테이션</text>
+  <line x1="450" y1="201" x2="536" y2="201" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+
+  <rect x="540" y="70" width="190" height="170" rx="8" class="box"/>
+  <text x="635" y="98" class="t" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">@Component</tspan> 선언부</text>
+  <text x="558" y="126" class="m">@Target(TYPE)</text>
+  <text x="558" y="148" class="m">@Retention(RUNTIME)</text>
+  <text x="558" y="170" class="m">@Documented</text>
+  <text x="558" y="192" class="m">@Indexed</text>
+
+  <line x1="635" y1="242" x2="635" y2="264" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="30" y="268" width="700" height="58" rx="8" class="ok"/>
+  <text x="380" y="292" class="okt" text-anchor="middle">컴포넌트 스캔 대상</text>
+  <text x="380" y="313" class="gnote" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">@Service</tspan>가 붙은 클래스도 <tspan font-family="Menlo, Consolas, monospace">@Component</tspan>가 붙은 클래스처럼 빈 등록 후보가 됩니다</text>
+</svg>

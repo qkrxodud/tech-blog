@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 508" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>READ COMMITTED에서는 A가 두 번째 조회에서 B가 커밋한 관리자권한을 읽고, REPEATABLE READ에서는 undo 영역의 기본권한을 다시 읽는 비교 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .cellt { font-size: 14px; font-weight: 700; fill: #374151; }
+    .colh { font-size: 13px; font-weight: 700; fill: #4b5563; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="508" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">READ_COMMITTED — Non-Repeatable Read</text>
+  <text x="730" y="42" class="code" text-anchor="end">READ_COMMITTED</text>
+  <text x="220" y="72" class="step" text-anchor="middle">1. 조회</text>
+  <text x="360" y="72" class="step" text-anchor="middle">2. 변경 후 커밋</text>
+  <text x="500" y="72" class="step" text-anchor="middle">3. 다시 조회</text>
+  <line x1="160" y1="80" x2="722" y2="80" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">A</text>
+  <text x="30" y="128" class="sub">조회하는 트랜잭션</text>
+  <rect x="150" y="88" width="585" height="52" rx="6" class="track"/>
+  <rect x="155" y="90" width="130" height="48" rx="8" class="box"/>
+  <text x="220" y="110" class="op" text-anchor="middle">SELECT</text>
+  <text x="220" y="129" class="val" text-anchor="middle">기본권한</text>
+  <rect x="435" y="90" width="130" height="48" rx="8" class="bad"/>
+  <text x="500" y="110" class="badc" text-anchor="middle">SELECT</text>
+  <text x="500" y="129" class="val" text-anchor="middle">관리자권한</text>
+  <text x="30" y="170" class="lane">B</text>
+  <text x="30" y="188" class="sub">변경하는 트랜잭션</text>
+  <rect x="150" y="148" width="585" height="52" rx="6" class="track"/>
+  <rect x="295" y="150" width="130" height="48" rx="8" class="box"/>
+  <text x="360" y="170" class="op" text-anchor="middle">UPDATE</text>
+  <text x="360" y="189" class="val" text-anchor="middle">관리자권한, 커밋</text>
+  <text x="150" y="228" class="note">두 번의 조회 결과가 기본권한과 관리자권한으로 달라집니다.</text>
+  <rect x="10" y="262" width="740" height="236" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="294" class="h">REPEATABLE_READ — 처음 읽은 값을 다시 읽음</text>
+  <text x="730" y="294" class="code" text-anchor="end">REPEATABLE_READ</text>
+  <text x="220" y="324" class="step" text-anchor="middle">1. 조회</text>
+  <text x="360" y="324" class="step" text-anchor="middle">2. 변경 후 커밋</text>
+  <text x="500" y="324" class="step" text-anchor="middle">3. 다시 조회</text>
+  <line x1="160" y1="332" x2="722" y2="332" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="362" class="lane">A</text>
+  <text x="30" y="380" class="sub">조회하는 트랜잭션</text>
+  <rect x="150" y="340" width="585" height="52" rx="6" class="track"/>
+  <rect x="155" y="342" width="130" height="48" rx="8" class="box"/>
+  <text x="220" y="362" class="op" text-anchor="middle">SELECT</text>
+  <text x="220" y="381" class="val" text-anchor="middle">기본권한</text>
+  <rect x="435" y="342" width="130" height="48" rx="8" class="ok"/>
+  <text x="500" y="362" class="okc" text-anchor="middle">SELECT</text>
+  <text x="500" y="381" class="val" text-anchor="middle">기본권한 (undo)</text>
+  <text x="30" y="422" class="lane">B</text>
+  <text x="30" y="440" class="sub">변경하는 트랜잭션</text>
+  <rect x="150" y="400" width="585" height="52" rx="6" class="track"/>
+  <rect x="295" y="402" width="130" height="48" rx="8" class="box"/>
+  <text x="360" y="422" class="op" text-anchor="middle">UPDATE</text>
+  <text x="360" y="441" class="val" text-anchor="middle">관리자권한, 커밋</text>
+  <text x="150" y="480" class="gnote">B가 커밋했어도 A는 undo 영역에 백업된 기본권한을 다시 읽습니다.</text>
+
+</svg>

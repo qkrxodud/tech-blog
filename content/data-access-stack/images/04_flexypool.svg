@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 280" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>FlexyPool은 커넥션을 요청했다가 획득 타임아웃이 감지되면 풀 크기를 자동으로 늘려 커넥션을 획득하게 하고, 연결 획득 시간과 유지 시간을 로그로 남겨 적절한 풀 크기를 정하는 근거로 쓴다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 12.5px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .mb { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12.5px; fill: #374151; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .thead { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .cell { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 12.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 12.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="280" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="260" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">FlexyPool — 타임아웃이 나면 풀 크기를 조정한다</text>
+  <text x="105" y="72" class="step" text-anchor="middle">①</text>
+  <text x="288" y="72" class="step" text-anchor="middle">②</text>
+  <text x="471" y="72" class="step" text-anchor="middle">③</text>
+  <text x="654" y="72" class="step" text-anchor="middle">④</text>
+  <rect x="30" y="82" width="150" height="58" rx="10" class="box"/>
+  <text x="105" y="106" class="t" text-anchor="middle">커넥션 요청</text>
+  <text x="105" y="126" class="sub" text-anchor="middle">풀에서 커넥션 획득 시도</text>
+  <rect x="213" y="82" width="150" height="58" rx="10" class="bad"/>
+  <text x="288" y="106" class="badt" text-anchor="middle">획득 타임아웃</text>
+  <text x="288" y="126" class="sub" text-anchor="middle">남은 커넥션 없음</text>
+  <rect x="396" y="82" width="150" height="58" rx="10" class="ok"/>
+  <text x="471" y="106" class="okt" text-anchor="middle">풀 크기 증가</text>
+  <text x="471" y="126" class="sub" text-anchor="middle">FlexyPool이 자동 조정</text>
+  <rect x="579" y="82" width="150" height="58" rx="10" class="ok"/>
+  <text x="654" y="106" class="okt" text-anchor="middle">커넥션 획득</text>
+  <text x="654" y="126" class="sub" text-anchor="middle">요청 처리</text>
+  <line x1="181" y1="111" x2="210" y2="111" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="364" y1="111" x2="393" y2="111" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="547" y1="111" x2="576" y2="111" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="30" y="164" width="700" height="62" rx="10" class="hold"/>
+  <text x="380" y="190" class="t" text-anchor="middle">로깅 — 연결 획득 시간과 연결 유지 시간을 기록</text>
+  <text x="380" y="212" class="sub" text-anchor="middle">기록을 분석해 적절한 풀 크기를 정합니다</text>
+  <text x="30" y="254" class="foot">공식으로 정한 풀 크기는 변칙적인 상황을 고려하지 않으므로, 사용량을 모니터링하면서 조정합니다.</text>
+</svg>
