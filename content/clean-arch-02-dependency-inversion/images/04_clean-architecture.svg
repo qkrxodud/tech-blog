@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 566" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>엔티티, 유스케이스, 컨트롤러·게이트웨이·프레젠터, 웹·UI·데이터베이스 순의 동심원으로 이루어진 클린 아키텍처에서 의존성이 바깥 원에서 안쪽 원으로만 향하는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lname { font-size: 14px; font-weight: 700; fill: #6b7280; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .st { font-size: 11.5px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .ring { font-size: 13px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .dep { stroke: #6b7280; stroke-width: 1.5; fill: none; }
+    .depr { stroke: #dc2626; stroke-width: 1.6; fill: none; }
+    .depg { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="566" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="546" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">클린 아키텍처 — 의존성은 안쪽을 향한다</text>
+  <circle cx="380" cy="290" r="220" fill="#ffffff" stroke="#9ca3af" stroke-width="1.4"/>
+  <circle cx="380" cy="290" r="165" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.4"/>
+  <circle cx="380" cy="290" r="110" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.4"/>
+  <circle cx="380" cy="290" r="55" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.4"/>
+  <text x="380" y="102" class="ring" text-anchor="middle">웹 · UI · 장치</text>
+  <text x="380" y="487" class="ring" text-anchor="middle">데이터베이스 · 외부 인터페이스</text>
+  <text x="380" y="157" class="ring" text-anchor="middle">컨트롤러</text>
+  <text x="380" y="432" class="ring" text-anchor="middle">게이트웨이 · 프레젠터</text>
+  <text x="380" y="212" class="ring" text-anchor="middle">유스케이스</text>
+  <text x="380" y="276" class="t" text-anchor="middle">엔티티</text>
+  <rect x="565" y="295" width="14" height="14" fill="#ffffff" stroke="#16a34a" stroke-width="1.4"/>
+  <rect x="510" y="295" width="14" height="14" fill="#ffffff" stroke="#16a34a" stroke-width="1.4"/>
+  <rect x="455" y="295" width="14" height="14" fill="#ffffff" stroke="#16a34a" stroke-width="1.4"/>
+  <rect x="381" y="295" width="14" height="14" fill="#ffffff" stroke="#16a34a" stroke-width="1.4"/>
+  <line x1="565" y1="302" x2="526" y2="302" class="depg" marker-end="url(#agr)"/>
+  <line x1="510" y1="302" x2="471" y2="302" class="depg" marker-end="url(#agr)"/>
+  <line x1="455" y1="302" x2="397" y2="302" class="depg" marker-end="url(#agr)"/>
+  <text x="30" y="90" class="s">바깥 원 — 세부 구현</text>
+  <text x="30" y="108" class="s">안쪽 원 — 비즈니스 규칙</text>
+  <text x="730" y="90" class="gnote" text-anchor="end">의존성은 바깥에서</text>
+  <text x="730" y="108" class="gnote" text-anchor="end">안쪽으로만 향한다</text>
+  <text x="30" y="540" class="foot">도메인 코드(엔티티·유스케이스)는 바깥으로 향하는 의존성이 없다</text>
+</svg>

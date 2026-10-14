@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>SendMoneyService와 RegisterAccountService가 모든 연산을 담은 AccountRepository 하나에 의존해, 각 서비스가 필요 없는 메서드에도 의존하는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 11.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .mok { font-size: 11.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .mbad { font-size: 11.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .pk { font-size: 12px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .st { font-size: 11px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .lbl { font-size: 11.5px; fill: #6b7280; }
+    .glbl { font-size: 11.5px; font-weight: 700; fill: #15803d; }
+    .rlbl { font-size: 11.5px; font-weight: 700; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .layer { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .ctx { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .scope { fill: none; stroke: #16a34a; stroke-width: 1.4; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .th { font-size: 13px; font-weight: 700; fill: #374151; }
+    .td { font-size: 12px; fill: #374151; }
+    .tdg { font-size: 12px; fill: #15803d; }
+    .tdr { font-size: 12px; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">넓은 포트 — 모든 연산을 리포지토리 인터페이스 하나에 모은 경우</text>
+  <rect x="30" y="62" width="205" height="186" rx="8" class="pkg"/>
+  <text x="42" y="82" class="pk">application.service</text>
+  <rect x="275" y="62" width="210" height="186" rx="8" class="pkg"/>
+  <text x="287" y="82" class="pk">application.port.out</text>
+  <rect x="525" y="62" width="205" height="186" rx="8" class="pkg"/>
+  <text x="537" y="82" class="pk">adapter.out.persistence</text>
+  <rect x="40" y="100" width="175" height="48" rx="8" class="box"/>
+  <text x="127.5" y="128.0" class="m" text-anchor="middle">SendMoneyService</text>
+  <rect x="40" y="178" width="175" height="48" rx="8" class="box"/>
+  <text x="127.5" y="198.5" class="m" text-anchor="middle">RegisterAccount</text>
+  <text x="127.5" y="213.5" class="m" text-anchor="middle">Service</text>
+  <rect x="290" y="128" width="180" height="70" rx="8" class="bad"/>
+  <text x="380.0" y="159.5" class="st" text-anchor="middle">«interface»</text>
+  <text x="380.0" y="174.5" class="mbad" text-anchor="middle">AccountRepository</text>
+  <path d="M215,124 L255,124 L255,152 L288,152" fill="none" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M215,202 L255,202 L255,174 L288,174" fill="none" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="540" y="100" width="175" height="126" rx="8" class="hold"/>
+  <text x="627.5" y="168" class="t" text-anchor="middle">영속성 어댑터</text>
+  <path d="M540,163 L471,163" fill="none" stroke="#6b7280" stroke-width="1.4" marker-end="url(#tri)"/>
+  <line x1="430" y1="270" x2="470" y2="270" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <text x="478" y="274" class="lbl">호출</text>
+  <line x1="540" y1="270" x2="582" y2="270" stroke="#6b7280" stroke-width="1.4" marker-end="url(#tri)"/>
+  <text x="590" y="274" class="lbl">구현</text>
+  <text x="30" y="274" class="note">서비스마다 필요 없는 메서드에도 의존합니다.</text>
+</svg>

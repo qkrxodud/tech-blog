@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>웹 계층은 도메인 계층에, 도메인 계층은 영속성 계층에, 영속성 계층은 데이터베이스에 의존해 의존성이 모두 아래를 향하고, 그 결과 데이터베이스가 설계의 출발점이 되기 쉬운 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lname { font-size: 14px; font-weight: 700; fill: #6b7280; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .st { font-size: 11.5px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .ring { font-size: 13px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .dep { stroke: #6b7280; stroke-width: 1.5; fill: none; }
+    .depr { stroke: #dc2626; stroke-width: 1.6; fill: none; }
+    .depg { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="430" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="410" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">계층형 아키텍처 — 의존성은 아래 계층을 향한다</text>
+  <rect x="30" y="60" width="480" height="72" rx="10" class="pkg"/>
+  <text x="46" y="84" class="lname">웹</text>
+  <rect x="250" y="74" width="160" height="44" rx="8" class="box"/>
+  <text x="330" y="101" class="t" text-anchor="middle">컨트롤러</text>
+  <rect x="30" y="148" width="480" height="72" rx="10" class="pkg"/>
+  <text x="46" y="172" class="lname">도메인</text>
+  <rect x="250" y="162" width="160" height="44" rx="8" class="box"/>
+  <text x="330" y="189" class="t" text-anchor="middle">서비스</text>
+  <rect x="30" y="236" width="480" height="72" rx="10" class="pkg"/>
+  <text x="46" y="260" class="lname">영속성</text>
+  <rect x="250" y="250" width="160" height="44" rx="8" class="box"/>
+  <text x="330" y="277" class="t" text-anchor="middle">리포지토리</text>
+  <rect x="250" y="326" width="160" height="44" rx="8" class="bad"/>
+  <text x="330" y="353" class="badt" text-anchor="middle">데이터베이스</text>
+  <path d="M330,118 L330,160" class="dep" marker-end="url(#ag)"/>
+  <path d="M330,206 L330,248" class="dep" marker-end="url(#ag)"/>
+  <path d="M330,294 L330,324" class="dep" marker-end="url(#ag)"/>
+  <text x="536" y="94" class="s">요청을 받아 도메인 계층 호출</text>
+  <text x="536" y="182" class="s">비즈니스 로직 처리</text>
+  <text x="536" y="200" class="s">영속성 계층에 의존</text>
+  <text x="536" y="270" class="s">데이터베이스 접근</text>
+  <text x="536" y="346" class="note">설계의 출발점이 되기 쉽다</text>
+  <text x="536" y="364" class="note">데이터베이스 주도 설계</text>
+  <text x="30" y="404" class="foot">규칙은 하나 — 같은 계층이나 아래 계층의 컴포넌트에만 접근할 수 있다</text>
+</svg>

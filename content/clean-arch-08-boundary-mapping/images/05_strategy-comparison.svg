@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>매핑하지 않기, 양방향, 완전, 단방향 네 가지 매핑 전략을 경계를 넘는 모델과 장점, 단점으로 비교한 표</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 11.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .mok { font-size: 11.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .mbad { font-size: 11.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .pk { font-size: 12px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .st { font-size: 11px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .lbl { font-size: 11.5px; fill: #6b7280; }
+    .glbl { font-size: 11.5px; font-weight: 700; fill: #15803d; }
+    .rlbl { font-size: 11.5px; font-weight: 700; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .layer { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .ctx { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .scope { fill: none; stroke: #16a34a; stroke-width: 1.4; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .th { font-size: 13px; font-weight: 700; fill: #374151; }
+    .td { font-size: 12px; fill: #374151; }
+    .tdg { font-size: 12px; fill: #15803d; }
+    .tdr { font-size: 12px; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="450" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="430" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">매핑 전략 비교 — 경계를 넘는 모델과 장단점</text>
+  <text x="40" y="76" class="th">전략</text>
+  <text x="155" y="76" class="th">경계를 넘는 모델</text>
+  <text x="320" y="76" class="th">장점</text>
+  <text x="535" y="76" class="th">단점·주의할 점</text>
+  <line x1="30" y1="88" x2="730" y2="88" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="30" y="96" width="700" height="74" rx="6" fill="#ffffff"/>
+  <text x="40" y="138.0" class="ts">매핑하지 않기</text>
+  <text x="155" y="128.0" class="td">도메인 모델</text>
+  <text x="155" y="146.0" class="td">(Account)</text>
+  <text x="320" y="119.0" class="tdg">매핑 코드가 없음</text>
+  <text x="320" y="137.0" class="tdg">모든 계층이 같은 구조·같은</text>
+  <text x="320" y="155.0" class="tdg">정보를 쓰면 완벽한 선택지</text>
+  <text x="535" y="119.0" class="tdr">도메인 모델에 JSON·ORM</text>
+  <text x="535" y="137.0" class="tdr">애너테이션이 붙음</text>
+  <text x="535" y="155.0" class="tdr">단일 책임 원칙 위반</text>
+  <text x="40" y="212.0" class="ts">양방향</text>
+  <text x="155" y="202.0" class="td">도메인 모델</text>
+  <text x="155" y="220.0" class="td">(어댑터마다 전용 모델)</text>
+  <text x="320" y="193.0" class="tdg">계층별 모델 변경이 서로</text>
+  <text x="320" y="211.0" class="tdg">영향 없음, 깨끗한 도메인</text>
+  <text x="320" y="229.0" class="tdg">두 번째로 간단한 전략</text>
+  <text x="535" y="193.0" class="tdr">보일러플레이트 코드</text>
+  <text x="535" y="211.0" class="tdr">도메인 모델이 경계를 넘어</text>
+  <text x="535" y="229.0" class="tdr">바깥 요구에 따른 변경에 취약</text>
+  <rect x="30" y="244" width="700" height="74" rx="6" fill="#ffffff"/>
+  <text x="40" y="286.0" class="ts">완전</text>
+  <text x="155" y="276.0" class="td">연산 전용 모델</text>
+  <text x="155" y="294.0" class="td">(SendMoneyCommand)</text>
+  <text x="320" y="267.0" class="tdg">유스케이스별 매핑이라</text>
+  <text x="320" y="285.0" class="tdg">구현·유지보수가 쉬움</text>
+  <text x="320" y="303.0" class="tdg">입력 모델에만 적용해도 됨</text>
+  <text x="535" y="267.0" class="tdr">매핑 코드가 더 많이 필요</text>
+  <text x="535" y="285.0" class="tdr">전역 패턴으로는</text>
+  <text x="535" y="303.0" class="tdr">추천하지 않음</text>
+  <text x="40" y="360.0" class="ts">단방향</text>
+  <text x="155" y="350.0" class="td">상태 인터페이스</text>
+  <text x="155" y="368.0" class="td">(«interface» Account)</text>
+  <text x="320" y="341.0" class="tdg">받는 계층만 한 방향으로</text>
+  <text x="320" y="359.0" class="tdg">매핑해 책임이 명확</text>
+  <text x="320" y="377.0" class="tdg">계층 간 모델이 비슷할 때 효과적</text>
+  <text x="535" y="350.0" class="tdr">매핑이 계층에 퍼져 있어</text>
+  <text x="535" y="368.0" class="tdr">개념적으로 어려움</text>
+  <line x1="30" y1="394" x2="730" y2="394" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="30" y="422" class="foot">어느 전략도 철칙이 아니며, 유스케이스마다 적절한 전략을 고릅니다.</text>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>도메인 계층의 서비스가 영속성 계층의 헬퍼, 리포지토리, 유틸리티에 모두 접근할 수 있어 공통 컴포넌트가 영속성 계층에 모이며 비대해지는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lname { font-size: 14px; font-weight: 700; fill: #6b7280; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .st { font-size: 11.5px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .ring { font-size: 13px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .dep { stroke: #6b7280; stroke-width: 1.5; fill: none; }
+    .depr { stroke: #dc2626; stroke-width: 1.6; fill: none; }
+    .depg { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="370" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="350" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">지름길 — 아래 계층이면 어디든 접근할 수 있다</text>
+  <rect x="30" y="60" width="700" height="92" rx="10" class="pkg"/>
+  <text x="46" y="84" class="lname">도메인</text>
+  <rect x="300" y="88" width="160" height="44" rx="8" class="box"/>
+  <text x="380" y="115" class="t" text-anchor="middle">서비스</text>
+  <rect x="30" y="176" width="700" height="112" rx="10" class="pkg"/>
+  <text x="46" y="200" class="lname">영속성</text>
+  <rect x="60" y="224" width="170" height="48" rx="8" class="bad"/>
+  <text x="145" y="253" class="badt" text-anchor="middle">헬퍼</text>
+  <rect x="295" y="224" width="170" height="48" rx="8" class="box"/>
+  <text x="380" y="253" class="t" text-anchor="middle">리포지토리</text>
+  <rect x="530" y="224" width="170" height="48" rx="8" class="bad"/>
+  <text x="615" y="253" class="badt" text-anchor="middle">유틸리티</text>
+  <path d="M300,110 L145,110 L145,222" class="dep" marker-end="url(#ag)"/>
+  <path d="M380,132 L380,222" class="dep" marker-end="url(#ag)"/>
+  <path d="M460,110 L615,110 L615,222" class="dep" marker-end="url(#ag)"/>
+  <path d="M295,248 L232,248" class="dep" marker-end="url(#ag)"/>
+  <path d="M465,248 L528,248" class="dep" marker-end="url(#ag)"/>
+  <text x="30" y="320" class="note">헬퍼·유틸리티 같은 공통 컴포넌트가 영속성 계층에 모이면서 점점 비대해진다</text>
+  <text x="30" y="342" class="foot">추가 규칙이 없으면 위 계층은 아래 계층의 어떤 컴포넌트에든 접근할 수 있다</text>
+</svg>

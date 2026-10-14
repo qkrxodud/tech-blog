@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 428" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>여러 컨트롤러가 여러 유스케이스를 담당하는 하나의 넓은 서비스에 의존하고, 이 서비스는 영속성 계층의 헬퍼, 리포지토리, 유틸리티에 모두 의존하는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lname { font-size: 14px; font-weight: 700; fill: #6b7280; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .st { font-size: 11.5px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .ring { font-size: 13px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .dep { stroke: #6b7280; stroke-width: 1.5; fill: none; }
+    .depr { stroke: #dc2626; stroke-width: 1.6; fill: none; }
+    .depg { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="428" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="408" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">넓은 서비스 — 여러 유스케이스가 한 서비스에 모인다</text>
+  <rect x="30" y="60" width="700" height="76" rx="10" class="pkg"/>
+  <text x="46" y="84" class="lname">웹</text>
+  <rect x="150" y="78" width="160" height="44" rx="8" class="box"/>
+  <text x="230" y="105" class="t" text-anchor="middle">컨트롤러</text>
+  <rect x="450" y="78" width="160" height="44" rx="8" class="box"/>
+  <text x="530" y="105" class="t" text-anchor="middle">컨트롤러</text>
+  <rect x="30" y="152" width="700" height="104" rx="10" class="pkg"/>
+  <text x="46" y="176" class="lname">도메인</text>
+  <rect x="110" y="168" width="540" height="76" rx="8" class="bad"/>
+  <text x="380" y="190" class="badt" text-anchor="middle">서비스</text>
+  <rect x="130" y="202" width="150" height="30" rx="8" class="box"/>
+  <text x="205" y="222" class="val" text-anchor="middle">유스케이스</text>
+  <rect x="305" y="202" width="150" height="30" rx="8" class="box"/>
+  <text x="380" y="222" class="val" text-anchor="middle">유스케이스</text>
+  <rect x="480" y="202" width="150" height="30" rx="8" class="box"/>
+  <text x="555" y="222" class="val" text-anchor="middle">유스케이스</text>
+  <rect x="30" y="272" width="700" height="100" rx="10" class="pkg"/>
+  <text x="46" y="296" class="lname">영속성</text>
+  <rect x="60" y="304" width="170" height="48" rx="8" class="box"/>
+  <text x="145" y="333" class="t" text-anchor="middle">헬퍼</text>
+  <rect x="295" y="304" width="170" height="48" rx="8" class="box"/>
+  <text x="380" y="333" class="t" text-anchor="middle">리포지토리</text>
+  <rect x="530" y="304" width="170" height="48" rx="8" class="box"/>
+  <text x="615" y="333" class="t" text-anchor="middle">유틸리티</text>
+  <path d="M230,122 L230,166" class="dep" marker-end="url(#ag)"/>
+  <path d="M530,122 L530,166" class="dep" marker-end="url(#ag)"/>
+  <path d="M145,244 L145,302" class="dep" marker-end="url(#ag)"/>
+  <path d="M380,244 L380,302" class="dep" marker-end="url(#ag)"/>
+  <path d="M615,244 L615,302" class="dep" marker-end="url(#ag)"/>
+  <path d="M295,328 L232,328" class="dep" marker-end="url(#ag)"/>
+  <path d="M465,328 L528,328" class="dep" marker-end="url(#ag)"/>
+  <text x="30" y="400" class="foot">서비스를 테스트하기 어렵고, 작업할 유스케이스를 책임지는 서비스를 찾기도 어렵다</text>
+</svg>

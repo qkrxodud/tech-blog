@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>영속성 어댑터가 코어의 입력 모델을 받아 DB 포맷으로 매핑해 쿼리를 보내고, DB 응답을 애플리케이션 포맷으로 매핑해 코어의 출력 모델로 반환하는 다섯 단계</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 11.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .mok { font-size: 11.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .mbad { font-size: 11.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .pk { font-size: 12px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .st { font-size: 11px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .lbl { font-size: 11.5px; fill: #6b7280; }
+    .glbl { font-size: 11.5px; font-weight: 700; fill: #15803d; }
+    .rlbl { font-size: 11.5px; font-weight: 700; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .layer { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .ctx { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .scope { fill: none; stroke: #16a34a; stroke-width: 1.4; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .th { font-size: 13px; font-weight: 700; fill: #374151; }
+    .td { font-size: 12px; fill: #374151; }
+    .tdg { font-size: 12px; fill: #15803d; }
+    .tdr { font-size: 12px; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">영속성 어댑터의 책임 — 입력을 받아 DB에 보내고 결과를 돌려주기까지</text>
+  <text x="208.5" y="68" class="step" text-anchor="middle">1</text>
+  <text x="325.5" y="68" class="step" text-anchor="middle">2</text>
+  <text x="442.5" y="68" class="step" text-anchor="middle">3</text>
+  <text x="559.5" y="68" class="step" text-anchor="middle">4</text>
+  <text x="676.5" y="68" class="step" text-anchor="middle">5</text>
+  <line x1="160" y1="76" x2="728" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="lane">코어</text>
+  <text x="30" y="128" class="sub">애플리케이션</text>
+  <rect x="150" y="86" width="585" height="56" rx="6" class="track"/>
+  <rect x="154.5" y="90" width="108" height="48" rx="8" class="ok"/>
+  <text x="208.5" y="110" class="okt" text-anchor="middle">입력 모델</text>
+  <text x="208.5" y="128" class="sub" text-anchor="middle">포트에 정의</text>
+  <rect x="622.5" y="90" width="108" height="48" rx="8" class="ok"/>
+  <text x="676.5" y="110" class="okt" text-anchor="middle">출력 모델</text>
+  <text x="676.5" y="128" class="sub" text-anchor="middle">포트에 정의</text>
+  <text x="30" y="184" class="lane">어댑터</text>
+  <text x="30" y="202" class="sub">영속성 어댑터</text>
+  <rect x="150" y="160" width="585" height="56" rx="6" class="track"/>
+  <rect x="154.5" y="164" width="108" height="48" rx="8" class="box"/>
+  <text x="208.5" y="184" class="ts" text-anchor="middle">입력 받기</text>
+  <text x="208.5" y="202" class="sub" text-anchor="middle">포트 입력 모델</text>
+  <rect x="271.5" y="164" width="108" height="48" rx="8" class="box"/>
+  <text x="325.5" y="184" class="ts" text-anchor="middle">입력 매핑</text>
+  <text x="325.5" y="202" class="sub" text-anchor="middle">DB 포맷으로</text>
+  <rect x="388.5" y="164" width="108" height="48" rx="8" class="box"/>
+  <text x="442.5" y="184" class="ts" text-anchor="middle">DB로 전송</text>
+  <text x="442.5" y="202" class="sub" text-anchor="middle">쿼리 실행</text>
+  <rect x="503.5" y="164" width="112" height="48" rx="8" class="box"/>
+  <text x="559.5" y="184" class="ts" text-anchor="middle">출력 매핑</text>
+  <text x="559.5" y="202" class="sub" text-anchor="middle">애플리케이션 포맷</text>
+  <rect x="622.5" y="164" width="108" height="48" rx="8" class="box"/>
+  <text x="676.5" y="184" class="ts" text-anchor="middle">출력 반환</text>
+  <text x="676.5" y="202" class="sub" text-anchor="middle">포트 출력 모델</text>
+  <text x="30" y="258" class="lane">DB</text>
+  <text x="30" y="276" class="sub">데이터베이스</text>
+  <rect x="150" y="234" width="585" height="56" rx="6" class="track"/>
+  <rect x="388.5" y="238" width="225.0" height="48" rx="8" class="hold"/>
+  <text x="501.0" y="258" class="ts" text-anchor="middle">쿼리 실행 후 결과 응답</text>
+  <text x="501.0" y="276" class="sub" text-anchor="middle">어댑터가 쿼리를 날리고 결과를 받음</text>
+  <path d="M208.5,138 L208.5,162" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <path d="M442.5,212 L442.5,236" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <path d="M559.5,238 L559.5,214" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <path d="M676.5,164 L676.5,140" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <text x="30" y="322" class="foot">1~5단계는 전통적인 영속성 계층의 책임과 크게 다르지 않습니다.</text>
+  <text x="30" y="346" class="gnote">다른 점은 입력 모델과 출력 모델이 영속성 어댑터가 아니라 애플리케이션 코어에 있다는 것입니다.</text>
+  <text x="30" y="368" class="foot">그래서 영속성 어댑터 내부를 바꿔도 코어에는 영향이 없습니다.</text>
+</svg>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 240" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>컴포넌트 A가 B에, B가 C에, C가 D에 의존할 때 D가 변경되면 의존성을 따라 C, B, A까지 변경할 이유가 전파되는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lname { font-size: 14px; font-weight: 700; fill: #6b7280; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .st { font-size: 11.5px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .ring { font-size: 13px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .dep { stroke: #6b7280; stroke-width: 1.5; fill: none; }
+    .depr { stroke: #dc2626; stroke-width: 1.6; fill: none; }
+    .depg { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="240" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="220" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">변경할 이유의 전파 — 의존성을 따라 변경이 번진다</text>
+  <rect x="70" y="72" width="130" height="56" rx="8" class="box"/>
+  <text x="135" y="97" class="t" text-anchor="middle">컴포넌트 A</text>
+  <text x="135" y="115" class="s" text-anchor="middle">B에 의존</text>
+  <rect x="230" y="72" width="130" height="56" rx="8" class="box"/>
+  <text x="295" y="97" class="t" text-anchor="middle">컴포넌트 B</text>
+  <text x="295" y="115" class="s" text-anchor="middle">C에 의존</text>
+  <rect x="390" y="72" width="130" height="56" rx="8" class="box"/>
+  <text x="455" y="97" class="t" text-anchor="middle">컴포넌트 C</text>
+  <text x="455" y="115" class="s" text-anchor="middle">D에 의존</text>
+  <rect x="550" y="72" width="130" height="56" rx="8" class="bad"/>
+  <text x="615" y="97" class="badt" text-anchor="middle">컴포넌트 D</text>
+  <text x="615" y="115" class="note" text-anchor="middle">변경 발생</text>
+  <path d="M200,100 L228,100" class="dep" marker-end="url(#ag)"/>
+  <path d="M360,100 L388,100" class="dep" marker-end="url(#ag)"/>
+  <path d="M520,100 L548,100" class="dep" marker-end="url(#ag)"/>
+  <path d="M610,150 L140,150" class="depr" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="375" y="176" class="note" text-anchor="middle">D가 바뀌면 D에 의존하는 C, B, A도 바뀔 이유가 생긴다</text>
+  <text x="30" y="214" class="foot">컴포넌트를 변경할 이유는 의존성을 통해 쉽게 전파된다</text>
+</svg>

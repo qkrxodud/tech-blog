@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 610" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>접근 제한자를 표시한 패키지 구조 — 도메인 클래스와 포트 인터페이스는 public, AccountController, 영속성 어댑터 클래스, SendMoneyService는 package-private</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 12px; font-weight: 700; fill: #374151; }
+    .tsm { font-size: 12px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .ms { font-size: 11.5px; fill: #4b5563; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .pkgw { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okm { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badd { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.3; stroke-dasharray: 5 4; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badm { font-size: 13px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+    <marker id="open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L9,5 L1,9" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="760" height="610" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="590" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">접근 제한자를 추가한 패키지 구조</text>
+  <rect x="470" y="29" width="20" height="18" rx="4" class="ok"/>
+  <text x="480" y="42" class="okm" text-anchor="middle">+</text>
+  <text x="498" y="42" class="sub">public</text>
+  <rect x="560" y="29" width="20" height="18" rx="4" class="hold"/>
+  <text x="570" y="42" class="opm" text-anchor="middle">o</text>
+  <text x="588" y="42" class="sub">package-private</text>
+  <rect x="24" y="58" width="80" height="16" rx="3" class="pkgw"/>
+  <rect x="24" y="72" width="712" height="466" rx="6" class="pkgw"/>
+  <text x="38" y="94" class="tsm">account</text>
+  <rect x="40" y="108" width="72" height="16" rx="3" class="pkg"/>
+  <rect x="40" y="122" width="320" height="284" rx="6" class="pkg"/>
+  <text x="54" y="144" class="tsm">adapter</text>
+  <rect x="56" y="156" width="80" height="16" rx="3" class="pkgw"/>
+  <rect x="56" y="170" width="288" height="76" rx="6" class="pkgw"/>
+  <text x="70" y="192" class="tsm">in / web</text>
+  <rect x="56" y="256" width="152" height="16" rx="3" class="pkgw"/>
+  <rect x="56" y="270" width="288" height="124" rx="6" class="pkgw"/>
+  <text x="70" y="292" class="tsm">out / persistence</text>
+  <rect x="40" y="422" width="64" height="16" rx="3" class="pkg"/>
+  <rect x="40" y="436" width="320" height="86" rx="6" class="pkg"/>
+  <text x="54" y="458" class="tsm">domain</text>
+  <rect x="380" y="108" width="96" height="16" rx="3" class="pkg"/>
+  <rect x="380" y="122" width="340" height="400" rx="6" class="pkg"/>
+  <text x="394" y="144" class="tsm">application</text>
+  <rect x="396" y="204" width="88" height="16" rx="3" class="pkgw"/>
+  <rect x="396" y="218" width="308" height="80" rx="6" class="pkgw"/>
+  <text x="410" y="240" class="tsm">port / in</text>
+  <rect x="396" y="312" width="96" height="16" rx="3" class="pkgw"/>
+  <rect x="396" y="326" width="308" height="124" rx="6" class="pkgw"/>
+  <text x="410" y="348" class="tsm">port / out</text>
+  <rect x="72" y="200" width="256" height="36" rx="4" class="hold"/>
+  <text x="200" y="223" class="opm" text-anchor="middle">o AccountController</text>
+  <rect x="72" y="302" width="256" height="36" rx="4" class="hold"/>
+  <text x="200" y="325" class="opm" text-anchor="middle">o AccountPersistenceAdapter</text>
+  <rect x="72" y="348" width="256" height="36" rx="4" class="hold"/>
+  <text x="200" y="371" class="opm" text-anchor="middle">o SpringDataAccountRepository</text>
+  <rect x="56" y="468" width="140" height="36" rx="4" class="ok"/>
+  <text x="126" y="491" class="okm" text-anchor="middle">+ Account</text>
+  <rect x="208" y="468" width="136" height="36" rx="4" class="ok"/>
+  <text x="276" y="491" class="okm" text-anchor="middle">+ Activity</text>
+  <rect x="396" y="156" width="308" height="36" rx="4" class="hold"/>
+  <text x="550" y="179" class="opm" text-anchor="middle">o SendMoneyService</text>
+  <rect x="412" y="250" width="276" height="36" rx="4" class="ok"/>
+  <text x="550" y="273" class="okm" text-anchor="middle">+ SendMoneyUseCase</text>
+  <rect x="412" y="356" width="276" height="36" rx="4" class="ok"/>
+  <text x="550" y="379" class="okm" text-anchor="middle">+ LoadAccountPort</text>
+  <rect x="412" y="400" width="276" height="36" rx="4" class="ok"/>
+  <text x="550" y="423" class="okm" text-anchor="middle">+ UpdateAccountStatePort</text>
+  <text x="30" y="562" class="foot">영속성 어댑터는 자신이 구현하는 아웃고잉 포트를 통해, SendMoneyService는 인커밍 포트를 통해 접근됨</text>
+  <text x="30" y="584" class="foot">domain 패키지와 application 패키지의 포트는 다른 계층에서 접근해야 하므로 public</text>
+</svg>

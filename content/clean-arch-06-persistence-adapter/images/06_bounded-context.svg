@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>account 컨텍스트는 AccountPersistenceAdapter를, billing 컨텍스트는 BillingPersistenceAdapter를 각각 가지고 자기 포트만 구현하는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .m { font-size: 11.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .mok { font-size: 11.5px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .mbad { font-size: 11.5px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .pk { font-size: 12px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .st { font-size: 11px; fill: #6b7280; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ts { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #6b7280; }
+    .lbl { font-size: 11.5px; fill: #6b7280; }
+    .glbl { font-size: 11.5px; font-weight: 700; fill: #15803d; }
+    .rlbl { font-size: 11.5px; font-weight: 700; fill: #b91c1c; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .layer { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .pkg { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .ctx { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .scope { fill: none; stroke: #16a34a; stroke-width: 1.4; stroke-dasharray: 6 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .foot { font-size: 12.5px; fill: #6b7280; }
+    .th { font-size: 13px; font-weight: 700; fill: #374151; }
+    .td { font-size: 12px; fill: #374151; }
+    .tdg { font-size: 12px; fill: #15803d; }
+    .tdr { font-size: 12px; fill: #b91c1c; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1,1 L11,6 L1,11 z" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect width="760" height="500" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="480" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">바운디드 컨텍스트마다 영속성 어댑터 — account와 billing</text>
+  <rect x="20" y="58" width="720" height="186" rx="10" class="ctx"/>
+  <text x="36" y="82" class="pk">account</text>
+  <rect x="30" y="96" width="205" height="136" rx="8" class="pkg"/>
+  <text x="42" y="116" class="pk">application.service</text>
+  <rect x="275" y="96" width="210" height="136" rx="8" class="pkg"/>
+  <text x="287" y="116" class="pk">application.port.out</text>
+  <rect x="525" y="96" width="205" height="136" rx="8" class="pkg"/>
+  <text x="537" y="116" class="pk">adapter.out.persistence</text>
+  <rect x="40" y="130" width="175" height="44" rx="8" class="box"/>
+  <text x="127.5" y="156.0" class="m" text-anchor="middle">SendMoneyService</text>
+  <rect x="40" y="182" width="175" height="40" rx="8" class="box"/>
+  <text x="127.5" y="206.0" class="m" text-anchor="middle">…</text>
+  <rect x="290" y="126" width="180" height="52" rx="8" class="ok"/>
+  <text x="380.0" y="148.5" class="st" text-anchor="middle">«interface»</text>
+  <text x="380.0" y="163.5" class="mok" text-anchor="middle">LoadAccountPort</text>
+  <rect x="290" y="182" width="180" height="40" rx="8" class="box"/>
+  <text x="380.0" y="206" class="m" text-anchor="middle">…</text>
+  <rect x="540" y="130" width="175" height="92" rx="8" class="hold"/>
+  <text x="627.5" y="165.0" class="m" text-anchor="middle">Account</text>
+  <text x="627.5" y="180.0" class="m" text-anchor="middle">Persistence</text>
+  <text x="627.5" y="195.0" class="m" text-anchor="middle">Adapter</text>
+  <path d="M215,152 L288,152" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <path d="M215,202 L288,202" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <path d="M540,152 L471,152" fill="none" stroke="#6b7280" stroke-width="1.4" marker-end="url(#tri)"/>
+  <path d="M540,202 L471,202" fill="none" stroke="#6b7280" stroke-width="1.4" marker-end="url(#tri)"/>
+  <rect x="20" y="256" width="720" height="186" rx="10" class="ctx"/>
+  <text x="36" y="280" class="pk">billing</text>
+  <rect x="30" y="294" width="205" height="136" rx="8" class="pkg"/>
+  <text x="42" y="314" class="pk">application.service</text>
+  <rect x="275" y="294" width="210" height="136" rx="8" class="pkg"/>
+  <text x="287" y="314" class="pk">application.port.out</text>
+  <rect x="525" y="294" width="205" height="136" rx="8" class="pkg"/>
+  <text x="537" y="314" class="pk">adapter.out.persistence</text>
+  <rect x="40" y="328" width="175" height="44" rx="8" class="box"/>
+  <text x="127.5" y="346.5" class="m" text-anchor="middle">CreateMonthly</text>
+  <text x="127.5" y="361.5" class="m" text-anchor="middle">InvoiceService</text>
+  <rect x="40" y="380" width="175" height="40" rx="8" class="box"/>
+  <text x="127.5" y="404.0" class="m" text-anchor="middle">…</text>
+  <rect x="290" y="324" width="180" height="52" rx="8" class="ok"/>
+  <text x="380.0" y="346.5" class="st" text-anchor="middle">«interface»</text>
+  <text x="380.0" y="361.5" class="mok" text-anchor="middle">CreateInvoicePort</text>
+  <rect x="290" y="380" width="180" height="40" rx="8" class="box"/>
+  <text x="380.0" y="404" class="m" text-anchor="middle">…</text>
+  <rect x="540" y="328" width="175" height="92" rx="8" class="hold"/>
+  <text x="627.5" y="363.0" class="m" text-anchor="middle">Billing</text>
+  <text x="627.5" y="378.0" class="m" text-anchor="middle">Persistence</text>
+  <text x="627.5" y="393.0" class="m" text-anchor="middle">Adapter</text>
+  <path d="M215,350 L288,350" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <path d="M215,400 L288,400" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <path d="M540,350 L471,350" fill="none" stroke="#6b7280" stroke-width="1.4" marker-end="url(#tri)"/>
+  <path d="M540,400 L471,400" fill="none" stroke="#6b7280" stroke-width="1.4" marker-end="url(#tri)"/>
+  <line x1="430" y1="470" x2="470" y2="470" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <text x="478" y="474" class="lbl">호출</text>
+  <line x1="540" y1="470" x2="582" y2="470" stroke="#6b7280" stroke-width="1.4" marker-end="url(#tri)"/>
+  <text x="590" y="474" class="lbl">구현</text>
+  <text x="30" y="474" class="foot">컨텍스트 경계를 넘는 영속성 어댑터가 없습니다.</text>
+</svg>
