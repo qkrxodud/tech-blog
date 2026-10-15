@@ -20,6 +20,7 @@
     .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
     .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
     .note { font-size: 12.5px; fill: #b91c1c; }
+    .codes { font-size: 13px; fill: #6b7280; }
   </style>
   <defs>
     <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -77,7 +78,7 @@
   <!-- ===== 락으로 차례대로 ===== -->
   <rect x="10" y="326" width="740" height="324" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
   <text x="30" y="358" class="h">락으로 — 한 번에 한 스레드만</text>
-  <text x="730" y="358" class="code" text-anchor="end">lock → 읽기·쓰기 → unlock</text>
+  <text x="730" y="358" class="codes" text-anchor="end"><tspan font-family="Menlo, Consolas, monospace">lock</tspan> → 읽기·쓰기 → <tspan font-family="Menlo, Consolas, monospace">unlock</tspan></text>
 
   <text x="220" y="384" class="step" text-anchor="middle">1단계</text>
   <text x="360" y="384" class="step" text-anchor="middle">2단계</text>

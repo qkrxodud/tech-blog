@@ -29,6 +29,7 @@
     .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
     .note { font-size: 12.5px; fill: #b91c1c; }
     .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .codes { font-size: 13px; fill: #6b7280; }
   </style>
   <defs>
     <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -45,7 +46,7 @@
   <rect width="760" height="420" fill="#ffffff"/>
   <rect x="10" y="10" width="740" height="186" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
   <text x="30" y="42" class="h">물리 메모리 64GB 데이터 노드 — 권장 배분</text>
-  <text x="730" y="42" class="code" text-anchor="end">힙 ≤ 물리 메모리의 절반</text>
+  <text x="730" y="42" class="codes" text-anchor="end">힙 ≤ 물리 메모리의 절반</text>
   <rect x="30" y="62" width="339" height="70" rx="8" class="hold"/>
   <text x="199.5" y="92" class="t" text-anchor="middle">JVM Heap 31GB</text>
   <text x="199.5" y="111" class="val" text-anchor="middle">ES가 직접 쓰는 버퍼, 캐시 영역</text>

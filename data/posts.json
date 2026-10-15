@@ -418,6 +418,8 @@
     "dir": "63_데이터-액세스-스택",
     "slug": "data-access-stack",
     "category": "spring-jpa",
+    "series": "고성능 JPA & Hibernate",
+    "seriesOrder": 1,
     "order": "2025-05-30#00518"
   },
   {
@@ -480,12 +482,16 @@
     "dir": "71_상속-매핑-전략",
     "slug": "inheritance-mapping",
     "category": "spring-jpa",
+    "series": "고성능 JPA & Hibernate",
+    "seriesOrder": 3,
     "order": "2025-05-30#00518"
   },
   {
     "dir": "72_식별자-(Identifiers),-관계-(Relationships)",
     "slug": "identifiers-relationships",
     "category": "spring-jpa",
+    "series": "고성능 JPA & Hibernate",
+    "seriesOrder": 2,
     "order": "2025-05-30#00518"
   },
   {

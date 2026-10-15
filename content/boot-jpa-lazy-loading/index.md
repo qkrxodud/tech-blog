@@ -347,4 +347,4 @@ V3와 V4는 쿼리 수가 같고, SELECT 절에서 가져오는 컬럼 수와 �
 
 다음 글에서는 일대다 관계를 포함한 [컬렉션 조회 최적화](../boot-jpa-collection-query/)에 대해 정리하도록 하겠습니다.
 
-> 이 글은 인프런 김영한 님의 [실전! 스프링 부트와 JPA 활용](https://www.inflearn.com/course/스프링부트-JPA-활용-1)을 들으며 정리한 노트입니다.
+> 이 글은 인프런 김영한 님의 [실전! 스프링 부트와 JPA 활용2 — API 개발과 성능 최적화](https://www.inflearn.com/course/스프링부트-JPA-API개발-성능최적화)를 들으며 정리한 노트입니다.

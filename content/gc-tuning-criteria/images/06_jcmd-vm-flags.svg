@@ -29,6 +29,7 @@
     .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
     .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
     .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .monobs { font-size: 12px; font-weight: 700; fill: #15803d; }
   </style>
   <defs>
     <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -80,7 +81,7 @@
   <text x="404" y="328" class="mono">-XX:+UseCompressedOops</text>
   <rect x="396" y="334" width="340" height="21" rx="4" class="ok"/>
   <text x="404" y="349" class="monob">-XX:+UseG1GC</text>
-  <text x="728" y="349" class="monob" text-anchor="end">→ G1 선택</text>
+  <text x="728" y="349" class="monobs" text-anchor="end">→ G1 선택</text>
   <text x="404" y="370" class="mono">-XX:-UseNUMA</text>
   <text x="404" y="391" class="mono">-XX:-UseNUMAInterleaving</text>
   <text x="30" y="444" class="sub">터미널 출력은 한 줄로 이어져 나오며, 그림은 플래그마다 줄을 나눈 것입니다. 초록은 본문에서 보는 값입니다</text>

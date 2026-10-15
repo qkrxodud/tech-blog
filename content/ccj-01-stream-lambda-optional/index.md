@@ -239,6 +239,8 @@ public static void printLongestWordTop100() throws IOException {
 }
 ```
 
+이 코드는 요구사항과 다르게 동작합니다. 단어를 길이가 짧은 순서로 정렬하고(`Comparator.comparing(String::length)`) 100개로 자르지 않으며, `reduce(...).toLowerCase()`로 만든 문자열을 출력하지 않고 버려 실행해도 아무것도 출력되지 않습니다. 단어를 먼저 소문자로 바꿔 `distinct()`로 중복을 없앤 뒤 길이가 긴 순서로 정렬하고 `limit(100)`으로 잘라 출력하면 됩니다.
+
 ## Optional
 
 Optional을 활용하는 요구사항은 세 가지입니다. 조건에 따라 값을 반환하는 경우, Optional에서 값을 꺼내는 경우, 값이 없을 때 예외를 던지는 경우를 차례로 구현합니다. null 컬렉션을 Optional.ofNullable로 처리하는 예제는 [NPE를 막는 자바 방어 코드 모음](../java-null-safe-functions/)에도 정리해 두었습니다.

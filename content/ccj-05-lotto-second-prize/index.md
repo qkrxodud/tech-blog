@@ -135,9 +135,11 @@ public class LottoService {
     }
 ```
 
-변경 전후의 생성 방식을 비교하면 아래와 같습니다.
+변경 전후에 의도한 생성 방식을 비교하면 아래와 같습니다.
 
 ![lottoCount를 생성자로 받아 Lottos를 필드로 두던 LottoService를 싱글톤으로 바꾼 구조 비교](images/02_service-singleton.svg)
+
+다만 위 `createLottoService()`는 실제로는 싱글톤으로 동작하지 않습니다. `lottoService`가 null일 때 새 객체를 만들어 반환만 하고 필드에 담지 않으므로 `createLottoService()`를 부를 때마다 다른 객체가 반환되며(두 번 호출해 `==`로 비교하면 false), 만든 객체를 `lottoService`에 대입한 뒤 반환해야 합니다.
 
 ### 스트림으로 수익률 계산
 

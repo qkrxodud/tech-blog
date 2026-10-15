@@ -191,4 +191,6 @@ Enum을 저장하는 방식은 두 가지입니다.
 - FlexyPool: Connection Pool을 동적으로 관리하고 로깅해 줍니다.
 - Enum vs String: 간단하고 안전한 String을 선호합니다.
 
+다음 글에서는 [식별자 (Identifiers), 관계 (Relationships)](../identifiers-relationships/)에 대해 정리하도록 하겠습니다.
+
 참조 : [세계 자바 챔피언, Vlad Mihalcea 강의 로드맵 - 인프런](https://www.inflearn.com/roadmaps/9183)

@@ -24,6 +24,7 @@
     .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
     .note { font-size: 12.5px; fill: #b91c1c; }
     .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .codes { font-size: 13px; fill: #6b7280; }
   </style>
   <defs>
     <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -39,7 +40,7 @@
   <rect width="760" height="424" fill="#ffffff"/>
   <rect x="10" y="10" width="740" height="190" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
   <text x="30" y="42" class="h">DATETIME — 넣은 값을 그대로 저장</text>
-  <text x="730" y="42" class="code" text-anchor="end">5바이트</text>
+  <text x="730" y="42" class="codes" text-anchor="end">5바이트</text>
   <text x="245" y="68" class="step" text-anchor="middle">넣는 값</text>
   <text x="450" y="68" class="step" text-anchor="middle">저장되는 값</text>
   <text x="655" y="68" class="step" text-anchor="middle">꺼낸 값</text>
@@ -61,7 +62,7 @@
   <text x="150" y="176" class="sub">타임존 개념이 없어서 세션 타임존이 무엇이든 넣은 값이 그대로 나옵니다</text>
   <rect x="10" y="216" width="740" height="196" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
   <text x="30" y="248" class="h">TIMESTAMP — UTC 초로 바꿔 저장</text>
-  <text x="730" y="248" class="code" text-anchor="end">4바이트</text>
+  <text x="730" y="248" class="codes" text-anchor="end">4바이트</text>
   <text x="222" y="274" class="step" text-anchor="middle">넣는 값</text>
   <text x="366" y="274" class="step" text-anchor="middle">넣을 때 변환</text>
   <text x="510" y="274" class="step" text-anchor="middle">저장되는 값</text>

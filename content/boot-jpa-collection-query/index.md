@@ -564,4 +564,4 @@ V4, V5, V6에서 실행되는 쿼리와 결과를 만드는 방식을 나란히 
 
 다음 글에서는 [API 개발 성능 최적화 정리](../boot-jpa-advanced-optimization/)에서 OSIV와 커맨드·쿼리 분리에 대해 정리하도록 하겠습니다.
 
-> 이 글은 인프런 김영한 님의 [실전! 스프링 부트와 JPA 활용](https://www.inflearn.com/course/스프링부트-JPA-활용-1)을 들으며 정리한 노트입니다.
+> 이 글은 인프런 김영한 님의 [실전! 스프링 부트와 JPA 활용2 — API 개발과 성능 최적화](https://www.inflearn.com/course/스프링부트-JPA-API개발-성능최적화)를 들으며 정리한 노트입니다.

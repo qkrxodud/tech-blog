@@ -4,7 +4,7 @@ tags: ["JPA","매핑","Inheritance","MappedSuperclass","Hibernate"]
 summary: "JPA의 상속 매핑 전략인 SINGLE_TABLE, JOINED, TABLE_PER_CLASS와 @MappedSuperclass를 테이블 구조와 성능 관점에서 비교하고, 실무에서 전략을 고르는 기준과 최적화 방법을 정리합니다."
 ---
 
-이전에 [데이터 액세스 스택](../data-access-stack/)에 대해 작성하였습니다. 오늘은 같은 강의에서 다룬 JPA의 상속 매핑 전략을 성능 관점에서 정리하도록 하겠습니다. 각 전략의 기본 구조와 어노테이션은 [상속관계 매핑과 @MappedSuperclass](../jpa-advanced-mapping/)에서 정리하였습니다.
+이전에 [식별자 (Identifiers), 관계 (Relationships)](../identifiers-relationships/)에 대해 작성하였습니다. 오늘은 같은 강의에서 다룬 JPA의 상속 매핑 전략을 성능 관점에서 정리하도록 하겠습니다. 각 전략의 기본 구조와 어노테이션은 [상속관계 매핑과 @MappedSuperclass](../jpa-advanced-mapping/)에서 정리하였습니다.
 
 JPA의 상속 매핑은 객체지향의 계층 구조를 관계형 데이터베이스에 매핑하는 방법을 제공합니다. 각 전략은 성능, 데이터 무결성, 유지보수성 측면에서 장단점이 있으며, 어떤 전략을 선택하는지가 성능에 큰 영향을 미칩니다.
 

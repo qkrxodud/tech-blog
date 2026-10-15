@@ -4,7 +4,7 @@ tags: ["JPA","Hibernate","연관관계 매핑","ID 생성 전략","N+1"]
 summary: "JPA의 ID 생성 전략(IDENTITY, SEQUENCE, UUID)과 대규모 배치 처리, OneToMany·OneToOne·ManyToMany 연관관계 매핑에서 성능을 고려해 선택하는 기준을 정리합니다."
 ---
 
-이전에 [상속 매핑 전략](../inheritance-mapping/)에 대해 작성하였습니다. 오늘은 같은 강의에서 다룬 식별자(ID 생성 전략)와 연관관계 매핑을 성능 관점에서 정리하도록 하겠습니다.
+이전에 [데이터 액세스 스택](../data-access-stack/)에 대해 작성하였습니다. 오늘은 같은 강의에서 다룬 식별자(ID 생성 전략)와 연관관계 매핑을 성능 관점에서 정리하도록 하겠습니다.
 
 ## 식별자 (Identifiers)
 
@@ -117,6 +117,6 @@ public class ParentEntity {
 
 ## 마무리
 
-오늘은 JPA의 ID 생성 전략과 대규모 배치 처리, 그리고 OneToMany·OneToOne·ManyToMany 연관관계 매핑에서 성능을 고려해 선택하는 기준에 대해 정리하였습니다.
+오늘은 JPA의 ID 생성 전략과 대규모 배치 처리, 그리고 OneToMany·OneToOne·ManyToMany 연관관계 매핑에서 성능을 고려해 선택하는 기준에 대해 정리하였습니다. 다음 글에서는 [상속 매핑 전략](../inheritance-mapping/)에 대해 정리하도록 하겠습니다.
 
 참조 : [세계 자바 챔피언, Vlad Mihalcea 강의 로드맵 - 인프런](https://www.inflearn.com/roadmaps/9183)
