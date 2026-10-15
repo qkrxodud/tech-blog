@@ -517,10 +517,17 @@ function visitorsTag(rel) {
   return `\n<script>window.__VISITORS__=${JSON.stringify(pub)};</script>\n<script src="${rel}assets/visitors.js?v=${assetHash}" defer></script>`;
 }
 const visitorsRail = () => !visitorsOn ? '' : `<aside class="visitors-rail" aria-label="접속자 수">
-  <div class="vr-head">visitors</div>
-  <div class="vr-row vr-now"><span><i class="vr-dot"></i>지금</span><b data-visitors="now">--</b></div>
-  <div class="vr-row"><span>오늘</span><b data-visitors="today">--</b></div>
-  <div class="vr-row"><span>누적</span><b data-visitors="total">--</b></div>
+  <div class="vr-bar-top"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span><span class="vr-title">visitors</span></div>
+  <div class="vr-body">
+    <div class="vr-cmd"><span class="sig">$</span> who</div>
+    <div class="vr-now"><b data-visitors="now">--</b><span><i class="vr-dot"></i>보는 중</span></div>
+    <div class="vr-pair">
+      <div class="vr-row"><span>오늘</span><b data-visitors="today">--</b></div>
+      <div class="vr-row"><span>누적</span><b data-visitors="total">--</b></div>
+    </div>
+    <div class="vr-cmd"><span class="sig">$</span> last -7d</div>
+    <div class="vr-chart" data-visitors-chart></div>
+  </div>
 </aside>
 `;
 const visitorsStrip = (isHome) => !visitorsOn ? '' : `<div class="visitors-strip${isHome ? ' vs-home' : ''}"><span class="vs-seg"><i class="vr-dot"></i>지금 <b data-visitors="now">--</b>명이 보고 있습니다</span><span class="vs-seg">오늘 <b data-visitors="today">--</b></span><span class="vs-seg">누적 <b data-visitors="total">--</b></span></div>
