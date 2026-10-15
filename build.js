@@ -12,7 +12,7 @@ const CONTENT = path.join(ROOT, 'content');
 // 파일 내용에서 뽑은 해시를 주소에 붙인다.
 const assetHash = (() => {
   const h = require('crypto').createHash('sha1');
-  for (const f of ['style.css', 'fonts.css', 'search.js', 'theme.js', 'code.js', 'toc.js']) {
+  for (const f of ['style.css', 'fonts.css', 'search.js', 'theme.js', 'code.js', 'toc.js', 'visitors.js']) {
     h.update(fs.readFileSync(path.join(ROOT, 'assets', f)));
   }
   return h.digest('hex').slice(0, 8);
@@ -505,6 +505,27 @@ function analyticsTag() {
 }
 
 // ---------- 공통 템플릿 ----------
+// 접속자 수(지금·오늘·누적). data/categories.json의 visitors에 Firebase 주소가 있을 때만
+// 싣는다. 넓은 화면에서는 왼쪽 여백에 고정해 어느 글을 보든 보이게 하고, 홈에서는
+// 머리 아래에 한 줄로도 보여 준다. 여백이 좁은 화면(휴대전화 등)은 떠 있는 상자가
+// 글을 가리므로 띄우지 않고, 모든 페이지의 머리 아래 한 줄로만 보여 준다.
+const visitorsOn = !!(config.visitors && config.visitors.databaseURL);
+function visitorsTag(rel) {
+  if (!visitorsOn) return '';
+  const v = config.visitors;
+  const pub = { databaseURL: v.databaseURL, apiKey: v.apiKey, projectId: v.projectId, appId: v.appId, path: v.path };
+  return `\n<script>window.__VISITORS__=${JSON.stringify(pub)};</script>\n<script src="${rel}assets/visitors.js?v=${assetHash}" defer></script>`;
+}
+const visitorsRail = () => !visitorsOn ? '' : `<aside class="visitors-rail" aria-label="접속자 수">
+  <div class="vr-head">visitors</div>
+  <div class="vr-row vr-now"><span><i class="vr-dot"></i>지금</span><b data-visitors="now">--</b></div>
+  <div class="vr-row"><span>오늘</span><b data-visitors="today">--</b></div>
+  <div class="vr-row"><span>누적</span><b data-visitors="total">--</b></div>
+</aside>
+`;
+const visitorsStrip = (isHome) => !visitorsOn ? '' : `<div class="visitors-strip${isHome ? ' vs-home' : ''}"><span class="vs-seg"><i class="vr-dot"></i>지금 <b data-visitors="now">--</b>명이 보고 있습니다</span><span class="vs-seg">오늘 <b data-visitors="today">--</b></span><span class="vs-seg">누적 <b data-visitors="total">--</b></span></div>
+`;
+
 function page({ rel, title, description, canonicalPath, content, extraHead = '', shellPath = '~/tech-blog', isHome = false, ogImage = null }) {
   const canonical = `${config.baseUrl}/${canonicalPath}`;
   const tagline = isHome
@@ -533,12 +554,12 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${rel}assets/fonts.css?v=${assetHash}">
 <link rel="stylesheet" href="${rel}assets/style.css?v=${assetHash}">
-<script src="${rel}assets/theme.js?v=${assetHash}"></script>${speculationTag()}${analyticsTag()}
+<script src="${rel}assets/theme.js?v=${assetHash}"></script>${speculationTag()}${analyticsTag()}${visitorsTag(rel)}
 ${extraHead}
 </head>
 <body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
-<div class="wrap">
+${visitorsRail()}<div class="wrap">
  <div class="term">
   <div class="term-bar">
     <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
@@ -560,7 +581,7 @@ ${extraHead}
       <button class="theme-btn" id="theme-toggle" aria-label="화면 밝기 전환">☾</button>
     </nav>
   </header>
-<main id="main">
+${visitorsStrip(isHome)}<main id="main">
 ${content}
 </main>
   </div>

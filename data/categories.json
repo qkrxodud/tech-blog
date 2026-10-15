@@ -6,6 +6,14 @@
   "homeTabs": ["spring", "spring-jpa", "database"],
   "homePinnedSeries": ["GC 챌린지"],
   "analytics": { "goatcounter": "typark", "cloudflare": "" },
+  "visitors": {
+    "_comment": "접속자 수(지금·오늘·누적). Firebase Realtime Database의 <path>/presence, <path>/counters 아래에 센다. databaseURL을 비우면 표시하지 않는다.",
+    "databaseURL": "https://btctiming-af87d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "apiKey": "AIzaSyA0rKMvdc-9tRbycgpkczyopQvqRQRV2v0",
+    "projectId": "btctiming-af87d",
+    "appId": "1:9515727678:web:7d6a7ad30d881c1f37ca6f",
+    "path": "techblog"
+  },
   "comments": {
     "repo": "qkrxodud/tech-blog",
     "repoId": "R_kgDOUiNyhg",

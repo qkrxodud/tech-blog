@@ -508,6 +508,39 @@ a { color: var(--ink); text-decoration: none; }
 .search-item .si-snippet { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
 .search-item mark { background: oklch(0.93 0.06 155); color: var(--ink); border-radius: 2px; padding: 0 1px; }
 
+/* 접속자 수. 넓은 화면에서는 왼쪽 여백에 고정해 스크롤하거나 글을 옮겨 다녀도 늘 보이게 한다.
+   여백이 좁은 화면은 떠 있는 상자가 글을 가리므로, 머리 아래 한 줄(.visitors-strip)로만 둔다.
+   한 줄은 홈에서는 늘, 글 페이지에서는 왼쪽 카드가 없는 좁은 화면에서만 보인다. */
+.vr-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex: none; animation: vr-pulse 2.4s ease-out infinite; }
+@keyframes vr-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent) 55%, transparent); } 70%, 100% { box-shadow: 0 0 0 6px transparent; } }
+.visitors-rail { display: none; }
+@media (min-width: 1430px) {
+  .visitors-rail {
+    display: flex; flex-direction: column; gap: 10px;
+    position: fixed; z-index: 5; top: 116px; left: calc((100vw - 1220px) / 2 - 84px - 10px); width: 84px;
+    background: var(--card); border: 1px solid var(--ink); border-radius: 10px;
+    box-shadow: 3px 3px 0 var(--shadow); padding: 12px 10px;
+    font: 400 11.5px var(--mono); color: var(--muted);
+  }
+  .visitors-strip:not(.vs-home) { display: none; }
+}
+.vr-head { font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.vr-row { display: flex; flex-direction: column; gap: 1px; }
+.vr-row span { display: flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--faint); }
+.vr-row b { color: var(--ink); font-weight: 700; font-size: 14px; }
+.vr-now b { color: var(--accent-strong); }
+.visitors-strip {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px 0;
+  font: 400 12.5px var(--mono); color: var(--muted);
+  border: 1px dashed var(--line); border-radius: 8px; padding: 8px 12px; margin: 0 0 6px;
+}
+.visitors-strip .vs-seg { display: inline-flex; align-items: center; white-space: nowrap; }
+.visitors-strip .vs-seg + .vs-seg::before { content: '·'; color: var(--pale); margin: 0 10px; }
+.visitors-strip .vr-dot { margin-right: 8px; }
+.visitors-strip b { color: var(--ink); font-weight: 700; margin: 0 3px; }
+@media (max-width: 560px) { .visitors-strip { font-size: 11.5px; padding: 7px 10px; } }
+@media (prefers-reduced-motion: reduce) { .vr-dot { animation: none; } }
+
 /* 반응형 */
 /* 카드 셋이 나란히 서기 좁아지면 줄을 바꾼다. */
 @media (max-width: 860px) {
@@ -541,6 +574,7 @@ a { color: var(--ink); text-decoration: none; }
 /* 화면을 꾸미는 것들(터미널 창, 메뉴, 댓글, 버튼)은 종이에서 자리만 차지한다.
    본문과 코드만 남기고, 링크는 주소를 괄호로 붙여 종이에서도 따라갈 수 있게 한다. */
 @media print {
+  .visitors-rail, .visitors-strip { display: none !important; }
   body { background: #fff; color: #000; font-size: 11pt; }
   .wrap { max-width: none; padding: 0; }
   .term { border: 0; border-radius: 0; box-shadow: none; }
