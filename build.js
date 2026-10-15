@@ -12,7 +12,7 @@ const CONTENT = path.join(ROOT, 'content');
 // 파일 내용에서 뽑은 해시를 주소에 붙인다.
 const assetHash = (() => {
   const h = require('crypto').createHash('sha1');
-  for (const f of ['style.css', 'fonts.css', 'search.js', 'theme.js', 'code.js', 'toc.js', 'visitors.js']) {
+  for (const f of ['style.css', 'fonts.css', 'search.js', 'theme.js', 'code.js', 'toc.js', 'visitors.js', 'intro.js']) {
     h.update(fs.readFileSync(path.join(ROOT, 'assets', f)));
   }
   return h.digest('hex').slice(0, 8);
@@ -561,7 +561,8 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${rel}assets/fonts.css?v=${assetHash}">
 <link rel="stylesheet" href="${rel}assets/style.css?v=${assetHash}">
-<script src="${rel}assets/theme.js?v=${assetHash}"></script>${speculationTag()}${analyticsTag()}${visitorsTag(rel)}
+<script src="${rel}assets/theme.js?v=${assetHash}"></script>
+<script src="${rel}assets/intro.js?v=${assetHash}" data-posts="${posts.length}"></script>${speculationTag()}${analyticsTag()}${visitorsTag(rel)}
 ${extraHead}
 </head>
 <body>
