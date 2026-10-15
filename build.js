@@ -1154,6 +1154,9 @@ function buildAux() {
 ${urls.map(([u, d]) => `  <url><loc>${config.baseUrl}/${u}</loc>${d ? `<lastmod>${d}</lastmod>` : ''}</url>`).join('\n')}
 </urlset>`);
 
+  // Google Search Console 소유권 확인 파일. 지우면 확인이 풀린다.
+  for (const id of config.searchConsole || []) write(`${id}.html`, `google-site-verification: ${id}.html`);
+
   write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${config.baseUrl}/sitemap.xml\n`);
 
   // 구독자가 리더 안에서 다 읽을 수 있도록 본문을 함께 싣는다. 다만 214편을
