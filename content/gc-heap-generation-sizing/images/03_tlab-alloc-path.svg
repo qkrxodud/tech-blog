@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>TLAB 안에 할당하는 fast-path와, 남은 공간에 따라 eden 공유 영역에 직접 할당하거나 TLAB을 retire하고 refill하는 slow-path</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .used { fill: #e5e7eb; stroke: none; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">TLAB 할당 — fast-path와 slow-path</text>
+  <text x="730" y="42" class="code" text-anchor="end">new Object()</text>
+  <text x="30" y="118" class="lane2">fast-path</text>
+  <text x="30" y="136" class="sub">TLAB에 공간 있음</text>
+  <rect x="150" y="96" width="585" height="56" rx="6" class="track"/>
+  <text x="30" y="198" class="lane2">slow-path 1</text>
+  <text x="30" y="216" class="sub">남은 공간 &gt; limit</text>
+  <rect x="150" y="176" width="585" height="56" rx="6" class="track"/>
+  <text x="30" y="278" class="lane2">slow-path 2</text>
+  <text x="30" y="296" class="sub">남은 공간 ≤ limit</text>
+  <rect x="150" y="256" width="585" height="56" rx="6" class="track"/>
+  <rect x="162" y="100" width="170" height="48" rx="8" class="box"/>
+  <text x="247" y="120" class="op" text-anchor="middle">TLAB 안에 할당</text>
+  <text x="247" y="139" class="val" text-anchor="middle">동기화 없음</text>
+  <line x1="332" y1="124" x2="370" y2="124" class="al" marker-end="url(#ar)"/>
+  <rect x="372" y="100" width="190" height="48" rx="8" class="ok"/>
+  <text x="467" y="120" class="okt" text-anchor="middle">포인터만 이동</text>
+  <text x="467" y="139" class="val" text-anchor="middle">bump-the-pointer</text>
+  <rect x="162" y="180" width="170" height="48" rx="8" class="box"/>
+  <text x="247" y="200" class="op" text-anchor="middle">TLAB은 그대로</text>
+  <text x="247" y="219" class="val" text-anchor="middle">객체가 남은 공간보다 큼</text>
+  <line x1="332" y1="204" x2="370" y2="204" class="al" marker-end="url(#ar)"/>
+  <rect x="372" y="180" width="250" height="48" rx="8" class="hold"/>
+  <text x="497" y="200" class="op" text-anchor="middle">eden 공유 영역에 direct 할당</text>
+  <text x="497" y="219" class="val" text-anchor="middle">동기화 + JVM 로직</text>
+  <rect x="162" y="260" width="150" height="48" rx="8" class="box"/>
+  <text x="237" y="280" class="op" text-anchor="middle">TLAB retire</text>
+  <text x="237" y="299" class="val" text-anchor="middle">기존 TLAB 은퇴</text>
+  <line x1="312" y1="284" x2="340" y2="284" class="al" marker-end="url(#ar)"/>
+  <rect x="342" y="260" width="190" height="48" rx="8" class="hold"/>
+  <text x="437" y="280" class="op" text-anchor="middle">새 TLAB refill</text>
+  <text x="437" y="299" class="val" text-anchor="middle">eden에서 새로 받음</text>
+  <line x1="532" y1="284" x2="560" y2="284" class="al" marker-end="url(#ar)"/>
+  <rect x="562" y="260" width="160" height="48" rx="8" class="box"/>
+  <text x="642" y="280" class="op" text-anchor="middle">새 TLAB에 할당</text>
+  <text x="642" y="299" class="val" text-anchor="middle">다시 fast-path</text>
+  <text x="150" y="340" class="sub">limit = refill_waste_limit (TLAB size / TLABRefillWasteFraction, direct 할당마다 증가)</text>
+
+</svg>

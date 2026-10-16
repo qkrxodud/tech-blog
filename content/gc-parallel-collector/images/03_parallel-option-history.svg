@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>UseParallelOldGC는 JDK 5u6에 도입되어 JDK 7u4부터 자동으로 켜지고 JDK 14 deprecated, 15 obsoleted, 16 expired 되었으며, UseAdaptiveGCBoundary도 JDK 15 obsoleted, 16 expired 되어 young-old boundary가 시작 때 고정된다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">옵션의 변화 — UseParallelOldGC와 UseAdaptiveGCBoundary</text>
+  <text x="110" y="72" class="step" text-anchor="middle">JDK 5u6</text>
+  <text x="250" y="72" class="step" text-anchor="middle">JDK 7u4</text>
+  <text x="390" y="72" class="step" text-anchor="middle">JDK 14</text>
+  <text x="530" y="72" class="step" text-anchor="middle">JDK 15</text>
+  <text x="670" y="72" class="step" text-anchor="middle">JDK 16</text>
+  <line x1="40" y1="80" x2="722" y2="80" class="al" marker-end="url(#ar)"/>
+  <text x="30" y="110" class="monob">-XX:+UseParallelOldGC</text>
+  <text x="222" y="110" class="sub">old generation도 병렬로 수집</text>
+  <rect x="30" y="118" width="710" height="64" rx="6" class="track"/>
+  <rect x="48" y="124" width="124" height="52" rx="8" class="box"/>
+  <text x="110" y="146" class="op" text-anchor="middle">도입</text>
+  <text x="110" y="166" class="val" text-anchor="middle">명시해야 동작</text>
+  <rect x="188" y="124" width="124" height="52" rx="8" class="ok"/>
+  <text x="250" y="146" class="okt" text-anchor="middle">자동 활성화</text>
+  <text x="250" y="166" class="val" text-anchor="middle">기본으로 켜짐</text>
+  <rect x="328" y="124" width="124" height="52" rx="8" class="hold"/>
+  <text x="390" y="155" class="op" text-anchor="middle">deprecated</text>
+  <rect x="468" y="124" width="124" height="52" rx="8" class="hold"/>
+  <text x="530" y="146" class="op" text-anchor="middle">obsoleted</text>
+  <text x="530" y="166" class="val" text-anchor="middle">옵션 무시</text>
+  <rect x="608" y="124" width="124" height="52" rx="8" class="bad"/>
+  <text x="670" y="146" class="badt" text-anchor="middle">expired</text>
+  <text x="670" y="166" class="val" text-anchor="middle">JVM 시작 실패</text>
+  <text x="30" y="216" class="monob">UseAdaptiveGCBoundary</text>
+  <text x="222" y="216" class="sub">young-old boundary 이동 허용 (default false)</text>
+  <rect x="30" y="224" width="710" height="64" rx="6" class="track"/>
+  <rect x="48" y="236" width="264" height="40" rx="6" class="wait"/>
+  <text x="180.0" y="261" class="waitt" text-anchor="middle">boundary가 움직일 수 있던 시기</text>
+  <rect x="468" y="230" width="124" height="52" rx="8" class="hold"/>
+  <text x="530" y="252" class="op" text-anchor="middle">obsoleted</text>
+  <text x="530" y="272" class="val" text-anchor="middle">옵션 무시</text>
+  <rect x="608" y="230" width="124" height="52" rx="8" class="bad"/>
+  <text x="670" y="252" class="badt" text-anchor="middle">expired</text>
+  <text x="670" y="272" class="val" text-anchor="middle">JVM 시작 실패</text>
+  <rect x="468" y="306" width="272" height="32" rx="16" class="ok"/>
+  <text x="604" y="327" class="okt" text-anchor="middle">JDK 15부터 boundary 시작 때 고정</text>
+  <text x="30" y="327" class="sub">full GC: PSOldGen(single) → ParOldGen(parallel)</text>
+</svg>

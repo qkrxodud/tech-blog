@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 404" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>young generation supplement 80%는 minor GC 8번마다, old generation supplement 80%는 full GC 2번마다 절반으로 줄어 증가 비율이 100%, 60%, 40%, 30%로 점점 increment 20%에 가까워진다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="404" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="384" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">start up 단계 supplement — 증가분에 더하고 점점 절반으로</text>
+  <text x="30" y="72" class="lane">young generation</text>
+  <text x="30" y="90" class="sub">supplement 80%, minor GC 8번마다 절반</text>
+  <text x="220" y="116" class="step" text-anchor="middle">처음</text>
+  <text x="360" y="116" class="step" text-anchor="middle">minor GC 8번째</text>
+  <text x="500" y="116" class="step" text-anchor="middle">16번째</text>
+  <text x="640" y="116" class="step" text-anchor="middle">24번째</text>
+  <line x1="160" y1="124" x2="722" y2="124" class="al" marker-end="url(#ar)"/>
+  <rect x="150" y="132" width="585" height="60" rx="6" class="track"/>
+  <rect x="160" y="136" width="120" height="52" rx="8" class="ok"/>
+  <text x="220" y="157" class="okt" text-anchor="middle">100% 증가</text>
+  <text x="220" y="177" class="val" text-anchor="middle">20 + 80</text>
+  <rect x="300" y="136" width="120" height="52" rx="8" class="box"/>
+  <text x="360" y="157" class="op" text-anchor="middle">60% 증가</text>
+  <text x="360" y="177" class="val" text-anchor="middle">20 + 40</text>
+  <rect x="440" y="136" width="120" height="52" rx="8" class="box"/>
+  <text x="500" y="157" class="op" text-anchor="middle">40% 증가</text>
+  <text x="500" y="177" class="val" text-anchor="middle">20 + 20</text>
+  <rect x="580" y="136" width="120" height="52" rx="8" class="box"/>
+  <text x="640" y="157" class="op" text-anchor="middle">30% 증가</text>
+  <text x="640" y="177" class="val" text-anchor="middle">20 + 10</text>
+  <text x="30" y="156" class="lane">eden 증가</text>
+  <text x="30" y="174" class="sub">20 + supplement</text>
+  <text x="30" y="228" class="lane">old generation</text>
+  <text x="30" y="246" class="sub">supplement 80%, full GC 2번마다 절반</text>
+  <text x="220" y="272" class="step" text-anchor="middle">처음</text>
+  <text x="360" y="272" class="step" text-anchor="middle">full GC 2번째</text>
+  <text x="500" y="272" class="step" text-anchor="middle">4번째</text>
+  <text x="640" y="272" class="step" text-anchor="middle">6번째</text>
+  <line x1="160" y1="280" x2="722" y2="280" class="al" marker-end="url(#ar)"/>
+  <rect x="150" y="288" width="585" height="60" rx="6" class="track"/>
+  <rect x="160" y="292" width="120" height="52" rx="8" class="ok"/>
+  <text x="220" y="313" class="okt" text-anchor="middle">100% 증가</text>
+  <text x="220" y="333" class="val" text-anchor="middle">20 + 80</text>
+  <rect x="300" y="292" width="120" height="52" rx="8" class="box"/>
+  <text x="360" y="313" class="op" text-anchor="middle">60% 증가</text>
+  <text x="360" y="333" class="val" text-anchor="middle">20 + 40</text>
+  <rect x="440" y="292" width="120" height="52" rx="8" class="box"/>
+  <text x="500" y="313" class="op" text-anchor="middle">40% 증가</text>
+  <text x="500" y="333" class="val" text-anchor="middle">20 + 20</text>
+  <rect x="580" y="292" width="120" height="52" rx="8" class="box"/>
+  <text x="640" y="313" class="op" text-anchor="middle">30% 증가</text>
+  <text x="640" y="333" class="val" text-anchor="middle">20 + 10</text>
+  <text x="30" y="312" class="lane">old 증가</text>
+  <text x="30" y="330" class="sub">20 + supplement</text>
+  <text x="30" y="380" class="sub">초반에는 더 공격적으로 늘리고, collection이 쌓일수록 increment 20%에 가까워짐</text>
+</svg>

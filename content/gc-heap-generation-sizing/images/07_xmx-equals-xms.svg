@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>-Xmx3g -Xms3g이면 예약과 동시에 young 1g, old 2g가 모두 커밋되어 더 이상 확장되거나 축소되지 않는다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .used { fill: #e5e7eb; stroke: none; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">-Xmx3g -Xms3g — 예약과 동시에 전부 커밋</text>
+  <text x="730" y="42" class="code" text-anchor="end">NewRatio=2</text>
+  <path d="M 150 102 L 150 94 L 340.0 94 L 340.0 102" class="al"/>
+  <text x="245.0" y="86" class="sub" text-anchor="middle">young generation = 1g</text>
+  <path d="M 340.0 102 L 340.0 94 L 720 94 L 720 102" class="al"/>
+  <text x="530.0" y="86" class="sub" text-anchor="middle">old generation = 2g</text>
+  <rect x="120" y="104" width="625" height="68" rx="6" fill="#ffffff" stroke="#eceef1"/>
+  <rect x="150" y="108" width="190.0" height="60" rx="3" class="ok"/>
+  <text x="245.0" y="143.0" class="okt" text-anchor="middle">커밋</text>
+  <rect x="340.0" y="108" width="380.0" height="60" rx="3" class="ok"/>
+  <text x="530.0" y="143.0" class="okt" text-anchor="middle">커밋</text>
+  <text x="30" y="134" class="lane2">JVM heap</text>
+  <text x="30" y="154" class="sub">가상 주소 공간</text>
+  <path d="M 150 172 L 150 180 L 720 180 L 720 172" class="al"/>
+  <text x="435.0" y="198" class="sub" text-anchor="middle">-Xmx3g = -Xms3g: 3g 예약 + 3g 커밋</text>
+  <rect x="150" y="222" width="250" height="30" rx="15" class="ok"/>
+  <text x="275" y="242" class="okt" text-anchor="middle">확장·축소 없음</text>
+  <rect x="420" y="222" width="300" height="30" rx="15" class="box"/>
+  <text x="570" y="242" class="val" text-anchor="middle">MinHeapFreeRatio / MaxHeapFreeRatio 의미 없음</text>
+  <text x="30" y="288" class="sub">JVM을 띄울 때부터 전체 메모리를 할당받을 수 있는 자격을 확보</text>
+
+</svg>

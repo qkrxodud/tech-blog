@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Serial, Parallel, G1, ZGC를 GC 스레드 수, 동작 방식, pause time, 적합한 곳으로 비교하고 throughput 우선에서 latency 우선 순으로 놓은 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="450" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Oracle JDK 25의 collector — 우선하는 것과 pause time</text>
+  <rect x="24" y="62" width="172" height="320" rx="10" class="hold"/>
+  <text x="110" y="92" class="lane" text-anchor="middle">Serial GC</text>
+  <line x1="38" y1="106" x2="182" y2="106" class="sep"/>
+  <text x="38" y="130" class="sub">GC 스레드</text>
+  <text x="38" y="150" class="val">1개</text>
+  <text x="38" y="180" class="sub">동작</text>
+  <text x="38" y="200" class="val">STW로 수집</text>
+  <text x="38" y="230" class="sub">pause time</text>
+  <text x="38" y="250" class="val">GC 스레드 1개가</text>
+  <text x="38" y="268" class="val">처리하는 동안 멈춤</text>
+  <text x="38" y="298" class="sub">적합한 곳</text>
+  <text x="38" y="318" class="val">단일 코어,</text>
+  <text x="38" y="336" class="val">약 100MB 이하 힙</text>
+  <text x="110" y="368" class="mono" text-anchor="middle">-XX:+UseSerialGC</text>
+  <rect x="204" y="62" width="172" height="320" rx="10" class="box"/>
+  <text x="290" y="92" class="lane" text-anchor="middle">Parallel GC</text>
+  <line x1="218" y1="106" x2="362" y2="106" class="sep"/>
+  <text x="218" y="130" class="sub">GC 스레드</text>
+  <text x="218" y="150" class="val">여러 개</text>
+  <text x="218" y="180" class="sub">동작</text>
+  <text x="218" y="200" class="val">STW로 수집</text>
+  <text x="218" y="230" class="sub">pause time</text>
+  <text x="218" y="250" class="val">4GB 이상 힙에서</text>
+  <text x="218" y="268" class="val">수 초~수십 초</text>
+  <text x="218" y="298" class="sub">적합한 곳</text>
+  <text x="218" y="318" class="val">batch, 데이터 처리</text>
+  <text x="290" y="368" class="mono" text-anchor="middle">-XX:+UseParallelGC</text>
+  <rect x="384" y="62" width="172" height="320" rx="10" class="ok"/>
+  <text x="470" y="92" class="okt" text-anchor="middle">G1 GC</text>
+  <line x1="398" y1="106" x2="542" y2="106" class="sep"/>
+  <text x="398" y="130" class="sub">GC 스레드</text>
+  <text x="398" y="150" class="val">여러 개</text>
+  <text x="398" y="180" class="sub">동작</text>
+  <text x="398" y="200" class="val">일부 concurrent</text>
+  <text x="398" y="230" class="sub">pause time</text>
+  <text x="398" y="250" class="val">수십~수백 ms</text>
+  <text x="398" y="298" class="sub">적합한 곳</text>
+  <text x="398" y="318" class="val">대부분의 환경 (기본)</text>
+  <text x="470" y="368" class="mono" text-anchor="middle">-XX:+UseG1GC</text>
+  <rect x="564" y="62" width="172" height="320" rx="10" class="box"/>
+  <text x="650" y="92" class="lane" text-anchor="middle">ZGC</text>
+  <line x1="578" y1="106" x2="722" y2="106" class="sep"/>
+  <text x="578" y="130" class="sub">GC 스레드</text>
+  <text x="578" y="150" class="val">여러 개</text>
+  <text x="578" y="180" class="sub">동작</text>
+  <text x="578" y="200" class="val">거의 모두 concurrent</text>
+  <text x="578" y="230" class="sub">pause time</text>
+  <text x="578" y="250" class="val">1ms 미만</text>
+  <text x="578" y="298" class="sub">적합한 곳</text>
+  <text x="578" y="318" class="val">금융, 게임, 대용량 캐시</text>
+  <text x="650" y="368" class="mono" text-anchor="middle">-XX:+UseZGC</text>
+  <line x1="470" y1="410" x2="300" y2="410" class="al" marker-end="url(#ar)"/>
+  <line x1="476" y1="410" x2="646" y2="410" class="al" marker-end="url(#ar)"/>
+  <circle cx="473" cy="410" r="4" fill="#16a34a"/>
+  <text x="290" y="434" class="sub" text-anchor="middle">throughput 우선</text>
+  <text x="473" y="434" class="gnote" text-anchor="middle">균형</text>
+  <text x="656" y="434" class="sub" text-anchor="middle">latency 우선</text>
+  <text x="110" y="434" class="sub" text-anchor="middle">작은 환경용</text>
+</svg>

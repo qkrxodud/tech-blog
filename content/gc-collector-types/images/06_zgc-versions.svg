@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>ZGC가 JDK 15에서 non-generational로 정식 포함되고, JDK 21에서 generational이 등장, JDK 23에서 기본이 되고, JDK 24에서 non-generational이 제거되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">ZGC — non-generational에서 generational로</text>
+  <text x="730" y="42" class="code" text-anchor="end">-XX:+UseZGC</text>
+  <line x1="40" y1="84" x2="720" y2="84" class="axis" marker-end="url(#ar)"/>
+  <circle cx="125" cy="84" r="5" fill="#9ca3af"/>
+  <text x="125" y="70" class="op" text-anchor="middle">JDK 15</text>
+  <circle cx="295" cy="84" r="5" fill="#9ca3af"/>
+  <text x="295" y="70" class="op" text-anchor="middle">JDK 21</text>
+  <circle cx="465" cy="84" r="5" fill="#9ca3af"/>
+  <text x="465" y="70" class="op" text-anchor="middle">JDK 23</text>
+  <circle cx="635" cy="84" r="5" fill="#9ca3af"/>
+  <text x="635" y="70" class="op" text-anchor="middle">JDK 24</text>
+  <rect x="49" y="102" width="152" height="94" rx="8" class="box"/>
+  <text x="125" y="126" class="op" text-anchor="middle">ZGC 정식 포함</text>
+  <text x="125" y="148" class="val" text-anchor="middle">non-generational</text>
+  <text x="125" y="166" class="val" text-anchor="middle">으로 동작</text>
+  <text x="125" y="186" class="sub" text-anchor="middle">JEP 377</text>
+  <rect x="219" y="102" width="152" height="94" rx="8" class="box"/>
+  <text x="295" y="126" class="op" text-anchor="middle">generational 등장</text>
+  <text x="295" y="148" class="val" text-anchor="middle">기본은 여전히</text>
+  <text x="295" y="166" class="val" text-anchor="middle">non-generational</text>
+  <text x="295" y="186" class="sub" text-anchor="middle">JEP 439</text>
+  <rect x="389" y="102" width="152" height="94" rx="8" class="ok"/>
+  <text x="465" y="126" class="okt" text-anchor="middle">generational이 기본</text>
+  <text x="465" y="148" class="val" text-anchor="middle">ZGC의 기본 동작</text>
+  <text x="465" y="166" class="val" text-anchor="middle">방식으로 변경</text>
+  <text x="465" y="186" class="sub" text-anchor="middle">JEP 474</text>
+  <rect x="559" y="102" width="152" height="94" rx="8" class="bad"/>
+  <text x="635" y="126" class="badt" text-anchor="middle">non-gen 제거</text>
+  <text x="635" y="148" class="val" text-anchor="middle">generational로만</text>
+  <text x="635" y="166" class="val" text-anchor="middle">동작</text>
+  <text x="635" y="186" class="sub" text-anchor="middle">JEP 490</text>
+  <text x="30" y="226" class="op">non-generational ZGC</text>
+  <rect x="125" y="234" width="340" height="32" rx="6" class="hold"/>
+  <text x="295" y="255" class="val" text-anchor="middle">기본 동작</text>
+  <rect x="465" y="234" width="170" height="32" rx="6" class="wait"/>
+  <text x="550" y="255" class="waitt" text-anchor="middle">선택 가능</text>
+  <rect x="635" y="234" width="92" height="32" rx="6" class="bad"/>
+  <text x="681" y="255" class="note" text-anchor="middle">제거</text>
+  <text x="30" y="300" class="op">generational ZGC (Young / Old)</text>
+  <rect x="295" y="308" width="170" height="32" rx="6" class="wait"/>
+  <text x="380" y="329" class="waitt" text-anchor="middle">선택 가능</text>
+  <rect x="465" y="308" width="262" height="32" rx="6" class="ok"/>
+  <text x="596" y="329" class="gnote" text-anchor="middle">기본 동작 → 유일한 동작</text>
+  <text x="150" y="372" class="gnote">generational ZGC는 non-generational 대비 throughput 약 10% 개선 (일부 10~20%)</text>
+</svg>

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>young GC 로그에서 eden은 27328K에서 0K로 비워지고, 살아남은 객체는 survivor(1562K)와 old generation(1118K에서 1660K)으로 옮겨진다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .used { fill: #e5e7eb; stroke: none; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">young GC 로그 — GC 전후 영역별 사용량</text>
+  <text x="730" y="42" class="code" text-anchor="end">GC(1) Pause Young</text>
+  <text x="265.0" y="80" class="val" text-anchor="middle">Eden</text>
+  <text x="420.0" y="80" class="val" text-anchor="middle">survivor0</text>
+  <text x="500.0" y="80" class="val" text-anchor="middle">survivor1</text>
+  <text x="637.5" y="80" class="val" text-anchor="middle">old (Tenured)</text>
+  <text x="30" y="122" class="lane">GC 전</text>
+  <text x="30" y="140" class="sub">Allocation Failure</text>
+  <rect x="150" y="96" width="230" height="56" rx="4" class="bad"/>
+  <text x="265" y="120" class="badt" text-anchor="middle">27328K</text>
+  <text x="265" y="140" class="note" text-anchor="middle">가득 참</text>
+  <rect x="380" y="96" width="80" height="56" rx="4" class="hold"/>
+  <text x="420" y="120" class="op" text-anchor="middle">2104K</text>
+  <text x="420" y="140" class="sub" text-anchor="middle">From</text>
+  <rect x="460" y="96" width="80" height="56" rx="4" class="box"/>
+  <text x="500" y="128" class="sub" text-anchor="middle">비어 있음</text>
+  <rect x="540" y="96" width="195" height="56" rx="4" class="hold"/>
+  <text x="637" y="128" class="op" text-anchor="middle">1118K</text>
+  <text x="30" y="252" class="lane">GC 후</text>
+  <text x="30" y="270" class="sub">7.205ms 뒤</text>
+  <rect x="150" y="226" width="230" height="56" rx="4" class="ok"/>
+  <text x="265" y="250" class="okt" text-anchor="middle">0K</text>
+  <text x="265" y="270" class="gnote" text-anchor="middle">비워짐</text>
+  <rect x="380" y="226" width="80" height="56" rx="4" class="box"/>
+  <text x="420" y="258" class="sub" text-anchor="middle">비어 있음</text>
+  <rect x="460" y="226" width="80" height="56" rx="4" class="hold"/>
+  <text x="500" y="250" class="op" text-anchor="middle">1562K</text>
+  <text x="500" y="270" class="sub" text-anchor="middle">From</text>
+  <rect x="540" y="226" width="195" height="56" rx="4" class="hold"/>
+  <text x="637" y="250" class="op" text-anchor="middle">1660K</text>
+  <text x="637" y="270" class="gnote" text-anchor="middle">+542K 승격</text>
+  <line x1="300" y1="152" x2="480" y2="224" class="gl" marker-end="url(#agr)"/>
+  <line x1="420" y1="152" x2="492" y2="224" class="gl" marker-end="url(#agr)"/>
+  <line x1="330" y1="152" x2="600" y2="224" class="gl" marker-end="url(#agr)"/>
+  <text x="150" y="188" class="gnote">살아남은 객체만 복사</text>
+  <text x="30" y="320" class="sub">heap 전체</text>
+  <text x="150" y="320" class="mono">29M -> 3M (96M)</text>
+  <text x="30" y="350" class="sub">DefNew 용량</text>
+  <text x="150" y="350" class="mono">30720K = Eden 27328K + survivor 3392K</text>
+  <text x="150" y="374" class="sub">survivor 하나는 항상 비어 있어 용량에서 빠집니다</text>
+
+</svg>

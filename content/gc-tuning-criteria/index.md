@@ -1,10 +1,86 @@
 ---
 title: "GC의 역할과 튜닝 기준: Ergonomics와 JVM 기본 설정"
 tags: ["GC","JVM","Ergonomics","GC 튜닝","G1 GC"]
-summary: "GC의 역할과 Mark·Sweep·Compact, 세대별 수집을 살펴보고, Ergonomics가 고르는 기본값과 Pause-Time·Throughput·Footprint 목표에 따라 힙 크기가 조정되는 방식을 정리합니다."
+summary: "JVM 프로세스 메모리 구조와 GC가 등장한 배경, GC의 역할과 Mark·Sweep·Compact를 살펴보고, GC 선택과 튜닝이 중요한 이유, Ergonomics가 고르는 기본값과 Pause-Time·Throughput·Footprint 목표, GC 튜닝 순서를 정리합니다."
 ---
 
 이전에 [JVM은 어떻게 실행되고 클래스를 로딩하는가](../jvm-execution-classloading/)에 대해 작성하였습니다. 이번 글에서는 GC가 하는 일과 GC를 튜닝할 때 기준이 되는 Ergonomics, JVM의 기본 설정에 대해 정리하도록 하겠습니다.
+
+## JVM 프로세스 메모리 구조
+
+GC를 살펴보기 전에, GC가 다루는 메모리가 JVM 프로세스 안에서 어디에 있는지부터 정리하겠습니다. JVM도 OS 위에서 실행되는 하나의 프로세스이므로 다른 프로세스와 마찬가지로 code(text), data(+bss), heap, stack, kernel space로 이루어진 가상 주소 공간을 가집니다. JVM은 이 공간 안에 자신이 사용할 영역들을 따로 확보합니다.
+
+- JVM stack: OS 스레드마다 할당되는 stack 영역을 자바 스레드가 그대로 사용합니다. HotSpot은 Java 스택과 native 스택을 합쳐서 사용합니다(JVM 명세에서는 JVM stack과 native method stack을 구분합니다).
+- native library: `libjvm.so`, `libnet.so`, `libjava.so` 등이 올라가며, 이를 통해 OS의 시스템 콜도 호출할 수 있습니다.
+- Metaspace (method area): klass 객체(필드, 메서드 정보, 상속 관계 같은 클래스 메타 정보), 메서드 바이트코드, Runtime constant pool이 있습니다. 이 영역에서 GC가 일어나는 일은 드물며, Full GC 때 정리됩니다.
+- JVM heap: 자바 객체와 자바 배열이 상주합니다. `java.lang.Thread` 객체와 `java.lang.Class` 객체, String pool도 여기에 있습니다. 이 글에서 다루는 GC는 이 영역에 대한 내용입니다.
+- code cache: JIT 컴파일러가 최적화해 기계어로 바꾼 코드가 상주합니다.
+- heap · data · code(text): JVM 내부 로직(C++로 작성된 코드)이 사용하는 영역입니다. 예를 들어 이 heap에는 C++로 정의된 `JavaThread` 객체가 있습니다.
+
+이 외에도 JVM이 사용하는 데이터가 더 있으며, 각 영역이 OS로부터 할당받는 위치는 실행할 때마다 다릅니다. 영역의 배치를 그림으로 보고 싶다면 이전 글 [JVM은 어떻게 실행되고 클래스를 로딩하는가](../jvm-execution-classloading/)의 JVM 프로세스 메모리 구조 그림을 참고하면 됩니다.
+
+앞으로 메모리와 관련된 이야기는 모두 가상 주소 공간 관점에서 보면 됩니다. 물리 메모리인 RAM은 어차피 frame 단위로 나뉘어 OS가 관리하기 때문입니다. 또한 이 글에서는 아래 기준으로 설명합니다.
+
+- Java heap보다 JVM heap이라는 용어를 사용합니다.
+- JVM은 HotSpot VM을 가리킵니다. 참고하는 Oracle 문서 자체가 HotSpot VM 기준이기 때문입니다.
+- 개념은 기본적으로 Serial GC를 기준으로 설명합니다.
+
+## 수동 메모리 관리와 GC의 등장
+
+C++처럼 GC가 없는 언어에서는 개발자가 메모리를 직접 할당받고 반납합니다. 아래 코드의 `allocate()`는 힙에 `int(10)`을 할당하고, 사용이 끝나면 `delete`로 해제합니다.
+
+```cpp
+void allocate() {
+    int* p = new int(10); // 힙 할당 + 초기화
+    // ... logic
+
+    delete p;             // 메모리 해제
+}
+
+int main() {
+    allocate();
+
+    bool isRun = true;
+    while (isRun) {
+        // ... logic
+    }
+    return 0;
+}
+```
+
+`allocate()`가 끝나면 stack에 있던 포인터 `p`는 사라지지만, 힙의 `int(10)`은 `delete`를 호출해야만 해제됩니다. 만약 `delete p;`를 빠뜨리면 `int(10)`을 가리키는 포인터가 더 이상 없는데도 메모리는 그대로 남습니다. 이것이 memory leak입니다. 위 코드처럼 프로그램이 `while` 문 안에서 계속 실행되는 동안 이 메모리는 다시 사용할 수 없습니다.
+
+이런 메모리 해제를 언어 레벨에서 알아서 처리해 주기 위해 등장한 것이 Garbage Collector입니다. 같은 흐름을 자바로 작성하면 아래와 같습니다.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        allocate();
+
+        boolean isRun = true;
+        while(isRun) {
+            // ...logic
+        }
+    }
+
+    public static void allocate() {
+        Object obj = new Object();
+        // ...logic
+    }
+}
+```
+
+자바 코드에는 `delete`가 없습니다. `allocate()`가 끝나 stack의 `obj`가 사라지면 JVM heap의 `Object`는 더 이상 참조되지 않고, GC가 이 객체를 수거합니다. 두 경우를 나란히 놓으면 아래와 같습니다.
+
+![C++에서 delete를 빠뜨려 생긴 memory leak과 자바에서 GC가 객체를 수거하는 과정](images/10_manual-memory-vs-gc.svg)
+
+위쪽 C++에서는 포인터가 사라진 뒤에도 `int(10)`이 남아 있고, 아래쪽 자바에서는 참조가 끊긴 `Object`를 GC가 회수합니다. GC를 사용하면 얻는 것과 치르는 비용을 정리하면 아래와 같습니다.
+
+- 개발자가 직접 메모리를 할당받고 반납하는 관리 비용이 사라집니다.
+- 메모리 영역을 직접 관리할 때 생길 수 있는 여러 종류의 문제 중 상당 부분이 사라집니다.
+- 대신 GC로 인한 overhead가 발생합니다.
+
+마지막의 overhead가 뒤에서 다룰 GC 선택과 튜닝이 필요한 이유가 됩니다.
 
 ## GC의 역할
 
@@ -70,7 +146,13 @@ Sweep만 하면 회수한 공간이 B, D, E 자리처럼 여기저기 흩어집�
 
 기술은 상황에 맞게 알맞게 설정해야 합니다.
 
+자바 실행 환경(Java SE)은 애플리케이션이 실행되는 컴퓨터의 시스템 특성을 보고 어떤 GC로 동작할지 스스로 선택합니다. 그래서 GC가 어느 정도의 빈도와 길이로 pause를 일으키더라도 애플리케이션 성능이 잘 나온다면 별도로 GC를 선택하거나 튜닝할 필요는 없습니다. 다만 이 기본 선택이 항상 최선은 아닙니다.
+
 기본적으로 작은 프로젝트나 사이드 프로젝트에서는 GC를 튜닝할 정도로 큰 트래픽이 발생하지 않습니다. 그래서 기본적인 설정값으로 프로그램을 진행해도 됩니다. 하지만 스케일이 큰 애플리케이션, 특히 데이터를 많이 쓰고 스레드도 많이 쓰며 높은 처리량을 요구하는 애플리케이션의 경우에는 성능을 위해 별도의 GC 선택과 튜닝이 필요할 수 있습니다.
+
+## 왜 GC 선택과 튜닝이 중요한가?
+
+이유는 Amdahl의 법칙으로 설명할 수 있습니다. Amdahl의 법칙은 어떤 문제를 병렬로 처리해 얻는 성능 향상이 그 문제의 순차적인 부분에 의해 제한된다는 것입니다.
 
 아래 그래프는 Oracle GC Tuning Guide의 Figure 1-1을 다시 그린 것입니다. GC를 빼면 프로세서 수에 비례해 완벽하게 확장되는 이상적인 시스템을 가정하고, 단일 프로세서에서 GC에 쓰는 시간 비율에 따라 프로세서를 늘렸을 때 처리량이 어떻게 되는지 보여 줍니다.
 
@@ -83,12 +165,22 @@ Sweep만 하면 회수한 공간이 B, D, E 자리처럼 여기저기 흩어집�
 - 자바는 네 개의 garbage collector를 제공하는데, 그중 Serial GC를 제외하고는 모두 성능 향상을 위해 병렬로 동작합니다. JDK 21 기준 문서에서는 Serial, Parallel, G1, ZGC 네 가지를 설명합니다.
 - 오늘날 서버 클래스로 분류될 수 있는 머신에서 애플리케이션이 실행되며, 보통 디폴트로 G1GC가 사용됩니다.
 
+## 언제 Serial GC가 적절한가?
+
+위에서 Serial GC를 제외한 collector는 모두 병렬로 동작한다고 하였습니다. 그렇다면 Serial GC는 어떤 경우에 적절한지 정리하면 아래와 같습니다.
+
+- 소규모 애플리케이션에 적절합니다. 특히 대략 100MB 이하의 힙 크기를 필요로 하는 애플리케이션에 맞습니다.
+  - 다른 garbage collector들은 추가적인 오버헤드와 복잡도가 있습니다.
+- 반대로 큰 메모리와 멀티프로세서(멀티코어)를 갖춘 시스템에서 스레드를 많이 사용하는 대규모 애플리케이션이라면 Serial GC는 첫 번째 선택지가 될 수 없습니다.
+
+아래에서 정리할 JVM의 기본 설정도 이 기준을 따라, 서버급 머신에서는 G1GC를, 그 외의 머신에서는 Serial GC를 고릅니다.
+
 ## Ergonomics
 
 Ergonomics란 JVM이 주어진 환경에서 GC와 메모리 관련 설정을 스스로 최적화하는 것을 말합니다. 크게 두 가지 일을 합니다.
 
 - default selection: collector, heap size, GC 스레드 수, JIT compiler를 JVM이 환경에 맞게 스스로 선택합니다.
-- 실행 중 동적 조정: 아래 두 가지 목표를 맞추기 위해 사용자가 설정한 목표를 모니터링하여, 실행 중에 동적으로 조정합니다.
+- 실행 중 동적 조정(behavior-based tuning): 아래 두 가지 목표를 맞추기 위해 사용자가 설정한 목표를 모니터링하여, 실행 중에 동적으로 조정합니다.
   - Maximum Pause-Time goal (`-XX:MaxGCPauseMillis=nnn`)
   - Throughput goal (`-XX:GCTimeRatio=nnn`)
   - 위 두 가지 목표가 모두 충족되는 동안에는 minimum footprint를 추구하며 동작합니다.
@@ -107,6 +199,8 @@ JVM이 시작할 때 기본값을 고르는 흐름은 아래와 같습니다. �
   - initial heap size: JVM이 시작할 때 바로 확보되는 Heap 크기로, RAM의 1/64입니다.
   - maximum heap size: JVM heap의 최대 크기로, RAM의 1/4입니다.
   - minimum heap size: 디폴트 값 설정이 약간 복잡하게 결정됩니다.
+- 최대 GC 스레드 수: 힙 크기와 이용 가능한 CPU 자원에 의해 결정됩니다.
+- JIT compiler: C1과 C2를 모두 사용하는 tiered compiler를 사용합니다. 인터프리터와 JIT 컴파일러의 동작은 이전 글 [JVM은 어떻게 실행되고 클래스를 로딩하는가](../jvm-execution-classloading/)에서 정리하였습니다.
 
 > 💡 서버 애플리케이션의 경우 initial heap size, maximum heap size, minimum heap size를 동일하게 맞춰서 최대한 메모리를 사용하게 합니다.
 
@@ -187,16 +281,39 @@ G1은 pause time과 처리량의 균형을 목표로 하기 때문에, 처리량
 
 - Footprint는 프로세스가 현재 사용 중인 메모리의 크기이며, heap 크기가 전체 메모리 크기에 가장 큰 영향을 미칩니다.
 - Maximum Pause-Time goal과 Throughput goal이 모두 충족된다면, garbage collector는 heap 사이즈를 조금씩 줄입니다.
+  - 불필요하게 점유하고 있는 메모리를 줄여서 다른 프로세스들도 메모리를 사용할 수 있게 하기 위함입니다.
 
 힙을 줄이다 보면 결국 두 목표 중 하나가 다시 깨지는데, Oracle 문서에 따르면 대부분은 Throughput 목표가 먼저 깨집니다. 그러면 다시 힙을 늘리는 쪽으로 돌아가므로, 힙 크기는 두 목표를 겨우 만족하는 지점 근처에서 움직이게 됩니다. 사용할 수 있는 힙의 범위는 `-Xms`(최소)와 `-Xmx`(최대)로 정할 수 있습니다.
 
+예를 들어 `-Xms1g -Xmx2g`로 실행하면 1GB가 initial heap size이자 minimum heap size가 되고, 2GB가 max heap size가 됩니다. JVM은 시작할 때 1GB를 확보하고, 목표에 따라 1GB와 2GB 사이에서 힙 크기를 조정합니다.
+
+## GC 튜닝 가이드
+
+지금까지 정리한 세 가지 목표를 바탕으로, 튜닝은 아래 순서로 진행합니다.
+
+1. Throughput goal을 정합니다.
+2. max heap size까지 사용해도 Throughput goal을 달성하지 못하면, RAM 크기에 근접하게 max heap size를 늘립니다. 단, swap이 일어나지 않는 범위여야 합니다.
+3. 그럼에도 여전히 Throughput goal을 달성하지 못한다면 RAM 대비 목표 자체가 너무 높은 것입니다.
+4. Throughput goal을 달성했는데 pause time이 너무 길다면 Maximum Pause-Time goal을 지정합니다.
+5. Maximum Pause-Time goal을 지정하면 Throughput goal이 충족되지 않을 수 있습니다. 그러므로 둘 사이에서 적당히 타협해야 합니다.
+
+위 순서를 흐름도로 그리면 아래와 같습니다.
+
+![Throughput 목표부터 정하고 pause time 목표로 타협하는 GC 튜닝 순서](images/11_tuning-guide.svg)
+
+Throughput goal과 Maximum Pause-Time goal·Minimum Footprint는 trade-off 관계입니다. 앞에서 본 것처럼 Throughput 목표는 힙을 늘리는 쪽으로, Pause-Time 목표와 Footprint는 힙을 줄이는 쪽으로 움직이기 때문입니다.
+
+다만 서버 애플리케이션을 띄울 때 앞에서 권장한 대로 `-Xms`와 `-Xmx`를 같은 값으로 지정하면, 실행 중에 힙 크기를 동적으로 조정하는 일이 없습니다. 그래서 이 경우에는 위 튜닝 가이드의 효용성이 크지는 않습니다.
+
 ## 마무리
 
-오늘은 GC의 역할과 Mark·Sweep·Compact, 세대별 수집, 그리고 Ergonomics가 고르는 기본값과 Pause-Time·Throughput·Footprint 목표에 따라 힙 크기가 조정되는 방식에 대해 정리하였습니다.
+오늘은 JVM 프로세스 메모리 구조와 GC가 등장한 배경, GC의 역할과 Mark·Sweep·Compact, 세대별 수집, GC 선택과 튜닝이 중요한 이유, 그리고 Ergonomics가 고르는 기본값과 Pause-Time·Throughput·Footprint 목표에 따라 힙 크기가 조정되는 방식과 튜닝 순서에 대해 정리하였습니다.
 
 정리하면서 GC 튜닝은 옵션을 많이 붙이는 것보다, JVM이 어떤 기본값을 고르고 어떤 순서로 목표를 맞추는지 먼저 이해하는 것이 중요하다는 것을 알 수 있었습니다. 대부분은 기본값으로 충분하고, 문제가 생겼을 때 pause time 목표와 최대 힙 크기부터 조정해 보는 것이 맞는 순서인 것 같습니다.
 
 이 글에서 다룬 Eden에 객체가 할당되는 과정은 [JVM TLAB (Thread Local Allocation Buffer)](../jvm-tlab/)에서 부연해서 정리하였습니다. Eden 안에 스레드마다 따로 두는 할당 버퍼로, 여러 스레드가 동시에 객체를 할당할 때 생기는 경합을 줄이는 구조입니다.
+
+다음 글에서는 [Generational GC 핵심 원리: GC root, remembered set, minor GC와 major GC](../gc-generational-collection/)에 대해 정리하겠습니다.
 
 참고 자료
 - [GC 3부: GC은 왜 필요한가? GC 튜닝은 언제 왜 필요한가? GC의 자동 최적화](https://www.youtube.com/live/1glyhyChmmk?si=gVO6ijaZTABzf5LD)

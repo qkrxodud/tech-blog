@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 598" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>old 객체에서 탐색을 멈추면 old 객체를 거쳐서만 닿는 young 객체를 garbage로 잘못 판단하고, 세대를 나누고 remembered set을 두면 minor GC가 GC root와 remembered set에서 출발해 young generation만 탐색하는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ops { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .tiny { font-size: 11px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #e5e7eb; stroke: #6b7280; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .region { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12px; fill: #9ca3af; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .ad { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 4 3; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="598" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="262" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">old 객체에서 탐색을 멈추면 — garbage가 아닌데 garbage로 판단</text>
+  <rect x="30" y="110" width="100" height="44" rx="8" class="dbbox"/>
+  <text x="80" y="137" class="ops" text-anchor="middle">GC root</text>
+  <rect x="160" y="66" width="570" height="132" rx="10" class="region"/>
+  <text x="176" y="88" class="sub">JVM heap — young 객체와 old 객체가 섞여 있음</text>
+  <rect x="186" y="110" width="110" height="44" rx="8" class="ok"/>
+  <text x="241.0" y="137.0" class="okt" text-anchor="middle">young</text>
+  <rect x="346" y="110" width="110" height="44" rx="8" class="hold"/>
+  <text x="401.0" y="137.0" class="op" text-anchor="middle">old</text>
+  <rect x="506" y="110" width="120" height="44" rx="8" class="bad"/>
+  <text x="566.0" y="137.0" class="badt" text-anchor="middle">young</text>
+  <line x1="130" y1="132" x2="184" y2="132" class="gl" marker-end="url(#agr)"/>
+  <line x1="296" y1="132" x2="344" y2="132" class="gl" marker-end="url(#agr)"/>
+  <line x1="456" y1="132" x2="504" y2="132" class="rl" marker-end="url(#arr)"/>
+  <text x="401" y="176" class="note" text-anchor="middle">여기서 탐색 중단</text>
+  <text x="566" y="176" class="note" text-anchor="middle">live인데 미방문</text>
+  <text x="30" y="226" class="note">old 객체를 만나면 더 탐색하지 않으므로, old 객체를 거쳐서만 닿는 young 객체를 놓칩니다</text>
+  <text x="30" y="250" class="sub">객체가 섞여 있으면 young인지 old인지 객체마다 헤더의 age를 확인해야 합니다</text>
+  <rect x="10" y="288" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="320" class="h">세대를 나누고 remembered set을 둔다 — minor GC의 출발점</text>
+  <rect x="24" y="360" width="124" height="40" rx="8" class="dbbox"/>
+  <text x="86" y="385" class="ops" text-anchor="middle">GC root</text>
+  <rect x="24" y="436" width="124" height="54" rx="8" class="hold"/>
+  <text x="86" y="458" class="ops" text-anchor="middle">remembered set</text>
+  <text x="86" y="478" class="opm" text-anchor="middle">1121</text>
+  <rect x="170" y="336" width="300" height="176" rx="10" class="region"/>
+  <text x="186" y="358" class="sub">young generation</text>
+  <rect x="486" y="336" width="244" height="176" rx="10" class="dbbox"/>
+  <text x="502" y="358" class="sub">old generation</text>
+  <rect x="196" y="370" width="110" height="40" rx="8" class="ok"/>
+  <text x="251.0" y="395.0" class="okt" text-anchor="middle">live</text>
+  <rect x="336" y="370" width="110" height="40" rx="8" class="bad"/>
+  <text x="391.0" y="395.0" class="badt" text-anchor="middle">garbage</text>
+  <rect x="336" y="446" width="110" height="40" rx="8" class="ok"/>
+  <text x="391.0" y="471.0" class="okt" text-anchor="middle">live</text>
+  <rect x="520" y="370" width="110" height="40" rx="8" class="hold"/>
+  <text x="575.0" y="395.0" class="op" text-anchor="middle">old</text>
+  <rect x="520" y="446" width="110" height="40" rx="8" class="hold"/>
+  <text x="575.0" y="471.0" class="opm" text-anchor="middle">1121</text>
+  <line x1="148" y1="384" x2="194" y2="388" class="gl" marker-end="url(#agr)"/>
+  <line x1="518" y1="466" x2="448" y2="466" class="al" marker-end="url(#ar)"/>
+  <path d="M86,490 L86,528 L575,528 L575,490" class="ad" marker-end="url(#ar)"/>
+  <text x="330" y="548" class="sub" text-anchor="middle">remembered set에 young 객체를 참조하는 old 객체 1121을 기록</text>
+  <text x="30" y="576" class="gnote">minor GC는 GC root와 remembered set에서 출발해 young generation만 탐색합니다 — 세대는 객체 주소로 구분</text>
+</svg>

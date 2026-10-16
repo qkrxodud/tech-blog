@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 580" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Serial GC는 GC 스레드 하나가 수집하는 동안 애플리케이션이 길게 멈추고, Parallel GC는 여러 GC 스레드가 나눠 처리해 멈추는 시간이 짧아지는 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="580" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="244" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Serial GC — GC 스레드 하나가 전부 처리</text>
+  <text x="30" y="92" class="lane">애플리케이션</text>
+  <text x="30" y="110" class="sub">스레드들</text>
+  <rect x="150" y="70" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="72" width="136" height="48" rx="8" class="box"/>
+  <text x="230" y="101" class="op" text-anchor="middle">실행</text>
+  <rect x="306" y="72" width="256" height="48" rx="8" class="bad"/>
+  <text x="434" y="101" class="badt" text-anchor="middle">멈춤 (STW)</text>
+  <rect x="570" y="72" width="153" height="48" rx="8" class="box"/>
+  <text x="646" y="101" class="op" text-anchor="middle">실행</text>
+  <text x="30" y="152" class="lane">GC 스레드</text>
+  <text x="30" y="170" class="sub">1개</text>
+  <rect x="150" y="130" width="585" height="52" rx="6" class="track"/>
+  <rect x="306" y="132" width="256" height="48" rx="8" class="hold"/>
+  <text x="434" y="161" class="op" text-anchor="middle">GC 1 — 수집 전체</text>
+  <text x="150" y="222" class="sub">GC 스레드 하나가 수집을 끝낼 때까지 애플리케이션이 멈춥니다</text>
+  <rect x="10" y="270" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="302" class="h">Parallel GC — 여러 GC 스레드가 나눠 처리</text>
+  <text x="30" y="352" class="lane">애플리케이션</text>
+  <text x="30" y="370" class="sub">스레드들</text>
+  <rect x="150" y="330" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="332" width="136" height="48" rx="8" class="box"/>
+  <text x="230" y="361" class="op" text-anchor="middle">실행</text>
+  <rect x="306" y="332" width="120" height="48" rx="8" class="bad"/>
+  <text x="366" y="361" class="badt" text-anchor="middle">STW</text>
+  <rect x="434" y="332" width="289" height="48" rx="8" class="ok"/>
+  <text x="578" y="361" class="okt" text-anchor="middle">실행 (더 빨리 재개)</text>
+  <text x="30" y="420" class="lane">GC 스레드</text>
+  <text x="30" y="438" class="sub">여러 개</text>
+  <rect x="150" y="390" width="585" height="128" rx="6" class="track"/>
+  <rect x="306" y="396" width="120" height="24" rx="5" class="hold"/>
+  <text x="366" y="413" class="val" text-anchor="middle">GC 1</text>
+  <rect x="306" y="425" width="120" height="24" rx="5" class="hold"/>
+  <text x="366" y="442" class="val" text-anchor="middle">GC 2</text>
+  <rect x="306" y="454" width="120" height="24" rx="5" class="hold"/>
+  <text x="366" y="471" class="val" text-anchor="middle">GC 3</text>
+  <rect x="306" y="483" width="120" height="24" rx="5" class="hold"/>
+  <text x="366" y="500" class="val" text-anchor="middle">GC 4</text>
+  <rect x="440" y="396" width="122" height="111" rx="6" fill="none" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="501" y="446" class="note" text-anchor="middle">Serial GC였다면</text>
+  <text x="501" y="464" class="note" text-anchor="middle">여기까지 멈춤</text>
+  <text x="150" y="548" class="sub">같은 수집을 여러 스레드가 나눠 STW가 짧아지지만, GC 중에는 여전히 애플리케이션이 멈춥니다</text>
+</svg>

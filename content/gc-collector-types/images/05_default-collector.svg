@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 480" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>GC 옵션을 지정하지 않으면 CPU 2개 이상이고 메모리 1792MB 이상일 때 G1 GC, 아니면 Serial GC가 선택되며 컨테이너는 --cpus와 -m 값이 기준이 되는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="480" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="460" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">기본 collector 선택 — Serial GC와 G1 GC</text>
+  <rect x="110" y="64" width="300" height="40" rx="8" class="hold"/>
+  <text x="260" y="89" class="op" text-anchor="middle">JVM 시작 (GC 옵션 지정 안 함)</text>
+  <line x1="260" y1="104" x2="260" y2="124" class="al" marker-end="url(#ar)"/>
+  <rect x="90" y="126" width="340" height="52" rx="8" class="box"/>
+  <text x="260" y="148" class="op" text-anchor="middle">CPU 수와 메모리 크기 확인</text>
+  <text x="260" y="167" class="val" text-anchor="middle">컨테이너는 --cpus, -m으로 준 값이 기준</text>
+  <line x1="260" y1="178" x2="260" y2="198" class="al" marker-end="url(#ar)"/>
+  <rect x="90" y="200" width="340" height="52" rx="8" class="box"/>
+  <text x="260" y="222" class="op" text-anchor="middle">CPU 2개 이상이고</text>
+  <text x="260" y="241" class="val" text-anchor="middle">메모리 1792MB(약 2GB) 이상인가?</text>
+  <path d="M 190 252 L 190 274 L 145 274 L 145 292" class="gl" marker-end="url(#agr)"/>
+  <path d="M 330 252 L 330 274 L 375 274 L 375 292" class="al" marker-end="url(#ar)"/>
+  <text x="178" y="270" class="gnote" text-anchor="end">예</text>
+  <text x="342" y="270" class="sub">아니오</text>
+  <rect x="60" y="294" width="170" height="70" rx="8" class="ok"/>
+  <text x="145" y="318" class="okt" text-anchor="middle">G1 GC</text>
+  <text x="145" y="337" class="val" text-anchor="middle">JDK 9부터 기본</text>
+  <text x="145" y="354" class="sub" text-anchor="middle">오늘날 대부분의 환경</text>
+  <rect x="290" y="294" width="170" height="70" rx="8" class="hold"/>
+  <text x="375" y="318" class="op" text-anchor="middle">Serial GC</text>
+  <text x="375" y="337" class="val" text-anchor="middle">CPU 1개 또는</text>
+  <text x="375" y="354" class="val" text-anchor="middle">메모리 1792MB 미만</text>
+  <rect x="60" y="386" width="400" height="52" rx="8" class="dbbox"/>
+  <text x="260" y="408" class="val" text-anchor="middle">예: 큰 서버라도 컨테이너에 --cpus=1을 주면</text>
+  <text x="260" y="427" class="val" text-anchor="middle">컨테이너 기준으로 Serial GC가 선택됨</text>
+  <rect x="490" y="126" width="240" height="196" rx="8" class="dbbox"/>
+  <text x="506" y="150" class="op">명시적으로 고르기</text>
+  <text x="506" y="178" class="mono">-XX:+UseSerialGC</text>
+  <text x="506" y="200" class="mono">-XX:+UseParallelGC</text>
+  <text x="506" y="222" class="mono">-XX:+UseG1GC</text>
+  <text x="506" y="244" class="mono">-XX:+UseZGC</text>
+  <text x="506" y="284" class="sub">Parallel GC와 ZGC는</text>
+  <text x="506" y="302" class="sub">옵션으로 지정해야 사용</text>
+  <rect x="490" y="338" width="240" height="100" rx="8" class="box"/>
+  <text x="506" y="362" class="op">버전별</text>
+  <text x="506" y="386" class="val">JDK 5 ~ 8 서버급: Parallel</text>
+  <text x="506" y="406" class="val">JDK 9부터: 위 기준으로 G1</text>
+  <text x="506" y="426" class="sub">JEP 523: JDK 27부터 항상 G1</text>
+</svg>

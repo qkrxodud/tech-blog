@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 446" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>GC root는 JVM heap 밖에 있으며, GC root에서 참조를 따라가 닿는 객체는 live이고 닿지 않는 객체는 garbage로 판단되는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ops { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .tiny { font-size: 11px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #e5e7eb; stroke: #6b7280; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .region { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12px; fill: #9ca3af; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .ad { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 4 3; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="446" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="426" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">GC root — heap 밖에서 출발해 닿는 객체가 live</text>
+  <rect x="24" y="58" width="236" height="340" rx="10" class="dbbox"/>
+  <text x="40" y="80" class="sub">JVM heap 밖 (GC root)</text>
+  <rect x="40" y="92" width="200" height="50" rx="8" class="box"/>
+  <text x="140.0" y="114.0" class="op" text-anchor="middle">thread stack</text>
+  <text x="140.0" y="130.0" class="val" text-anchor="middle">지역 변수·매개변수</text>
+  <rect x="40" y="152" width="200" height="50" rx="8" class="box"/>
+  <text x="140.0" y="174.0" class="op" text-anchor="middle">thread 객체</text>
+  <text x="140.0" y="190.0" class="val" text-anchor="middle">ThreadLocal·Runnable</text>
+  <rect x="40" y="212" width="200" height="50" rx="8" class="box"/>
+  <text x="140.0" y="234.0" class="op" text-anchor="middle">ClassLoader</text>
+  <text x="140.0" y="250.0" class="val" text-anchor="middle">정적 변수</text>
+  <rect x="40" y="272" width="200" height="50" rx="8" class="box"/>
+  <text x="140.0" y="294.0" class="op" text-anchor="middle">JNI 참조</text>
+  <text x="140.0" y="310.0" class="val" text-anchor="middle">네이티브 코드의 참조</text>
+  <rect x="40" y="332" width="200" height="50" rx="8" class="box"/>
+  <text x="140.0" y="354.0" class="op" text-anchor="middle">Monitor</text>
+  <text x="140.0" y="370.0" class="val" text-anchor="middle">synchronized·wait()</text>
+  <rect x="284" y="58" width="452" height="340" rx="10" class="dbbox"/>
+  <text x="724" y="80" class="sub" text-anchor="end">JVM heap</text>
+  <rect x="304" y="99" width="84" height="36" rx="8" class="ok"/>
+  <text x="346.0" y="122.0" class="okt" text-anchor="middle">live</text>
+  <rect x="412" y="99" width="84" height="36" rx="8" class="ok"/>
+  <text x="454.0" y="122.0" class="okt" text-anchor="middle">live</text>
+  <rect x="304" y="159" width="84" height="36" rx="8" class="ok"/>
+  <text x="346.0" y="182.0" class="okt" text-anchor="middle">live</text>
+  <rect x="304" y="219" width="84" height="36" rx="8" class="ok"/>
+  <text x="346.0" y="242.0" class="okt" text-anchor="middle">live</text>
+  <rect x="412" y="219" width="84" height="36" rx="8" class="ok"/>
+  <text x="454.0" y="242.0" class="okt" text-anchor="middle">live</text>
+  <rect x="520" y="219" width="84" height="36" rx="8" class="ok"/>
+  <text x="562.0" y="242.0" class="okt" text-anchor="middle">live</text>
+  <rect x="304" y="279" width="84" height="36" rx="8" class="ok"/>
+  <text x="346.0" y="302.0" class="okt" text-anchor="middle">live</text>
+  <rect x="304" y="339" width="84" height="36" rx="8" class="ok"/>
+  <text x="346.0" y="362.0" class="okt" text-anchor="middle">live</text>
+  <rect x="628" y="99" width="84" height="36" rx="8" class="bad"/>
+  <text x="670.0" y="122.0" class="badt" text-anchor="middle">garbage</text>
+  <rect x="520" y="159" width="84" height="36" rx="8" class="bad"/>
+  <text x="562.0" y="182.0" class="badt" text-anchor="middle">garbage</text>
+  <rect x="628" y="159" width="84" height="36" rx="8" class="bad"/>
+  <text x="670.0" y="182.0" class="badt" text-anchor="middle">garbage</text>
+  <rect x="520" y="279" width="84" height="36" rx="8" class="bad"/>
+  <text x="562.0" y="302.0" class="badt" text-anchor="middle">garbage</text>
+  <rect x="628" y="339" width="84" height="36" rx="8" class="bad"/>
+  <text x="670.0" y="362.0" class="badt" text-anchor="middle">garbage</text>
+  <line x1="240" y1="117" x2="302" y2="117" class="gl" marker-end="url(#agr)"/>
+  <line x1="240" y1="177" x2="302" y2="177" class="gl" marker-end="url(#agr)"/>
+  <line x1="240" y1="237" x2="302" y2="237" class="gl" marker-end="url(#agr)"/>
+  <line x1="240" y1="297" x2="302" y2="297" class="gl" marker-end="url(#agr)"/>
+  <line x1="240" y1="357" x2="302" y2="357" class="gl" marker-end="url(#agr)"/>
+  <line x1="388" y1="117" x2="410" y2="117" class="gl" marker-end="url(#agr)"/>
+  <line x1="388" y1="237" x2="410" y2="237" class="gl" marker-end="url(#agr)"/>
+  <line x1="496" y1="237" x2="518" y2="237" class="gl" marker-end="url(#agr)"/>
+  <line x1="604" y1="177" x2="626" y2="177" class="al" marker-end="url(#ar)"/>
+  <text x="30" y="422" class="sub">초록은 GC root에서 닿는 live 객체, 빨강은 어디에서도 닿지 않는 garbage — garbage가 차지한 공간은 재사용합니다</text>
+</svg>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 436" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>CMS GC는 compact 단계 없이 free 영역을 free list로 관리해 단편화가 늘고, 맞는 free 영역이 없으면 full GC와 긴 STW compaction이 일어나는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="436" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="230" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">CMS GC — compact 없이 free list로 관리한 Old 영역</text>
+  <rect x="40" y="96" width="70" height="48" rx="3" class="hold"/>
+  <rect x="110" y="96" width="40" height="48" rx="3" class="wait"/>
+  <rect x="150" y="96" width="90" height="48" rx="3" class="hold"/>
+  <rect x="240" y="96" width="50" height="48" rx="3" class="wait"/>
+  <rect x="290" y="96" width="60" height="48" rx="3" class="hold"/>
+  <rect x="350" y="96" width="35" height="48" rx="3" class="wait"/>
+  <rect x="385" y="96" width="110" height="48" rx="3" class="hold"/>
+  <rect x="495" y="96" width="45" height="48" rx="3" class="wait"/>
+  <rect x="540" y="96" width="80" height="48" rx="3" class="hold"/>
+  <rect x="620" y="96" width="40" height="48" rx="3" class="wait"/>
+  <text x="40" y="84" class="sub">Sweep 후: 살아 있는 객체(회색) 사이에 free 영역(점선)이 흩어짐</text>
+  <path d="M 130.0 144 Q 197.5 176 265.0 150" class="al" marker-end="url(#ar)"/>
+  <path d="M 265.0 144 Q 316.25 176 367.5 150" class="al" marker-end="url(#ar)"/>
+  <path d="M 367.5 144 Q 442.5 176 517.5 150" class="al" marker-end="url(#ar)"/>
+  <path d="M 517.5 144 Q 578.75 176 640.0 150" class="al" marker-end="url(#ar)"/>
+  <text x="40" y="214" class="sub">free 영역끼리 free list로 연결</text>
+  <rect x="500" y="166" width="220" height="54" rx="8" class="bad"/>
+  <text x="610" y="188" class="badt" text-anchor="middle">큰 새 객체</text>
+  <text x="610" y="208" class="note" text-anchor="middle">들어갈 연속 공간이 없음</text>
+  <rect x="10" y="256" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="288" class="h">단편화가 full GC로 이어지는 흐름</text>
+  <rect x="24" y="312" width="116" height="56" rx="8" class="box"/>
+  <text x="82.0" y="345" class="op" text-anchor="middle">compact 없음</text>
+  <line x1="142" y1="340" x2="156" y2="340" class="al" marker-end="url(#ar)"/>
+  <rect x="158" y="312" width="124" height="56" rx="8" class="box"/>
+  <text x="220.0" y="345" class="op" text-anchor="middle">free list 관리</text>
+  <line x1="284" y1="340" x2="298" y2="340" class="al" marker-end="url(#ar)"/>
+  <rect x="300" y="312" width="116" height="56" rx="8" class="box"/>
+  <text x="358.0" y="345" class="op" text-anchor="middle">단편화 증가</text>
+  <line x1="418" y1="340" x2="432" y2="340" class="rl" marker-end="url(#arr)"/>
+  <rect x="434" y="312" width="120" height="56" rx="8" class="bad"/>
+  <text x="494.0" y="335" class="badt" text-anchor="middle">맞는 free</text>
+  <text x="494.0" y="355" class="note" text-anchor="middle">영역 없음</text>
+  <line x1="556" y1="340" x2="570" y2="340" class="rl" marker-end="url(#arr)"/>
+  <rect x="572" y="312" width="150" height="56" rx="8" class="bad"/>
+  <text x="647.0" y="335" class="badt" text-anchor="middle">full GC</text>
+  <text x="647.0" y="355" class="note" text-anchor="middle">긴 STW compaction</text>
+  <text x="30" y="402" class="note">언제 일어날지 예측하기 어려운 STW — 메모리가 클수록 더 두드러진다</text>
+</svg>

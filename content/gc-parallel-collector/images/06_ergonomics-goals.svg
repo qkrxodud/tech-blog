@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 348" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Ergonomics는 maximum GC pause time 목표를 먼저 확인해 못 맞추면 generation size를 줄이고, 다음으로 throughput 목표를 못 맞추면 늘리며, 둘 다 충족되면 footprint를 위해 heap size를 조금씩 줄인다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="348" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="328" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Parallel Collector Ergonomics — 목표를 확인하는 순서</text>
+  <rect x="40" y="66" width="40" height="52" rx="6" class="dbbox"/>
+  <text x="60" y="98" class="db" text-anchor="middle">1</text>
+  <rect x="90" y="66" width="330" height="52" rx="8" class="box"/>
+  <text x="255" y="88" class="op" text-anchor="middle">Maximum GC pause time 목표 충족?</text>
+  <text x="255" y="107" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">-XX:MaxGCPauseMillis=N</tspan> · default no limit</text>
+  <path d="M 420 92 L 498 92" class="rl" marker-end="url(#arr)"/>
+  <text x="459" y="84" class="note" text-anchor="middle">아니오</text>
+  <rect x="500" y="66" width="230" height="52" rx="8" class="bad"/>
+  <text x="615" y="98" class="badt" text-anchor="middle">generation size 축소</text>
+  <line x1="255" y1="118" x2="255" y2="150" class="gl" marker-end="url(#agr)"/>
+  <text x="267" y="139" class="gnote">예</text>
+  <rect x="40" y="152" width="40" height="52" rx="6" class="dbbox"/>
+  <text x="60" y="184" class="db" text-anchor="middle">2</text>
+  <rect x="90" y="152" width="330" height="52" rx="8" class="box"/>
+  <text x="255" y="174" class="op" text-anchor="middle">Throughput 목표 충족?</text>
+  <text x="255" y="193" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">-XX:GCTimeRatio=N</tspan> · default 99</text>
+  <path d="M 420 178 L 498 178" class="rl" marker-end="url(#arr)"/>
+  <text x="459" y="170" class="note" text-anchor="middle">아니오</text>
+  <rect x="500" y="152" width="230" height="52" rx="8" class="bad"/>
+  <text x="615" y="184" class="badt" text-anchor="middle">generation size 확대</text>
+  <line x1="255" y1="204" x2="255" y2="236" class="gl" marker-end="url(#agr)"/>
+  <text x="267" y="225" class="gnote">예</text>
+  <rect x="40" y="238" width="40" height="52" rx="6" class="dbbox"/>
+  <text x="60" y="270" class="db" text-anchor="middle">3</text>
+  <rect x="90" y="238" width="640" height="52" rx="8" class="ok"/>
+  <text x="410" y="260" class="okt" text-anchor="middle">Footprint — 두 목표가 모두 충족되는 동안 heap size를 조금씩 감소</text>
+  <text x="410" y="279" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">-XmxN</tspan> · default 1/4 of physical(or container) memory</text>
+  <text x="40" y="324" class="sub">위에서부터 차례대로 충족시킴 — 매 collection이 끝날 때마다 통계를 갱신하고 다시 확인</text>
+</svg>

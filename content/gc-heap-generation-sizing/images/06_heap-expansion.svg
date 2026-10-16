@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 454" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>커밋된 영역이 차면 young과 old가 각자 예약 범위 안에서 커밋을 늘리고, old generation이 최대 2g까지 가득 차면 full GC가 일어난다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .used { fill: #e5e7eb; stroke: none; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="454" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="434" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">커밋 확장 — 예약 범위 안에서 늘리다 꽉 차면 full GC</text>
+  <text x="730" y="42" class="code" text-anchor="end">-Xmx3g -Xms1500m</text>
+  <text x="245.0" y="78" class="sub" text-anchor="middle">young (max 1g)</text>
+  <text x="530.0" y="78" class="sub" text-anchor="middle">old (max 2g)</text>
+  <text x="30" y="116" class="lane2">① 시작</text>
+  <text x="30" y="134" class="sub">초기 커밋</text>
+  <rect x="150" y="92" width="92.8" height="52" rx="3" class="box"/>
+  <rect x="150" y="92" width="37.1" height="52" rx="3" class="used"/>
+  <rect x="242.8" y="92" width="97.2" height="52" rx="3" class="wait"/>
+  <rect x="340.0" y="92" width="185.5" height="52" rx="3" class="box"/>
+  <rect x="340.0" y="92" width="55.7" height="52" rx="3" class="used"/>
+  <rect x="525.5" y="92" width="194.5" height="52" rx="3" class="wait"/>
+  <text x="432.75" y="123" class="val" text-anchor="middle">1000m 커밋</text>
+  <text x="196.4" y="123" class="val" text-anchor="middle">500m</text>
+  <text x="30" y="192" class="lane2">② young 확장</text>
+  <text x="30" y="210" class="sub">young이 참</text>
+  <rect x="150" y="168" width="148.4" height="52" rx="3" class="box"/>
+  <rect x="150" y="168" width="111.3" height="52" rx="3" class="used"/>
+  <rect x="298.4" y="168" width="41.6" height="52" rx="3" class="wait"/>
+  <rect x="340.0" y="168" width="185.5" height="52" rx="3" class="box"/>
+  <rect x="340.0" y="168" width="92.8" height="52" rx="3" class="used"/>
+  <rect x="525.5" y="168" width="194.5" height="52" rx="3" class="wait"/>
+  <text x="432.75" y="199" class="val" text-anchor="middle">1000m 커밋</text>
+  <text x="224.2" y="199" class="val" text-anchor="middle">커밋 확장</text>
+  <text x="30" y="268" class="lane2">③ old 확장</text>
+  <text x="30" y="286" class="sub">old가 참</text>
+  <rect x="150" y="244" width="148.4" height="52" rx="3" class="box"/>
+  <rect x="150" y="244" width="55.7" height="52" rx="3" class="used"/>
+  <rect x="298.4" y="244" width="41.6" height="52" rx="3" class="wait"/>
+  <rect x="340.0" y="244" width="296.9" height="52" rx="3" class="box"/>
+  <rect x="340.0" y="244" width="259.8" height="52" rx="3" class="used"/>
+  <rect x="636.9" y="244" width="83.1" height="52" rx="3" class="wait"/>
+  <text x="488.45" y="275" class="val" text-anchor="middle">커밋 확장</text>
+  <text x="30" y="344" class="lane2">④ old 최대</text>
+  <text x="30" y="362" class="sub">2g까지 참</text>
+  <rect x="150" y="320" width="148.4" height="52" rx="3" class="box"/>
+  <rect x="150" y="320" width="55.7" height="52" rx="3" class="used"/>
+  <rect x="298.4" y="320" width="41.6" height="52" rx="3" class="wait"/>
+  <rect x="340.0" y="320" width="380.0" height="52" rx="3" class="bad"/>
+  <text x="530.0" y="351.0" class="badt" text-anchor="middle">old generation이 가득 참 → full GC!</text>
+  <rect x="150" y="398" width="14" height="14" rx="2" class="used"/>
+  <text x="172" y="410" class="sub">사용 중</text>
+  <rect x="240" y="398" width="14" height="14" rx="2" class="box"/>
+  <text x="262" y="410" class="sub">커밋됨</text>
+  <rect x="330" y="398" width="14" height="14" rx="2" class="wait"/>
+  <text x="352" y="410" class="sub">예약만 됨</text>
+
+</svg>

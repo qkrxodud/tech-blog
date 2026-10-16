@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>SurvivorRatio 기본값 8이면 eden, survivor, survivor가 8:1:1이 되어 survivor 하나는 young의 1/10이며, survivor가 너무 크면 낭비, 너무 작으면 객체가 일찍 old로 올라간다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .used { fill: #e5e7eb; stroke: none; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">SurvivorRatio — eden이 survivor의 몇 배인지</text>
+  <text x="730" y="42" class="code" text-anchor="end">-XX:SurvivorRatio=8</text>
+  <path d="M 150 90 L 150 82 L 620 82 L 620 90" class="al"/>
+  <text x="385.0" y="74" class="sub" text-anchor="middle">young generation</text>
+  <rect x="150" y="94" width="376.0" height="56" rx="3" class="box"/>
+  <text x="338.0" y="127.0" class="op" text-anchor="middle">eden (8)</text>
+  <rect x="526.0" y="94" width="47.0" height="56" rx="3" class="hold"/>
+  <text x="549.5" y="127.0" class="val" text-anchor="middle">S0 (1)</text>
+  <rect x="573.0" y="94" width="47.0" height="56" rx="3" class="hold"/>
+  <text x="596.5" y="127.0" class="val" text-anchor="middle">S1 (1)</text>
+  <rect x="620" y="94" width="100" height="56" rx="3" class="wait"/>
+  <text x="670.0" y="127.0" class="waitt" text-anchor="middle">old</text>
+  <text x="30" y="126" class="lane2">default 8</text>
+  <text x="150" y="180" class="gnote">survivor 하나 = young generation의 1/10</text>
+  <text x="150" y="206" class="sub">GC 로그 예: Eden 27328K, survivor 3392K (약 8배)</text>
+  <rect x="30" y="228" width="340" height="56" rx="8" class="bad"/>
+  <text x="200" y="251" class="badt" text-anchor="middle">survivor가 너무 크면</text>
+  <text x="200" y="271" class="note" text-anchor="middle">young generation에서 낭비가 발생</text>
+  <rect x="390" y="228" width="340" height="56" rx="8" class="bad"/>
+  <text x="560" y="251" class="badt" text-anchor="middle">survivor가 너무 작으면</text>
+  <text x="560" y="271" class="note" text-anchor="middle">살아남은 객체가 너무 일찍 old로 올라감</text>
+
+</svg>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>young GC는 GC root와 remembered set(old에서 young을 가리키는 참조 기록)을 root로 삼아 young generation의 살아 있는 객체를 찾는다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .used { fill: #e5e7eb; stroke: none; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">remembered set — minor GC root</text>
+  <text x="730" y="42" class="code" text-anchor="end">young GC</text>
+  <rect x="150" y="70" width="170" height="48" rx="8" class="hold"/>
+  <text x="235" y="92" class="op" text-anchor="middle">GC root</text>
+  <text x="235" y="110" class="sub" text-anchor="middle">스택 변수, static 변수 등</text>
+  <rect x="470" y="70" width="250" height="48" rx="8" class="hold"/>
+  <text x="595" y="92" class="op" text-anchor="middle">remembered set</text>
+  <text x="595" y="110" class="sub" text-anchor="middle">old → young 참조 기록 (minor GC root)</text>
+  <path d="M 150 178 L 150 170 L 430 170 L 430 178" class="al"/>
+  <text x="290" y="162" class="lane2" text-anchor="middle">young generation</text>
+  <path d="M 430 178 L 430 170 L 735 170 L 735 178" class="al"/>
+  <text x="582" y="162" class="lane2" text-anchor="middle">old generation</text>
+  <rect x="150" y="184" width="280" height="110" rx="4" class="box"/>
+  <rect x="430" y="184" width="305" height="110" rx="4" class="hold"/>
+  <rect x="180" y="214" width="60" height="32" rx="6" class="ok"/>
+  <text x="210" y="235" class="okt" text-anchor="middle">A</text>
+  <rect x="270" y="214" width="60" height="32" rx="6" class="ok"/>
+  <text x="300" y="235" class="okt" text-anchor="middle">B</text>
+  <rect x="360" y="214" width="50" height="32" rx="6" class="bad"/>
+  <text x="385" y="235" class="badt" text-anchor="middle">C</text>
+  <rect x="560" y="214" width="60" height="32" rx="6" class="box"/>
+  <text x="590" y="235" class="op" text-anchor="middle">O</text>
+  <line x1="210" y1="118" x2="210" y2="212" class="gl" marker-end="url(#agr)"/>
+  <line x1="560" y1="118" x2="316" y2="212" class="gl" marker-end="url(#agr)"/>
+  <path d="M 590 246 C 560 300, 330 300, 302 250" class="al" marker-end="url(#ar)"/>
+  <text x="640" y="276" class="sub" text-anchor="middle">O가 B를 참조</text>
+  <text x="385" y="206" class="note" text-anchor="middle">garbage</text>
+  <text x="30" y="330" class="sub">A: GC root에서 닿아 살아 있음</text>
+  <text x="30" y="352" class="sub">B: GC root에서는 닿지 않지만 old의 O가 참조하므로 remembered set으로 찾아 살아 있음</text>
+  <text x="30" y="374" class="sub">C: 어디에서도 닿지 않아 garbage — old generation 전체는 훑지 않음</text>
+
+</svg>

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>generation 기본 비율은 young generation과 old generation이 1 대 2, eden과 survivor0, survivor1이 8 대 1 대 1이며, full GC는 old generation 공간이 부족할 때 세 가지 경우에 트리거되는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ops { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .tiny { font-size: 11px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #e5e7eb; stroke: #6b7280; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .region { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12px; fill: #9ca3af; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .ad { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 4 3; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="186" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">generation 기본 비율 — young : old = 1 : 2</text>
+  <rect x="30" y="60" width="184.66666666666669" height="50" rx="6" class="region"/>
+  <text x="123.33333333333334" y="90" class="ops" text-anchor="middle">eden (8)</text>
+  <rect x="216.66666666666669" y="60" width="21.333333333333336" height="50" rx="4" class="ok"/>
+  <rect x="240.00000000000003" y="60" width="21.333333333333336" height="50" rx="4" class="ok"/>
+  <rect x="267.33333333333337" y="60" width="462.66666666666663" height="50" rx="6" class="dbbox"/>
+  <text x="496.6666666666667" y="90" class="ops" text-anchor="middle">old generation (2)</text>
+  <text x="239.00000000000003" y="130" class="sub" text-anchor="middle">survivor0 (1) · survivor1 (1)</text>
+  <line x1="30" y1="146" x2="261.33333333333337" y2="146" class="axis"/>
+  <text x="146.66666666666669" y="164" class="sub" text-anchor="middle">young generation (1)</text>
+  <line x1="267.33333333333337" y1="146" x2="730" y2="146" class="axis"/>
+  <text x="496.6666666666667" y="164" class="sub" text-anchor="middle">old generation (2)</text>
+  <text x="30" y="186" class="sub">eden : survivor0 : survivor1 = 8 : 1 : 1 — 옵션 기본값 <tspan font-family="Menlo, Consolas, monospace">-XX:NewRatio=2</tspan>, <tspan font-family="Menlo, Consolas, monospace">-XX:SurvivorRatio=8</tspan></text>
+  <rect x="10" y="212" width="740" height="198" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="244" class="h">full GC가 트리거되는 경우</text>
+  <rect x="30" y="262" width="700" height="36" rx="8" class="bad"/>
+  <text x="48" y="285" class="badt">1. young GC 직전에 old generation의 여유 공간이 부족하다고 예측될 때</text>
+  <rect x="30" y="308" width="700" height="36" rx="8" class="bad"/>
+  <text x="48" y="331" class="badt">2. young GC 도중에 promotion하기에 old generation 공간이 부족할 때</text>
+  <rect x="30" y="354" width="700" height="36" rx="8" class="bad"/>
+  <text x="48" y="377" class="badt">3. 너무 큰 객체를 old generation에 바로 생성하는데 공간이 부족할 때</text>
+</svg>

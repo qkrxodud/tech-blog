@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>major GC는 heap 전체를 mark-sweep-compact로 처리하며, old generation을 먼저 compact한 뒤 young generation의 live 객체를 old generation으로 복사하는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ops { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .tiny { font-size: 11px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #e5e7eb; stroke: #6b7280; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .region { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12px; fill: #9ca3af; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .ad { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 4 3; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">major GC — heap 전체를 mark-sweep-compact</text>
+  <text x="275" y="66" class="step" text-anchor="middle">young generation</text>
+  <text x="570" y="66" class="step" text-anchor="middle">old generation</text>
+  <line x1="160" y1="74" x2="730" y2="74" class="axis"/>
+  <text x="30" y="114" class="ops">major GC 전</text>
+  <text x="30" y="132" class="sub">old 공간이 부족</text>
+  <rect x="150" y="90" width="252" height="56" rx="8" class="region"/>
+  <rect x="160" y="96" width="56" height="44" rx="8" class="ok"/>
+  <text x="188.0" y="123.0" class="okt" text-anchor="middle">live</text>
+  <rect x="222" y="96" width="56" height="44" rx="8" class="bad"/>
+  <text x="250.0" y="123.0" class="badt" text-anchor="middle">×</text>
+  <rect x="284" y="96" width="56" height="44" rx="8" class="ok"/>
+  <text x="312.0" y="123.0" class="okt" text-anchor="middle">live</text>
+  <rect x="346" y="96" width="56" height="44" rx="8" class="bad"/>
+  <text x="374.0" y="123.0" class="badt" text-anchor="middle">×</text>
+  <rect x="410" y="90" width="320" height="56" rx="8" class="dbbox"/>
+  <rect x="420" y="96" width="46" height="44" rx="8" class="ok"/>
+  <text x="443.0" y="123.0" class="okt" text-anchor="middle">O</text>
+  <rect x="472" y="96" width="46" height="44" rx="8" class="bad"/>
+  <text x="495.0" y="123.0" class="badt" text-anchor="middle">×</text>
+  <rect x="524" y="96" width="46" height="44" rx="8" class="ok"/>
+  <text x="547.0" y="123.0" class="okt" text-anchor="middle">O</text>
+  <rect x="576" y="96" width="46" height="44" rx="8" class="bad"/>
+  <text x="599.0" y="123.0" class="badt" text-anchor="middle">×</text>
+  <rect x="628" y="96" width="46" height="44" rx="8" class="ok"/>
+  <text x="651.0" y="123.0" class="okt" text-anchor="middle">O</text>
+  <rect x="680" y="96" width="46" height="44" rx="8" class="ok"/>
+  <text x="703.0" y="123.0" class="okt" text-anchor="middle">O</text>
+  <text x="30" y="196" class="ops">1. old compact</text>
+  <text x="30" y="214" class="sub">old를 먼저 정리</text>
+  <rect x="150" y="172" width="252" height="56" rx="8" class="region"/>
+  <rect x="160" y="178" width="56" height="44" rx="8" class="ok"/>
+  <text x="188.0" y="205.0" class="okt" text-anchor="middle">live</text>
+  <rect x="222" y="178" width="56" height="44" rx="8" class="bad"/>
+  <text x="250.0" y="205.0" class="badt" text-anchor="middle">×</text>
+  <rect x="284" y="178" width="56" height="44" rx="8" class="ok"/>
+  <text x="312.0" y="205.0" class="okt" text-anchor="middle">live</text>
+  <rect x="346" y="178" width="56" height="44" rx="8" class="bad"/>
+  <text x="374.0" y="205.0" class="badt" text-anchor="middle">×</text>
+  <rect x="410" y="172" width="320" height="56" rx="8" class="dbbox"/>
+  <rect x="420" y="178" width="46" height="44" rx="8" class="ok"/>
+  <text x="443.0" y="205.0" class="okt" text-anchor="middle">O</text>
+  <rect x="472" y="178" width="46" height="44" rx="8" class="ok"/>
+  <text x="495.0" y="205.0" class="okt" text-anchor="middle">O</text>
+  <rect x="524" y="178" width="46" height="44" rx="8" class="ok"/>
+  <text x="547.0" y="205.0" class="okt" text-anchor="middle">O</text>
+  <rect x="576" y="178" width="46" height="44" rx="6" class="wait"/>
+  <rect x="628" y="178" width="46" height="44" rx="6" class="wait"/>
+  <rect x="680" y="178" width="46" height="44" rx="6" class="wait"/>
+  <text x="30" y="278" class="ops">2. young → old</text>
+  <text x="30" y="296" class="sub">young live를 복사</text>
+  <rect x="150" y="254" width="252" height="56" rx="8" class="region"/>
+  <rect x="160" y="260" width="56" height="44" rx="6" class="wait"/>
+  <rect x="222" y="260" width="56" height="44" rx="6" class="wait"/>
+  <rect x="284" y="260" width="56" height="44" rx="6" class="wait"/>
+  <rect x="346" y="260" width="56" height="44" rx="6" class="wait"/>
+  <rect x="410" y="254" width="320" height="56" rx="8" class="dbbox"/>
+  <rect x="420" y="260" width="46" height="44" rx="8" class="ok"/>
+  <text x="443.0" y="287.0" class="okt" text-anchor="middle">O</text>
+  <rect x="472" y="260" width="46" height="44" rx="8" class="ok"/>
+  <text x="495.0" y="287.0" class="okt" text-anchor="middle">O</text>
+  <rect x="524" y="260" width="46" height="44" rx="8" class="ok"/>
+  <text x="547.0" y="287.0" class="okt" text-anchor="middle">O</text>
+  <rect x="576" y="260" width="46" height="44" rx="8" class="ok"/>
+  <text x="599.0" y="287.0" class="okt" text-anchor="middle">Y</text>
+  <rect x="628" y="260" width="46" height="44" rx="8" class="ok"/>
+  <text x="651.0" y="287.0" class="okt" text-anchor="middle">Y</text>
+  <rect x="680" y="260" width="46" height="44" rx="6" class="wait"/>
+  <path d="M188,223 C188,250 590,236 597,257" class="gl" marker-end="url(#agr)"/>
+  <path d="M312,223 C312,246 640,238 650,257" class="gl" marker-end="url(#agr)"/>
+  <text x="30" y="352" class="gnote">O: old 객체, Y: young에서 살아남아 old로 복사된 객체 — remembered set은 사용하지 않습니다</text>
+  <text x="30" y="378" class="note">heap 전체를 mark-sweep-compact로 처리하므로 minor GC보다 오래 걸립니다 (full GC라고도 부름)</text>
+</svg>

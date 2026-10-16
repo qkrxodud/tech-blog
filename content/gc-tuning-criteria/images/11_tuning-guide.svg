@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 600" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Throughput 목표를 정하고, 달성하지 못하면 max heap size를 늘리고, 그래도 안 되면 목표를 다시 잡으며, 달성한 뒤 pause time이 길면 Pause-Time 목표를 지정해 둘 사이에서 타협하는 GC 튜닝 순서</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="600" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="580" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">GC 튜닝 가이드 — Throughput 목표부터, pause time은 그다음</text>
+  <rect x="60" y="62" width="360" height="56" rx="8" class="hold"/>
+  <text x="240.0" y="86.0" class="op" text-anchor="middle">① Throughput goal을 정함</text>
+  <text x="240.0" y="105.0" class="val" text-anchor="middle">GCTimeRatio로 지정</text>
+  <line x1="240" y1="118" x2="240" y2="140" class="al" marker-end="url(#ar)"/>
+  <rect x="60" y="142" width="360" height="60" rx="8" class="box"/>
+  <text x="240.0" y="168.0" class="op" text-anchor="middle">Throughput goal을 달성하는가?</text>
+  <text x="240.0" y="187.0" class="val" text-anchor="middle">max heap size까지 썼을 때</text>
+  <line x1="420" y1="172" x2="466" y2="172" class="rl" marker-end="url(#arr)"/>
+  <text x="443" y="164" class="note" text-anchor="middle">아니오</text>
+  <rect x="468" y="142" width="262" height="60" rx="8" class="bad"/>
+  <text x="599.0" y="168.0" class="badt" text-anchor="middle">② max heap size를 늘림</text>
+  <text x="599.0" y="187.0" class="val" text-anchor="middle">RAM에 근접하게, swap은 없게</text>
+  <line x1="599" y1="202" x2="599" y2="230" class="rl" marker-end="url(#arr)"/>
+  <text x="611" y="221" class="note">그래도 미달</text>
+  <rect x="468" y="232" width="262" height="60" rx="8" class="bad"/>
+  <text x="599.0" y="258.0" class="badt" text-anchor="middle">③ 목표가 너무 높음</text>
+  <text x="599.0" y="277.0" class="val" text-anchor="middle">RAM 대비 목표를 다시 잡음</text>
+  <line x1="240" y1="202" x2="240" y2="230" class="gl" marker-end="url(#agr)"/>
+  <text x="252" y="221" class="gnote">예</text>
+  <rect x="60" y="232" width="360" height="60" rx="8" class="box"/>
+  <text x="240.0" y="258.0" class="op" text-anchor="middle">pause time이 너무 긴가?</text>
+  <text x="240.0" y="277.0" class="val" text-anchor="middle">아니오면 현재 설정을 유지</text>
+  <line x1="240" y1="292" x2="240" y2="320" class="gl" marker-end="url(#agr)"/>
+  <text x="252" y="311" class="gnote">예</text>
+  <rect x="60" y="322" width="360" height="60" rx="8" class="ok"/>
+  <text x="240.0" y="348.0" class="okt" text-anchor="middle">④ Maximum Pause-Time goal 지정</text>
+  <text x="240.0" y="367.0" class="val" text-anchor="middle">MaxGCPauseMillis로 지정</text>
+  <line x1="240" y1="382" x2="240" y2="410" class="al" marker-end="url(#ar)"/>
+  <rect x="60" y="412" width="360" height="60" rx="8" class="hold"/>
+  <text x="240.0" y="438.0" class="op" text-anchor="middle">⑤ 두 목표 사이에서 타협</text>
+  <text x="240.0" y="457.0" class="val" text-anchor="middle">Throughput goal이 다시 깨질 수 있음</text>
+  <path d="M 60 442 L 48 442 L 48 172 L 58 172" class="al" marker-end="url(#ar)"/>
+  <text x="38" y="307" class="sub" transform="rotate(-90 38 307)" text-anchor="middle">다시 확인</text>
+  <rect x="60" y="490" width="670" height="84" rx="8" class="dbbox"/>
+  <text x="76" y="514" class="op">정리</text>
+  <text x="76" y="538" class="val">Throughput goal은 힙을 늘리는 쪽, Pause-Time goal과 Footprint는 힙을 줄이는 쪽이라 trade-off 관계입니다</text>
+  <text x="76" y="560" class="val">-Xms와 -Xmx를 같게 지정하면 힙 크기를 동적으로 조정하지 않으므로 이 순서의 효용은 크지 않습니다</text>
+</svg>

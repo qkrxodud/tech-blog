@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 460" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>ParallelGCThreads를 지정하지 않으면 core 또는 h/w thread 수 N이 8 이하일 때 N개, 8보다 크면 8 + (N-8) * 5 / 8개의 GC 스레드를 사용하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="460" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="440" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">GC 스레드 수 — N에 따라 정해지는 값</text>
+  <text x="730" y="42" class="code" text-anchor="end">-XX:ParallelGCThreads</text>
+  <rect x="40" y="64" width="300" height="56" rx="8" class="hold"/>
+  <text x="190" y="87" class="op" text-anchor="middle">N 정하기</text>
+  <text x="190" y="107" class="val" text-anchor="middle">core 수 또는 h/w thread 수 (컨테이너는 --cpus)</text>
+  <line x1="190" y1="120" x2="190" y2="144" class="al" marker-end="url(#ar)"/>
+  <rect x="40" y="146" width="300" height="48" rx="8" class="box"/>
+  <text x="190" y="175" class="op" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">ParallelGCThreads=M</tspan> 지정?</text>
+  <path d="M 340 170 L 438 170" class="gl" marker-end="url(#agr)"/>
+  <text x="389" y="162" class="gnote" text-anchor="middle">예</text>
+  <rect x="440" y="146" width="290" height="48" rx="8" class="ok"/>
+  <text x="585" y="167" class="okt" text-anchor="middle">지정한 M을 그대로 사용</text>
+  <text x="585" y="185" class="val" text-anchor="middle">Ergonomics 계산을 건너뜀</text>
+  <line x1="190" y1="194" x2="190" y2="222" class="al" marker-end="url(#ar)"/>
+  <text x="202" y="213" class="sub">아니오 (default 0 → Ergonomics가 결정)</text>
+  <rect x="40" y="224" width="300" height="48" rx="8" class="box"/>
+  <text x="190" y="253" class="op" text-anchor="middle">N &lt;= 8 ?</text>
+  <path d="M 340 248 L 438 248" class="gl" marker-end="url(#agr)"/>
+  <text x="389" y="240" class="gnote" text-anchor="middle">예</text>
+  <rect x="440" y="224" width="290" height="48" rx="8" class="ok"/>
+  <text x="585" y="253" class="okt" text-anchor="middle">GC 스레드 수 = N</text>
+  <line x1="190" y1="272" x2="190" y2="300" class="al" marker-end="url(#ar)"/>
+  <text x="202" y="291" class="sub">아니오 (N &gt; 8)</text>
+  <rect x="40" y="302" width="690" height="56" rx="8" class="ok"/>
+  <text x="385" y="326" class="okt" text-anchor="middle">GC 스레드 수 = <tspan font-family="Menlo, Consolas, monospace">8 + (N-8) * 5 / 8</tspan></text>
+  <text x="385" y="346" class="val" text-anchor="middle">(N-8) * 5 / 8은 정수 나눗셈 — 일부 시스템에서는 5 / 16</text>
+  <text x="40" y="392" class="db">예시</text>
+  <rect x="90" y="374" width="200" height="30" rx="6" class="dbbox"/>
+  <text x="190" y="394" class="val" text-anchor="middle">N = 8 → 8</text>
+  <rect x="305" y="374" width="200" height="30" rx="6" class="dbbox"/>
+  <text x="405" y="394" class="val" text-anchor="middle">N = 12 → 8 + 4 * 5 / 8 = 10</text>
+  <rect x="520" y="374" width="200" height="30" rx="6" class="dbbox"/>
+  <text x="620" y="394" class="val" text-anchor="middle">N = 16 → 8 + 8 * 5 / 8 = 13</text>
+  <text x="40" y="432" class="sub">6 core에 hyper-threading으로 12 h/w thread라면 N = 12가 기준</text>
+</svg>

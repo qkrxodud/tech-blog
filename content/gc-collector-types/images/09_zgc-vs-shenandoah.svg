@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>ZGC와 Shenandoah GC를 개발 주체, pause time, 힙 크기, generational 지원, Oracle JDK 사용 여부로 비교한 표</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="500" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="480" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">ZGC와 Shenandoah GC</text>
+  <rect x="210" y="60" width="256" height="40" rx="8" class="box"/>
+  <text x="338" y="86" class="lane" text-anchor="middle">ZGC</text>
+  <rect x="478" y="60" width="256" height="40" rx="8" class="box"/>
+  <text x="606" y="86" class="lane" text-anchor="middle">Shenandoah GC</text>
+  <rect x="24" y="112" width="176" height="40" rx="6" class="dbbox"/>
+  <text x="40" y="137.0" class="op">개발</text>
+  <rect x="210" y="112" width="256" height="40" rx="6" class="box"/>
+  <text x="338" y="137.0" class="val" text-anchor="middle">Oracle이 밀고 있음</text>
+  <rect x="478" y="112" width="256" height="40" rx="6" class="box"/>
+  <text x="606" y="137.0" class="val" text-anchor="middle">Red Hat 주도</text>
+  <rect x="24" y="160" width="176" height="40" rx="6" class="dbbox"/>
+  <text x="40" y="185.0" class="op">pause time</text>
+  <rect x="210" y="160" width="256" height="40" rx="6" class="box"/>
+  <text x="338" y="185.0" class="val" text-anchor="middle">1ms 미만</text>
+  <rect x="478" y="160" width="256" height="40" rx="6" class="box"/>
+  <text x="606" y="185.0" class="val" text-anchor="middle">10ms 미만</text>
+  <rect x="24" y="208" width="176" height="40" rx="6" class="dbbox"/>
+  <text x="40" y="233.0" class="op">힙 크기</text>
+  <rect x="210" y="208" width="256" height="40" rx="6" class="box"/>
+  <text x="338" y="233.0" class="val" text-anchor="middle">수백 MB ~ 16TB</text>
+  <rect x="478" y="208" width="256" height="40" rx="6" class="box"/>
+  <text x="606" y="233.0" class="val" text-anchor="middle">수 GB ~ 수십 GB에 최적화</text>
+  <rect x="24" y="256" width="176" height="40" rx="6" class="dbbox"/>
+  <text x="40" y="281.0" class="op">generational</text>
+  <rect x="210" y="256" width="256" height="40" rx="6" class="box"/>
+  <text x="338" y="281.0" class="val" text-anchor="middle">JDK 21 등장, JDK 24부터만</text>
+  <rect x="478" y="256" width="256" height="40" rx="6" class="box"/>
+  <text x="606" y="281.0" class="val" text-anchor="middle">JDK 25부터 production ready</text>
+  <rect x="24" y="304" width="176" height="40" rx="6" class="dbbox"/>
+  <text x="40" y="329.0" class="op">Oracle JDK</text>
+  <rect x="210" y="304" width="256" height="40" rx="6" class="ok"/>
+  <text x="338" y="329.0" class="okt" text-anchor="middle">사용 가능</text>
+  <rect x="478" y="304" width="256" height="40" rx="6" class="bad"/>
+  <text x="606" y="329.0" class="badt" text-anchor="middle">사용 불가</text>
+  <rect x="24" y="352" width="176" height="56" rx="6" class="dbbox"/>
+  <text x="40" y="385.0" class="op">그 밖에</text>
+  <rect x="210" y="352" width="256" height="56" rx="6" class="box"/>
+  <text x="338" y="385.0" class="val" text-anchor="middle">-</text>
+  <rect x="478" y="352" width="256" height="56" rx="6" class="box"/>
+  <text x="606" y="374" class="val" text-anchor="middle">메모리 효율이 조금 더 좋다고</text>
+  <text x="606" y="393" class="val" text-anchor="middle">알려짐, 32bit에서도 사용 가능</text>
+  <text x="30" y="434" class="sub">두 GC 모두 heap size와 상관없이 짧은 pause time을 목표로 하며, 대부분의 OpenJDK에서는 둘 다 사용할 수 있다</text>
+  <text x="30" y="456" class="gnote">둘 다 사용할 수 있다면 generational ZGC를 추천하는 것 같다 (강의 의견)</text>
+</svg>

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 504" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>C++에서 delete를 빠뜨리면 힙의 int(10)이 해제되지 않아 memory leak이 생기고, 자바에서는 참조가 끊긴 Object를 GC가 수거하는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; fill: #15803d; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .grid { stroke: #eceef1; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="504" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="234" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">C++ — delete를 빠뜨리면 memory leak</text>
+  <text x="730" y="42" class="code" text-anchor="end">new int(10)</text>
+  <text x="220" y="68" class="step" text-anchor="middle">① allocate() 시작</text>
+  <text x="360" y="68" class="step" text-anchor="middle">② new int(10)</text>
+  <text x="500" y="68" class="step" text-anchor="middle">③ delete p 누락</text>
+  <text x="640" y="68" class="step" text-anchor="middle">④ allocate() 종료</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane">stack</text>
+  <text x="30" y="126" class="sub">포인터 p</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="174" class="lane">heap</text>
+  <text x="30" y="192" class="sub">C++ 힙</text>
+  <rect x="150" y="152" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="op" text-anchor="middle">frame</text>
+  <text x="220" y="127" class="val" text-anchor="middle">프레임 생성</text>
+  <rect x="302" y="88" width="116" height="48" rx="8" class="hold"/>
+  <text x="360" y="108" class="opm" text-anchor="middle">p</text>
+  <text x="360" y="127" class="val" text-anchor="middle">int(10)을 가리킴</text>
+  <rect x="442" y="88" width="116" height="48" rx="8" class="hold"/>
+  <text x="500" y="108" class="opm" text-anchor="middle">p</text>
+  <text x="500" y="127" class="val" text-anchor="middle">계속 사용</text>
+  <rect x="582" y="88" width="116" height="48" rx="8" class="wait"/>
+  <text x="640" y="108" class="waitt" text-anchor="middle">p 사라짐</text>
+  <text x="640" y="127" class="val" text-anchor="middle">프레임 제거</text>
+  <rect x="302" y="154" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="174" class="opm" text-anchor="middle">int(10)</text>
+  <text x="360" y="193" class="val" text-anchor="middle">힙에 할당</text>
+  <rect x="442" y="154" width="116" height="48" rx="8" class="box"/>
+  <text x="500" y="174" class="opm" text-anchor="middle">int(10)</text>
+  <text x="500" y="193" class="val" text-anchor="middle">해제하지 않음</text>
+  <rect x="582" y="154" width="116" height="48" rx="8" class="bad"/>
+  <text x="640" y="174" class="badc" text-anchor="middle">int(10)</text>
+  <text x="640" y="193" class="note" text-anchor="middle">memory leak</text>
+  <line x1="360" y1="136" x2="360" y2="152" class="al" marker-end="url(#ar)"/>
+  <line x1="500" y1="136" x2="500" y2="152" class="al" marker-end="url(#ar)"/>
+  <text x="150" y="230" class="sub">가리키는 포인터가 사라져도 delete를 호출하지 않으면 int(10)은 프로그램이 끝날 때까지 남습니다</text>
+  <rect x="10" y="260" width="740" height="234" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="292" class="h">Java — 참조가 끊긴 객체는 GC가 수거</text>
+  <text x="730" y="292" class="code" text-anchor="end">new Object()</text>
+  <text x="220" y="318" class="step" text-anchor="middle">① allocate() 시작</text>
+  <text x="360" y="318" class="step" text-anchor="middle">② new Object()</text>
+  <text x="500" y="318" class="step" text-anchor="middle">③ allocate() 종료</text>
+  <text x="640" y="318" class="step" text-anchor="middle">④ GC 동작</text>
+  <line x1="160" y1="326" x2="722" y2="326" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="358" class="lane">stack</text>
+  <text x="30" y="376" class="sub">지역 변수 obj</text>
+  <rect x="150" y="336" width="585" height="52" rx="6" class="track"/>
+  <text x="30" y="424" class="lane">JVM heap</text>
+  <text x="30" y="442" class="sub">GC가 관리</text>
+  <rect x="150" y="402" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="338" width="116" height="48" rx="8" class="box"/>
+  <text x="220" y="358" class="op" text-anchor="middle">frame</text>
+  <text x="220" y="377" class="val" text-anchor="middle">프레임 생성</text>
+  <rect x="302" y="338" width="116" height="48" rx="8" class="hold"/>
+  <text x="360" y="358" class="opm" text-anchor="middle">obj</text>
+  <text x="360" y="377" class="val" text-anchor="middle">Object를 가리킴</text>
+  <rect x="442" y="338" width="116" height="48" rx="8" class="wait"/>
+  <text x="500" y="358" class="waitt" text-anchor="middle">obj 사라짐</text>
+  <text x="500" y="377" class="val" text-anchor="middle">프레임 제거</text>
+  <rect x="302" y="404" width="116" height="48" rx="8" class="box"/>
+  <text x="360" y="424" class="opm" text-anchor="middle">Object</text>
+  <text x="360" y="443" class="val" text-anchor="middle">힙에 할당</text>
+  <rect x="442" y="404" width="116" height="48" rx="8" class="bad"/>
+  <text x="500" y="424" class="badc" text-anchor="middle">Object</text>
+  <text x="500" y="443" class="note" text-anchor="middle">참조 없음</text>
+  <rect x="582" y="404" width="116" height="48" rx="8" class="ok"/>
+  <text x="640" y="424" class="okt" text-anchor="middle">수거됨</text>
+  <text x="640" y="443" class="val" text-anchor="middle">GC가 회수</text>
+  <line x1="360" y1="386" x2="360" y2="402" class="al" marker-end="url(#ar)"/>
+  <text x="150" y="480" class="sub">delete가 없어도 더 이상 참조되지 않는 객체는 GC가 찾아서 회수합니다</text>
+</svg>

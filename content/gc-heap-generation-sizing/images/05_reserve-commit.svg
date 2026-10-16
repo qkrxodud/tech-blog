@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>-Xmx3g로 3g를 예약하고 NewRatio 2에 따라 max young 1g, max old 2g로 나눈 뒤, -Xms1500m에 따라 young 500m와 old 1000m만 커밋한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .used { fill: #e5e7eb; stroke: none; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">-Xmx3g -Xms1500m — 예약과 커밋</text>
+  <text x="730" y="42" class="code" text-anchor="end">NewRatio=2</text>
+  <path d="M 150 112 L 150 104 L 340.0 104 L 340.0 112" class="al"/>
+  <text x="245.0" y="96" class="sub" text-anchor="middle">max young generation = 1g</text>
+  <path d="M 340.0 112 L 340.0 104 L 720 104 L 720 112" class="al"/>
+  <text x="530.0" y="96" class="sub" text-anchor="middle">max old generation = 2g</text>
+  <rect x="120" y="114" width="625" height="68" rx="6" fill="#ffffff" stroke="#eceef1"/>
+  <rect x="150" y="118" width="92.8" height="60" rx="3" class="ok"/>
+  <text x="196.4" y="153.0" class="okt" text-anchor="middle">커밋</text>
+  <rect x="242.8" y="118" width="97.2" height="60" rx="3" class="wait"/>
+  <text x="291.4" y="153.0" class="waitt" text-anchor="middle">예약만</text>
+  <rect x="340.0" y="118" width="185.5" height="60" rx="3" class="ok"/>
+  <text x="432.8" y="153.0" class="okt" text-anchor="middle">커밋</text>
+  <rect x="525.5" y="118" width="194.5" height="60" rx="3" class="wait"/>
+  <text x="622.8" y="153.0" class="waitt" text-anchor="middle">예약만</text>
+  <text x="30" y="144" class="lane2">JVM heap</text>
+  <text x="30" y="164" class="sub">가상 주소 공간</text>
+  <path d="M 150 182 L 150 190 L 242.8 190 L 242.8 182" class="al"/>
+  <text x="196.4" y="208" class="sub" text-anchor="middle">init young 500m</text>
+  <path d="M 340.0 182 L 340.0 190 L 525.5 190 L 525.5 182" class="al"/>
+  <text x="432.75" y="208" class="sub" text-anchor="middle">init old 1000m</text>
+  <path d="M 150 218 L 150 226 L 720 226 L 720 218" class="al"/>
+  <text x="435.0" y="244" class="sub" text-anchor="middle">-Xmx3g: 3g 예약 (reserve)</text>
+  <text x="30" y="280" class="gnote">커밋(commit): 물리 메모리와 매핑되어 데이터를 읽고 쓸 수 있는 상태</text>
+  <text x="30" y="306" class="sub">500m + 1000m = -Xms1500m · 예약만 된 영역은 아직 물리 메모리와 매핑되지 않음</text>
+
+</svg>

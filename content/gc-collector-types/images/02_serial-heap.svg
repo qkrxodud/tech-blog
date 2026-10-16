@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 290" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Serial GC의 힙은 왼쪽부터 Young(Eden, Survivor 두 개, Virtual)과 Old(사용 영역, Virtual) 순서로 배치된다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="290" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="270" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Serial GC — 힙 배치</text>
+  <text x="730" y="42" class="code" text-anchor="end">-XX:+UseSerialGC</text>
+  <path d="M 40 106 L 40 98 L 440 98 L 440 106" class="al"/>
+  <text x="240.0" y="90" class="lane" text-anchor="middle">Young</text>
+  <path d="M 440 106 L 440 98 L 720 98 L 720 106" class="al"/>
+  <text x="580.0" y="90" class="lane" text-anchor="middle">Old</text>
+  <rect x="40" y="120" width="190" height="64" rx="4" class="box"/>
+  <text x="135.0" y="157.0" class="op" text-anchor="middle">Eden</text>
+  <rect x="230" y="120" width="70" height="64" rx="4" class="hold"/>
+  <text x="265.0" y="157.0" class="val" text-anchor="middle">Survivor</text>
+  <rect x="300" y="120" width="70" height="64" rx="4" class="hold"/>
+  <text x="335.0" y="157.0" class="val" text-anchor="middle">Survivor</text>
+  <rect x="370" y="120" width="70" height="64" rx="4" class="wait"/>
+  <text x="405.0" y="157.0" class="waitt" text-anchor="middle">Virtual</text>
+  <rect x="440" y="120" width="210" height="64" rx="4" class="hold"/>
+  <text x="545.0" y="157.0" class="op" text-anchor="middle">사용 영역</text>
+  <rect x="650" y="120" width="70" height="64" rx="4" class="wait"/>
+  <text x="685.0" y="157.0" class="waitt" text-anchor="middle">Virtual</text>
+  <line x1="40" y1="206" x2="716" y2="206" class="axis" marker-end="url(#ar)"/>
+  <text x="40" y="226" class="sub">왼쪽부터 Young → Old 순서</text>
+  <text x="40" y="252" class="sub">Virtual: 힙으로 예약했지만 아직 커밋하지 않은 공간 (-Xms가 -Xmx보다 작을 때)</text>
+</svg>

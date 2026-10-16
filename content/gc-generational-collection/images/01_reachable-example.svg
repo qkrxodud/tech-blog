@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 648" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Reachable 예제를 한 줄씩 실행할 때 A, B①, C①, B②, C② 객체가 live와 garbage로 바뀌고, 마지막에 지역 변수 a와 c에서 닿는 A와 C②만 live로 남는 모습</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ops { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .opm { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .tiny { font-size: 11px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #e5e7eb; stroke: #6b7280; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .region { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12px; fill: #9ca3af; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .ad { stroke: #9ca3af; stroke-width: 1.4; fill: none; stroke-dasharray: 4 3; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="648" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="362" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Reachable 예제 — 문장마다 heap의 객체가 바뀌는 모습</text>
+  <rect x="560" y="28" width="14" height="14" rx="3" class="ok"/>
+  <text x="580" y="40" class="sub">live</text>
+  <rect x="630" y="28" width="14" height="14" rx="3" class="bad"/>
+  <text x="650" y="40" class="sub">garbage</text>
+  <text x="30" y="72" class="step">실행한 문장 (main)</text>
+  <text x="348" y="72" class="step" text-anchor="middle">A</text>
+  <text x="432" y="72" class="step" text-anchor="middle">B①</text>
+  <text x="516" y="72" class="step" text-anchor="middle">C①</text>
+  <text x="600" y="72" class="step" text-anchor="middle">B②</text>
+  <text x="684" y="72" class="step" text-anchor="middle">C②</text>
+  <line x1="300" y1="80" x2="730" y2="80" class="axis"/>
+  <rect x="24" y="88" width="712" height="50" rx="6" class="region"/>
+  <text x="36" y="109" class="code">A a = makeA();</text>
+  <text x="36" y="128" class="sub">makeA() 안에서 A, B①, C① 생성</text>
+  <rect x="312" y="96" width="72" height="34" rx="6" class="ok"/>
+  <text x="348" y="118" class="okt" text-anchor="middle">A</text>
+  <rect x="396" y="96" width="72" height="34" rx="6" class="ok"/>
+  <text x="432" y="118" class="okt" text-anchor="middle">B①</text>
+  <rect x="480" y="96" width="72" height="34" rx="6" class="ok"/>
+  <text x="516" y="118" class="okt" text-anchor="middle">C①</text>
+  <rect x="564" y="96" width="72" height="34" rx="6" class="wait"/>
+  <rect x="648" y="96" width="72" height="34" rx="6" class="wait"/>
+  <rect x="24" y="144" width="712" height="50" rx="6" class="region"/>
+  <text x="36" y="165" class="code">a.b = new B();</text>
+  <text x="36" y="184" class="sub">A의 b가 B②를 가리킴</text>
+  <rect x="312" y="152" width="72" height="34" rx="6" class="ok"/>
+  <text x="348" y="174" class="okt" text-anchor="middle">A</text>
+  <rect x="396" y="152" width="72" height="34" rx="6" class="bad"/>
+  <text x="432" y="174" class="badt" text-anchor="middle">B①</text>
+  <rect x="480" y="152" width="72" height="34" rx="6" class="bad"/>
+  <text x="516" y="174" class="badt" text-anchor="middle">C①</text>
+  <rect x="564" y="152" width="72" height="34" rx="6" class="ok"/>
+  <text x="600" y="174" class="okt" text-anchor="middle">B②</text>
+  <rect x="648" y="152" width="72" height="34" rx="6" class="wait"/>
+  <rect x="24" y="200" width="712" height="50" rx="6" class="region"/>
+  <text x="36" y="221" class="code">C c = new C();</text>
+  <text x="36" y="240" class="sub">지역 변수 c가 C②를 가리킴</text>
+  <rect x="312" y="208" width="72" height="34" rx="6" class="ok"/>
+  <text x="348" y="230" class="okt" text-anchor="middle">A</text>
+  <rect x="396" y="208" width="72" height="34" rx="6" class="bad"/>
+  <text x="432" y="230" class="badt" text-anchor="middle">B①</text>
+  <rect x="480" y="208" width="72" height="34" rx="6" class="bad"/>
+  <text x="516" y="230" class="badt" text-anchor="middle">C①</text>
+  <rect x="564" y="208" width="72" height="34" rx="6" class="ok"/>
+  <text x="600" y="230" class="okt" text-anchor="middle">B②</text>
+  <rect x="648" y="208" width="72" height="34" rx="6" class="ok"/>
+  <text x="684" y="230" class="okt" text-anchor="middle">C②</text>
+  <rect x="24" y="256" width="712" height="50" rx="6" class="region"/>
+  <text x="36" y="277" class="code">a.b.c = c;</text>
+  <text x="36" y="296" class="sub">B②의 c도 C②를 가리킴</text>
+  <rect x="312" y="264" width="72" height="34" rx="6" class="ok"/>
+  <text x="348" y="286" class="okt" text-anchor="middle">A</text>
+  <rect x="396" y="264" width="72" height="34" rx="6" class="bad"/>
+  <text x="432" y="286" class="badt" text-anchor="middle">B①</text>
+  <rect x="480" y="264" width="72" height="34" rx="6" class="bad"/>
+  <text x="516" y="286" class="badt" text-anchor="middle">C①</text>
+  <rect x="564" y="264" width="72" height="34" rx="6" class="ok"/>
+  <text x="600" y="286" class="okt" text-anchor="middle">B②</text>
+  <rect x="648" y="264" width="72" height="34" rx="6" class="ok"/>
+  <text x="684" y="286" class="okt" text-anchor="middle">C②</text>
+  <rect x="24" y="312" width="712" height="50" rx="6" class="region"/>
+  <text x="36" y="333" class="code">a.b = null;</text>
+  <text x="36" y="352" class="sub">A가 더 이상 B②를 가리키지 않음</text>
+  <rect x="312" y="320" width="72" height="34" rx="6" class="ok"/>
+  <text x="348" y="342" class="okt" text-anchor="middle">A</text>
+  <rect x="396" y="320" width="72" height="34" rx="6" class="bad"/>
+  <text x="432" y="342" class="badt" text-anchor="middle">B①</text>
+  <rect x="480" y="320" width="72" height="34" rx="6" class="bad"/>
+  <text x="516" y="342" class="badt" text-anchor="middle">C①</text>
+  <rect x="564" y="320" width="72" height="34" rx="6" class="bad"/>
+  <text x="600" y="342" class="badt" text-anchor="middle">B②</text>
+  <rect x="648" y="320" width="72" height="34" rx="6" class="ok"/>
+  <text x="684" y="342" class="okt" text-anchor="middle">C②</text>
+  <rect x="10" y="388" width="740" height="250" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="420" class="h">a.b = null; 이후 — stack에서 닿는 객체만 live</text>
+  <rect x="30" y="442" width="120" height="156" rx="8" class="dbbox"/>
+  <text x="90" y="464" class="lane" text-anchor="middle">stack</text>
+  <rect x="50" y="492" width="80" height="34" rx="6" class="hold"/>
+  <text x="90" y="514" class="opm" text-anchor="middle">a</text>
+  <rect x="50" y="546" width="80" height="34" rx="6" class="hold"/>
+  <text x="90" y="568" class="opm" text-anchor="middle">c</text>
+  <rect x="190" y="442" width="540" height="156" rx="8" class="dbbox"/>
+  <text x="718" y="462" class="sub" text-anchor="end">JVM heap</text>
+  <rect x="230" y="484" width="110" height="44" rx="8" class="ok"/>
+  <text x="285.0" y="503.0" class="okt" text-anchor="middle">A</text>
+  <text x="285.0" y="519.0" class="val" text-anchor="middle">b = null</text>
+  <rect x="420" y="484" width="100" height="44" rx="8" class="bad"/>
+  <text x="470.0" y="511.0" class="badt" text-anchor="middle">B①</text>
+  <rect x="600" y="484" width="100" height="44" rx="8" class="bad"/>
+  <text x="650.0" y="511.0" class="badt" text-anchor="middle">C①</text>
+  <rect x="230" y="542" width="110" height="44" rx="8" class="ok"/>
+  <text x="285.0" y="569.0" class="okt" text-anchor="middle">C②</text>
+  <rect x="420" y="542" width="100" height="44" rx="8" class="bad"/>
+  <text x="470.0" y="569.0" class="badt" text-anchor="middle">B②</text>
+  <line x1="130" y1="509" x2="228" y2="506" class="gl" marker-end="url(#agr)"/>
+  <line x1="130" y1="563" x2="228" y2="564" class="gl" marker-end="url(#agr)"/>
+  <line x1="520" y1="506" x2="598" y2="506" class="al" marker-end="url(#ar)"/>
+  <line x1="420" y1="564" x2="342" y2="564" class="al" marker-end="url(#ar)"/>
+  <text x="30" y="622" class="sub">garbage는 B①, C①, B② — C②는 지역 변수 c가 가리키고 있어 live입니다</text>
+</svg>

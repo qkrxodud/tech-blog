@@ -1401,5 +1401,29 @@
     "slug": "mysql-datetime-timestamp",
     "category": "database",
     "date": "2026-10-09"
+  },
+  {
+    "slug": "gc-collector-types",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 7
+  },
+  {
+    "slug": "gc-generational-collection",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 5
+  },
+  {
+    "slug": "gc-heap-generation-sizing",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 6
+  },
+  {
+    "slug": "gc-parallel-collector",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 8
   }
 ]

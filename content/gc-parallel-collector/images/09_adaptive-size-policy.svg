@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 382" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>UseParallelGC를 지정하면 UseAdaptiveSizePolicy가 함께 켜져 Ergonomics가 generation 크기를 조정하지만, -Xms와 -Xmx가 같거나 NewSize와 MaxNewSize가 같으면 크기가 고정되어 영향력이 줄어든다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="382" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="362" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">UseAdaptiveSizePolicy — Ergonomics가 크기를 조정할 수 있는 경우</text>
+  <rect x="40" y="64" width="320" height="48" rx="8" class="hold"/>
+  <text x="200" y="93" class="op" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">-XX:+UseParallelGC</tspan> 지정</text>
+  <line x1="360" y1="88" x2="398" y2="88" class="al" marker-end="url(#ar)"/>
+  <rect x="400" y="64" width="330" height="48" rx="8" class="ok"/>
+  <text x="565" y="93" class="okt" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">UseAdaptiveSizePolicy</tspan> 함께 켜짐</text>
+  <path d="M 565 112 L 565 128 L 385 128 L 385 142" class="al" marker-end="url(#ar)"/>
+  <rect x="110" y="144" width="550" height="70" rx="8" class="box"/>
+  <text x="385" y="168" class="op" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">-Xms</tspan>와 <tspan font-family="Menlo, Consolas, monospace">-Xmx</tspan>가 같거나,</text>
+  <text x="385" y="190" class="op" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">-XX:NewSize</tspan>와 <tspan font-family="Menlo, Consolas, monospace">-XX:MaxNewSize</tspan>가 같은가? (또는 <tspan font-family="Menlo, Consolas, monospace">-XmnN</tspan>)</text>
+  <path d="M 250 214 L 250 236 L 200 236 L 200 254" class="gl" marker-end="url(#agr)"/>
+  <text x="238" y="232" class="gnote" text-anchor="end">아니오</text>
+  <path d="M 520 214 L 520 236 L 570 236 L 570 254" class="rl" marker-end="url(#arr)"/>
+  <text x="532" y="232" class="note">예</text>
+  <rect x="40" y="256" width="320" height="70" rx="8" class="ok"/>
+  <text x="200" y="282" class="okt" text-anchor="middle">Ergonomics가 generation resize</text>
+  <text x="200" y="302" class="val" text-anchor="middle">명시한 goal에 맞춰 크기를 늘리고 줄임</text>
+  <rect x="400" y="256" width="330" height="70" rx="8" class="bad"/>
+  <text x="565" y="282" class="badt" text-anchor="middle">young/old generation 크기 고정</text>
+  <text x="565" y="302" class="val" text-anchor="middle">옵션이 켜져 있어도 영향력이 감소</text>
+  <text x="40" y="358" class="sub">행동 기반으로 튜닝하고 싶을 때 적절 — generation size·heap size를 직접 정하는 대신 목표를 줌</text>
+</svg>

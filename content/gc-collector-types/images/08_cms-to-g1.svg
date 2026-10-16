@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>CMS GC가 JDK 5에 포함된 뒤 JDK 9에서 deprecated, JDK 14에서 제거되고, G1 GC는 JDK 8u40에서 ready for production, JDK 9에서 디폴트가 되는 타임라인</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">CMS GC의 은퇴와 G1 GC의 정착</text>
+  <line x1="160" y1="84" x2="728" y2="84" class="axis" marker-end="url(#ar)"/>
+  <circle cx="220" cy="84" r="5" fill="#9ca3af"/>
+  <text x="220" y="70" class="op" text-anchor="middle">JDK 5 (2004)</text>
+  <circle cx="380" cy="84" r="5" fill="#9ca3af"/>
+  <text x="380" y="70" class="op" text-anchor="middle">JDK 8u40</text>
+  <circle cx="530" cy="84" r="5" fill="#9ca3af"/>
+  <text x="530" y="70" class="op" text-anchor="middle">JDK 9</text>
+  <circle cx="665" cy="84" r="5" fill="#9ca3af"/>
+  <text x="665" y="70" class="op" text-anchor="middle">JDK 14</text>
+  <text x="30" y="132" class="lane">CMS GC</text>
+  <text x="30" y="150" class="sub">concurrent</text>
+  <rect x="150" y="106" width="585" height="60" rx="6" class="track"/>
+  <rect x="158" y="112" width="124" height="48" rx="8" class="box"/>
+  <text x="220" y="132" class="op" text-anchor="middle">정식 포함</text>
+  <text x="220" y="150" class="sub" text-anchor="middle">최초의 concurrent</text>
+  <rect x="290" y="124" width="168" height="24" rx="5" class="hold"/>
+  <text x="374" y="141" class="val" text-anchor="middle">인기, 단편화 문제</text>
+  <rect x="468" y="112" width="124" height="48" rx="8" class="bad"/>
+  <text x="530" y="132" class="badt" text-anchor="middle">deprecated</text>
+  <text x="530" y="150" class="sub" text-anchor="middle">JEP 291</text>
+  <rect x="603" y="112" width="124" height="48" rx="8" class="bad"/>
+  <text x="665" y="132" class="badt" text-anchor="middle">제거</text>
+  <text x="665" y="150" class="sub" text-anchor="middle">JEP 363</text>
+  <text x="30" y="202" class="lane">G1 GC</text>
+  <text x="30" y="220" class="sub">mostly concurrent</text>
+  <rect x="150" y="176" width="585" height="60" rx="6" class="track"/>
+  <rect x="310" y="182" width="140" height="48" rx="8" class="box"/>
+  <text x="380" y="202" class="op" text-anchor="middle">ready for</text>
+  <text x="380" y="220" class="val" text-anchor="middle">production</text>
+  <rect x="468" y="182" width="124" height="48" rx="8" class="ok"/>
+  <text x="530" y="202" class="okt" text-anchor="middle">디폴트 GC</text>
+  <text x="530" y="220" class="sub" text-anchor="middle">JEP 248</text>
+  <rect x="603" y="182" width="124" height="48" rx="8" class="ok"/>
+  <text x="665" y="202" class="okt" text-anchor="middle">G1으로 이동</text>
+  <text x="665" y="220" class="sub" text-anchor="middle">점점 넘어감</text>
+  <text x="150" y="270" class="sub">G1 GC는 max pause time을 높은 확률로 지키고, 넘기더라도 1~2초를 넘기는 경우가 매우 드물다</text>
+</svg>

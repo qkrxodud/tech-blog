@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Serial GC는 낮은 주소부터 young, old 순서이고 Parallel GC는 old, young 순서이며, 두 GC 모두 max heap을 예약하고 일부만 커밋한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">힙 레이아웃 — Serial GC와 Parallel GC</text>
+  <text x="30" y="74" class="lane">Serial GC</text>
+  <text x="730" y="74" class="code" text-anchor="end">-XX:+UseSerialGC</text>
+  <path d="M 40 104 L 40 96 L 300 96 L 300 104" class="al"/>
+  <text x="170" y="90" class="sub" text-anchor="middle">max young generation (reserved)</text>
+  <path d="M 300 104 L 300 96 L 720 96 L 720 104" class="al"/>
+  <text x="510" y="90" class="sub" text-anchor="middle">max old generation (reserved)</text>
+  <rect x="40" y="104" width="150" height="52" rx="4" class="box"/>
+  <text x="115.0" y="127" class="op" text-anchor="middle">young</text>
+  <text x="115.0" y="145" class="sub" text-anchor="middle">(committed)</text>
+  <rect x="190" y="104" width="110" height="52" rx="4" class="wait"/>
+  <text x="245.0" y="135" class="waitt" text-anchor="middle">virtual</text>
+  <rect x="300" y="104" width="270" height="52" rx="4" class="hold"/>
+  <text x="435.0" y="127" class="op" text-anchor="middle">old</text>
+  <text x="435.0" y="145" class="sub" text-anchor="middle">(committed)</text>
+  <rect x="570" y="104" width="150" height="52" rx="4" class="wait"/>
+  <text x="645.0" y="135" class="waitt" text-anchor="middle">virtual</text>
+  <text x="40" y="176" class="val">낮은 주소부터 young → old</text>
+  <text x="30" y="222" class="lane">Parallel GC</text>
+  <text x="730" y="222" class="code" text-anchor="end">-XX:+UseParallelGC</text>
+  <path d="M 40 252 L 40 244 L 460 244 L 460 252" class="al"/>
+  <text x="250" y="238" class="sub" text-anchor="middle">max old generation (reserved)</text>
+  <path d="M 460 252 L 460 244 L 720 244 L 720 252" class="al"/>
+  <text x="590" y="238" class="sub" text-anchor="middle">max young generation (reserved)</text>
+  <rect x="40" y="252" width="270" height="52" rx="4" class="hold"/>
+  <text x="175.0" y="275" class="op" text-anchor="middle">old</text>
+  <text x="175.0" y="293" class="sub" text-anchor="middle">(committed)</text>
+  <rect x="310" y="252" width="150" height="52" rx="4" class="wait"/>
+  <text x="385.0" y="283" class="waitt" text-anchor="middle">virtual</text>
+  <rect x="460" y="252" width="150" height="52" rx="4" class="box"/>
+  <text x="535.0" y="275" class="op" text-anchor="middle">young</text>
+  <text x="535.0" y="293" class="sub" text-anchor="middle">(committed)</text>
+  <rect x="610" y="252" width="110" height="52" rx="4" class="wait"/>
+  <text x="665.0" y="283" class="waitt" text-anchor="middle">virtual</text>
+  <text x="40" y="324" class="val">낮은 주소부터 old → young — 순서가 Serial GC와 반대</text>
+  <line x1="40" y1="350" x2="716" y2="350" class="al" marker-end="url(#ar)"/>
+  <text x="40" y="370" class="step">low</text>
+  <text x="720" y="370" class="step" text-anchor="end">high</text>
+  <text x="380" y="370" class="sub" text-anchor="middle">max heap (reserved) — 점선은 예약만 하고 아직 커밋하지 않은 공간</text>
+</svg>

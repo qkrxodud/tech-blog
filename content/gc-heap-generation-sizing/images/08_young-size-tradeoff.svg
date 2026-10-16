@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 322" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>young generation이 너무 크면 young GC가 오래 걸리고 old가 작아져 full GC가 잦아지며, 너무 작으면 young GC가 너무 자주 발생한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .used { fill: #e5e7eb; stroke: none; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="322" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="140" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <rect x="10" y="166" width="740" height="140" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">young generation이 너무 클 때</text>
+  <rect x="150" y="62" width="371.1" height="46" rx="3" class="hold"/>
+  <text x="335.6" y="90.0" class="op" text-anchor="middle">young</text>
+  <rect x="521.1" y="62" width="198.89999999999998" height="46" rx="3" class="box"/>
+  <text x="620.5" y="90.0" class="op" text-anchor="middle">old</text>
+  <text x="30" y="90" class="lane2">3g heap</text>
+  <text x="150" y="134" class="note">young GC는 적지만 한 번에 오래 걸림</text>
+  <text x="440" y="134" class="note">old가 작아져 full GC가 자주 발생</text>
+  <text x="30" y="198" class="h">young generation이 너무 작을 때</text>
+  <rect x="150" y="218" width="55.7" height="46" rx="3" class="hold"/>
+  <text x="177.8" y="246.0" class="op" text-anchor="middle">young</text>
+  <rect x="205.7" y="218" width="514.3" height="46" rx="3" class="box"/>
+  <text x="462.8" y="246.0" class="op" text-anchor="middle">old</text>
+  <text x="30" y="246" class="lane2">3g heap</text>
+  <text x="150" y="290" class="note">young GC가 너무 자주 발생</text>
+  <text x="440" y="290" class="note">발생 대비 효과가 떨어짐</text>
+
+</svg>

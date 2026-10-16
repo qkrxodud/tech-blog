@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>GC 스레드는 자신이 담당하는 GC root에서 시작해 살아 있는 객체를 age가 다 찼거나 survivor 공간이 없으면 old generation으로, 아니면 to-survivor로 복사하며, 두 경우 모두 PLAB 안에 할당, direct 할당, refill 후 할당 중 하나로 할당한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">mark-copy — GC 스레드가 살아 있는 객체를 복사하는 곳</text>
+  <rect x="200" y="62" width="360" height="52" rx="8" class="hold"/>
+  <text x="380" y="84" class="op" text-anchor="middle">GC 스레드가 담당하는 GC root에서 시작</text>
+  <text x="380" y="104" class="val" text-anchor="middle">살아 있는 객체를 찾아 복사 (young GC)</text>
+  <line x1="380" y1="114" x2="380" y2="136" class="al" marker-end="url(#ar)"/>
+  <rect x="170" y="138" width="420" height="52" rx="8" class="box"/>
+  <text x="380" y="160" class="op" text-anchor="middle">age가 다 찼거나</text>
+  <text x="380" y="180" class="op" text-anchor="middle">survivor에 공간이 없는가?</text>
+  <path d="M 280 190 L 280 212 L 190 212 L 190 232" class="al" marker-end="url(#ar)"/>
+  <text x="222" y="207" class="sub" text-anchor="end">아니오</text>
+  <path d="M 480 190 L 480 212 L 570 212 L 570 232" class="al" marker-end="url(#ar)"/>
+  <text x="538" y="207" class="sub">예</text>
+  <rect x="80" y="234" width="220" height="48" rx="8" class="box"/>
+  <text x="190" y="264" class="op" text-anchor="middle">to-survivor로 copy</text>
+  <rect x="460" y="234" width="220" height="48" rx="8" class="box"/>
+  <text x="570" y="258" class="op" text-anchor="middle">old generation으로 copy</text>
+  <text x="570" y="275" class="sub" text-anchor="middle">(promotion)</text>
+  <path d="M 190 282 L 190 306 L 370 306 L 370 324" class="al" marker-end="url(#ar)"/>
+  <path d="M 570 282 L 570 306 L 390 306 L 390 324" class="al" marker-end="url(#ar)"/>
+  <rect x="40" y="326" width="680" height="92" rx="8" class="dbbox"/>
+  <text x="380" y="350" class="op" text-anchor="middle">할당 방법은 두 경우 모두 같음</text>
+  <rect x="70" y="364" width="190" height="38" rx="6" class="ok"/>
+  <text x="165" y="388" class="okt" text-anchor="middle">PLAB 안에 할당</text>
+  <rect x="285" y="364" width="190" height="38" rx="6" class="ok"/>
+  <text x="380" y="388" class="okt" text-anchor="middle">direct 할당</text>
+  <rect x="500" y="364" width="190" height="38" rx="6" class="ok"/>
+  <text x="595" y="388" class="okt" text-anchor="middle">refill 후 할당</text>
+</svg>

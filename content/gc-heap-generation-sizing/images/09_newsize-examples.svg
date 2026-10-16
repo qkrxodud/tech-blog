@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 472" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>-Xms1500m이면 young 700m와 old 800m를 커밋하고 최대 1g, 2g까지 늘어날 수 있으며, -Xms3g이면 MaxNewSize가 NewSize로 맞춰져 young 700m, old 2372m로 고정된다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .used { fill: #e5e7eb; stroke: none; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="472" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="230" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <rect x="10" y="256" width="740" height="200" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">예 1 — heap은 늘어날 수 있음</text>
+  <text x="30" y="68" class="mono">-Xmx3g -Xms1500m -XX:MaxNewSize=1g -XX:NewSize=700m</text>
+  <path d="M 150 114 L 150 106 L 340.0 106 L 340.0 114" class="al"/>
+  <text x="245.0" y="98" class="sub" text-anchor="middle">max young = 1g</text>
+  <path d="M 340.0 114 L 340.0 106 L 720 106 L 720 114" class="al"/>
+  <text x="530.0" y="98" class="sub" text-anchor="middle">max old = 2g</text>
+  <rect x="150" y="118" width="129.9" height="52" rx="3" class="ok"/>
+  <text x="214.9" y="149.0" class="okt" text-anchor="middle">700m</text>
+  <rect x="279.9" y="118" width="60.1" height="52" rx="3" class="wait"/>
+  <rect x="340.0" y="118" width="148.4" height="52" rx="3" class="ok"/>
+  <text x="414.2" y="149.0" class="okt" text-anchor="middle">800m</text>
+  <rect x="488.4" y="118" width="231.60000000000002" height="52" rx="3" class="wait"/>
+  <text x="30" y="150" class="lane2">JVM heap</text>
+  <path d="M 150 174 L 150 182 L 279.9 182 L 279.9 174" class="al"/>
+  <text x="214.95" y="200" class="sub" text-anchor="middle">init/min young</text>
+  <path d="M 340.0 174 L 340.0 182 L 488.4 182 L 488.4 174" class="al"/>
+  <text x="414.2" y="200" class="sub" text-anchor="middle">init old</text>
+  <text x="500.4" y="200" class="gnote">700m + 800m = -Xms1500m</text>
+  <text x="30" y="288" class="h">예 2 — heap이 3g로 고정</text>
+  <text x="30" y="314" class="mono">-Xmx3g -Xms3g -XX:MaxNewSize=1g -XX:NewSize=700m</text>
+  <rect x="150" y="336" width="129.9" height="52" rx="3" class="ok"/>
+  <text x="214.9" y="367.0" class="okt" text-anchor="middle">young 700m</text>
+  <rect x="279.9" y="336" width="440.1" height="52" rx="3" class="ok"/>
+  <text x="499.9" y="367.0" class="okt" text-anchor="middle">old 2372m (약 2.3g)</text>
+  <text x="30" y="368" class="lane2">JVM heap</text>
+  <rect x="150" y="404" width="330" height="30" rx="15" class="box"/>
+  <text x="315" y="424" class="val" text-anchor="middle">MaxNewSize가 NewSize(700m)로 맞춰짐</text>
+  <text x="500" y="424" class="sub">old = 3072m - 700m</text>
+
+</svg>
