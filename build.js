@@ -199,8 +199,11 @@ function headingAnchors(html) {
 const TOC_MIN = 5;
 function tocBox(toc) {
   if (toc.length < TOC_MIN) return '';
+  // 옵션 이름 같은 긴 영문 덩어리는 차례 폭(234px)을 넘어 잘린다. 그런 덩어리만 아무 데서나 끊게 감싼다.
+  // overflow-wrap만 쓰면 "-XX:+…"가 맨 앞 "-"에서 먼저 끊겨 "-" 한 글자만 윗줄에 남는다.
+  const tocText = s => esc(s).split(' ').map(w => w.length >= 16 ? `<span class="toc-w">${w}</span>` : w).join(' ');
   const items = toc.map(t =>
-    `<a class="toc-i lv${t.level}" href="#${t.id}">${esc(t.text)}</a>`).join('\n');
+    `<a class="toc-i lv${t.level}" href="#${t.id}">${tocText(t.text)}</a>`).join('\n');
   return `<nav class="toc" aria-label="이 글의 차례">
   <button class="toc-head" type="button" aria-expanded="false" aria-controls="toc-list">이 글의 차례<span class="toc-n">${toc.length}</span></button>
   <div class="toc-list" id="toc-list">${items}</div>
