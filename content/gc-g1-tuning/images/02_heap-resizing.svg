@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>G1 heap은 MinHeapFreeRatio와 MaxHeapFreeRatio 기준으로 Remark와 Full GC 때만 resize되고, 확장 자체는 어떤 GC pause에서도 일어나며, 축소할 때는 pause 뒤에 concurrent하게 메모리를 반환한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .gc { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .br { stroke: #9ca3af; stroke-width: 1.2; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">G1 heap size 조정 — 언제 늘리고 언제 줄이나</text>
+  <text x="30" y="88" class="lane">Remark</text>
+  <text x="30" y="106" class="sub">또는 Full GC</text>
+  <rect x="150" y="62" width="585" height="64" rx="6" class="track"/>
+  <rect x="162" y="68" width="560" height="52" rx="8" class="ok"/>
+  <text x="442" y="90" class="okt" text-anchor="middle">free 비율 기준 resize — 이때만 일어남</text>
+  <text x="442" y="109" class="val" text-anchor="middle">free &lt; <tspan font-family="Menlo, Consolas, monospace">MinHeapFreeRatio(40)</tspan> → 확장 · free &gt; <tspan font-family="Menlo, Consolas, monospace">MaxHeapFreeRatio(70)</tspan> → 축소</text>
+  <text x="30" y="166" class="lane">모든</text>
+  <text x="30" y="184" class="sub">GC pause</text>
+  <rect x="150" y="140" width="585" height="64" rx="6" class="track"/>
+  <rect x="162" y="146" width="270" height="52" rx="8" class="box"/>
+  <text x="297" y="168" class="op" text-anchor="middle">evacuation 중</text>
+  <text x="297" y="187" class="val" text-anchor="middle">free region이 부족</text>
+  <line x1="432" y1="172" x2="450" y2="172" class="gl" marker-end="url(#agr)"/>
+  <rect x="452" y="146" width="270" height="52" rx="8" class="ok"/>
+  <text x="587" y="168" class="okt" text-anchor="middle">heap expansion</text>
+  <text x="587" y="187" class="val" text-anchor="middle">늘려서 free region을 가져옴</text>
+  <text x="30" y="244" class="lane">pause</text>
+  <text x="30" y="262" class="sub">이후</text>
+  <rect x="150" y="218" width="585" height="64" rx="6" class="track"/>
+  <rect x="162" y="224" width="270" height="52" rx="8" class="box"/>
+  <text x="297" y="246" class="op" text-anchor="middle">heap 축소가 필요하다고</text>
+  <text x="297" y="265" class="val" text-anchor="middle">판단한 경우</text>
+  <line x1="432" y1="250" x2="450" y2="250" class="gl" marker-end="url(#agr)"/>
+  <rect x="452" y="224" width="270" height="52" rx="8" class="hold"/>
+  <text x="587" y="246" class="op" text-anchor="middle">concurrent하게 반환</text>
+  <text x="587" y="265" class="val" text-anchor="middle">일부 heap 영역을 uncommit</text>
+  <text x="40" y="306" class="sub">resize 과정에서 OS로부터 메모리를 commit 받거나 반환(release, uncommit)하는 일이 생길 수 있음</text>
+</svg>

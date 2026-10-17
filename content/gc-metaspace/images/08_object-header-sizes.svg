@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 432" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>객체 헤더는 압축하지 않으면 16~20 byte, compressed class pointer면 12~16 byte, Compact Object Headers면 mark word와 class pointer를 합쳐 8~12 byte이다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #9ca3af; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="432" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="412" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">객체 헤더 크기 — 압축할수록 작아지는 헤더</text>
+  <text x="730" y="42" class="sub" text-anchor="end">막대 길이는 byte 수에 비례</text>
+  <text x="30" y="86" class="mono">UseCompressedClassPointers</text>
+  <text x="30" y="104" class="mono">= false</text>
+  <rect x="200" y="114" width="208" height="40" rx="4" class="hold"/>
+  <text x="304.0" y="139" class="t" text-anchor="middle">mark word 8</text>
+  <rect x="408" y="114" width="208" height="40" rx="4" class="box"/>
+  <text x="512.0" y="139" class="t" text-anchor="middle">class pointer 8</text>
+  <rect x="616" y="114" width="104" height="40" rx="4" class="wait"/>
+  <text x="668.0" y="139" class="waitt" text-anchor="middle">length 4</text>
+  <text x="730" y="86" class="t" text-anchor="end">16 ~ 20 byte</text>
+  <text x="30" y="190" class="mono">UseCompressedClassPointers</text>
+  <text x="30" y="208" class="mono">= true</text>
+  <rect x="200" y="218" width="208" height="40" rx="4" class="hold"/>
+  <text x="304.0" y="243" class="t" text-anchor="middle">mark word 8</text>
+  <rect x="408" y="218" width="104" height="40" rx="4" class="box"/>
+  <text x="460.0" y="243" class="t" text-anchor="middle">class ptr 4</text>
+  <rect x="512" y="218" width="104" height="40" rx="4" class="wait"/>
+  <text x="564.0" y="243" class="waitt" text-anchor="middle">length 4</text>
+  <text x="730" y="190" class="t" text-anchor="end">12 ~ 16 byte</text>
+  <text x="30" y="294" class="mono">UseCompactObjectHeaders</text>
+  <text x="30" y="312" class="mono">= true</text>
+  <rect x="200" y="322" width="208" height="40" rx="4" class="ok"/>
+  <text x="304.0" y="347" class="okt" text-anchor="middle">mark + class 8</text>
+  <rect x="408" y="322" width="104" height="40" rx="4" class="wait"/>
+  <text x="460.0" y="347" class="waitt" text-anchor="middle">length 4</text>
+  <text x="730" y="294" class="t" text-anchor="end">8 ~ 12 byte</text>
+  <text x="30" y="386" class="sub">점선(length 4)은 배열일 때만 붙습니다.</text>
+  <text x="30" y="406" class="sub">Compact Object Headers는 mark word와 22bit class pointer를 8 byte에 함께 담고, 22bit로 약 4M개의 클래스를 구분합니다.</text>
+</svg>

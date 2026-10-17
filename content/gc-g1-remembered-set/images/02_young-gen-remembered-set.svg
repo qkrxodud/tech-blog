@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>young gen remembered set에 B를 기록해 두면 young GC 때 GC root처럼 B에서 출발해 C를 찾고, A와 C 모두 살아 있는 객체로 확인된다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .rl11 { font-size: 11px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .obj { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .old { fill: #e5e7eb; stroke: #9ca3af; stroke-width: 1.2; }
+    .young { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; }
+    .free { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; stroke-dasharray: 4 3; }
+    .ob { fill: #ffffff; stroke: #6b7280; stroke-width: 1.2; }
+    .cset { fill: none; stroke: #16a34a; stroke-width: 2.6; }
+    .grp { fill: none; stroke: #16a34a; stroke-width: 2; stroke-dasharray: 7 4; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="470" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="450" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">young gen remembered set — GC root와 같은 역할</text>
+  <text x="730" y="42" class="code" text-anchor="end">young GC</text>
+  <rect x="232" y="72" width="106" height="76" rx="4" class="free"/>
+  <text x="238" y="87" class="rl11">#0 free</text>
+  <rect x="342" y="72" width="106" height="76" rx="4" class="free"/>
+  <text x="348" y="87" class="rl11">#1 free</text>
+  <rect x="452" y="72" width="106" height="76" rx="4" class="young"/>
+  <text x="458" y="87" class="rl11">#2 survivor</text>
+  <rect x="232" y="152" width="106" height="76" rx="4" class="young"/>
+  <text x="238" y="167" class="rl11">#3 eden</text>
+  <rect x="342" y="152" width="106" height="76" rx="4" class="free"/>
+  <text x="348" y="167" class="rl11">#4 free</text>
+  <rect x="452" y="152" width="106" height="76" rx="4" class="free"/>
+  <text x="458" y="167" class="rl11">#5 free</text>
+  <rect x="232" y="232" width="106" height="76" rx="4" class="free"/>
+  <text x="238" y="247" class="rl11">#6 free</text>
+  <rect x="342" y="232" width="106" height="76" rx="4" class="old"/>
+  <text x="348" y="247" class="rl11">#7 old</text>
+  <rect x="452" y="232" width="106" height="76" rx="4" class="free"/>
+  <text x="458" y="247" class="rl11">#8 free</text>
+  <rect x="452" y="72" width="106" height="76" rx="4" class="cset"/>
+  <rect x="232" y="152" width="106" height="76" rx="4" class="cset"/>
+  <rect x="271" y="184" width="28" height="24" rx="4" class="ok"/>
+  <text x="285" y="201" class="okt" text-anchor="middle">A</text>
+  <rect x="381" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="395" y="281" class="obj" text-anchor="middle">B</text>
+  <rect x="491" y="104" width="28" height="24" rx="4" class="ok"/>
+  <text x="505" y="121" class="okt" text-anchor="middle">C</text>
+  <rect x="60" y="178" width="96" height="36" rx="6" class="hold"/>
+  <text x="108.0" y="201.0" class="op" text-anchor="middle">GC root</text>
+  <line x1="156" y1="196" x2="269" y2="196" class="gl" marker-end="url(#agr)"/>
+  <path d="M 285 208 C 285 256, 355 236, 387 263" class="al" marker-end="url(#ar)"/>
+  <path d="M 409 270 C 535 280, 555 196, 511 130" class="gl" marker-end="url(#agr)"/>
+  <text x="568" y="230" class="gnote">remembered set의</text>
+  <text x="568" y="250" class="gnote">B에서 출발해 스캔함</text>
+  <text x="60" y="256" class="sub">young gen remembered set</text>
+  <rect x="60" y="264" width="96" height="24" rx="3" class="hold"/>
+  <text x="108.0" y="281" class="obj" text-anchor="middle">B</text>
+  <line x1="156" y1="276" x2="379" y2="276" class="gl" marker-end="url(#agr)"/>
+  <rect x="230" y="329" width="22" height="14" rx="3" class="young"/>
+  <text x="260" y="340" class="sub">young region</text>
+  <rect x="416" y="329" width="22" height="14" rx="3" class="old"/>
+  <text x="446" y="340" class="sub">old region</text>
+  <rect x="580" y="329" width="22" height="14" rx="3" class="cset"/>
+  <text x="610" y="340" class="sub">young GC 수집 대상</text>
+  <line x1="30" y1="360" x2="730" y2="360" class="sep"/>
+  <text x="30" y="386" class="val">1. GC root에서 A를, remembered set에서 B를 출발점으로 삼음</text>
+  <text x="30" y="408" class="val">2. B → C 참조를 따라가 C가 살아 있음을 확인</text>
+  <text x="30" y="430" class="gnote">3. young GC 종료 — A와 C 모두 survivor region으로 옮겨짐</text>
+  <text x="30" y="452" class="sub">eden region과 survivor region은 하나의 통합된 remembered set을 가짐</text>
+</svg>

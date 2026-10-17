@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>#0, #1이 같은 collection set일 때 region마다 remembered set을 두면, 같은 collection set 안의 참조인 H와 D가 불필요하게 들어 있고 I는 #0의 remembered set과 young gen remembered set에 중복으로 들어 있다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .rl11 { font-size: 11px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .obj { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .old { fill: #e5e7eb; stroke: #9ca3af; stroke-width: 1.2; }
+    .young { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; }
+    .free { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; stroke-dasharray: 4 3; }
+    .ob { fill: #ffffff; stroke: #6b7280; stroke-width: 1.2; }
+    .cset { fill: none; stroke: #16a34a; stroke-width: 2.6; }
+    .grp { fill: none; stroke: #16a34a; stroke-width: 2; stroke-dasharray: 7 4; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="520" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="500" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">region마다 따로 둔 remembered set의 낭비</text>
+  <text x="730" y="42" class="code" text-anchor="end">mixed GC</text>
+  <rect x="232" y="72" width="106" height="76" rx="4" class="old"/>
+  <text x="238" y="87" class="rl11">#0 old</text>
+  <rect x="342" y="72" width="106" height="76" rx="4" class="old"/>
+  <text x="348" y="87" class="rl11">#1 old</text>
+  <rect x="452" y="72" width="106" height="76" rx="4" class="young"/>
+  <text x="458" y="87" class="rl11">#2 survivor</text>
+  <rect x="232" y="152" width="106" height="76" rx="4" class="young"/>
+  <text x="238" y="167" class="rl11">#3 eden</text>
+  <rect x="342" y="152" width="106" height="76" rx="4" class="free"/>
+  <text x="348" y="167" class="rl11">#4 free</text>
+  <rect x="452" y="152" width="106" height="76" rx="4" class="free"/>
+  <text x="458" y="167" class="rl11">#5 free</text>
+  <rect x="232" y="232" width="106" height="76" rx="4" class="free"/>
+  <text x="238" y="247" class="rl11">#6 free</text>
+  <rect x="342" y="232" width="106" height="76" rx="4" class="old"/>
+  <text x="348" y="247" class="rl11">#7 old</text>
+  <rect x="452" y="232" width="106" height="76" rx="4" class="old"/>
+  <text x="458" y="247" class="rl11">#8 old</text>
+  <rect x="232" y="72" width="106" height="76" rx="4" class="cset"/>
+  <rect x="342" y="72" width="106" height="76" rx="4" class="cset"/>
+  <rect x="452" y="72" width="106" height="76" rx="4" class="cset"/>
+  <rect x="232" y="152" width="106" height="76" rx="4" class="cset"/>
+  <rect x="273" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="287" y="121" class="obj" text-anchor="middle">B</text>
+  <rect x="307" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="321" y="121" class="obj" text-anchor="middle">D</text>
+  <rect x="357" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="371" y="121" class="obj" text-anchor="middle">E</text>
+  <rect x="407" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="421" y="121" class="obj" text-anchor="middle">H</text>
+  <rect x="471" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="485" y="121" class="obj" text-anchor="middle">C</text>
+  <rect x="513" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="527" y="121" class="obj" text-anchor="middle">L</text>
+  <rect x="271" y="184" width="28" height="24" rx="4" class="ob"/>
+  <text x="285" y="201" class="obj" text-anchor="middle">A</text>
+  <rect x="349" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="363" y="281" class="obj" text-anchor="middle">I</text>
+  <rect x="381" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="395" y="281" class="obj" text-anchor="middle">J</text>
+  <rect x="413" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="427" y="281" class="obj" text-anchor="middle">F</text>
+  <rect x="471" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="485" y="281" class="obj" text-anchor="middle">G</text>
+  <rect x="513" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="527" y="281" class="obj" text-anchor="middle">K</text>
+  <line x1="335" y1="116" x2="357" y2="116" class="al" marker-end="url(#ar)"/>
+  <path d="M 421 104 C 421 56, 287 56, 287 104" class="al" marker-end="url(#ar)"/>
+  <line x1="441" y1="276" x2="471" y2="276" class="al" marker-end="url(#ar)"/>
+  <text x="600" y="88" class="sub">rset of #0</text>
+  <rect x="600" y="96" width="110" height="24" rx="3" class="bad"/>
+  <text x="655.0" y="113" class="badt" text-anchor="middle">H</text>
+  <rect x="600" y="122" width="110" height="24" rx="3" class="bad"/>
+  <text x="655.0" y="139" class="badt" text-anchor="middle">I</text>
+  <text x="600" y="198" class="sub">rset of #1</text>
+  <rect x="600" y="206" width="110" height="24" rx="3" class="bad"/>
+  <text x="655.0" y="223" class="badt" text-anchor="middle">D</text>
+  <rect x="600" y="232" width="110" height="24" rx="3" class="hold"/>
+  <text x="655.0" y="249" class="obj" text-anchor="middle">F</text>
+  <text x="600" y="302" class="sub">young gen rset</text>
+  <rect x="600" y="310" width="110" height="24" rx="3" class="bad"/>
+  <text x="655.0" y="327" class="badt" text-anchor="middle">I</text>
+  <text x="600" y="166" class="note">H: 불필요 · I: 중복</text>
+  <text x="600" y="272" class="note">D: 불필요</text>
+  <text x="600" y="350" class="note">I: 중복</text>
+  <rect x="230" y="363" width="22" height="14" rx="3" class="young"/>
+  <text x="260" y="374" class="sub">young region</text>
+  <rect x="416" y="363" width="22" height="14" rx="3" class="old"/>
+  <text x="446" y="374" class="sub">old region</text>
+  <rect x="580" y="363" width="22" height="14" rx="3" class="cset"/>
+  <text x="610" y="374" class="sub">collection set</text>
+  <line x1="30" y1="390" x2="730" y2="390" class="sep"/>
+  <text x="30" y="416" class="val">collection set = young region(#2, #3) + #0, #1</text>
+  <text x="30" y="438" class="note">H → B, D → E는 같은 collection set 안의 참조 — remembered set에 H와 D를 가질 필요가 없음</text>
+  <text x="30" y="460" class="note">같은 collection set인데 I가 rset of #0과 young gen rset에 중복으로 들어 있음</text>
+  <text x="30" y="486" class="sub">각 region의 remembered set이 만들어지는 시기는 mixed GC 시작 후가 아님</text>
+</svg>

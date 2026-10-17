@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 564" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>eden region의 TAMS는 항상 bottom이고, old region은 Concurrent Start 때 Top이 TAMS가 되며, marking 중 할당된 거대 객체 H는 TAMS 뒤에 놓여 Remark부터 Cleanup 단계에서 살았다고 판단된다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .wn { fill: #ffffff; stroke: #6b7280; stroke-width: 1.5; }
+    .gn { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.5; }
+    .bn { fill: #374151; stroke: #1f2937; stroke-width: 1.5; }
+    .nt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ntw { font-size: 14px; font-weight: 700; fill: #ffffff; }
+    .edge { stroke: #6b7280; stroke-width: 1.5; fill: none; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="564" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="352" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">TAMS : Top-At-Mark-Start — region마다 두는 포인터</text>
+  <text x="30" y="112" class="op">eden region</text>
+  <text x="30" y="130" class="sub">TAMS는 항상 bottom</text>
+  <rect x="190" y="96" width="520" height="36" rx="3" class="box"/>
+  <rect x="190" y="96" width="230" height="36" rx="2" class="hold"/>
+  <text x="305.0" y="119" class="val" text-anchor="middle">young 객체</text>
+  <path d="M 184 84 L 196 84 L 190 94 z" fill="#b91c1c"/>
+  <text x="190" y="80" class="sub" text-anchor="middle" fill="#b91c1c" font-weight="700" style="fill:#b91c1c">TAMS</text>
+  <path d="M 414 84 L 426 84 L 420 94 z" fill="#4b5563"/>
+  <text x="420" y="80" class="sub" text-anchor="middle" fill="#4b5563" font-weight="700" style="fill:#4b5563">Top</text>
+  <text x="190" y="148" class="step">bottom</text>
+  <text x="30" y="204" class="op">old region</text>
+  <text x="30" y="222" class="sub">Top을 TAMS로 지정</text>
+  <rect x="190" y="188" width="520" height="36" rx="3" class="box"/>
+  <rect x="190" y="188" width="140" height="36" rx="2" class="dark"/>
+  <text x="260" y="211" class="val" text-anchor="middle">A 31 …</text>
+  
+  <rect x="330" y="188" width="110" height="36" rx="2" class="ok"/>
+  <text x="385.0" y="211" class="gnote" text-anchor="middle">promotion</text>
+  <path d="M 324 176 L 336 176 L 330 186 z" fill="#b91c1c"/>
+  <text x="330" y="172" class="sub" text-anchor="middle" fill="#b91c1c" font-weight="700" style="fill:#b91c1c">TAMS</text>
+  <path d="M 434 176 L 446 176 L 440 186 z" fill="#4b5563"/>
+  <text x="440" y="172" class="sub" text-anchor="middle" fill="#4b5563" font-weight="700" style="fill:#4b5563">Top</text>
+  <text x="190" y="240" class="step">bottom</text>
+  <text x="30" y="296" class="op">humongous region</text>
+  <text x="30" y="314" class="sub">marking 중 할당</text>
+  <rect x="190" y="280" width="520" height="36" rx="3" class="box"/>
+  <rect x="190" y="280" width="310" height="36" rx="2" class="ok"/>
+  <text x="345.0" y="303" class="okt" text-anchor="middle">H 24</text>
+  <path d="M 184 268 L 196 268 L 190 278 z" fill="#b91c1c"/>
+  <text x="190" y="264" class="sub" text-anchor="middle" fill="#b91c1c" font-weight="700" style="fill:#b91c1c">TAMS</text>
+  <path d="M 494 268 L 506 268 L 500 278 z" fill="#4b5563"/>
+  <text x="500" y="264" class="sub" text-anchor="middle" fill="#4b5563" font-weight="700" style="fill:#4b5563">Top</text>
+  <text x="190" y="332" class="step">bottom</text>
+  <text x="30" y="354" class="sub">TAMS 이전 객체는 mark bitmap으로 확인하고, TAMS 이후 객체(초록)는 무조건 살았다고 판단한다</text>
+  <rect x="10" y="378" width="740" height="170" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="410" class="h">앞의 상황에 TAMS 적용 — H는 살았다고 판단</text>
+  <rect x="30" y="426" width="124" height="52" rx="8" class="hold"/>
+  <text x="92.0" y="448" class="op" text-anchor="middle">Concurrent</text>
+  <text x="92.0" y="467" class="op" text-anchor="middle">Start</text>
+  <text x="92.0" y="500" class="val" text-anchor="middle">old·humongous의</text>
+  <text x="92.0" y="518" class="val" text-anchor="middle">Top을 TAMS로</text>
+  <line x1="155" y1="452" x2="172" y2="452" class="al" marker-end="url(#ar)"/>
+  <rect x="174" y="426" width="124" height="52" rx="8" class="box"/>
+  <text x="236.0" y="448" class="op" text-anchor="middle">Root Region</text>
+  <text x="236.0" y="467" class="op" text-anchor="middle">Scanning</text>
+  <text x="236.0" y="500" class="val" text-anchor="middle">survivor에서 old</text>
+  <text x="236.0" y="518" class="val" text-anchor="middle">참조는 없다고 가정</text>
+  <line x1="299" y1="452" x2="316" y2="452" class="al" marker-end="url(#ar)"/>
+  <rect x="318" y="426" width="124" height="52" rx="8" class="box"/>
+  <text x="380.0" y="448" class="op" text-anchor="middle">Concurrent</text>
+  <text x="380.0" y="467" class="op" text-anchor="middle">Marking</text>
+  <text x="380.0" y="500" class="val" text-anchor="middle">pop 31</text>
+  <text x="380.0" y="518" class="val" text-anchor="middle">push 33</text>
+  <line x1="443" y1="452" x2="460" y2="452" class="al" marker-end="url(#ar)"/>
+  <rect x="462" y="426" width="124" height="52" rx="8" class="box"/>
+  <text x="524.0" y="448" class="monob" text-anchor="middle">A.huge =</text>
+  <text x="524.0" y="467" class="monob" text-anchor="middle">new H();</text>
+  <text x="524.0" y="500" class="val" text-anchor="middle">H가 free region에</text>
+  <text x="524.0" y="518" class="val" text-anchor="middle">TAMS 뒤로 할당</text>
+  <line x1="587" y1="452" x2="604" y2="452" class="al" marker-end="url(#ar)"/>
+  <rect x="606" y="426" width="124" height="52" rx="8" class="ok"/>
+  <text x="668.0" y="448" class="okt" text-anchor="middle">Remark ~</text>
+  <text x="668.0" y="467" class="okt" text-anchor="middle">Cleanup</text>
+  <text x="668.0" y="500" class="gnote" text-anchor="middle">24는 TAMS 뒤</text>
+  <text x="668.0" y="518" class="gnote" text-anchor="middle">→ 살았다고 판단</text>
+
+</svg>

@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>-Xmx6g, -Xms4g이면 512MB region 12개 중 1~8번만 commit 되어 free list에 들어가고, 9~12번은 예약만 된 상태로 free list에 없다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .lbl { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .rE { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .rS { fill: #ffffff; stroke: #16a34a; stroke-width: 1.8; }
+    .rO { fill: #e5e7eb; stroke: #6b7280; stroke-width: 1.5; }
+    .rH { fill: #9ca3af; stroke: #4b5563; stroke-width: 1.5; }
+    .rF { fill: #ffffff; stroke: #c4c8ce; stroke-width: 1.2; }
+    .rR { fill: #fafafa; stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 3; }
+    .tE { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .tS { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .tO { font-size: 13px; font-weight: 700; fill: #374151; }
+    .tH { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .tF { font-size: 11px; fill: #9ca3af; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .dl { stroke: #9ca3af; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="350" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="330" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">-Xmx6g -Xms4g — region 12개 중 8개만 commit</text>
+  <text x="730" y="42" class="code" text-anchor="end">region = 6G / 12 = 512MB</text>
+  <text x="85.0" y="72" class="step" text-anchor="middle">1</text>
+  <rect x="60" y="80" width="50" height="48" rx="4" class="rF"/>
+  <text x="85.0" y="108.0" class="tF" text-anchor="middle">free</text>
+  <text x="138.0" y="72" class="step" text-anchor="middle">2</text>
+  <rect x="113" y="80" width="50" height="48" rx="4" class="rF"/>
+  <text x="138.0" y="108.0" class="tF" text-anchor="middle">free</text>
+  <text x="191.0" y="72" class="step" text-anchor="middle">3</text>
+  <rect x="166" y="80" width="50" height="48" rx="4" class="rF"/>
+  <text x="191.0" y="108.0" class="tF" text-anchor="middle">free</text>
+  <text x="244.0" y="72" class="step" text-anchor="middle">4</text>
+  <rect x="219" y="80" width="50" height="48" rx="4" class="rF"/>
+  <text x="244.0" y="108.0" class="tF" text-anchor="middle">free</text>
+  <text x="297.0" y="72" class="step" text-anchor="middle">5</text>
+  <rect x="272" y="80" width="50" height="48" rx="4" class="rF"/>
+  <text x="297.0" y="108.0" class="tF" text-anchor="middle">free</text>
+  <text x="350.0" y="72" class="step" text-anchor="middle">6</text>
+  <rect x="325" y="80" width="50" height="48" rx="4" class="rF"/>
+  <text x="350.0" y="108.0" class="tF" text-anchor="middle">free</text>
+  <text x="403.0" y="72" class="step" text-anchor="middle">7</text>
+  <rect x="378" y="80" width="50" height="48" rx="4" class="rF"/>
+  <text x="403.0" y="108.0" class="tF" text-anchor="middle">free</text>
+  <text x="456.0" y="72" class="step" text-anchor="middle">8</text>
+  <rect x="431" y="80" width="50" height="48" rx="4" class="rF"/>
+  <text x="456.0" y="108.0" class="tF" text-anchor="middle">free</text>
+  <text x="509.0" y="72" class="step" text-anchor="middle">9</text>
+  <rect x="484" y="80" width="50" height="48" rx="4" class="rR"/>
+  <text x="562.0" y="72" class="step" text-anchor="middle">10</text>
+  <rect x="537" y="80" width="50" height="48" rx="4" class="rR"/>
+  <text x="615.0" y="72" class="step" text-anchor="middle">11</text>
+  <rect x="590" y="80" width="50" height="48" rx="4" class="rR"/>
+  <text x="668.0" y="72" class="step" text-anchor="middle">12</text>
+  <rect x="643" y="80" width="50" height="48" rx="4" class="rR"/>
+  <path d="M 60 136 L 60 144 L 481 144 L 481 136" class="gl"/>
+  <text x="270.5" y="162" class="gnote" text-anchor="middle">-Xms4g: commit 4G (region 8개)</text>
+  <path d="M 60 172 L 60 180 L 693 180 L 693 172" class="al"/>
+  <text x="376.5" y="198" class="val" text-anchor="middle">-Xmx6g: reserve 6G (region 12개)</text>
+  <text x="30" y="252" class="lane">free list</text>
+  <rect x="140" y="232" width="36" height="30" rx="0" class="box"/>
+  <text x="158" y="252" class="monob" text-anchor="middle">1</text>
+  <rect x="176" y="232" width="36" height="30" rx="0" class="box"/>
+  <text x="194" y="252" class="monob" text-anchor="middle">2</text>
+  <rect x="212" y="232" width="36" height="30" rx="0" class="box"/>
+  <text x="230" y="252" class="monob" text-anchor="middle">3</text>
+  <rect x="248" y="232" width="36" height="30" rx="0" class="box"/>
+  <text x="266" y="252" class="monob" text-anchor="middle">4</text>
+  <rect x="284" y="232" width="36" height="30" rx="0" class="box"/>
+  <text x="302" y="252" class="monob" text-anchor="middle">5</text>
+  <rect x="320" y="232" width="36" height="30" rx="0" class="box"/>
+  <text x="338" y="252" class="monob" text-anchor="middle">6</text>
+  <rect x="356" y="232" width="36" height="30" rx="0" class="box"/>
+  <text x="374" y="252" class="monob" text-anchor="middle">7</text>
+  <rect x="392" y="232" width="36" height="30" rx="0" class="box"/>
+  <text x="410" y="252" class="monob" text-anchor="middle">8</text>
+  <line x1="158" y1="290" x2="158" y2="266" class="al" marker-end="url(#ar)"/>
+  <text x="158" y="306" class="sub" text-anchor="middle">top</text>
+  <line x1="410" y1="290" x2="410" y2="266" class="al" marker-end="url(#ar)"/>
+  <text x="410" y="306" class="sub" text-anchor="middle">tail</text>
+  <text x="450" y="244" class="sub">top에서 꺼내 역할을 붙이고,</text>
+  <text x="450" y="262" class="sub">다 쓴 region은 tail 뒤에 반환</text>
+  <text x="450" y="288" class="note">9~12번은 commit 전이라 free list에 없음</text>
+</svg>

@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Remark 단계에서 CSet candidate region을 확정하고 #0과 #1, #7과 #8을 그룹으로 묶은 뒤, Remark부터 Cleanup 사이에 그룹마다 하나의 remembered set을 다시 만들면 #0, #1 그룹에는 F와 I, #7, #8 그룹에는 E만 남는다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .rl11 { font-size: 11px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .obj { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .old { fill: #e5e7eb; stroke: #9ca3af; stroke-width: 1.2; }
+    .young { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; }
+    .free { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; stroke-dasharray: 4 3; }
+    .ob { fill: #ffffff; stroke: #6b7280; stroke-width: 1.2; }
+    .cset { fill: none; stroke: #16a34a; stroke-width: 2.6; }
+    .grp { fill: none; stroke: #16a34a; stroke-width: 2; stroke-dasharray: 7 4; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="540" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="520" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">CSet candidate 그룹핑과 Rebuild remembered set</text>
+  <text x="730" y="42" class="code" text-anchor="end">Remark ~ Cleanup</text>
+  <rect x="232" y="72" width="106" height="76" rx="4" class="old"/>
+  <text x="238" y="87" class="rl11">#0 old</text>
+  <rect x="342" y="72" width="106" height="76" rx="4" class="old"/>
+  <text x="348" y="87" class="rl11">#1 old</text>
+  <rect x="452" y="72" width="106" height="76" rx="4" class="young"/>
+  <text x="458" y="87" class="rl11">#2 survivor</text>
+  <rect x="232" y="152" width="106" height="76" rx="4" class="young"/>
+  <text x="238" y="167" class="rl11">#3 eden</text>
+  <rect x="342" y="152" width="106" height="76" rx="4" class="free"/>
+  <text x="348" y="167" class="rl11">#4 free</text>
+  <rect x="452" y="152" width="106" height="76" rx="4" class="free"/>
+  <text x="458" y="167" class="rl11">#5 free</text>
+  <rect x="232" y="232" width="106" height="76" rx="4" class="free"/>
+  <text x="238" y="247" class="rl11">#6 free</text>
+  <rect x="342" y="232" width="106" height="76" rx="4" class="old"/>
+  <text x="348" y="247" class="rl11">#7 old</text>
+  <rect x="452" y="232" width="106" height="76" rx="4" class="old"/>
+  <text x="458" y="247" class="rl11">#8 old</text>
+  <rect x="227" y="67" width="226" height="86" rx="6" class="grp"/>
+  <rect x="337" y="227" width="226" height="86" rx="6" class="grp"/>
+  <rect x="273" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="287" y="121" class="obj" text-anchor="middle">B</text>
+  <rect x="307" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="321" y="121" class="obj" text-anchor="middle">D</text>
+  <rect x="357" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="371" y="121" class="obj" text-anchor="middle">E</text>
+  <rect x="407" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="421" y="121" class="obj" text-anchor="middle">H</text>
+  <rect x="471" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="485" y="121" class="obj" text-anchor="middle">C</text>
+  <rect x="513" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="527" y="121" class="obj" text-anchor="middle">L</text>
+  <rect x="271" y="184" width="28" height="24" rx="4" class="ob"/>
+  <text x="285" y="201" class="obj" text-anchor="middle">A</text>
+  <rect x="349" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="363" y="281" class="obj" text-anchor="middle">I</text>
+  <rect x="381" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="395" y="281" class="obj" text-anchor="middle">J</text>
+  <rect x="413" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="427" y="281" class="obj" text-anchor="middle">F</text>
+  <rect x="471" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="485" y="281" class="obj" text-anchor="middle">G</text>
+  <rect x="513" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="527" y="281" class="obj" text-anchor="middle">K</text>
+  <line x1="335" y1="116" x2="357" y2="116" class="al" marker-end="url(#ar)"/>
+  <path d="M 421 104 C 421 56, 287 56, 287 104" class="al" marker-end="url(#ar)"/>
+  <line x1="441" y1="276" x2="471" y2="276" class="al" marker-end="url(#ar)"/>
+  <text x="600" y="102" class="sub">rset of #0, #1</text>
+  <rect x="600" y="110" width="120" height="24" rx="3" class="ok"/>
+  <text x="660.0" y="127" class="okt" text-anchor="middle">F</text>
+  <rect x="600" y="136" width="120" height="24" rx="3" class="ok"/>
+  <text x="660.0" y="153" class="okt" text-anchor="middle">I</text>
+  <text x="600" y="222" class="sub">rset of #7, #8</text>
+  <rect x="600" y="230" width="120" height="24" rx="3" class="ok"/>
+  <text x="660.0" y="247" class="okt" text-anchor="middle">E</text>
+  <text x="600" y="278" class="sub">그룹 안 참조는 기록하지 않음</text>
+  <text x="600" y="298" class="sub">D → E, H → B, F → G</text>
+  <rect x="230" y="329" width="22" height="14" rx="3" class="young"/>
+  <text x="260" y="340" class="sub">young region</text>
+  <rect x="416" y="329" width="22" height="14" rx="3" class="old"/>
+  <text x="446" y="340" class="sub">old region</text>
+  <rect x="580" y="329" width="22" height="14" rx="3" class="grp"/>
+  <text x="610" y="340" class="sub">CSet candidate 그룹</text>
+  <line x1="30" y1="360" x2="730" y2="360" class="sep"/>
+  <rect x="30" y="378" width="220" height="52" rx="8" class="box"/>
+  <text x="140" y="400" class="op" text-anchor="middle">Remark phase</text>
+  <text x="140" y="420" class="sub" text-anchor="middle">CSet candidate regions 최초 확정</text>
+  <rect x="270" y="378" width="220" height="52" rx="8" class="box"/>
+  <text x="380" y="400" class="op" text-anchor="middle">그룹핑</text>
+  <text x="380" y="420" class="sub" text-anchor="middle">같이 collection 될 region끼리</text>
+  <rect x="510" y="378" width="220" height="52" rx="8" class="box"/>
+  <text x="620" y="400" class="op" text-anchor="middle">Rebuild remembered set</text>
+  <text x="620" y="420" class="sub" text-anchor="middle">모든 old region 방문, 그룹 단위로 기록</text>
+  <line x1="252" y1="404" x2="268" y2="404" class="al" marker-end="url(#ar)"/>
+  <line x1="492" y1="404" x2="508" y2="404" class="al" marker-end="url(#ar)"/>
+  <text x="30" y="460" class="val">살아 있는 객체가 다른 CSet candidate region(또는 그룹)을 참조하면 그 그룹의 공유 remembered set에 기록</text>
+  <text x="30" y="482" class="val">old region의 remembered set은 늦게(lazily) 생성됨</text>
+  <text x="30" y="504" class="val">mutator thread의 참조 변경·추가는 post-write barrier를 통해 remembered set에 추가</text>
+</svg>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>evacuation failure가 난 region은 CSet candidates로 등록되어 다음 GC에서 바로 수집되고, GC를 했는데도 free space가 전혀 없으면 full GC가 발생한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opc { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .rg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">evacuation failure 이후 — 다음 GC와 full GC</text>
+  <text x="730" y="42" class="code" text-anchor="end">evacuation failure</text>
+  <text x="220" y="68" class="step" text-anchor="middle">이번 GC</text>
+  <text x="360" y="68" class="step" text-anchor="middle">처리</text>
+  <text x="500" y="68" class="step" text-anchor="middle">다음 GC</text>
+  <text x="640" y="68" class="step" text-anchor="middle">결과</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="118.0" class="lane">보통</text>
+  <text x="30" y="136.0" class="sub">공간이 확보될 때</text>
+  <rect x="150" y="90" width="585" height="60" rx="6" class="track"/>
+  <rect x="158.0" y="96" width="124" height="48" rx="8" class="bad"/>
+  <text x="220" y="116.0" class="badt" text-anchor="middle">evacuation</text>
+  <text x="220" y="134.0" class="val" text-anchor="middle">failure 발생</text>
+  <rect x="298.0" y="96" width="124" height="48" rx="8" class="hold"/>
+  <text x="360" y="116.0" class="op" text-anchor="middle">CSet 후보 등록</text>
+  <text x="360" y="134.0" class="val" text-anchor="middle">young은 old로</text>
+  <rect x="438.0" y="96" width="124" height="48" rx="8" class="box"/>
+  <text x="500" y="116.0" class="op" text-anchor="middle">바로 수집</text>
+  <text x="500" y="134.0" class="val" text-anchor="middle">다음 GC</text>
+  <rect x="578.0" y="96" width="124" height="48" rx="8" class="ok"/>
+  <text x="640" y="116.0" class="okt" text-anchor="middle">공간 확보</text>
+  <text x="640" y="134.0" class="val" text-anchor="middle">GC 계속</text>
+  <line x1="220" y1="144" x2="220" y2="176" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="30" y="198.0" class="lane">반복될 때</text>
+  <text x="30" y="216.0" class="sub">free space 없음</text>
+  <rect x="150" y="170" width="585" height="60" rx="6" class="track"/>
+  <rect x="158.0" y="176" width="124" height="48" rx="8" class="bad"/>
+  <text x="220" y="196.0" class="badt" text-anchor="middle">evacuation</text>
+  <text x="220" y="214.0" class="val" text-anchor="middle">failure 반복</text>
+  <rect x="298.0" y="176" width="124" height="48" rx="8" class="bad"/>
+  <text x="360" y="196.0" class="badt" text-anchor="middle">free space 0</text>
+  <text x="360" y="214.0" class="val" text-anchor="middle">GC 후에도 없음</text>
+  <rect x="438.0" y="176" width="124" height="48" rx="8" class="bad"/>
+  <text x="500" y="196.0" class="badt" text-anchor="middle">full GC</text>
+  <text x="500" y="214.0" class="val" text-anchor="middle">느린 STW</text>
+  <text x="150" y="270" class="sub">보통 full GC 전에는 evacuation failure가 발생하는 GC들이 먼저 일어난다</text>
+  <text x="150" y="290" class="sub">GC를 했음에도 free space가 전혀 없을 때 full GC가 발생한다</text>
+</svg>

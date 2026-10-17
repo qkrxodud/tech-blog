@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>young GC 때 remembered set으로 적게 참조되는 humongous object만 골라 실제로 garbage인지 확인하고, garbage면 young GC에서 바로 회수한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opc { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .rg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">eager reclamation — young GC에서 거대 객체 회수</text>
+  <text x="730" y="42" class="code" text-anchor="end">int[] cnts</text>
+  <text x="220" y="68" class="step" text-anchor="middle">remembered set</text>
+  <text x="360" y="68" class="step" text-anchor="middle">후보 선정</text>
+  <text x="500" y="68" class="step" text-anchor="middle">참조 확인</text>
+  <text x="640" y="68" class="step" text-anchor="middle">결과</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="120.0" class="lane">region #11</text>
+  <text x="30" y="138.0" class="sub">int[] cnts</text>
+  <rect x="150" y="90" width="585" height="64" rx="6" class="track"/>
+  <rect x="158.0" y="98" width="124" height="48" rx="8" class="hold"/>
+  <text x="220" y="118.0" class="op" text-anchor="middle">C, A</text>
+  <text x="220" y="136.0" class="val" text-anchor="middle">rset 항목 2개</text>
+  <rect x="298.0" y="98" width="124" height="48" rx="8" class="box"/>
+  <text x="360" y="118.0" class="op" text-anchor="middle">적게 참조됨</text>
+  <text x="360" y="136.0" class="val" text-anchor="middle">eager 후보</text>
+  <rect x="438.0" y="98" width="124" height="48" rx="8" class="box"/>
+  <text x="500" y="118.0" class="op" text-anchor="middle">참조 없음</text>
+  <text x="500" y="136.0" class="val" text-anchor="middle">garbage 확인</text>
+  <rect x="578.0" y="98" width="124" height="48" rx="8" class="ok"/>
+  <text x="640" y="118.0" class="okt" text-anchor="middle">즉시 회수</text>
+  <text x="640" y="136.0" class="val" text-anchor="middle">free region</text>
+  <text x="30" y="200.0" class="lane">다른 거대 객체</text>
+  <text x="30" y="218.0" class="sub">많이 참조됨</text>
+  <rect x="150" y="170" width="585" height="64" rx="6" class="track"/>
+  <rect x="158.0" y="178" width="124" height="48" rx="8" class="hold"/>
+  <text x="220" y="198.0" class="op" text-anchor="middle">항목 많음</text>
+  <text x="220" y="216.0" class="val" text-anchor="middle">rset 항목 다수</text>
+  <rect x="298.0" y="178" width="124" height="48" rx="8" class="box"/>
+  <text x="360" y="198.0" class="op" text-anchor="middle">후보 아님</text>
+  <text x="360" y="216.0" class="val" text-anchor="middle">확인 생략</text>
+  <rect x="430" y="188" width="280" height="28" rx="6" class="wait"/>
+  <text x="570" y="207" class="waitt" text-anchor="middle">보통처럼 Remark phase나 full GC 때 회수</text>
+  <text x="30" y="284" class="db">대상 배열</text>
+  <rect x="150" y="262" width="280" height="36" rx="6" class="dbbox"/>
+  <text x="290" y="285" class="val" text-anchor="middle">JDK 25까지: primitive type 배열만</text>
+  <rect x="446" y="262" width="280" height="36" rx="6" class="ok"/>
+  <text x="586" y="285" class="gnote" text-anchor="middle">JDK 26부터: reference 배열도</text>
+  <text x="150" y="330" class="sub">humongous region은 평소에도 remembered set을 관리하기 때문에</text>
+  <text x="150" y="348" class="sub">old generation에 있는 거대 객체도 young GC에서 회수할 수 있다</text>
+</svg>

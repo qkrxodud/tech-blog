@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>CSet candidate regions 중 garbage가 가장 적은 region부터 garbage 크기를 누적해 G1HeapWastePercent를 넘지 않을 때까지 candidate에서 pruning한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .gc { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .br { stroke: #9ca3af; stroke-width: 1.2; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="300" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="280" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">G1HeapWastePercent — garbage가 적은 region부터 pruning</text>
+  <text x="730" y="42" class="code" text-anchor="end">heap 1000MB × 5% = 50MB</text>
+  <text x="40" y="80" class="sub">CSet candidate regions (garbage가 적은 순서, 예시 값)</text>
+  <rect x="40" y="96" width="105" height="52" rx="8" class="hold"/>
+  <text x="92" y="118" class="op" text-anchor="middle">R1</text>
+  <text x="92" y="137" class="val" text-anchor="middle">garbage 8MB</text>
+  <text x="92" y="172" class="gnote" text-anchor="middle">누적 8MB</text>
+  <rect x="155" y="96" width="105" height="52" rx="8" class="hold"/>
+  <text x="207" y="118" class="op" text-anchor="middle">R2</text>
+  <text x="207" y="137" class="val" text-anchor="middle">garbage 12MB</text>
+  <text x="207" y="172" class="gnote" text-anchor="middle">누적 20MB</text>
+  <rect x="270" y="96" width="105" height="52" rx="8" class="hold"/>
+  <text x="322" y="118" class="op" text-anchor="middle">R3</text>
+  <text x="322" y="137" class="val" text-anchor="middle">garbage 20MB</text>
+  <text x="322" y="172" class="gnote" text-anchor="middle">누적 40MB</text>
+  <rect x="385" y="96" width="105" height="52" rx="8" class="ok"/>
+  <text x="437" y="118" class="okt" text-anchor="middle">R4</text>
+  <text x="437" y="137" class="val" text-anchor="middle">garbage 30MB</text>
+  <text x="437" y="172" class="note" text-anchor="middle">누적 70MB</text>
+  <rect x="500" y="96" width="105" height="52" rx="8" class="ok"/>
+  <text x="552" y="118" class="okt" text-anchor="middle">R5</text>
+  <text x="552" y="137" class="val" text-anchor="middle">garbage 45MB</text>
+  <rect x="615" y="96" width="105" height="52" rx="8" class="ok"/>
+  <text x="667" y="118" class="okt" text-anchor="middle">R6</text>
+  <text x="667" y="137" class="val" text-anchor="middle">garbage 60MB</text>
+  <path d="M 42 186 L 42 196 L 383 196 L 383 186" class="br"/>
+  <text x="212" y="216" class="op" text-anchor="middle">candidate에서 pruning</text>
+  <text x="212" y="235" class="sub" text-anchor="middle">누적 40MB ≤ 50MB — wasted로 허용</text>
+  <path d="M 387 186 L 387 196 L 728 196 L 728 186" class="br"/>
+  <text x="557" y="216" class="okt" text-anchor="middle">mixed GC 대상으로 남음</text>
+  <text x="557" y="235" class="sub" text-anchor="middle">R4까지 더하면 70MB &gt; 50MB</text>
+  <text x="40" y="272" class="sub">값을 늘릴수록 더 많은 region이 빠져 candidate 수가 줄고 Space-Reclamation Phase가 일찍 끝남</text>
+</svg>

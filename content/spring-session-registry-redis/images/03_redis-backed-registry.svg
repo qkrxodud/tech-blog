@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 388" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>SpringSessionBackedSessionRegistry로 바꾸면 모든 파드가 Redis의 principal name 인덱스를 조회하므로, 파드 B의 두 번째 로그인에서 앞 세션 S1을 찾아 만료 표시하고, S1으로 들어온 다음 요청을 파드 C가 만료로 확인해 로그아웃 처리하는 흐름</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="388" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="368" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h" text-anchor="start">Redis를 보는 registry — 모든 파드가 같은 목록</text>
+  <text x="730" y="42" class="code" text-anchor="end" font-size="12">SpringSessionBackedSessionRegistry</text>
+  <text x="250" y="68" class="step" text-anchor="middle">① 첫 로그인 (파드 A)</text>
+  <text x="440" y="68" class="step" text-anchor="middle">② 두 번째 로그인 (파드 B)</text>
+  <text x="630" y="68" class="step" text-anchor="middle">③ S1로 다음 요청 (파드 C)</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane" text-anchor="start">파드 A</text>
+  <text x="30" y="126" class="sub" text-anchor="start"></text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="166" y="88" width="168" height="48" rx="8" class="hold"/>
+  <text x="250.0" y="108" class="t" text-anchor="middle">로그인 처리</text>
+  <text x="250.0" y="127" class="val" text-anchor="middle">S1 생성</text>
+  <text x="30" y="168" class="lane" text-anchor="start">파드 B</text>
+  <text x="30" y="186" class="sub" text-anchor="start"></text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="356" y="148" width="168" height="48" rx="8" class="hold"/>
+  <text x="440.0" y="168" class="t" text-anchor="middle">user1 세션 조회</text>
+  <text x="440.0" y="187" class="val" text-anchor="middle">S1 발견 → S1 만료 표시</text>
+  <text x="30" y="228" class="lane" text-anchor="start">파드 C</text>
+  <text x="30" y="246" class="sub" text-anchor="start"></text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="546" y="208" width="168" height="48" rx="8" class="ok"/>
+  <text x="630.0" y="228" class="okt" text-anchor="middle">S1 만료 확인</text>
+  <text x="630.0" y="247" class="val" text-anchor="middle">로그아웃 처리</text>
+  <text x="30" y="296" class="db" text-anchor="start">Redis</text>
+  <rect x="166" y="268" width="168" height="48" rx="8" class="dbbox"/>
+  <text x="250.0" y="288" class="db" text-anchor="middle">S1 + 인덱스</text>
+  <text x="250.0" y="307" class="val" text-anchor="middle">user1 → S1</text>
+  <rect x="356" y="268" width="168" height="48" rx="8" class="dbbox"/>
+  <text x="440.0" y="288" class="db" text-anchor="middle">S1(만료), S2</text>
+  <text x="440.0" y="307" class="val" text-anchor="middle">user1 → S1, S2</text>
+  <rect x="546" y="268" width="168" height="48" rx="8" class="ok"/>
+  <text x="630.0" y="288" class="okt" text-anchor="middle">유효한 세션은 S2</text>
+  <text x="630.0" y="307" class="val" text-anchor="middle">user1 로그인 1개</text>
+  <line x1="250" y1="136" x2="250" y2="268" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="440" y1="196" x2="440" y2="268" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="630" y1="256" x2="630" y2="268" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="30" y="352" class="gnote" text-anchor="start">세션 데이터와 사용자별 세션 목록이 모두 Redis에 있으므로 어느 파드에서 세어도 결과가 같습니다.</text>
+</svg>

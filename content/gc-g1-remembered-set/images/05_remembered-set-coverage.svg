@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>참조가 collection set 안이나 young에서 출발하면 evacuation 중에 발견되어 remembered set이 필요 없고, collection set 밖의 old 객체에서 들어오는 참조만 young gen remembered set 또는 old region의 remembered set에 기록한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .rl11 { font-size: 11px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .obj { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .old { fill: #e5e7eb; stroke: #9ca3af; stroke-width: 1.2; }
+    .young { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; }
+    .free { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; stroke-dasharray: 4 3; }
+    .ob { fill: #ffffff; stroke: #6b7280; stroke-width: 1.2; }
+    .cset { fill: none; stroke: #16a34a; stroke-width: 2.6; }
+    .grp { fill: none; stroke: #16a34a; stroke-width: 2; stroke-dasharray: 7 4; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">remembered set이 커버하는 참조 — 출발 위치로 나누기</text>
+  <text x="730" y="42" class="code" text-anchor="end">collection set</text>
+  <text x="40" y="78" class="step">참조</text>
+  <text x="280" y="78" class="step">찾는 방법</text>
+  <text x="560" y="78" class="step">remembered set</text>
+  <rect x="30" y="92" width="700" height="48" rx="6" class="track"/>
+  <rect x="40" y="100" width="220" height="32" rx="6" class="hold"/>
+  <text x="150" y="121" class="lane2" text-anchor="middle">young → young</text>
+  <text x="280" y="121" class="val">young generation을 evacuation하며 발견</text>
+  <rect x="560" y="100" width="160" height="32" rx="16" class="ok"/>
+  <text x="640" y="121" class="okt" text-anchor="middle">불필요</text>
+  <rect x="30" y="148" width="700" height="48" rx="6" class="track"/>
+  <rect x="40" y="156" width="220" height="32" rx="6" class="hold"/>
+  <text x="150" y="177" class="lane2" text-anchor="middle">young → old</text>
+  <text x="280" y="177" class="val">young generation을 evacuation하며 발견</text>
+  <rect x="560" y="156" width="160" height="32" rx="16" class="ok"/>
+  <text x="640" y="177" class="okt" text-anchor="middle">불필요</text>
+  <rect x="30" y="204" width="700" height="48" rx="6" class="track"/>
+  <rect x="40" y="212" width="220" height="32" rx="6" class="hold"/>
+  <text x="150" y="233" class="lane2" text-anchor="middle">collection set 안 → 안</text>
+  <text x="280" y="233" class="val">같은 collection set을 evacuation하며 발견</text>
+  <rect x="560" y="212" width="160" height="32" rx="16" class="ok"/>
+  <text x="640" y="233" class="okt" text-anchor="middle">불필요</text>
+  <rect x="30" y="260" width="700" height="48" rx="6" class="track"/>
+  <rect x="40" y="268" width="220" height="32" rx="6" class="hold"/>
+  <text x="150" y="289" class="lane2" text-anchor="middle">밖의 old → young</text>
+  <text x="280" y="289" class="val">young gen remembered set에서 출발</text>
+  <rect x="560" y="268" width="160" height="32" rx="16" class="bad"/>
+  <text x="640" y="289" class="badt" text-anchor="middle">필요 (B → C)</text>
+  <rect x="30" y="316" width="700" height="48" rx="6" class="track"/>
+  <rect x="40" y="324" width="220" height="32" rx="6" class="hold"/>
+  <text x="150" y="345" class="lane2" text-anchor="middle">밖의 old → 안의 old</text>
+  <text x="280" y="345" class="val">해당 old region의 remembered set에서 출발</text>
+  <rect x="560" y="324" width="160" height="32" rx="16" class="bad"/>
+  <text x="640" y="345" class="badt" text-anchor="middle">필요 (F → G)</text>
+  <text x="30" y="392" class="sub">young generation은 항상 collection set에 포함되므로 young에서 출발하는 참조는 기록하지 않음</text>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 482" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>marking이 끝나면 더 이상 참조되지 않는 B는 Black이라 살았다고 판단되고, A가 참조하는 E는 White로 남아 죽었다고 판단되며, 이 문제는 두 조건이 모두 충족될 때 생기고 G1 GC는 두 번째 조건을 막는다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .wn { fill: #ffffff; stroke: #6b7280; stroke-width: 1.5; }
+    .gn { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.5; }
+    .bn { fill: #374151; stroke: #1f2937; stroke-width: 1.5; }
+    .nt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ntw { font-size: 14px; font-weight: 700; fill: #ffffff; }
+    .edge { stroke: #6b7280; stroke-width: 1.5; fill: none; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="482" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="272" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">marking 종료 — 참조 변경이 남긴 두 가지 오판</text>
+  <rect x="30" y="70" width="80" height="44" rx="4" class="dark"/>
+  <text x="70" y="97" class="op" text-anchor="middle">GC root</text>
+  <line x1="110" y1="92" x2="196" y2="92" class="edge" marker-end="url(#ar)"/>
+  <line x1="242.0" y1="92.0" x2="356.0" y2="92.0" class="edge" marker-end="url(#ar)"/>
+  <line x1="402.0" y1="92.0" x2="516.0" y2="92.0" class="edge" marker-end="url(#ar)"/>
+  <path d="M 238 106 Q 420 210 637 174" class="edge" marker-end="url(#ar)"/>
+  <circle cx="660" cy="170" r="31" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/>
+  <circle cx="220" cy="92" r="22" class="bn"/>
+  <text x="220" y="97" class="ntw" text-anchor="middle">A</text>
+  <circle cx="300" cy="170" r="22" class="bn"/>
+  <text x="300" y="175" class="ntw" text-anchor="middle">B</text>
+  <circle cx="380" cy="92" r="22" class="bn"/>
+  <text x="380" y="97" class="ntw" text-anchor="middle">C</text>
+  <circle cx="540" cy="92" r="22" class="bn"/>
+  <text x="540" y="97" class="ntw" text-anchor="middle">D</text>
+  <circle cx="660" cy="170" r="22" class="wn"/>
+  <text x="660" y="175" class="nt" text-anchor="middle">E</text>
+  <text x="300" y="212" class="val" text-anchor="middle">B: 죽었으나 살았다고 판단</text>
+  <text x="300" y="230" class="sub" text-anchor="middle">아무도 참조하지 않지만 이미 Black</text>
+  <text x="660" y="118" class="badt" text-anchor="middle">E: 살았으나 죽었다고 판단</text>
+  <text x="30" y="266" class="sub">B는 이번 GC에서 수거되지 않을 뿐이지만, E는 살아 있는데 수거되므로 실제 문제가 된다</text>
+  <rect x="10" y="298" width="740" height="172" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="330" class="h">살았으나 죽었다고 판단하는 두 가지 조건 — 둘 다 충족해야 함</text>
+  <rect x="30" y="346" width="700" height="40" rx="6" class="box"/>
+  <text x="46" y="371" class="val">1. Black 객체에 White 객체를 향한 새로운 참조 추가</text>
+  <text x="714" y="371" class="sub" text-anchor="end">A → E</text>
+  <rect x="30" y="394" width="700" height="40" rx="6" class="ok"/>
+  <text x="46" y="419" class="val">2. 해당 White 객체를 참조하던 Grey 객체 혹은 (결국 Grey가 될) White 객체가 해당 참조를 삭제</text>
+  <text x="714" y="419" class="gnote" text-anchor="end">D → E</text>
+  <text x="30" y="458" class="gnote">G1 GC는 2번 조건이 발생하지 않게 한다</text>
+
+</svg>

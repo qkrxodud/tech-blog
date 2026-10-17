@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>committed Metaspace가 MetaspaceSize로 시작한 High-Water Mark에 닿으면 GC가 일어나고, GC 후 free 비율이 40% 미만이면 HWM을 높이고 70% 초과면 낮춘다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #9ca3af; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">High-Water Mark — GC를 일으키고, GC가 끝나면 다시 조정</text>
+  <text x="105" y="70" class="step" text-anchor="middle">1단계 · 시작</text>
+  <rect x="27" y="80" width="156" height="64" rx="8" class="box"/>
+  <text x="105" y="106" class="t" text-anchor="middle">HWM 초기값</text>
+  <text x="105" y="128" class="sub" text-anchor="middle">= MetaspaceSize</text>
+  <line x1="185" y1="112" x2="203" y2="112" class="al" marker-end="url(#ar)"/>
+  <text x="285" y="70" class="step" text-anchor="middle">2단계 · 클래스 로딩</text>
+  <rect x="207" y="80" width="156" height="64" rx="8" class="box"/>
+  <text x="285" y="106" class="t" text-anchor="middle">committed 증가</text>
+  <text x="285" y="128" class="sub" text-anchor="middle">metadata 저장</text>
+  <line x1="365" y1="112" x2="383" y2="112" class="al" marker-end="url(#ar)"/>
+  <text x="465" y="70" class="step" text-anchor="middle">3단계 · HWM 도달</text>
+  <rect x="387" y="80" width="156" height="64" rx="8" class="bad"/>
+  <text x="465" y="106" class="badt" text-anchor="middle">GC 트리거</text>
+  <text x="465" y="128" class="sub" text-anchor="middle">Metadata GC Threshold</text>
+  <line x1="545" y1="112" x2="563" y2="112" class="al" marker-end="url(#ar)"/>
+  <text x="645" y="70" class="step" text-anchor="middle">4단계 · GC 후</text>
+  <rect x="567" y="80" width="156" height="64" rx="8" class="ok"/>
+  <text x="645" y="106" class="okt" text-anchor="middle">HWM 재조정</text>
+  <text x="645" y="128" class="sub" text-anchor="middle">free 비율로 판단</text>
+  <path d="M 645 146 L 645 166 L 285 166 L 285 148" class="al" marker-end="url(#ar)"/>
+  <text x="465" y="184" class="sub" text-anchor="middle">새 HWM으로 다시 2단계부터 반복</text>
+
+  <text x="30" y="226" class="lane">4단계에서 HWM을 정하는 기준</text>
+  <text x="30" y="248" class="sub">GC 후 committed Metaspace 중 free 영역이 차지하는 비율(%)을 두 옵션과 비교합니다.</text>
+  <rect x="60" y="282" width="256" height="40" rx="4" class="hold"/>
+  <rect x="316" y="282" width="192" height="40" rx="4" class="box"/>
+  <rect x="508" y="282" width="192" height="40" rx="4" class="hold"/>
+  <text x="188" y="307" class="t" text-anchor="middle">40% 미만 → HWM 높임</text>
+  <text x="412" y="307" class="val" text-anchor="middle">40~70% → 그대로</text>
+  <text x="604" y="307" class="t" text-anchor="middle">70% 초과 → HWM 낮춤</text>
+  <text x="60" y="342" class="step" text-anchor="middle">0%</text>
+  <text x="316" y="342" class="step" text-anchor="middle">40%</text>
+  <text x="508" y="342" class="step" text-anchor="middle">70%</text>
+  <text x="700" y="342" class="step" text-anchor="middle">100%</text>
+  <text x="316" y="274" class="mono" text-anchor="middle">MinMetaspaceFreeRatio</text>
+  <text x="508" y="274" class="mono" text-anchor="middle">MaxMetaspaceFreeRatio</text>
+  <text x="60" y="374" class="val">free가 너무 적으면 곧 다시 GC가 나므로 HWM을 높이고, free가 너무 많으면 HWM을 낮춥니다.</text>
+</svg>

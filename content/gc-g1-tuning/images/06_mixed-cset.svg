@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 390" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>mixed GC의 collection set은 young generation과 minimum set, additional set으로 initial GC pass를 하고, 시간이 남으면 optional set의 old region을 하나씩 더 evacuation하며 max pause-time goal에 다다를 때까지 반복한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .gc { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .br { stroke: #9ca3af; stroke-width: 1.2; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="390" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="370" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">mixed GC의 collection set — pause time 안에서 채우는 순서</text>
+  <text x="730" y="42" class="code" text-anchor="end">MaxGCPauseMillis=200</text>
+  <text x="40" y="78" class="step">0ms</text>
+  <text x="720" y="78" class="step" text-anchor="end">200ms</text>
+  <line x1="40" y1="86" x2="718" y2="86" class="axis" marker-end="url(#ar)"/>
+  <rect x="40" y="98" width="150" height="56" class="hold"/>
+  <text x="115" y="121" class="op" text-anchor="middle">young</text>
+  <text x="115" y="140" class="val" text-anchor="middle">eden + base</text>
+  <rect x="190" y="98" width="150" height="56" class="box"/>
+  <text x="265" y="121" class="op" text-anchor="middle">minimum set</text>
+  <text x="265" y="140" class="val" text-anchor="middle">old regions</text>
+  <rect x="340" y="98" width="230" height="56" class="ok"/>
+  <text x="455" y="121" class="okt" text-anchor="middle">additional set</text>
+  <text x="455" y="140" class="val" text-anchor="middle">남은 시간의 80%까지</text>
+  <rect x="570" y="98" width="150" height="56" class="wait"/>
+  <text x="645" y="121" class="waitt" text-anchor="middle">optional set</text>
+  <text x="645" y="140" class="waitt" text-anchor="middle">여유가 있으면</text>
+  <path d="M 42 166 L 42 176 L 568 176 L 568 166" class="br"/>
+  <text x="305" y="196" class="sub" text-anchor="middle">initial GC pass — young + minimum set + additional set</text>
+  <path d="M 572 166 L 572 176 L 718 176 L 718 166" class="br"/>
+  <text x="645" y="196" class="sub" text-anchor="middle">additional passes</text>
+  <rect x="40" y="216" width="680" height="44" rx="8" class="box"/>
+  <text x="56" y="243" class="val"><tspan font-weight="700" fill="#1f2937">minimum set</tspan> 개수 = CSet candidate regions 수 / <tspan font-family="Menlo, Consolas, monospace">G1MixedGCCountTarget(8)</tspan></text>
+  <rect x="40" y="268" width="680" height="44" rx="8" class="box"/>
+  <text x="56" y="295" class="val"><tspan font-weight="700" fill="#1f2937">additional set</tspan> — minimum set 예측 시간을 빼고도 남은 시간의 80%가 소비될 때까지 후보에서 추가</text>
+  <rect x="40" y="320" width="680" height="44" rx="8" class="box"/>
+  <text x="56" y="347" class="val"><tspan font-weight="700" fill="#1f2937">optional set</tspan> — 앞의 두 set을 비운 뒤에도 시간이 남으면 하나씩 evacuation을 반복</text>
+</svg>

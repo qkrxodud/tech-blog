@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 410" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>MaxMetaspaceSize는 non-compressed space와 compressed class space를 합친 committed 크기의 상한이고, MetaspaceSize는 초기 High-Water Mark이며 CompressedClassSpaceSize는 ergonomic으로 조절된다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #9ca3af; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="410" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="390" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">MaxMetaspaceSize — 두 공간을 합친 상한</text>
+  <text x="730" y="42" class="code" text-anchor="end">-XX:MaxMetaspaceSize=512m</text>
+  <text x="30" y="78" class="lane">committed Metaspace</text>
+  <text x="30" y="98" class="sub">non-compressed space + compressed class space 합계</text>
+  <rect x="60" y="112" width="640" height="44" rx="6" class="track"/>
+  <rect x="62" y="114" width="200" height="40" rx="5" class="hold"/>
+  <text x="162" y="139" class="t" text-anchor="middle">non-compressed</text>
+  <rect x="262" y="114" width="80" height="40" rx="5" class="ok"/>
+  <text x="302" y="139" class="okt" text-anchor="middle">class</text>
+  <line x1="380" y1="104" x2="380" y2="166" stroke="#16a34a" stroke-width="1.6"/>
+  <text x="380" y="184" class="gnote" text-anchor="middle">초기 High-Water Mark</text>
+  <text x="380" y="200" class="mono" text-anchor="middle">MetaspaceSize=256m</text>
+  <line x1="700" y1="104" x2="700" y2="166" stroke="#dc2626" stroke-width="1.6"/>
+  <text x="700" y="184" class="note" text-anchor="end">최대값 (디폴트는 무한대)</text>
+  <text x="700" y="200" class="mono" text-anchor="end">MaxMetaspaceSize=512m</text>
+  <text x="60" y="184" class="step" text-anchor="middle">0</text>
+
+  <text x="30" y="250" class="lane">PrintFlagsFinal로 확인한 값</text>
+  <rect x="30" y="264" width="700" height="96" rx="8" class="box"/>
+  <text x="50" y="290" class="mono">CompressedClassSpaceSize = 436207616</text>
+  <text x="50" y="314" class="mono">MaxMetaspaceSize = 536870912</text>
+  <text x="50" y="338" class="mono">MetaspaceSize = 268435456</text>
+  <text x="440" y="290" class="okc">{ergonomic}</text>
+  <text x="440" y="314" class="mono">{command line}</text>
+  <text x="440" y="338" class="mono">{command line}</text>
+  <text x="580" y="290" class="gnote">416MB, 자동 조절</text>
+  <text x="580" y="314" class="sub">512MB</text>
+  <text x="580" y="338" class="sub">256MB</text>
+  <text x="30" y="386" class="sub">막대 길이는 실제 비율이 아닙니다. CompressedClassSpaceSize는 MaxMetaspaceSize에 맞춰 조절됩니다.</text>
+</svg>

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>16GB 힙을 4KB page로 담으면 4,194,304개, 2MB large page로 담으면 8,192개가 필요해 TLB miss가 줄어들고, Linux에서는 필요한 page 수를 산정해 nr_hugepages에 등록한 뒤 -XX:+UseLargePages로 사용한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mc { font-family: Menlo, Consolas, monospace; font-size: 13.5px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .gauge { fill: #ffffff; stroke: #c4c8ce; stroke-width: 1.2; }
+    .used { fill: #d1d5db; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <pattern id="small" width="4" height="36" patternUnits="userSpaceOnUse">
+      <rect width="4" height="36" fill="#fee2e2"/>
+      <line x1="3.5" y1="0" x2="3.5" y2="36" stroke="#f87171" stroke-width="1"/>
+    </pattern>
+    <pattern id="large" x="150" width="56.25" height="36" patternUnits="userSpaceOnUse">
+      <rect width="56.25" height="36" fill="#dcfce7"/>
+      <line x1="55.75" y1="0" x2="55.75" y2="36" stroke="#16a34a" stroke-width="1.2"/>
+    </pattern>
+  </defs>
+  <rect width="760" height="430" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="186" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">large page — 16GB 힙을 담는 page 수</text>
+
+  <text x="30" y="84" class="db">4KB</text>
+  <text x="30" y="102" class="sub">default page</text>
+  <rect x="150" y="66" width="450" height="36" rx="4" fill="url(#small)" stroke="#dc2626" stroke-width="1.2"/>
+  <text x="730" y="90" class="badt" text-anchor="end">4,194,304개</text>
+
+  <text x="30" y="134" class="db">2MB</text>
+  <text x="30" y="152" class="sub">large page</text>
+  <rect x="150" y="116" width="450" height="36" rx="4" fill="url(#large)" stroke="#16a34a" stroke-width="1.2"/>
+  <text x="730" y="140" class="okt" text-anchor="end">8,192개</text>
+
+  <text x="150" y="180" class="sub">같은 16GB라도 page 수가 512분의 1 — TLB miss가 줄어 throughput, latency, start time에 도움이 된다</text>
+
+  <rect x="10" y="212" width="740" height="208" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="244" class="h">Linux에서 large page 설정 순서</text>
+  <rect x="30" y="264" width="220" height="110" rx="8" class="box"/>
+  <text x="140" y="290" class="op" text-anchor="middle">1. 필요한 메모리 산정</text>
+  <text x="140" y="314" class="val" text-anchor="middle">heap 16GB + non heap 2GB</text>
+  <text x="140" y="336" class="val" text-anchor="middle">(2³⁴ + 2³¹) / 2²¹</text>
+  <text x="140" y="358" class="op" text-anchor="middle">= 9,216 pages</text>
+  <line x1="250" y1="319" x2="268" y2="319" class="al" marker-end="url(#ar)"/>
+  <rect x="270" y="264" width="220" height="110" rx="8" class="box"/>
+  <text x="380" y="290" class="op" text-anchor="middle">2. OS pool에 등록</text>
+  <text x="380" y="314" class="mc" text-anchor="middle">nr_hugepages</text>
+  <text x="380" y="336" class="val" text-anchor="middle">에 9216을 쓰고</text>
+  <text x="380" y="358" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">cat</tspan>으로 확인</text>
+  <line x1="490" y1="319" x2="508" y2="319" class="al" marker-end="url(#ar)"/>
+  <rect x="510" y="264" width="220" height="110" rx="8" class="ok"/>
+  <text x="620" y="290" class="okt" text-anchor="middle">3. JVM 옵션</text>
+  <text x="620" y="314" class="mc" text-anchor="middle">-XX:+UseLargePages</text>
+  <text x="620" y="336" class="val" text-anchor="middle">디폴트 값은 false</text>
+  <text x="620" y="358" class="val" text-anchor="middle">large page pool 사용</text>
+  <text x="30" y="402" class="sub">OS 쪽 pool 등록과 JVM 옵션 두 군데를 모두 설정해야 large page를 사용한다</text>
+</svg>

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Young-Only phase에서 young GC를 하다가 old 점유율이 임계치를 넘으면 Concurrent Start로 marking을 시작하고, 동시 진행되는 Root region scan과 Concurrent mark 뒤에 Remark와 Cleanup을 거쳐 Space-Reclamation phase의 mixed GC로 넘어가는 G1 GC 사이클</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .lbl { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .rE { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .rS { fill: #ffffff; stroke: #16a34a; stroke-width: 1.8; }
+    .rO { fill: #e5e7eb; stroke: #6b7280; stroke-width: 1.5; }
+    .rH { fill: #9ca3af; stroke: #4b5563; stroke-width: 1.5; }
+    .rF { fill: #ffffff; stroke: #c4c8ce; stroke-width: 1.2; }
+    .rR { fill: #fafafa; stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 3; }
+    .tE { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .tS { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .tO { font-size: 13px; font-weight: 700; fill: #374151; }
+    .tH { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .tF { font-size: 11px; fill: #9ca3af; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .dl { stroke: #9ca3af; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="360" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="340" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">G1 GC 사이클 — Young-Only phase와 Space-Reclamation phase</text>
+  <rect x="150" y="58" width="428" height="26" rx="6" class="hold"/>
+  <text x="364" y="76" class="lbl" text-anchor="middle">Young-Only phase</text>
+  <rect x="584" y="58" width="152" height="26" rx="6" class="ok"/>
+  <text x="660" y="76" class="okt" text-anchor="middle" style="font-size:13px">Space-Reclamation</text>
+  <text x="30" y="128" class="lane">STW</text>
+  <text x="30" y="146" class="sub">애플리케이션 멈춤</text>
+  <rect x="150" y="100" width="586" height="64" rx="6" class="track"/>
+  <text x="30" y="210" class="lane">concurrent</text>
+  <text x="30" y="228" class="sub">애플리케이션과 동시에</text>
+  <rect x="150" y="182" width="586" height="64" rx="6" class="track"/>
+  <rect x="158" y="108" width="56" height="48" rx="8" class="box"/>
+  <text x="186.0" y="128" class="lbl" text-anchor="middle">young</text>
+  <text x="186.0" y="146" class="sub" text-anchor="middle">GC</text>
+  <rect x="228" y="108" width="92" height="48" rx="8" class="box"/>
+  <text x="274.0" y="128" class="lbl" text-anchor="middle">Concurrent</text>
+  <text x="274.0" y="146" class="sub" text-anchor="middle">Start</text>
+  <rect x="358" y="108" width="56" height="48" rx="8" class="box"/>
+  <text x="386.0" y="128" class="lbl" text-anchor="middle">young</text>
+  <text x="386.0" y="146" class="sub" text-anchor="middle">GC</text>
+  <rect x="446" y="108" width="62" height="48" rx="8" class="box"/>
+  <text x="477.0" y="137" class="lbl" text-anchor="middle">Remark</text>
+  <rect x="514" y="108" width="62" height="48" rx="8" class="box"/>
+  <text x="545.0" y="137" class="lbl" text-anchor="middle">Cleanup</text>
+  <rect x="592" y="108" width="64" height="48" rx="8" class="ok"/>
+  <text x="624.0" y="128" class="okt" text-anchor="middle">mixed</text>
+  <text x="624.0" y="146" class="sub" text-anchor="middle">GC</text>
+  <rect x="664" y="108" width="64" height="48" rx="8" class="ok"/>
+  <text x="696.0" y="128" class="okt" text-anchor="middle">mixed</text>
+  <text x="696.0" y="146" class="sub" text-anchor="middle">GC</text>
+  <rect x="322" y="192" width="122" height="44" rx="8" class="wait"/>
+  <text x="383" y="210" class="val" text-anchor="middle">Root region scan</text>
+  <text x="383" y="227" class="val" text-anchor="middle">Concurrent mark</text>
+  <line x1="322" y1="156" x2="322" y2="192" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <line x1="444" y1="214" x2="477" y2="156" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <line x1="221" y1="94" x2="221" y2="262" stroke="#dc2626" stroke-width="1.6"/>
+  <text x="225" y="278" class="note">old 점유율이 임계치를 넘음</text>
+  <line x1="150" y1="296" x2="734" y2="296" class="axis" marker-end="url(#ar)"/>
+  <text x="150" y="318" class="step">시간 →</text>
+  <text x="736" y="322" class="sub" text-anchor="end">mixed GC가 몇 번 이어진 뒤 다시 Young-Only phase로</text>
+</svg>

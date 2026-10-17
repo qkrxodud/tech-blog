@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 536" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>marking이 C까지 진행된 상태에서 애플리케이션 코드가 Black 객체 A의 참조를 B에서 White 객체 E로 바꾸고, Grey 객체 D가 E에 대한 참조를 삭제한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .wn { fill: #ffffff; stroke: #6b7280; stroke-width: 1.5; }
+    .gn { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.5; }
+    .bn { fill: #374151; stroke: #1f2937; stroke-width: 1.5; }
+    .nt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ntw { font-size: 14px; font-weight: 700; fill: #ffffff; }
+    .edge { stroke: #6b7280; stroke-width: 1.5; fill: none; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="536" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="250" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">① marking 진행 중 — C를 탐색하는 중</text>
+  <rect x="30" y="70" width="80" height="44" rx="4" class="dark"/>
+  <text x="70" y="97" class="op" text-anchor="middle">GC root</text>
+  <line x1="110" y1="92" x2="196" y2="92" class="edge" marker-end="url(#ar)"/>
+  <line x1="242.0" y1="92.0" x2="356.0" y2="92.0" class="edge" marker-end="url(#ar)"/>
+  <line x1="402.0" y1="92.0" x2="516.0" y2="92.0" class="edge" marker-end="url(#ar)"/>
+  <line x1="235.8" y1="107.4" x2="282.8" y2="153.2" class="edge" marker-end="url(#ar)"/>
+  <line x1="558.4" y1="104.0" x2="639.9" y2="156.9" class="edge" marker-end="url(#ar)"/>
+  <circle cx="220" cy="92" r="22" class="bn"/>
+  <text x="220" y="97" class="ntw" text-anchor="middle">A</text>
+  <circle cx="380" cy="92" r="22" class="gn"/>
+  <text x="380" y="97" class="nt" text-anchor="middle">C</text>
+  <circle cx="540" cy="92" r="22" class="wn"/>
+  <text x="540" y="97" class="nt" text-anchor="middle">D</text>
+  <circle cx="300" cy="170" r="22" class="bn"/>
+  <text x="300" y="175" class="ntw" text-anchor="middle">B</text>
+  <circle cx="660" cy="170" r="22" class="wn"/>
+  <text x="660" y="175" class="nt" text-anchor="middle">E</text>
+  <text x="380" y="130" class="sub" text-anchor="middle">GC thread가 탐색 중</text>
+  <text x="30" y="214" class="sub">A·B는 탐색 완료(Black), C는 탐색 중(Grey), D·E는 아직 marking 전(White)</text>
+  <circle cx="37" cy="240" r="7" class="wn"/>
+  <text x="50" y="244" class="sub">White — marking 전</text>
+  <circle cx="197" cy="240" r="7" class="gn"/>
+  <text x="210" y="244" class="sub">Grey — marking됐고 탐색 완료 전</text>
+  <circle cx="457" cy="240" r="7" class="bn"/>
+  <text x="470" y="244" class="sub">Black — 탐색 완료</text>
+  <rect x="10" y="276" width="740" height="250" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="308" class="h">② 애플리케이션 코드가 참조를 변경 — marking도 계속 진행</text>
+  <rect x="30" y="340" width="80" height="44" rx="4" class="dark"/>
+  <text x="70" y="367" class="op" text-anchor="middle">GC root</text>
+  <line x1="110" y1="362" x2="196" y2="362" class="edge" marker-end="url(#ar)"/>
+  <line x1="242.0" y1="362.0" x2="356.0" y2="362.0" class="edge" marker-end="url(#ar)"/>
+  <line x1="402.0" y1="362.0" x2="516.0" y2="362.0" class="edge" marker-end="url(#ar)"/>
+  <line x1="235.8" y1="377.4" x2="282.8" y2="423.2" class="rl" marker-end="url(#arr)"/>
+  <line x1="558.4" y1="374.0" x2="639.9" y2="426.9" class="rl" marker-end="url(#arr)"/>
+  <circle cx="220" cy="362" r="22" class="bn"/>
+  <text x="220" y="367" class="ntw" text-anchor="middle">A</text>
+  <circle cx="380" cy="362" r="22" class="gn"/>
+  <text x="380" y="367" class="nt" text-anchor="middle">C</text>
+  <circle cx="540" cy="362" r="22" class="gn"/>
+  <text x="540" y="367" class="nt" text-anchor="middle">D</text>
+  <circle cx="300" cy="440" r="22" class="bn"/>
+  <text x="300" y="445" class="ntw" text-anchor="middle">B</text>
+  <circle cx="660" cy="440" r="22" class="wn"/>
+  <text x="660" y="445" class="nt" text-anchor="middle">E</text>
+  <path d="M 238 376 Q 420 480 637 444" class="gl" marker-end="url(#agr)"/>
+  <text x="250" y="474" class="note">A → B 참조가 사라짐</text>
+  <text x="600" y="356" class="note">D → E 참조 삭제</text>
+  <text x="450" y="488" class="gnote">A → E 새 참조 추가</text>
+  <text x="30" y="514" class="sub">Black 객체 A가 White 객체 E를 새로 참조하고, Grey 객체 D가 E에 대한 참조를 지운다</text>
+
+</svg>

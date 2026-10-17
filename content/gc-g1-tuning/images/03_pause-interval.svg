@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>G1은 GCPauseIntervalMillis 구간마다 GC pause의 최대 크기를 MaxGCPauseMillis로 제한하고, 이를 위해 young GC가 끝날 때 다음 mutator phase의 young generation 크기를 정한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .gc { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .br { stroke: #9ca3af; stroke-width: 1.2; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="300" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="280" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">pause time 제한 — 구간마다 pause를 MaxGCPauseMillis 이내로</text>
+  <text x="730" y="64" class="code" text-anchor="end">200ms / 201ms</text>
+  <rect x="40" y="120" width="70" height="44" class="gc"/>
+  <rect x="110" y="120" width="156" height="44" class="ok"/>
+  <path d="M 42 110 L 42 100 L 236 100 L 236 110" class="br"/>
+  <text x="139" y="92" class="sub" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">MaxGCPauseMillis</tspan></text>
+  <path d="M 42 174 L 42 184 L 264 184 L 264 174" class="br"/>
+  <text x="153" y="202" class="sub" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">GCPauseIntervalMillis</tspan></text>
+  <rect x="266" y="120" width="150" height="44" class="gc"/>
+  <rect x="416" y="120" width="76" height="44" class="ok"/>
+  <path d="M 268 110 L 268 100 L 462 100 L 462 110" class="br"/>
+  <text x="365" y="92" class="sub" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">MaxGCPauseMillis</tspan></text>
+  <path d="M 268 174 L 268 184 L 490 184 L 490 174" class="br"/>
+  <text x="379" y="202" class="sub" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">GCPauseIntervalMillis</tspan></text>
+  <rect x="492" y="120" width="100" height="44" class="gc"/>
+  <rect x="592" y="120" width="126" height="44" class="ok"/>
+  <path d="M 494 110 L 494 100 L 688 100 L 688 110" class="br"/>
+  <text x="591" y="92" class="sub" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">MaxGCPauseMillis</tspan></text>
+  <path d="M 494 174 L 494 184 L 716 184 L 716 174" class="br"/>
+  <text x="605" y="202" class="sub" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">GCPauseIntervalMillis</tspan></text>
+  <rect x="40" y="226" width="16" height="16" class="gc"/>
+  <text x="64" y="239" class="val">GC pause</text>
+  <rect x="150" y="226" width="16" height="16" class="ok"/>
+  <text x="174" y="239" class="val">mutator phase — 진행되는 동안 young generation 크기를 미세 조정</text>
+  <text x="40" y="270" class="sub">young GC의 끝에 이전 통계(evacuation 시간, copy된 객체 양, remembered set 등 상호 참조)로 다음 young 크기를 결정</text>
+</svg>

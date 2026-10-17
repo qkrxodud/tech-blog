@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>region 크기의 절반보다 작은 객체는 일반 객체, 절반 이상이면 humongous object이며, region보다 크면 연속된 region에 할당되고 마지막 region의 남은 공간은 버려진다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opc { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .rg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">humongous object — region 크기의 1/2 이상인 객체</text>
+  <text x="730" y="42" class="code" text-anchor="end">region size = R</text>
+  <text x="30" y="98.0" class="lane">0.3R 객체</text>
+  <text x="30" y="116.0" class="sub">일반 객체</text>
+  <rect x="150" y="62" width="585" height="76" rx="6" class="track"/>
+  <rect x="170" y="72" width="180" height="56" rx="4" class="box"/>
+  <rect x="170" y="72" width="54.0" height="56" rx="4" class="hold"/>
+  <text x="197.0" y="105" class="rg" text-anchor="middle">obj</text>
+  <text x="287.0" y="105" class="waitt" text-anchor="middle">남은 공간</text>
+  <text x="287.0" y="121" class="sub" text-anchor="middle">다른 객체 할당</text>
+  <text x="364" y="105" class="val">eden region에 할당</text>
+  <text x="30" y="186.0" class="lane">0.6R 객체</text>
+  <text x="30" y="204.0" class="sub">humongous</text>
+  <rect x="150" y="150" width="585" height="76" rx="6" class="track"/>
+  <rect x="170" y="160" width="180" height="56" rx="4" class="box"/>
+  <rect x="170" y="160" width="108.0" height="56" rx="4" class="dark"/>
+  <text x="224.0" y="193" class="rg" text-anchor="middle">humongous</text>
+  <rect x="278.0" y="160" width="72.0" height="56" rx="4" class="bad"/>
+  <text x="314.0" y="193" class="badt" text-anchor="middle">버려짐</text>
+  <text x="364" y="193" class="val">humongous region 1개</text>
+  <text x="364" y="211" class="sub">(old generation)</text>
+  <text x="30" y="274.0" class="lane">1.6R 객체</text>
+  <text x="30" y="292.0" class="sub">humongous</text>
+  <rect x="150" y="238" width="585" height="76" rx="6" class="track"/>
+  <rect x="170" y="248" width="180" height="56" rx="4" class="box"/>
+  <rect x="350" y="248" width="180" height="56" rx="4" class="box"/>
+  <rect x="170" y="248" width="288.0" height="56" rx="4" class="dark"/>
+  <text x="260.0" y="281" class="rg" text-anchor="middle">humongous object</text>
+  <rect x="458.0" y="248" width="72.0" height="56" rx="4" class="bad"/>
+  <text x="494.0" y="281" class="badt" text-anchor="middle">버려짐</text>
+  <line x1="350" y1="250" x2="350" y2="302" stroke="#6b7280" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="544" y="272" class="val">region 2개</text>
+  <text x="544" y="290" class="val">연속으로 할당</text>
+  <text x="544" y="306" class="sub">(old generation)</text>
+  <path d="M 170 330 L 170 338 L 530 338 L 530 330" class="al"/>
+  <text x="350" y="356" class="sub" text-anchor="middle">연속된 region 2개 — 두 번째 region의 남은 0.4R은 사용되지 않는다</text>
+</svg>

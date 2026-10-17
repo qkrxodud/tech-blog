@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>연속된 free region이 없어 1차 full GC에서 humongous object는 그대로 두고 나머지만 압축하지만 연속된 region이 부족하고, 같은 pause의 2차 full GC에서 humongous object까지 압축해 연속된 region 3개를 확보한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opc { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .rg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">humongous object와 full GC — 같은 pause 안의 두 번</text>
+  <text x="730" y="42" class="code" text-anchor="end">full GC</text>
+  <text x="30" y="90.0" class="lane">full GC 전</text>
+  <text x="30" y="108.0" class="sub">연속 free 없음</text>
+  <rect x="150" y="60" width="585" height="64" rx="6" class="track"/>
+  <rect x="160" y="70" width="46" height="44" rx="3" class="hold"/>
+  <text x="183.0" y="97" class="rg" text-anchor="middle">O</text>
+  <rect x="206" y="70" width="46" height="44" rx="3" class="dark"/>
+  <text x="229.0" y="97" class="rg" text-anchor="middle">H1</text>
+  <rect x="252" y="70" width="46" height="44" rx="3" class="dark"/>
+  <text x="275.0" y="97" class="rg" text-anchor="middle">H1</text>
+  <rect x="298" y="70" width="46" height="44" rx="3" class="box"/>
+  <rect x="344" y="70" width="46" height="44" rx="3" class="hold"/>
+  <text x="367.0" y="97" class="rg" text-anchor="middle">O</text>
+  <rect x="390" y="70" width="46" height="44" rx="3" class="hold"/>
+  <text x="413.0" y="97" class="rg" text-anchor="middle">E</text>
+  <rect x="436" y="70" width="46" height="44" rx="3" class="box"/>
+  <rect x="482" y="70" width="46" height="44" rx="3" class="dark"/>
+  <text x="505.0" y="97" class="rg" text-anchor="middle">H2</text>
+  <rect x="528" y="70" width="46" height="44" rx="3" class="hold"/>
+  <text x="551.0" y="97" class="rg" text-anchor="middle">O</text>
+  <rect x="574" y="70" width="46" height="44" rx="3" class="box"/>
+  <text x="628" y="92" class="note">흩어진</text>
+  <text x="628" y="108" class="note">free 3개</text>
+  <text x="30" y="170.0" class="lane">1차 full GC</text>
+  <text x="30" y="188.0" class="sub">humongous 고정</text>
+  <rect x="150" y="140" width="585" height="64" rx="6" class="track"/>
+  <rect x="160" y="150" width="46" height="44" rx="3" class="hold"/>
+  <text x="183.0" y="177" class="rg" text-anchor="middle">O</text>
+  <rect x="206" y="150" width="46" height="44" rx="3" class="dark"/>
+  <text x="229.0" y="177" class="rg" text-anchor="middle">H1</text>
+  <rect x="252" y="150" width="46" height="44" rx="3" class="dark"/>
+  <text x="275.0" y="177" class="rg" text-anchor="middle">H1</text>
+  <rect x="298" y="150" width="46" height="44" rx="3" class="hold"/>
+  <text x="321.0" y="177" class="rg" text-anchor="middle">O</text>
+  <rect x="344" y="150" width="46" height="44" rx="3" class="hold"/>
+  <text x="367.0" y="177" class="rg" text-anchor="middle">O</text>
+  <rect x="390" y="150" width="46" height="44" rx="3" class="hold"/>
+  <text x="413.0" y="177" class="rg" text-anchor="middle">O</text>
+  <rect x="436" y="150" width="46" height="44" rx="3" class="box"/>
+  <rect x="482" y="150" width="46" height="44" rx="3" class="dark"/>
+  <text x="505.0" y="177" class="rg" text-anchor="middle">H2</text>
+  <rect x="528" y="150" width="46" height="44" rx="3" class="box"/>
+  <rect x="574" y="150" width="46" height="44" rx="3" class="box"/>
+  <text x="628" y="172" class="note">연속 2개</text>
+  <text x="628" y="188" class="note">부족</text>
+  <text x="30" y="250.0" class="lane">2차 full GC</text>
+  <text x="30" y="268.0" class="sub">humongous도 이동</text>
+  <rect x="150" y="220" width="585" height="64" rx="6" class="track"/>
+  <rect x="160" y="230" width="46" height="44" rx="3" class="dark"/>
+  <text x="183.0" y="257" class="rg" text-anchor="middle">H1</text>
+  <rect x="206" y="230" width="46" height="44" rx="3" class="dark"/>
+  <text x="229.0" y="257" class="rg" text-anchor="middle">H1</text>
+  <rect x="252" y="230" width="46" height="44" rx="3" class="dark"/>
+  <text x="275.0" y="257" class="rg" text-anchor="middle">H2</text>
+  <rect x="298" y="230" width="46" height="44" rx="3" class="hold"/>
+  <text x="321.0" y="257" class="rg" text-anchor="middle">O</text>
+  <rect x="344" y="230" width="46" height="44" rx="3" class="hold"/>
+  <text x="367.0" y="257" class="rg" text-anchor="middle">O</text>
+  <rect x="390" y="230" width="46" height="44" rx="3" class="hold"/>
+  <text x="413.0" y="257" class="rg" text-anchor="middle">O</text>
+  <rect x="436" y="230" width="46" height="44" rx="3" class="hold"/>
+  <text x="459.0" y="257" class="rg" text-anchor="middle">O</text>
+  <rect x="482" y="230" width="46" height="44" rx="3" class="box"/>
+  <rect x="528" y="230" width="46" height="44" rx="3" class="box"/>
+  <rect x="574" y="230" width="46" height="44" rx="3" class="box"/>
+  <text x="628" y="252" class="gnote">연속 3개</text>
+  <text x="628" y="268" class="gnote">확보</text>
+  <text x="30" y="330.0" class="lane">할당</text>
+  <text x="30" y="348.0" class="sub">새 humongous</text>
+  <rect x="150" y="300" width="585" height="64" rx="6" class="track"/>
+  <rect x="160" y="310" width="46" height="44" rx="3" class="dark"/>
+  <text x="183.0" y="337" class="rg" text-anchor="middle">H1</text>
+  <rect x="206" y="310" width="46" height="44" rx="3" class="dark"/>
+  <text x="229.0" y="337" class="rg" text-anchor="middle">H1</text>
+  <rect x="252" y="310" width="46" height="44" rx="3" class="dark"/>
+  <text x="275.0" y="337" class="rg" text-anchor="middle">H2</text>
+  <rect x="298" y="310" width="46" height="44" rx="3" class="hold"/>
+  <text x="321.0" y="337" class="rg" text-anchor="middle">O</text>
+  <rect x="344" y="310" width="46" height="44" rx="3" class="hold"/>
+  <text x="367.0" y="337" class="rg" text-anchor="middle">O</text>
+  <rect x="390" y="310" width="46" height="44" rx="3" class="hold"/>
+  <text x="413.0" y="337" class="rg" text-anchor="middle">O</text>
+  <rect x="436" y="310" width="46" height="44" rx="3" class="hold"/>
+  <text x="459.0" y="337" class="rg" text-anchor="middle">O</text>
+  <rect x="482" y="310" width="46" height="44" rx="3" class="ok"/>
+  <text x="505.0" y="337" class="okt" text-anchor="middle">new</text>
+  <rect x="528" y="310" width="46" height="44" rx="3" class="ok"/>
+  <text x="551.0" y="337" class="okt" text-anchor="middle">new</text>
+  <rect x="574" y="310" width="46" height="44" rx="3" class="ok"/>
+  <text x="597.0" y="337" class="okt" text-anchor="middle">new</text>
+  <text x="628" y="338" class="gnote">할당 성공</text>
+  <text x="150" y="396" class="sub">O: old region, E: eden region, H1·H2: humongous object, 빈 칸: free region</text>
+  <text x="150" y="414" class="sub">새 humongous object는 연속된 region 3개가 필요하다 (full GC 뒤 살아남은 young 객체는 old로 승격)</text>
+</svg>

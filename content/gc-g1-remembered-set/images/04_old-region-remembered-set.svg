@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>#8의 remembered set에 #8을 참조하는 외부 old 객체 F를 기록해 두면 mixed GC 때 F에서 출발해 G를 찾는다. #4 등 다른 old region도 각자 remembered set을 가진다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .rl11 { font-size: 11px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .obj { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .old { fill: #e5e7eb; stroke: #9ca3af; stroke-width: 1.2; }
+    .young { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; }
+    .free { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; stroke-dasharray: 4 3; }
+    .ob { fill: #ffffff; stroke: #6b7280; stroke-width: 1.2; }
+    .cset { fill: none; stroke: #16a34a; stroke-width: 2.6; }
+    .grp { fill: none; stroke: #16a34a; stroke-width: 2; stroke-dasharray: 7 4; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="500" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="480" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">old region마다 두는 remembered set</text>
+  <text x="730" y="42" class="code" text-anchor="end">remembered set of #8</text>
+  <rect x="232" y="72" width="106" height="76" rx="4" class="free"/>
+  <text x="238" y="87" class="rl11">#0 free</text>
+  <rect x="342" y="72" width="106" height="76" rx="4" class="old"/>
+  <text x="348" y="87" class="rl11">#1 old</text>
+  <rect x="452" y="72" width="106" height="76" rx="4" class="young"/>
+  <text x="458" y="87" class="rl11">#2 survivor</text>
+  <rect x="232" y="152" width="106" height="76" rx="4" class="young"/>
+  <text x="238" y="167" class="rl11">#3 eden</text>
+  <rect x="342" y="152" width="106" height="76" rx="4" class="old"/>
+  <text x="348" y="167" class="rl11">#4 old</text>
+  <rect x="452" y="152" width="106" height="76" rx="4" class="free"/>
+  <text x="458" y="167" class="rl11">#5 free</text>
+  <rect x="232" y="232" width="106" height="76" rx="4" class="free"/>
+  <text x="238" y="247" class="rl11">#6 free</text>
+  <rect x="342" y="232" width="106" height="76" rx="4" class="old"/>
+  <text x="348" y="247" class="rl11">#7 old</text>
+  <rect x="452" y="232" width="106" height="76" rx="4" class="old"/>
+  <text x="458" y="247" class="rl11">#8 old</text>
+  <rect x="452" y="72" width="106" height="76" rx="4" class="cset"/>
+  <rect x="232" y="152" width="106" height="76" rx="4" class="cset"/>
+  <rect x="342" y="152" width="106" height="76" rx="4" class="cset"/>
+  <rect x="452" y="232" width="106" height="76" rx="4" class="cset"/>
+  <rect x="271" y="184" width="28" height="24" rx="4" class="ok"/>
+  <text x="285" y="201" class="okt" text-anchor="middle">A</text>
+  <rect x="491" y="104" width="28" height="24" rx="4" class="ok"/>
+  <text x="505" y="121" class="okt" text-anchor="middle">C</text>
+  <rect x="371" y="184" width="28" height="24" rx="4" class="ok"/>
+  <text x="385" y="201" class="okt" text-anchor="middle">H</text>
+  <rect x="357" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="371" y="121" class="obj" text-anchor="middle">D</text>
+  <rect x="407" y="104" width="28" height="24" rx="4" class="ob"/>
+  <text x="421" y="121" class="obj" text-anchor="middle">E</text>
+  <rect x="357" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="371" y="281" class="obj" text-anchor="middle">B</text>
+  <rect x="407" y="264" width="28" height="24" rx="4" class="ob"/>
+  <text x="421" y="281" class="obj" text-anchor="middle">F</text>
+  <rect x="491" y="264" width="28" height="24" rx="4" class="ok"/>
+  <text x="505" y="281" class="okt" text-anchor="middle">G</text>
+  <rect x="60" y="178" width="96" height="36" rx="6" class="hold"/>
+  <text x="108.0" y="201.0" class="op" text-anchor="middle">GC root</text>
+  <line x1="156" y1="196" x2="269" y2="196" class="gl" marker-end="url(#agr)"/>
+  <line x1="293" y1="184" x2="365" y2="128" class="al" marker-end="url(#ar)"/>
+  <line x1="385" y1="116" x2="407" y2="116" class="al" marker-end="url(#ar)"/>
+  <path d="M 429 128 C 461 186, 441 206, 425 264" class="al" marker-end="url(#ar)"/>
+  <line x1="295" y1="208" x2="367" y2="264" class="al" marker-end="url(#ar)"/>
+  <path d="M 499 128 C 475 156, 425 166, 399 192" class="gl" marker-end="url(#agr)"/>
+  <line x1="435" y1="276" x2="489" y2="276" class="gl" marker-end="url(#agr)"/>
+  <path d="M 377 264 C 391 216, 555 196, 513 129" class="gl" marker-end="url(#agr)"/>
+  <text x="60" y="256" class="sub">young gen remembered set</text>
+  <rect x="60" y="264" width="96" height="24" rx="3" class="hold"/>
+  <text x="108.0" y="281" class="obj" text-anchor="middle">B</text>
+  <line x1="156" y1="276" x2="355" y2="276" class="gl" marker-end="url(#agr)"/>
+  <text x="610" y="266" class="sub">rset of #8</text>
+  <rect x="610" y="274" width="110" height="24" rx="3" class="hold"/>
+  <text x="665.0" y="291" class="obj" text-anchor="middle">F</text>
+  <path d="M 610 290 C 560 360, 431 370, 421 290" class="gl" marker-end="url(#agr)"/>
+  <text x="610" y="186" class="sub">rset of #4</text>
+  <rect x="610" y="194" width="110" height="24" rx="3" class="hold"/>
+  <text x="665.0" y="211" class="obj" text-anchor="middle">…</text>
+  <text x="505" y="303" class="gnote" text-anchor="middle">확인됨</text>
+  <rect x="230" y="369" width="22" height="14" rx="3" class="young"/>
+  <text x="260" y="380" class="sub">young region</text>
+  <rect x="416" y="369" width="22" height="14" rx="3" class="old"/>
+  <text x="446" y="380" class="sub">old region</text>
+  <rect x="580" y="369" width="22" height="14" rx="3" class="cset"/>
+  <text x="610" y="380" class="sub">collection set</text>
+  <line x1="30" y1="400" x2="730" y2="400" class="sep"/>
+  <text x="30" y="426" class="val">old region마다 자신을 참조하는 외부의 old 객체를 저장하는 remembered set이 존재</text>
+  <text x="30" y="448" class="val">mixed GC 때 rset of #8의 F를 출발점으로 삼아 F → G를 따라감</text>
+  <text x="30" y="470" class="gnote">G가 살아 있는 객체로 확인되어 다른 region으로 옮겨짐</text>
+</svg>

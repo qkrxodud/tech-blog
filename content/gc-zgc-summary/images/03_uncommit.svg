@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 410" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>ZGC는 ZUncommitDelay(디폴트 300초) 동안 쓰지 않은 메모리를 uncommit 해서 OS에 반환하고, 다시 필요해지면 commit 해야 해서 latency에 영향을 줄 수 있으며, -XX:-ZUncommit, -Xms와 -Xmx를 같게, 여기에 -XX:+AlwaysPreTouch를 더하는 방법으로 이를 막는다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mc { font-family: Menlo, Consolas, monospace; font-size: 13.5px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .gauge { fill: #ffffff; stroke: #c4c8ce; stroke-width: 1.2; }
+    .used { fill: #d1d5db; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <pattern id="small" width="4" height="36" patternUnits="userSpaceOnUse">
+      <rect width="4" height="36" fill="#fee2e2"/>
+      <line x1="3.5" y1="0" x2="3.5" y2="36" stroke="#f87171" stroke-width="1"/>
+    </pattern>
+    <pattern id="large" x="150" width="56.25" height="36" patternUnits="userSpaceOnUse">
+      <rect width="56.25" height="36" fill="#dcfce7"/>
+      <line x1="55.75" y1="0" x2="55.75" y2="36" stroke="#16a34a" stroke-width="1.2"/>
+    </pattern>
+  </defs>
+  <rect width="760" height="410" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">uncommit — 쓰지 않는 메모리를 OS에 반환</text>
+  <text x="730" y="42" class="sub" text-anchor="end"><tspan font-family="Menlo, Consolas, monospace">ZUncommit</tspan> 디폴트 true</text>
+
+  <text x="220" y="68" class="step" text-anchor="middle">사용 중</text>
+  <text x="360" y="68" class="step" text-anchor="middle">사용하지 않음</text>
+  <text x="500" y="68" class="step" text-anchor="middle">uncommit</text>
+  <text x="640" y="68" class="step" text-anchor="middle">다시 필요</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+
+  <text x="30" y="108" class="lane">힙 메모리</text>
+  <text x="30" y="126" class="sub">committed 영역</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="88" width="116" height="48" rx="8" class="hold"/>
+  <text x="220" y="108" class="op" text-anchor="middle">사용 중</text>
+  <text x="220" y="127" class="val" text-anchor="middle">commit 된 상태</text>
+  <line x1="278" y1="112" x2="300" y2="112" class="al" marker-end="url(#ar)"/>
+  <rect x="302" y="88" width="116" height="48" rx="8" class="wait"/>
+  <text x="360" y="108" class="waitt" text-anchor="middle" style="font-size: 11px" font-family="Menlo, Consolas, monospace">ZUncommitDelay</text>
+  <text x="360" y="127" class="waitt" text-anchor="middle">300초 동안 미사용</text>
+  <line x1="418" y1="112" x2="440" y2="112" class="al" marker-end="url(#ar)"/>
+  <rect x="442" y="88" width="116" height="48" rx="8" class="ok"/>
+  <text x="500" y="108" class="okt" text-anchor="middle">OS에 반환</text>
+  <text x="500" y="127" class="val" text-anchor="middle">메모리 효율 좋음</text>
+  <line x1="558" y1="112" x2="580" y2="112" class="al" marker-end="url(#ar)"/>
+  <rect x="582" y="88" width="116" height="48" rx="8" class="bad"/>
+  <text x="640" y="108" class="badt" text-anchor="middle">다시 commit</text>
+  <text x="640" y="127" class="val" text-anchor="middle">latency에 영향</text>
+  <text x="150" y="168" class="sub">메모리를 효율적으로 쓰기에는 좋지만, GC로 인한 latency에는 좋지 않은 영향을 줄 수 있다</text>
+
+  <rect x="10" y="206" width="740" height="194" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="238" class="h">uncommit을 막는 방법</text>
+  <rect x="30" y="256" width="220" height="106" rx="8" class="hold"/>
+  <text x="140" y="284" class="mc" text-anchor="middle">-XX:-ZUncommit</text>
+  <text x="140" y="308" class="val" text-anchor="middle">uncommit 기능을 끈다</text>
+  <text x="140" y="346" class="sub" text-anchor="middle">명시적으로 막기</text>
+  <rect x="270" y="256" width="220" height="106" rx="8" class="hold"/>
+  <text x="380" y="284" class="mc" text-anchor="middle">-Xms = -Xmx</text>
+  <text x="380" y="308" class="val" text-anchor="middle">힙이 <tspan font-family="Menlo, Consolas, monospace">-Xms</tspan> 아래로 줄지 않는다</text>
+  <text x="380" y="346" class="sub" text-anchor="middle">암묵적으로 막기</text>
+  <rect x="510" y="256" width="220" height="106" rx="8" class="ok"/>
+  <text x="620" y="280" class="mc" text-anchor="middle">-Xms = -Xmx</text>
+  <text x="620" y="300" class="mc" text-anchor="middle">-XX:+AlwaysPreTouch</text>
+  <text x="620" y="324" class="val" text-anchor="middle">시작 전에 메모리를 page-in</text>
+  <text x="620" y="346" class="gnote" text-anchor="middle">latency를 극도로 낮출 때</text>
+  <text x="30" y="386" class="sub">uncommit 시점은 -XX:ZUncommitDelay로 조정한다 (메모리가 얼마 동안 쓰이지 않으면 uncommit 할지)</text>
+</svg>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Metaspace는 JVM heap 밖의 native memory에 있고 class metadata를 담으며, JVM heap에는 자바 객체와 배열이 있다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #9ca3af; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">JVM heap과 Metaspace — 같은 프로세스 안의 다른 영역</text>
+  <text x="30" y="64" class="sub">JVM 프로세스의 가상 주소 공간 일부 (위가 높은 주소, 실제 배치는 실행할 때마다 다릅니다)</text>
+  <rect x="40" y="80" width="190" height="300" rx="10" class="track"/>
+  <rect x="50" y="88" width="170" height="30" rx="6" class="dbbox"/>
+  <text x="135" y="108" class="val" text-anchor="middle">kernel space</text>
+  <rect x="50" y="124" width="170" height="28" rx="6" class="box"/>
+  <text x="135" y="143" class="val" text-anchor="middle">stack</text>
+  <rect x="50" y="158" width="170" height="28" rx="6" class="box"/>
+  <text x="135" y="177" class="val" text-anchor="middle">native library</text>
+  <rect x="50" y="194" width="170" height="44" rx="6" class="ok"/>
+  <text x="135" y="221" class="okt" text-anchor="middle">Metaspace</text>
+  <rect x="50" y="246" width="170" height="64" rx="6" class="hold"/>
+  <text x="135" y="283" class="t" text-anchor="middle">JVM heap</text>
+  <rect x="50" y="318" width="170" height="26" rx="6" class="box"/>
+  <text x="135" y="336" class="val" text-anchor="middle">code cache</text>
+  <rect x="50" y="350" width="170" height="24" rx="6" class="box"/>
+  <text x="135" y="367" class="val" text-anchor="middle">heap · data · code</text>
+
+  <rect x="290" y="150" width="440" height="110" rx="8" class="ok"/>
+  <text x="310" y="176" class="okt">Metaspace — JVM heap 밖, native memory</text>
+  <text x="310" y="200" class="val">class metadata: 클래스 타입, 필드·메서드 정보, 바이트코드, 상수 풀</text>
+  <text x="310" y="222" class="val">이 영역도 GC 때 회수됩니다 (full GC나, G1이라면 Remark 때)</text>
+  <text x="310" y="244" class="val">크기 옵션: <tspan font-family="Menlo, Consolas, monospace">-XX:MetaspaceSize</tspan>, <tspan font-family="Menlo, Consolas, monospace">-XX:MaxMetaspaceSize</tspan></text>
+  <line x1="222" y1="216" x2="286" y2="205" class="gl" marker-end="url(#agr)"/>
+
+  <rect x="290" y="276" width="440" height="72" rx="8" class="hold"/>
+  <text x="310" y="302" class="t">JVM heap</text>
+  <text x="310" y="326" class="val">자바 객체와 자바 배열 — 지금까지 다룬 GC가 주로 정리하는 곳</text>
+  <line x1="222" y1="290" x2="286" y2="306" class="al" marker-end="url(#ar)"/>
+</svg>

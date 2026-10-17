@@ -1,0 +1,213 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 474" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>young GC 후 1, 4, 5, 6, 7, 8번을 반환하고, 1, 4, 5번을 eden으로 쓰고, 다음 young GC 때 6, 8번을 survivor로, 7번을 old로 쓴 뒤 나머지를 반환하고, 마지막으로 1, 2번을 humongous region으로 쓰는 과정</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .lbl { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .rE { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .rS { fill: #ffffff; stroke: #16a34a; stroke-width: 1.8; }
+    .rO { fill: #e5e7eb; stroke: #6b7280; stroke-width: 1.5; }
+    .rH { fill: #9ca3af; stroke: #4b5563; stroke-width: 1.5; }
+    .rF { fill: #ffffff; stroke: #c4c8ce; stroke-width: 1.2; }
+    .rR { fill: #fafafa; stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 3; }
+    .tE { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .tS { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .tO { font-size: 13px; font-weight: 700; fill: #374151; }
+    .tH { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .tF { font-size: 11px; fill: #9ca3af; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .dl { stroke: #9ca3af; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="474" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="454" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">region 역할 변화 ⑤ ~ ⑨ — 반환, promotion, humongous</text>
+  <text x="230.0" y="66" class="step" text-anchor="middle">1</text>
+  <text x="265.0" y="66" class="step" text-anchor="middle">2</text>
+  <text x="300.0" y="66" class="step" text-anchor="middle">3</text>
+  <text x="335.0" y="66" class="step" text-anchor="middle">4</text>
+  <text x="370.0" y="66" class="step" text-anchor="middle">5</text>
+  <text x="405.0" y="66" class="step" text-anchor="middle">6</text>
+  <text x="440.0" y="66" class="step" text-anchor="middle">7</text>
+  <text x="475.0" y="66" class="step" text-anchor="middle">8</text>
+  <text x="510.0" y="66" class="step" text-anchor="middle">9</text>
+  <text x="545.0" y="66" class="step" text-anchor="middle">10</text>
+  <text x="580.0" y="66" class="step" text-anchor="middle">11</text>
+  <text x="615.0" y="66" class="step" text-anchor="middle">12</text>
+  <text x="642" y="66" class="step">free list</text>
+  <rect x="20" y="76" width="720" height="62" rx="8" class="track"/>
+  <text x="32" y="98" class="lbl">⑤ young GC 끝</text>
+  <text x="32" y="116" class="sub">1, 4, 5, 6, 7, 8 → 반환</text>
+  <text x="32" y="131" class="sub">2, 3, 9에 살아 있는 객체</text>
+  <rect x="214" y="88" width="32" height="38" rx="4" class="rF"/>
+  <text x="230.0" y="111.0" class="tF" text-anchor="middle">free</text>
+  <rect x="249" y="88" width="32" height="38" rx="4" class="rS"/>
+  <text x="265.0" y="112.0" class="tS" text-anchor="middle">S</text>
+  <rect x="284" y="88" width="32" height="38" rx="4" class="rS"/>
+  <text x="300.0" y="112.0" class="tS" text-anchor="middle">S</text>
+  <rect x="319" y="88" width="32" height="38" rx="4" class="rF"/>
+  <text x="335.0" y="111.0" class="tF" text-anchor="middle">free</text>
+  <rect x="354" y="88" width="32" height="38" rx="4" class="rF"/>
+  <text x="370.0" y="111.0" class="tF" text-anchor="middle">free</text>
+  <rect x="389" y="88" width="32" height="38" rx="4" class="rF"/>
+  <text x="405.0" y="111.0" class="tF" text-anchor="middle">free</text>
+  <rect x="424" y="88" width="32" height="38" rx="4" class="rF"/>
+  <text x="440.0" y="111.0" class="tF" text-anchor="middle">free</text>
+  <rect x="459" y="88" width="32" height="38" rx="4" class="rF"/>
+  <text x="475.0" y="111.0" class="tF" text-anchor="middle">free</text>
+  <rect x="494" y="88" width="32" height="38" rx="4" class="rS"/>
+  <text x="510.0" y="112.0" class="tS" text-anchor="middle">S</text>
+  <rect x="529" y="88" width="32" height="38" rx="4" class="rR"/>
+  <rect x="564" y="88" width="32" height="38" rx="4" class="rR"/>
+  <rect x="599" y="88" width="32" height="38" rx="4" class="rR"/>
+  <text x="642" y="112" class="mono">1 4 5 6 7 8</text>
+  <rect x="20" y="146" width="720" height="62" rx="8" class="track"/>
+  <text x="32" y="168" class="lbl">⑥ 다시 eden이 필요</text>
+  <text x="32" y="186" class="sub">1, 4, 5 → eden</text>
+  <rect x="214" y="158" width="32" height="38" rx="4" class="rE"/>
+  <text x="230.0" y="182.0" class="tE" text-anchor="middle">E</text>
+  <rect x="249" y="158" width="32" height="38" rx="4" class="rS"/>
+  <text x="265.0" y="182.0" class="tS" text-anchor="middle">S</text>
+  <rect x="284" y="158" width="32" height="38" rx="4" class="rS"/>
+  <text x="300.0" y="182.0" class="tS" text-anchor="middle">S</text>
+  <rect x="319" y="158" width="32" height="38" rx="4" class="rE"/>
+  <text x="335.0" y="182.0" class="tE" text-anchor="middle">E</text>
+  <rect x="354" y="158" width="32" height="38" rx="4" class="rE"/>
+  <text x="370.0" y="182.0" class="tE" text-anchor="middle">E</text>
+  <rect x="389" y="158" width="32" height="38" rx="4" class="rF"/>
+  <text x="405.0" y="181.0" class="tF" text-anchor="middle">free</text>
+  <rect x="424" y="158" width="32" height="38" rx="4" class="rF"/>
+  <text x="440.0" y="181.0" class="tF" text-anchor="middle">free</text>
+  <rect x="459" y="158" width="32" height="38" rx="4" class="rF"/>
+  <text x="475.0" y="181.0" class="tF" text-anchor="middle">free</text>
+  <rect x="494" y="158" width="32" height="38" rx="4" class="rS"/>
+  <text x="510.0" y="182.0" class="tS" text-anchor="middle">S</text>
+  <rect x="529" y="158" width="32" height="38" rx="4" class="rR"/>
+  <rect x="564" y="158" width="32" height="38" rx="4" class="rR"/>
+  <rect x="599" y="158" width="32" height="38" rx="4" class="rR"/>
+  <text x="642" y="182" class="mono">6 7 8</text>
+  <rect x="20" y="216" width="720" height="62" rx="8" class="track"/>
+  <text x="32" y="238" class="lbl">⑦ young GC</text>
+  <text x="32" y="256" class="sub">6, 8 → survivor</text>
+  <text x="32" y="271" class="sub">promotion: 7 → old</text>
+  <rect x="214" y="228" width="32" height="38" rx="4" class="rE"/>
+  <text x="230.0" y="252.0" class="tE" text-anchor="middle">E</text>
+  <rect x="249" y="228" width="32" height="38" rx="4" class="rS"/>
+  <text x="265.0" y="252.0" class="tS" text-anchor="middle">S</text>
+  <rect x="284" y="228" width="32" height="38" rx="4" class="rS"/>
+  <text x="300.0" y="252.0" class="tS" text-anchor="middle">S</text>
+  <rect x="319" y="228" width="32" height="38" rx="4" class="rE"/>
+  <text x="335.0" y="252.0" class="tE" text-anchor="middle">E</text>
+  <rect x="354" y="228" width="32" height="38" rx="4" class="rE"/>
+  <text x="370.0" y="252.0" class="tE" text-anchor="middle">E</text>
+  <rect x="389" y="228" width="32" height="38" rx="4" class="rS"/>
+  <text x="405.0" y="252.0" class="tS" text-anchor="middle">S</text>
+  <rect x="424" y="228" width="32" height="38" rx="4" class="rO"/>
+  <text x="440.0" y="252.0" class="tO" text-anchor="middle">O</text>
+  <rect x="459" y="228" width="32" height="38" rx="4" class="rS"/>
+  <text x="475.0" y="252.0" class="tS" text-anchor="middle">S</text>
+  <rect x="494" y="228" width="32" height="38" rx="4" class="rS"/>
+  <text x="510.0" y="252.0" class="tS" text-anchor="middle">S</text>
+  <rect x="529" y="228" width="32" height="38" rx="4" class="rR"/>
+  <rect x="564" y="228" width="32" height="38" rx="4" class="rR"/>
+  <rect x="599" y="228" width="32" height="38" rx="4" class="rR"/>
+  <text x="642" y="252" class="sub">(비어 있음)</text>
+  <rect x="20" y="286" width="720" height="62" rx="8" class="track"/>
+  <text x="32" y="308" class="lbl">⑧ young GC 끝</text>
+  <text x="32" y="326" class="sub">1, 2, 3, 4, 5, 9 → 반환</text>
+  <rect x="214" y="298" width="32" height="38" rx="4" class="rF"/>
+  <text x="230.0" y="321.0" class="tF" text-anchor="middle">free</text>
+  <rect x="249" y="298" width="32" height="38" rx="4" class="rF"/>
+  <text x="265.0" y="321.0" class="tF" text-anchor="middle">free</text>
+  <rect x="284" y="298" width="32" height="38" rx="4" class="rF"/>
+  <text x="300.0" y="321.0" class="tF" text-anchor="middle">free</text>
+  <rect x="319" y="298" width="32" height="38" rx="4" class="rF"/>
+  <text x="335.0" y="321.0" class="tF" text-anchor="middle">free</text>
+  <rect x="354" y="298" width="32" height="38" rx="4" class="rF"/>
+  <text x="370.0" y="321.0" class="tF" text-anchor="middle">free</text>
+  <rect x="389" y="298" width="32" height="38" rx="4" class="rS"/>
+  <text x="405.0" y="322.0" class="tS" text-anchor="middle">S</text>
+  <rect x="424" y="298" width="32" height="38" rx="4" class="rO"/>
+  <text x="440.0" y="322.0" class="tO" text-anchor="middle">O</text>
+  <rect x="459" y="298" width="32" height="38" rx="4" class="rS"/>
+  <text x="475.0" y="322.0" class="tS" text-anchor="middle">S</text>
+  <rect x="494" y="298" width="32" height="38" rx="4" class="rF"/>
+  <text x="510.0" y="321.0" class="tF" text-anchor="middle">free</text>
+  <rect x="529" y="298" width="32" height="38" rx="4" class="rR"/>
+  <rect x="564" y="298" width="32" height="38" rx="4" class="rR"/>
+  <rect x="599" y="298" width="32" height="38" rx="4" class="rR"/>
+  <text x="642" y="322" class="mono">1 2 3 4 5 9</text>
+  <rect x="20" y="356" width="720" height="62" rx="8" class="track"/>
+  <text x="32" y="378" class="lbl">⑨ humongous 객체 할당</text>
+  <text x="32" y="396" class="sub">1, 2 → humongous</text>
+  <rect x="214" y="368" width="32" height="38" rx="4" class="rH"/>
+  <text x="230.0" y="392.0" class="tH" text-anchor="middle">H</text>
+  <rect x="249" y="368" width="32" height="38" rx="4" class="rH"/>
+  <text x="265.0" y="392.0" class="tH" text-anchor="middle">H</text>
+  <rect x="284" y="368" width="32" height="38" rx="4" class="rF"/>
+  <text x="300.0" y="391.0" class="tF" text-anchor="middle">free</text>
+  <rect x="319" y="368" width="32" height="38" rx="4" class="rF"/>
+  <text x="335.0" y="391.0" class="tF" text-anchor="middle">free</text>
+  <rect x="354" y="368" width="32" height="38" rx="4" class="rF"/>
+  <text x="370.0" y="391.0" class="tF" text-anchor="middle">free</text>
+  <rect x="389" y="368" width="32" height="38" rx="4" class="rS"/>
+  <text x="405.0" y="392.0" class="tS" text-anchor="middle">S</text>
+  <rect x="424" y="368" width="32" height="38" rx="4" class="rO"/>
+  <text x="440.0" y="392.0" class="tO" text-anchor="middle">O</text>
+  <rect x="459" y="368" width="32" height="38" rx="4" class="rS"/>
+  <text x="475.0" y="392.0" class="tS" text-anchor="middle">S</text>
+  <rect x="494" y="368" width="32" height="38" rx="4" class="rF"/>
+  <text x="510.0" y="391.0" class="tF" text-anchor="middle">free</text>
+  <rect x="529" y="368" width="32" height="38" rx="4" class="rR"/>
+  <rect x="564" y="368" width="32" height="38" rx="4" class="rR"/>
+  <rect x="599" y="368" width="32" height="38" rx="4" class="rR"/>
+  <text x="642" y="392" class="mono">3 4 5 9</text>
+  <rect x="30" y="430" width="22" height="20" rx="4" class="rE"/>
+  <text x="41.0" y="445.0" class="tE" text-anchor="middle">E</text>
+  <text x="58" y="445" class="sub">eden</text>
+  <rect x="108" y="430" width="22" height="20" rx="4" class="rS"/>
+  <text x="119.0" y="445.0" class="tS" text-anchor="middle">S</text>
+  <text x="136" y="445" class="sub">survivor</text>
+  <rect x="214" y="430" width="22" height="20" rx="4" class="rO"/>
+  <text x="225.0" y="445.0" class="tO" text-anchor="middle">O</text>
+  <text x="242" y="445" class="sub">old</text>
+  <rect x="285" y="430" width="22" height="20" rx="4" class="rH"/>
+  <text x="296.0" y="445.0" class="tH" text-anchor="middle">H</text>
+  <text x="313" y="445" class="sub">humongous</text>
+  <rect x="398" y="430" width="22" height="20" rx="4" class="rF"/>
+  <text x="426" y="445" class="sub">free</text>
+  <rect x="476" y="430" width="22" height="20" rx="4" class="rR"/>
+  <text x="504" y="445" class="sub">예약만(commit 전)</text>
+</svg>

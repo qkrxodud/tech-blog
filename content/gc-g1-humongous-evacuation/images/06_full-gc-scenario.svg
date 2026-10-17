@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>객체가 빠르게 생성되어 young GC에서 조기 승격이 일어나고, concurrent start와 concurrent marking 중에도 객체가 계속 생성되어 free region이 고갈되면 full GC가 발생한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .opc { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .rg { font-size: 13px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="400" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="380" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">G1 GC의 full GC — 예상 시나리오</text>
+  <text x="730" y="42" class="code" text-anchor="end">full GC</text>
+  <text x="200" y="68" class="step" text-anchor="middle">1</text>
+  <text x="297" y="68" class="step" text-anchor="middle">2</text>
+  <text x="394" y="68" class="step" text-anchor="middle">3</text>
+  <text x="491" y="68" class="step" text-anchor="middle">4</text>
+  <text x="588" y="68" class="step" text-anchor="middle">5</text>
+  <text x="685" y="68" class="step" text-anchor="middle">6</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="120.0" class="lane">애플리케이션</text>
+  <text x="30" y="138.0" class="sub">객체 생성</text>
+  <rect x="150" y="90" width="585" height="64" rx="6" class="track"/>
+  <rect x="155.0" y="98" width="90" height="48" rx="8" class="box"/>
+  <text x="200" y="118.0" class="op" text-anchor="middle">객체 생성</text>
+  <text x="200" y="136.0" class="val" text-anchor="middle">빠르게</text>
+  <rect x="252" y="108" width="187" height="28" rx="6" class="wait"/>
+  <text x="345.5" y="127" class="waitt" text-anchor="middle">멈춤 (young GC)</text>
+  <rect x="446.0" y="98" width="90" height="48" rx="8" class="box"/>
+  <text x="491" y="118.0" class="op" text-anchor="middle">계속 생성</text>
+  <text x="491" y="136.0" class="val" text-anchor="middle">빠르게</text>
+  <rect x="543.0" y="98" width="90" height="48" rx="8" class="box"/>
+  <text x="588" y="118.0" class="op" text-anchor="middle">계속 생성</text>
+  <text x="588" y="136.0" class="val" text-anchor="middle">marking 중</text>
+  <rect x="640.0" y="98" width="90" height="48" rx="8" class="bad"/>
+  <text x="685" y="118.0" class="badt" text-anchor="middle">할당 실패</text>
+  <text x="685" y="136.0" class="val" text-anchor="middle">free 없음</text>
+  <text x="30" y="200.0" class="lane">GC</text>
+  <text x="30" y="218.0" class="sub">G1 GC</text>
+  <rect x="150" y="170" width="585" height="64" rx="6" class="track"/>
+  <rect x="252.0" y="178" width="90" height="48" rx="8" class="box"/>
+  <text x="297" y="198.0" class="op" text-anchor="middle">young GC</text>
+  <text x="297" y="216.0" class="val" text-anchor="middle">young 다 참</text>
+  <rect x="349.0" y="178" width="90" height="48" rx="8" class="bad"/>
+  <text x="394" y="198.0" class="badt" text-anchor="middle">조기 승격</text>
+  <text x="394" y="216.0" class="val" text-anchor="middle">old로 이동</text>
+  <rect x="446.0" y="178" width="90" height="48" rx="8" class="box"/>
+  <text x="491" y="198.0" class="rg" text-anchor="middle">concurrent</text>
+  <text x="491" y="216.0" class="val" text-anchor="middle">start</text>
+  <rect x="543" y="188" width="90" height="28" rx="6" class="wait"/>
+  <text x="588" y="207" class="waitt" text-anchor="middle">marking</text>
+  <rect x="640.0" y="178" width="90" height="48" rx="8" class="bad"/>
+  <text x="685" y="198.0" class="badt" text-anchor="middle">full GC</text>
+  <text x="685" y="216.0" class="val" text-anchor="middle">발생</text>
+  <line x1="685" y1="146" x2="685" y2="178" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="30" y="284" class="db">free region</text>
+  <rect x="158" y="262" width="84" height="34" rx="6" class="dbbox"/>
+  <text x="200" y="284" class="db" text-anchor="middle">많음</text>
+  <rect x="255" y="262" width="84" height="34" rx="6" class="dbbox"/>
+  <text x="297" y="284" class="db" text-anchor="middle">줄어듦</text>
+  <rect x="352" y="262" width="84" height="34" rx="6" class="dbbox"/>
+  <text x="394" y="284" class="db" text-anchor="middle">줄어듦</text>
+  <rect x="449" y="262" width="84" height="34" rx="6" class="dbbox"/>
+  <text x="491" y="284" class="db" text-anchor="middle">적음</text>
+  <rect x="546" y="262" width="84" height="34" rx="6" class="bad"/>
+  <text x="588" y="284" class="badt" text-anchor="middle">거의 없음</text>
+  <rect x="643" y="262" width="84" height="34" rx="6" class="bad"/>
+  <text x="685" y="284" class="badt" text-anchor="middle">0</text>
+  <text x="150" y="330" class="sub">조기 승격된 객체는 곧이어 garbage가 되어도 marking이 끝나기 전까지 회수되지 못한다</text>
+  <text x="150" y="350" class="sub">여기에 humongous object가 할당되면 free region은 더 빠르게 고갈된다</text>
+</svg>

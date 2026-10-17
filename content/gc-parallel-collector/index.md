@@ -329,7 +329,7 @@ initial heap size나 maximum heap size를 따로 명시하지 않으면 디폴�
 
 오늘은 Parallel GC의 GC 스레드 수가 정해지는 방식과 Serial GC와 다른 힙 배치, PLAB, 그리고 Parallel Collector Ergonomics가 목표에 맞춰 generation size를 늘리고 줄이는 방식에 대해 정리하였습니다.
 
-정리하면서 Parallel GC는 줄일 때는 한 generation씩 신중하게, 늘릴 때는 두 generation을 함께 적극적으로 조정한다는 것을 알 수 있었습니다. 행동 기반 튜닝을 쓰려면 `-Xms`와 `-Xmx`를 어떻게 줄지부터 함께 고민해야 할 것 같습니다.
+정리하면서 Parallel GC는 줄일 때는 한 generation씩 신중하게, 늘릴 때는 두 generation을 함께 적극적으로 조정한다는 것을 알 수 있었습니다. 행동 기반 튜닝을 쓰려면 `-Xms`와 `-Xmx`를 어떻게 줄지부터 함께 고민해야 할 것 같습니다. 다음 글에서는 [G1 GC 핵심 원리: region, mixed collection과 concurrent marking](../gc-g1-core/)에 대해 정리하도록 하겠습니다.
 
 참고 자료
 - [GC 7부: Parallel GC](https://youtube.com/live/8VHUdMecnfA?feature=share) (멤버십 전용 영상)

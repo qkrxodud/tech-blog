@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 432" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>UseCompressedClassPointers가 켜지면 classloader별 Klass 구조체는 compressed class space라는 별도의 연속된 공간에, 나머지 metadata는 non-compressed space에 저장된다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #9ca3af; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 13px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="432" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="412" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">UseCompressedClassPointers — Klass는 별도의 compressed class space에</text>
+  <path d="M 40 80 L 40 72 L 720 72 L 720 80" class="al"/>
+  <text x="380" y="66" class="mono" text-anchor="middle">VirtualSpaceList for non-compressed space</text>
+  <rect x="40" y="90" width="190" height="56" rx="6" class="box"/>
+  <rect x="44" y="94" width="182" height="48" rx="4" class="ok"/>
+  <text x="135.0" y="116.0" class="okt" text-anchor="middle">A</text>
+  <text x="135.0" y="133.0" class="sub" text-anchor="middle">chunk</text>
+  <rect x="275" y="90" width="215" height="56" rx="6" class="box"/>
+  <rect x="279" y="94" width="62" height="48" rx="4" class="ok"/>
+  <text x="310.0" y="116.0" class="okt" text-anchor="middle">A</text>
+  <text x="310.0" y="133.0" class="sub" text-anchor="middle">chunk</text>
+  <rect x="349" y="94" width="52" height="48" rx="4" class="ok"/>
+  <text x="375.0" y="116.0" class="okt" text-anchor="middle">A</text>
+  <text x="375.0" y="133.0" class="sub" text-anchor="middle">chunk</text>
+  <rect x="409" y="94" width="77" height="48" rx="4" class="hold"/>
+  <text x="447.5" y="116.0" class="t" text-anchor="middle">B</text>
+  <text x="447.5" y="133.0" class="sub" text-anchor="middle">chunk</text>
+  <rect x="535" y="90" width="185" height="56" rx="6" class="box"/>
+  <rect x="539" y="94" width="102" height="48" rx="4" class="hold"/>
+  <text x="590.0" y="116.0" class="t" text-anchor="middle">B</text>
+  <text x="590.0" y="133.0" class="sub" text-anchor="middle">chunk</text>
+  <rect x="649" y="94" width="67" height="48" rx="4" class="hold"/>
+  <text x="682.5" y="116.0" class="t" text-anchor="middle">B</text>
+  <text x="682.5" y="133.0" class="sub" text-anchor="middle">chunk</text>
+  <line x1="232" y1="112" x2="272" y2="112" class="al" marker-end="url(#ar)"/>
+  <line x1="272" y1="126" x2="232" y2="126" class="al" marker-end="url(#ar)"/>
+  <line x1="492" y1="112" x2="532" y2="112" class="al" marker-end="url(#ar)"/>
+  <line x1="532" y1="126" x2="492" y2="126" class="al" marker-end="url(#ar)"/>
+
+  <rect x="150" y="196" width="160" height="38" rx="8" class="ok"/>
+  <text x="230" y="220" class="okt" text-anchor="middle">A classloader</text>
+  <rect x="450" y="196" width="160" height="38" rx="8" class="hold"/>
+  <text x="530" y="220" class="t" text-anchor="middle">B classloader</text>
+  <line x1="200" y1="194" x2="150" y2="150" class="gl" marker-end="url(#agr)"/>
+  <line x1="530" y1="194" x2="560" y2="150" class="al" marker-end="url(#ar)"/>
+  <line x1="250" y1="236" x2="290" y2="264" class="gl" marker-end="url(#agr)"/>
+  <line x1="510" y1="236" x2="470" y2="264" class="al" marker-end="url(#ar)"/>
+  <rect x="220" y="266" width="320" height="56" rx="6" class="box"/>
+  <rect x="224" y="270" width="72" height="48" rx="4" class="ok"/>
+  <text x="260.0" y="292" class="okt" text-anchor="middle">A</text>
+  <text x="260.0" y="309" class="sub" text-anchor="middle">Klass</text>
+  <rect x="304" y="270" width="72" height="48" rx="4" class="ok"/>
+  <text x="340.0" y="292" class="okt" text-anchor="middle">A</text>
+  <text x="340.0" y="309" class="sub" text-anchor="middle">Klass</text>
+  <rect x="384" y="270" width="72" height="48" rx="4" class="hold"/>
+  <text x="420.0" y="292" class="t" text-anchor="middle">B</text>
+  <text x="420.0" y="309" class="sub" text-anchor="middle">Klass</text>
+  <rect x="464" y="270" width="72" height="48" rx="4" class="hold"/>
+  <text x="500.0" y="292" class="t" text-anchor="middle">B</text>
+  <text x="500.0" y="309" class="sub" text-anchor="middle">Klass</text>
+  <path d="M 220 330 L 220 338 L 540 338 L 540 330" class="al"/>
+  <text x="380" y="356" class="mono" text-anchor="middle">VirtualSpaceList for compressed class space</text>
+  <text x="560" y="284" class="sub">하나의 연속된 주소 공간</text>
+  <text x="560" y="302" class="sub">기본 1GB를 reserve</text>
+  <text x="560" y="320" class="mono">CompressedClassSpaceSize</text>
+  <text x="40" y="388" class="val">위쪽 non-compressed space에는 Klass를 뺀 나머지 class metadata가 들어갑니다.</text>
+  <text x="40" y="410" class="val">객체 헤더의 class pointer는 32bit offset으로 아래 공간 안의 Klass를 가리킵니다.</text>
+</svg>

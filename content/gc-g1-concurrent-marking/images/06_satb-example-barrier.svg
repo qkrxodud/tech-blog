@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 460" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>1이 2 대신 0을 참조하도록 바뀌고 8에서 0으로 가는 참조가 지워질 때 pre-write barrier가 2와 0을 local SATB buffer에 넣고, GC thread는 8을 pop해 mark stack 스캔을 마친다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dark { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .wn { fill: #ffffff; stroke: #6b7280; stroke-width: 1.5; }
+    .gn { fill: #d1d5db; stroke: #6b7280; stroke-width: 1.5; }
+    .bn { fill: #374151; stroke: #1f2937; stroke-width: 1.5; }
+    .nt { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .ntw { font-size: 14px; font-weight: 700; fill: #ffffff; }
+    .edge { stroke: #6b7280; stroke-width: 1.5; fill: none; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="460" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="440" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">예제 ② — 참조 변경 때 pre-write barrier가 기존 참조 객체를 기록</text>
+  <rect x="30" y="62" width="70" height="34" rx="4" class="dark"/>
+  <text x="65" y="84" class="sub" text-anchor="middle">GC root</text>
+  <line x1="100" y1="79" x2="151" y2="79" class="edge" marker-end="url(#ar)"/>
+  <line x1="187.0" y1="79.0" x2="271.0" y2="79.0" class="edge" marker-end="url(#ar)"/>
+  <line x1="307.0" y1="79.0" x2="391.0" y2="79.0" class="edge" marker-end="url(#ar)"/>
+  <line x1="182.7" y1="90.3" x2="215.8" y2="119.4" class="rl" marker-end="url(#arr)"/>
+  <line x1="422.7" y1="90.3" x2="455.8" y2="119.4" class="rl" marker-end="url(#arr)"/>
+  <path d="M 185 89 Q 320 162 451 135" class="gl" marker-end="url(#agr)"/>
+  <circle cx="170" cy="79" r="17" class="bn"/>
+  <text x="170" y="84" class="ntw" text-anchor="middle">1</text>
+  <circle cx="290" cy="79" r="17" class="bn"/>
+  <text x="290" y="84" class="ntw" text-anchor="middle">5</text>
+  <circle cx="410" cy="79" r="17" class="gn"/>
+  <text x="410" y="84" class="nt" text-anchor="middle">8</text>
+  <circle cx="230" cy="132" r="17" class="bn"/>
+  <text x="230" y="137" class="ntw" text-anchor="middle">2</text>
+  <circle cx="470" cy="132" r="17" class="wn"/>
+  <text x="470" y="137" class="nt" text-anchor="middle">0</text>
+  <text x="530" y="74" class="note">1 → 2 참조를 1 → 0으로 변경</text>
+  <text x="530" y="94" class="note">8 → 0 참조 제거</text>
+  <text x="530" y="114" class="sub">marking도 동시에 계속 진행</text>
+  <line x1="30" y1="168" x2="730" y2="168" class="sep"/>
+  <text x="30" y="190" class="step">누가</text>
+  <text x="150" y="190" class="step">동작</text>
+  <text x="470" y="190" class="step">local SATB buffer</text>
+  <text x="620" y="190" class="step">local mark stack</text>
+  <line x1="30" y1="202" x2="730" y2="202" class="sep"/>
+  <text x="30" y="232" class="op">mutator</text>
+  <text x="150" y="224" class="val">참조 변경 (1: 2 → 0)</text>
+  <text x="150" y="242" class="gnote">pre-write barrier가 2를 push</text>
+  <rect x="470" y="216" width="30" height="22" rx="3" class="ok"/>
+  <text x="485.0" y="232" class="mono" text-anchor="middle">2</text>
+  <rect x="620" y="216" width="30" height="22" rx="3" class="hold"/>
+  <text x="635.0" y="232" class="mono" text-anchor="middle">8</text>
+  <line x1="30" y1="252" x2="730" y2="252" class="sep"/>
+  <text x="30" y="282" class="op">mutator</text>
+  <text x="150" y="274" class="val">참조 제거 (8 → 0)</text>
+  <text x="150" y="292" class="gnote">pre-write barrier가 0을 push</text>
+  <rect x="470" y="266" width="30" height="22" rx="3" class="ok"/>
+  <text x="485.0" y="282" class="mono" text-anchor="middle">2</text>
+  <rect x="504" y="266" width="30" height="22" rx="3" class="ok"/>
+  <text x="519.0" y="282" class="mono" text-anchor="middle">0</text>
+  <rect x="620" y="266" width="30" height="22" rx="3" class="hold"/>
+  <text x="635.0" y="282" class="mono" text-anchor="middle">8</text>
+  <line x1="30" y1="302" x2="730" y2="302" class="sep"/>
+  <text x="30" y="332" class="op">GC thread</text>
+  <text x="150" y="324" class="val">pop 8</text>
+  <text x="150" y="342" class="sub">0으로 가는 참조는 이미 없음</text>
+  <rect x="470" y="316" width="30" height="22" rx="3" class="ok"/>
+  <text x="485.0" y="332" class="mono" text-anchor="middle">2</text>
+  <rect x="504" y="316" width="30" height="22" rx="3" class="ok"/>
+  <text x="519.0" y="332" class="mono" text-anchor="middle">0</text>
+  <text x="620" y="332" class="sub">(비어 있음)</text>
+  <line x1="30" y1="352" x2="730" y2="352" class="sep"/>
+  <text x="30" y="382" class="op">GC thread</text>
+  <text x="150" y="374" class="val">mark stack 스캔 완료</text>
+  <text x="150" y="392" class="sub">0은 아직 White로 남아 있음</text>
+  <rect x="470" y="366" width="30" height="22" rx="3" class="ok"/>
+  <text x="485.0" y="382" class="mono" text-anchor="middle">2</text>
+  <rect x="504" y="366" width="30" height="22" rx="3" class="ok"/>
+  <text x="519.0" y="382" class="mono" text-anchor="middle">0</text>
+  <text x="620" y="382" class="sub">(비어 있음)</text>
+  <text x="30" y="424" class="sub">barrier가 없었다면 0은 Black 객체 1이 참조하는데도 White로 남아 살았으나 죽었다고 판단된다</text>
+
+</svg>

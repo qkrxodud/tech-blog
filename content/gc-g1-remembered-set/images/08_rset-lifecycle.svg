@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Remark에서 CSet candidate를 확정하고 그룹핑한 뒤 Remark부터 Cleanup 사이에 old region 그룹의 remembered set을 만들고, mixed GC가 시작되면 Merge Heap Roots로 collection set의 remembered set을 하나로 합친 뒤 evacuation한다. young gen remembered set은 항상 유지된다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .lane2 { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .rl11 { font-size: 11px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .obj { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .old { fill: #e5e7eb; stroke: #9ca3af; stroke-width: 1.2; }
+    .young { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; }
+    .free { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; stroke-dasharray: 4 3; }
+    .ob { fill: #ffffff; stroke: #6b7280; stroke-width: 1.2; }
+    .cset { fill: none; stroke: #16a34a; stroke-width: 2.6; }
+    .grp { fill: none; stroke: #16a34a; stroke-width: 2; stroke-dasharray: 7 4; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .sep { stroke: #e5e7eb; stroke-width: 1; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="380" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="360" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">remembered set이 만들어지고 쓰이는 순서</text>
+  <text x="730" y="42" class="code" text-anchor="end">G1 GC</text>
+  <text x="220" y="68" class="step" text-anchor="middle">Remark</text>
+  <text x="360" y="68" class="step" text-anchor="middle">Remark ~ Cleanup</text>
+  <text x="500" y="68" class="step" text-anchor="middle">mixed GC 시작</text>
+  <text x="640" y="68" class="step" text-anchor="middle">mixed GC 진행</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="108" class="lane2">old region</text>
+  <text x="30" y="126" class="sub">remembered set</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="158" y="88" width="124" height="48" rx="8" class="box"/>
+  <text x="220" y="108" class="op" text-anchor="middle">CSet 후보 확정</text>
+  <text x="220" y="127" class="val" text-anchor="middle">그룹핑</text>
+  <rect x="298" y="88" width="124" height="48" rx="8" class="box"/>
+  <text x="360" y="108" class="op" text-anchor="middle">Rebuild</text>
+  <text x="360" y="127" class="val" text-anchor="middle">그룹 단위로 생성</text>
+  <rect x="438" y="88" width="124" height="48" rx="8" class="ok"/>
+  <text x="500" y="108" class="okt" text-anchor="middle">Merge Heap</text>
+  <text x="500" y="127" class="val" text-anchor="middle">Roots</text>
+  <rect x="578" y="88" width="124" height="48" rx="8" class="box"/>
+  <text x="640" y="108" class="op" text-anchor="middle">evacuation</text>
+  <text x="640" y="127" class="val" text-anchor="middle">출발점으로 사용</text>
+  <text x="30" y="168" class="lane2">young gen</text>
+  <text x="30" y="186" class="sub">remembered set</text>
+  <rect x="150" y="146" width="585" height="52" rx="6" class="track"/>
+  <rect x="158" y="156" width="264" height="32" rx="6" class="wait"/>
+  <text x="282" y="177" class="waitt" text-anchor="middle">항상 유지 (매번 수집 대상)</text>
+  <rect x="438" y="148" width="124" height="48" rx="8" class="ok"/>
+  <text x="500" y="168" class="okt" text-anchor="middle">함께 merge</text>
+  <text x="500" y="187" class="val" text-anchor="middle">중복 제거</text>
+  <line x1="500" y1="148" x2="500" y2="138" class="gl" marker-end="url(#agr)"/>
+  <line x1="424" y1="172" x2="436" y2="172" class="al" marker-end="url(#ar)"/>
+  <line x1="560" y1="112" x2="576" y2="112" class="al" marker-end="url(#ar)"/>
+  <text x="30" y="228" class="lane2">mutator</text>
+  <text x="30" y="246" class="sub">thread</text>
+  <rect x="150" y="206" width="585" height="52" rx="6" class="track"/>
+  <rect x="298" y="216" width="264" height="32" rx="6" class="wait"/>
+  <text x="430" y="237" class="waitt" text-anchor="middle">참조 변경·추가 → post-write barrier</text>
+  <line x1="400" y1="216" x2="400" y2="138" class="al" marker-end="url(#ar)"/>
+  <line x1="30" y1="276" x2="730" y2="276" class="sep"/>
+  <text x="30" y="302" class="val">old region의 remembered set은 Remark 이후, CSet candidate region(그룹)에 한해서만 만듦</text>
+  <text x="30" y="324" class="val">같은 그룹의 region은 하나의 remembered set을 공유함</text>
+  <text x="30" y="346" class="gnote">mixed GC 때 collection set의 remembered set을 하나로 합쳐(Merge Heap Roots) 중복을 줄임</text>
+</svg>

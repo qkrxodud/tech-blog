@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>mark stack에 11, 3, 2, 5가 쌓인 상태에서 pop 11, pop 3과 push 13, pop 13과 push 14, pop 14, pop 2, pop 5와 push 15, pop 15 순서로 진행해 old 객체 7개를 marking 한다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .lbl { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .rE { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .rS { fill: #ffffff; stroke: #16a34a; stroke-width: 1.8; }
+    .rO { fill: #e5e7eb; stroke: #6b7280; stroke-width: 1.5; }
+    .rH { fill: #9ca3af; stroke: #4b5563; stroke-width: 1.5; }
+    .rF { fill: #ffffff; stroke: #c4c8ce; stroke-width: 1.2; }
+    .rR { fill: #fafafa; stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 3; }
+    .tE { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .tS { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .tO { font-size: 13px; font-weight: 700; fill: #374151; }
+    .tH { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .tF { font-size: 11px; fill: #9ca3af; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .dl { stroke: #9ca3af; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="330" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="310" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Concurrent marking — mark stack에서 pop / push</text>
+  <text x="70" y="72" class="lbl" text-anchor="middle">시작</text>
+  <path d="M 40 104 L 40 212 L 100 212 L 100 104" class="al"/>
+  <rect x="44" y="114" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="70" y="130" class="monob" text-anchor="middle">11</text>
+  <rect x="44" y="138" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="70" y="154" class="monob" text-anchor="middle">3</text>
+  <rect x="44" y="162" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="70" y="178" class="monob" text-anchor="middle">2</text>
+  <rect x="44" y="186" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="70" y="202" class="monob" text-anchor="middle">5</text>
+  <line x1="103" y1="160" x2="126" y2="160" class="axis" marker-end="url(#ar)"/>
+  <text x="159" y="72" class="lbl" text-anchor="middle">pop 11</text>
+  <path d="M 129 104 L 129 212 L 189 212 L 189 104" class="al"/>
+  <rect x="133" y="138" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="159" y="154" class="monob" text-anchor="middle">3</text>
+  <rect x="133" y="162" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="159" y="178" class="monob" text-anchor="middle">2</text>
+  <rect x="133" y="186" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="159" y="202" class="monob" text-anchor="middle">5</text>
+  <line x1="192" y1="160" x2="215" y2="160" class="axis" marker-end="url(#ar)"/>
+  <rect x="139" y="232" width="40" height="24" rx="12" class="ok"/>
+  <text x="159" y="249" class="okt" text-anchor="middle">11</text>
+  <text x="248" y="72" class="lbl" text-anchor="middle">pop 3</text>
+  <text x="248" y="90" class="gnote" text-anchor="middle">push 13</text>
+  <path d="M 218 104 L 218 212 L 278 212 L 278 104" class="al"/>
+  <rect x="222" y="138" width="52" height="22" rx="3" class="ok"/>
+  <text x="248" y="154" class="monob" text-anchor="middle">13</text>
+  <rect x="222" y="162" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="248" y="178" class="monob" text-anchor="middle">2</text>
+  <rect x="222" y="186" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="248" y="202" class="monob" text-anchor="middle">5</text>
+  <line x1="281" y1="160" x2="304" y2="160" class="axis" marker-end="url(#ar)"/>
+  <rect x="228" y="232" width="40" height="24" rx="12" class="ok"/>
+  <text x="248" y="249" class="okt" text-anchor="middle">3</text>
+  <text x="337" y="72" class="lbl" text-anchor="middle">pop 13</text>
+  <text x="337" y="90" class="gnote" text-anchor="middle">push 14</text>
+  <path d="M 307 104 L 307 212 L 367 212 L 367 104" class="al"/>
+  <rect x="311" y="138" width="52" height="22" rx="3" class="ok"/>
+  <text x="337" y="154" class="monob" text-anchor="middle">14</text>
+  <rect x="311" y="162" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="337" y="178" class="monob" text-anchor="middle">2</text>
+  <rect x="311" y="186" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="337" y="202" class="monob" text-anchor="middle">5</text>
+  <line x1="370" y1="160" x2="393" y2="160" class="axis" marker-end="url(#ar)"/>
+  <rect x="317" y="232" width="40" height="24" rx="12" class="ok"/>
+  <text x="337" y="249" class="okt" text-anchor="middle">13</text>
+  <text x="426" y="72" class="lbl" text-anchor="middle">pop 14</text>
+  <path d="M 396 104 L 396 212 L 456 212 L 456 104" class="al"/>
+  <rect x="400" y="162" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="426" y="178" class="monob" text-anchor="middle">2</text>
+  <rect x="400" y="186" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="426" y="202" class="monob" text-anchor="middle">5</text>
+  <line x1="459" y1="160" x2="482" y2="160" class="axis" marker-end="url(#ar)"/>
+  <rect x="406" y="232" width="40" height="24" rx="12" class="ok"/>
+  <text x="426" y="249" class="okt" text-anchor="middle">14</text>
+  <text x="515" y="72" class="lbl" text-anchor="middle">pop 2</text>
+  <path d="M 485 104 L 485 212 L 545 212 L 545 104" class="al"/>
+  <rect x="489" y="186" width="52" height="22" rx="3" class="dbbox"/>
+  <text x="515" y="202" class="monob" text-anchor="middle">5</text>
+  <line x1="548" y1="160" x2="571" y2="160" class="axis" marker-end="url(#ar)"/>
+  <rect x="495" y="232" width="40" height="24" rx="12" class="ok"/>
+  <text x="515" y="249" class="okt" text-anchor="middle">2</text>
+  <text x="604" y="72" class="lbl" text-anchor="middle">pop 5</text>
+  <text x="604" y="90" class="gnote" text-anchor="middle">push 15</text>
+  <path d="M 574 104 L 574 212 L 634 212 L 634 104" class="al"/>
+  <rect x="578" y="186" width="52" height="22" rx="3" class="ok"/>
+  <text x="604" y="202" class="monob" text-anchor="middle">15</text>
+  <line x1="637" y1="160" x2="660" y2="160" class="axis" marker-end="url(#ar)"/>
+  <rect x="584" y="232" width="40" height="24" rx="12" class="ok"/>
+  <text x="604" y="249" class="okt" text-anchor="middle">5</text>
+  <text x="693" y="72" class="lbl" text-anchor="middle">pop 15</text>
+  <path d="M 663 104 L 663 212 L 723 212 L 723 104" class="al"/>
+  <text x="693" y="200" class="sub" text-anchor="middle">빈 stack</text>
+  <rect x="673" y="232" width="40" height="24" rx="12" class="ok"/>
+  <text x="693" y="249" class="okt" text-anchor="middle">15</text>
+  <text x="30" y="286" class="sub">초록 알약: 이번 단계에서 pop 해서 처리한 old 객체 — 끝나면 11, 3, 13, 14, 2, 5, 15가 모두 marking 됨</text>
+</svg>

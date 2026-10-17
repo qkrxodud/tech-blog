@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Concurrent Start에서는 GC root가 직접 참조하는 old 객체 5만 push하고, Root region scan에서 survivor region을 스캔해 2, 3, 11을 push한 뒤, Concurrent mark에서 mark stack을 비우고, Remark와 Cleanup은 STW로 진행된다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #374151; }
+    .monob { font-family: Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .lbl { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .rE { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .rS { fill: #ffffff; stroke: #16a34a; stroke-width: 1.8; }
+    .rO { fill: #e5e7eb; stroke: #6b7280; stroke-width: 1.5; }
+    .rH { fill: #9ca3af; stroke: #4b5563; stroke-width: 1.5; }
+    .rF { fill: #ffffff; stroke: #c4c8ce; stroke-width: 1.2; }
+    .rR { fill: #fafafa; stroke: #c4c8ce; stroke-width: 1.2; stroke-dasharray: 4 3; }
+    .tE { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .tS { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .tO { font-size: 13px; font-weight: 700; fill: #374151; }
+    .tH { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .tF { font-size: 11px; fill: #9ca3af; }
+    .gl { stroke: #16a34a; stroke-width: 1.6; fill: none; }
+    .rl { stroke: #dc2626; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .al { stroke: #9ca3af; stroke-width: 1.6; fill: none; }
+    .dl { stroke: #9ca3af; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Concurrent Start부터 Cleanup까지 — mark stack이 채워지는 순서</text>
+  <text x="208" y="64" class="lbl" text-anchor="middle">Concurrent</text>
+  <text x="208" y="82" class="lbl" text-anchor="middle">Start</text>
+  <text x="325" y="64" class="lbl" text-anchor="middle">Root region</text>
+  <text x="325" y="82" class="lbl" text-anchor="middle">scanning</text>
+  <text x="442" y="64" class="lbl" text-anchor="middle">Concurrent</text>
+  <text x="442" y="82" class="lbl" text-anchor="middle">marking</text>
+  <text x="559" y="74" class="lbl" text-anchor="middle">Remark</text>
+  <text x="676" y="74" class="lbl" text-anchor="middle">Cleanup</text>
+  <line x1="152" y1="94" x2="732" y2="94" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="128" class="lane">애플리케이션</text>
+  <text x="30" y="146" class="sub">mutator</text>
+  <rect x="150" y="104" width="586" height="52" rx="6" class="track"/>
+  <rect x="154.0" y="106" width="108" height="48" rx="8" class="bad"/>
+  <text x="208" y="126" class="badt" text-anchor="middle">STW</text>
+  <text x="208" y="144" class="val" text-anchor="middle">멈춤</text>
+  <rect x="271.0" y="106" width="108" height="48" rx="8" class="ok"/>
+  <text x="325" y="126" class="okt" text-anchor="middle">실행</text>
+  <text x="325" y="144" class="val" text-anchor="middle">계속 동작</text>
+  <rect x="388.0" y="106" width="108" height="48" rx="8" class="ok"/>
+  <text x="442" y="126" class="okt" text-anchor="middle">실행</text>
+  <text x="442" y="144" class="val" text-anchor="middle">계속 동작</text>
+  <rect x="505.0" y="106" width="108" height="48" rx="8" class="bad"/>
+  <text x="559" y="126" class="badt" text-anchor="middle">STW</text>
+  <text x="559" y="144" class="val" text-anchor="middle">멈춤</text>
+  <rect x="622.0" y="106" width="108" height="48" rx="8" class="bad"/>
+  <text x="676" y="126" class="badt" text-anchor="middle">STW</text>
+  <text x="676" y="144" class="val" text-anchor="middle">멈춤</text>
+  <text x="30" y="192" class="lane">GC 스레드</text>
+  <text x="30" y="210" class="sub">하는 일</text>
+  <rect x="150" y="168" width="586" height="52" rx="6" class="track"/>
+  <rect x="154.0" y="170" width="108" height="48" rx="8" class="box"/>
+  <text x="208" y="190" class="lbl" text-anchor="middle">young GC</text>
+  <text x="208" y="208" class="val" text-anchor="middle">5 push</text>
+  <rect x="271.0" y="170" width="108" height="48" rx="8" class="box"/>
+  <text x="325" y="190" class="lbl" text-anchor="middle">survivor 스캔</text>
+  <text x="325" y="208" class="val" text-anchor="middle">2, 3, 11 push</text>
+  <rect x="388.0" y="170" width="108" height="48" rx="8" class="box"/>
+  <text x="442" y="190" class="lbl" text-anchor="middle">old marking</text>
+  <text x="442" y="208" class="val" text-anchor="middle">pop / push</text>
+  <rect x="505.0" y="170" width="108" height="48" rx="8" class="box"/>
+  <text x="559" y="190" class="lbl" text-anchor="middle">SATB drain</text>
+  <text x="559" y="208" class="val" text-anchor="middle">빈 region 회수</text>
+  <rect x="622.0" y="170" width="108" height="48" rx="8" class="box"/>
+  <text x="676" y="190" class="lbl" text-anchor="middle">CSet 후보 확정</text>
+  <text x="676" y="208" class="val" text-anchor="middle">mixed 여부</text>
+  <text x="30" y="268" class="lane">mark stack</text>
+  <text x="30" y="286" class="sub">위가 top</text>
+  <rect x="150" y="244" width="586" height="128" rx="6" class="track"/>
+  <path d="M 174 254 L 174 368 L 242 368 L 242 254" class="al"/>
+  <path d="M 291 254 L 291 368 L 359 368 L 359 254" class="al"/>
+  <path d="M 408 254 L 408 368 L 476 368 L 476 254" class="al"/>
+  <path d="M 525 254 L 525 368 L 593 368 L 593 254" class="al"/>
+  <path d="M 642 254 L 642 368 L 710 368 L 710 254" class="al"/>
+  <rect x="178" y="342" width="60" height="22" rx="3" class="dbbox"/>
+  <text x="208" y="358" class="monob" text-anchor="middle">5</text>
+  <rect x="295" y="270" width="60" height="22" rx="3" class="dbbox"/>
+  <text x="325" y="286" class="monob" text-anchor="middle">11</text>
+  <rect x="295" y="294" width="60" height="22" rx="3" class="dbbox"/>
+  <text x="325" y="310" class="monob" text-anchor="middle">3</text>
+  <rect x="295" y="318" width="60" height="22" rx="3" class="dbbox"/>
+  <text x="325" y="334" class="monob" text-anchor="middle">2</text>
+  <rect x="295" y="342" width="60" height="22" rx="3" class="dbbox"/>
+  <text x="325" y="358" class="monob" text-anchor="middle">5</text>
+  <text x="442" y="336" class="sub" text-anchor="middle">(비워짐)</text>
+  <text x="559" y="336" class="sub" text-anchor="middle">(비어 있음)</text>
+  <text x="676" y="336" class="sub" text-anchor="middle">(비어 있음)</text>
+  <text x="150" y="396" class="sub">Concurrent Start·Remark·Cleanup은 STW, 나머지 두 단계는 애플리케이션과 동시에 진행</text>
+</svg>

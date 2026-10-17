@@ -1425,5 +1425,52 @@
     "category": "java-jvm",
     "series": "GC 챌린지",
     "seriesOrder": 8
+  },
+  {
+    "slug": "spring-session-registry-redis",
+    "category": "spring",
+    "date": "2026-10-17"
+  },
+  {
+    "slug": "gc-g1-core",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 9
+  },
+  {
+    "slug": "gc-g1-concurrent-marking",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 10
+  },
+  {
+    "slug": "gc-g1-remembered-set",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 11
+  },
+  {
+    "slug": "gc-g1-humongous-evacuation",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 12
+  },
+  {
+    "slug": "gc-g1-tuning",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 13
+  },
+  {
+    "slug": "gc-zgc-summary",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 14
+  },
+  {
+    "slug": "gc-metaspace",
+    "category": "java-jvm",
+    "series": "GC 챌린지",
+    "seriesOrder": 15
   }
 ]
