@@ -199,9 +199,14 @@ function headingAnchors(html) {
 const TOC_MIN = 5;
 function tocBox(toc) {
   if (toc.length < TOC_MIN) return '';
-  // 옵션 이름 같은 긴 영문 덩어리는 차례 폭(234px)을 넘어 잘린다. 그런 덩어리만 아무 데서나 끊게 감싼다.
-  // overflow-wrap만 쓰면 "-XX:+…"가 맨 앞 "-"에서 먼저 끊겨 "-" 한 글자만 윗줄에 남는다.
-  const tocText = s => esc(s).split(' ').map(w => w.length >= 16 ? `<span class="toc-w">${w}</span>` : w).join(' ');
+  // 옵션 이름 같은 긴 영문 덩어리는 차례 폭(234px)을 넘어 잘린다. 그런 덩어리는 낱말 경계(대소문자가
+  // 바뀌는 자리, 점·밑줄·괄호 앞뒤)에서만 끊게 조각마다 줄바꿈 금지로 감싸고 사이에 <wbr>을 둔다.
+  // 아무 데서나 끊으면 "ArrayInd / exOutOfBounds…"처럼 낱말 가운데가 갈리고, overflow-wrap만 쓰면
+  // "-XX:+…"가 맨 앞 "-"에서 먼저 끊겨 "-" 한 글자만 윗줄에 남는다.
+  const tocPieces = w => w.split(/(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|(?<=[A-Za-z0-9][_=\/,-])(?=.)|(?<=.)(?=[.(@])/);
+  const tocText = s => s.split(' ').map(w => w.length >= 16
+    ? `<span class="toc-w">${tocPieces(w).map(p => `<span>${esc(p)}</span>`).join('<wbr>')}</span>`
+    : esc(w)).join(' ');
   const items = toc.map(t =>
     `<a class="toc-i lv${t.level}" href="#${t.id}">${tocText(t.text)}</a>`).join('\n');
   return `<nav class="toc" aria-label="이 글의 차례">
