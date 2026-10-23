@@ -1472,5 +1472,10 @@
     "category": "java-jvm",
     "series": "GC 챌린지",
     "seriesOrder": 15
+  },
+  {
+    "slug": "simpledateformat-thread-safety",
+    "category": "java-jvm",
+    "date": "2026-10-23"
   }
 ]

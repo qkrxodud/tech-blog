@@ -99,5 +99,7 @@
   "관심사 분리": "separation-of-concerns",
   "통합 테스트": "integration-test",
   "자기 호출": "self-call",
-  "@Transactional": "transactional-annotation"
+  "@Transactional": "transactional-annotation",
+  "레이스 컨디션": "race-condition",
+  "불변 객체": "immutable-object"
 }

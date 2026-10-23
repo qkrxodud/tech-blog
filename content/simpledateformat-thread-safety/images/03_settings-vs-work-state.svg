@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>SimpleDateFormat은 설정과 작업 상태(calendar, DigitList)를 한 객체에 담아 두 스레드가 작업 상태를 함께 덮어쓰고, DateTimeFormatter는 불변 설정만 공유하고 작업 객체는 호출마다 새로 만드는 구조</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .tag { font-size: 12px; font-weight: 700; fill: #6b7280; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="520" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="230" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">SimpleDateFormat — 설정과 작업 상태가 한 객체에</text>
+  <text x="730" y="42" class="code" text-anchor="end">static final SimpleDateFormat</text>
+  <rect x="40" y="70" width="130" height="48" rx="8" class="box"/>
+  <text x="105" y="90" class="t" text-anchor="middle">스레드 A</text>
+  <text x="105" y="109" class="val" text-anchor="middle">format()</text>
+  <rect x="40" y="150" width="130" height="48" rx="8" class="box"/>
+  <text x="105" y="170" class="t" text-anchor="middle">스레드 B</text>
+  <text x="105" y="189" class="val" text-anchor="middle">parse()</text>
+  <rect x="260" y="62" width="460" height="144" rx="10" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="276" y="84" class="tag">SimpleDateFormat 인스턴스 하나</text>
+  <rect x="276" y="96" width="220" height="96" rx="8" class="bad"/>
+  <text x="386" y="116" class="badt" text-anchor="middle">작업 상태</text>
+  <text x="386" y="135" class="val" text-anchor="middle">calendar, DigitList</text>
+  <text x="386" y="174" class="note" text-anchor="middle">두 스레드가 함께 덮어씀</text>
+  <rect x="514" y="96" width="190" height="96" rx="8" class="ok"/>
+  <text x="609" y="116" class="okt" text-anchor="middle">설정</text>
+  <text x="609" y="135" class="val" text-anchor="middle">pattern, locale, timezone</text>
+  <text x="609" y="174" class="val" text-anchor="middle">공유해도 안전</text>
+  <line x1="171" y1="94" x2="274" y2="124" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="171" y1="174" x2="274" y2="164" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="30" y="226" class="sub">객체를 공유하는 순간, 호출 하나에 속해야 할 작업 상태까지 함께 공유됩니다.</text>
+  <rect x="10" y="256" width="740" height="254" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="288" class="h">DateTimeFormatter — 설정만 공유, 작업 객체는 호출마다</text>
+  <text x="730" y="288" class="code" text-anchor="end">DateTimeParseContext</text>
+  <rect x="40" y="318" width="130" height="48" rx="8" class="box"/>
+  <text x="105" y="338" class="t" text-anchor="middle">스레드 A</text>
+  <text x="105" y="357" class="val" text-anchor="middle">parse()</text>
+  <rect x="40" y="398" width="130" height="48" rx="8" class="box"/>
+  <text x="105" y="418" class="t" text-anchor="middle">스레드 B</text>
+  <text x="105" y="437" class="val" text-anchor="middle">parse()</text>
+  <rect x="262" y="318" width="190" height="128" rx="8" class="ok"/>
+  <text x="357" y="338" class="okt" text-anchor="middle">DateTimeFormatter</text>
+  <text x="357" y="357" class="val" text-anchor="middle">설정만 (모든 필드 final)</text>
+  <text x="357" y="398" class="val" text-anchor="middle">static 상수로 공유</text>
+  <line x1="171" y1="342" x2="260" y2="342" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="171" y1="422" x2="260" y2="422" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="544" y="318" width="180" height="48" rx="8" class="ok"/>
+  <text x="634" y="338" class="okt" text-anchor="middle">작업 객체 (A 전용)</text>
+  <text x="634" y="357" class="val" text-anchor="middle">호출이 끝나면 버림</text>
+  <rect x="544" y="398" width="180" height="48" rx="8" class="ok"/>
+  <text x="634" y="418" class="okt" text-anchor="middle">작업 객체 (B 전용)</text>
+  <text x="634" y="437" class="val" text-anchor="middle">호출이 끝나면 버림</text>
+  <line x1="453" y1="342" x2="542" y2="342" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="453" y1="422" x2="542" y2="422" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="498" y="334" class="tag" text-anchor="middle">새로 만듦</text>
+  <text x="498" y="414" class="tag" text-anchor="middle">새로 만듦</text>
+  <rect x="30" y="462" width="700" height="30" rx="15" class="ok"/>
+  <text x="380" y="482" class="okt" text-anchor="middle">공유되는 것은 바뀌지 않는 설정뿐 — 작업 상태는 메서드 호출의 생명주기로</text>
+
+</svg>
