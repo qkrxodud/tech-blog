@@ -472,10 +472,12 @@ a { color: var(--ink); text-decoration: none; }
 /* 이전/다음 */
 .pn-nav { display: flex; gap: 12px; padding-bottom: 30px; }
 .pn { flex: 1; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0; }
-.pn.next { border-color: var(--ink); background: var(--ink); color: #fff; }
+.pn.next { border-color: var(--ink); background: var(--ink); color: var(--page-bg); }
 .pn.empty { border: none; }
 .pn-label { font: 700 11px var(--mono); color: var(--faint); margin-bottom: 6px; }
 .pn.next .pn-label { color: oklch(0.75 0.12 155); }
+/* 어두운 화면에서는 카드 바탕이 밝아지므로 라벨 초록을 어둡게 뒤집는다. */
+:root[data-theme="dark"] .pn.next .pn-label { color: oklch(0.45 0.14 155); }
 .pn-title { font-size: 14px; font-weight: 700; }
 .pn.prev:hover { border-color: var(--ink); }
 
