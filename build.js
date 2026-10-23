@@ -373,7 +373,8 @@ const TAG_SLUGS = (() => {
 })();
 const tagSlug = t => {
   if (TAG_SLUGS[t]) return TAG_SLUGS[t];
-  const s = t.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9._-]/g, '');
+  // 점·밑줄은 하이픈으로 바꾼다. 그대로 두면 "claude.md"처럼 파일 이름 같은 폴더가 생긴다.
+  const s = t.toLowerCase().replace(/[\s._]+/g, '-').replace(/[^a-z0-9-]/g, '');
   // 영문이 하나도 남지 않는 태그(순한글)는 위 표에 넣어 두어야 한다.
   // 한글이 섞인 태그는 한글이 지워져 "-"나 "http-" 같은 주소가 되고, 서로 다른 태그가 같은 주소를 쓰게 된다.
   if (!/[a-z0-9]/.test(s) || /[가-힣]/.test(t)) console.warn(`태그 주소 없음: "${t}" — data/tag-slugs.json에 영문 이름을 적어 주세요`);
@@ -1070,6 +1071,14 @@ function buildTags() {
       description: `${tag}를 다룬 글 ${list.length}편을 모았습니다.`,
       canonicalPath: `tag/${tagHref(tag)}/`, content, shellPath: `~/tech-blog/tag/${tag}`,
     }));
+  }
+
+  // 점·밑줄이 든 태그를 하이픈 주소로 바꾸기 전의 옛 주소. 이미 공유·색인된 링크가 깨지지 않게 새 주소로 넘긴다.
+  const MOVED_TAGS = { 'claude.md': 'claude-md', 'requires_new': 'requires-new' };
+  for (const [from, to] of Object.entries(MOVED_TAGS)) {
+    write(`tag/${from}/index.html`, `<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">
+<link rel="canonical" href="${config.baseUrl}/tag/${to}/"><meta http-equiv="refresh" content="0; url=../${to}/">
+<a href="../${to}/">옮긴 주소로 이동</a>\n`);
   }
 
   // 태그 모아 보기. 글이 많이 달린 태그일수록 크게 보여 준다.
