@@ -1477,5 +1477,10 @@
     "slug": "simpledateformat-thread-safety",
     "category": "java-jvm",
     "date": "2026-10-23"
+  },
+  {
+    "slug": "agent-memory-components",
+    "category": "ai-dev",
+    "date": "2026-11-11"
   }
 ]

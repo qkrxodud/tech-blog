@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 530" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>Stainless 문서 약 35만 개를 드리밍 128세션으로 위키로 만들고, 평가 질문에 위키와 검색 도구를 함께 쓰게 한 구조와, 세션이 2에서 128로 늘 때 위키만 13%에서 48%, 위키와 검색 54%에서 61%, 검색만 53%로 제자리였던 점수</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="530" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="222" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">Stainless 문서 위키 — 드리밍으로 키우고 검색과 함께 씀</text>
+  <rect x="30" y="62" width="200" height="84" rx="8" class="hold"/>
+  <text x="130" y="88" class="db" text-anchor="middle">원본 문서</text>
+  <text x="130" y="110" class="val" text-anchor="middle">약 35만 개</text>
+  <text x="130" y="130" class="val" text-anchor="middle">약 4억 2천만 토큰</text>
+  <rect x="270" y="62" width="220" height="84" rx="8" class="box"/>
+  <text x="380" y="88" class="db" text-anchor="middle">드리밍 128세션</text>
+  <text x="380" y="110" class="val" text-anchor="middle">Opus 5 에이전트</text>
+  <text x="380" y="130" class="val" text-anchor="middle">작성·수정·병합·원문 대조</text>
+  <rect x="530" y="62" width="200" height="84" rx="8" class="ok"/>
+  <text x="630" y="88" class="okt" text-anchor="middle">위키</text>
+  <text x="630" y="110" class="val" text-anchor="middle">한 페이지에 한 주제</text>
+  <text x="630" y="130" class="val" text-anchor="middle">페이지끼리 링크</text>
+  <line x1="231" y1="104" x2="267" y2="104" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="491" y1="104" x2="527" y2="104" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="290" y="176" width="180" height="36" rx="8" class="box"/>
+  <text x="380" y="199" class="db" text-anchor="middle">평가 질문 25개</text>
+  <line x1="290" y1="186" x2="160" y2="148" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="470" y1="186" x2="600" y2="148" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="150" y="190" class="gnote" text-anchor="end">검색 도구</text>
+  <text x="610" y="190" class="gnote">위키 읽기</text>
+  <rect x="10" y="248" width="740" height="272" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="280" class="h">드리밍 세션 수에 따른 점수와 위키 규모</text>
+  <text x="410" y="306" class="step" text-anchor="middle">2세션 후</text>
+  <text x="630" y="306" class="step" text-anchor="middle">128세션 후</text>
+  <text x="30" y="341" class="db">위키만</text>
+  <rect x="310" y="318" width="200" height="36" rx="6" class="box"/>
+  <text x="410" y="341" class="db" text-anchor="middle">13%</text>
+  <rect x="530" y="318" width="200" height="36" rx="6" class="ok"/>
+  <text x="630" y="341" class="okt" text-anchor="middle">48%</text>
+  <line x1="511" y1="336" x2="527" y2="336" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="385" class="db">위키 + 검색</text>
+  <rect x="310" y="362" width="200" height="36" rx="6" class="box"/>
+  <text x="410" y="385" class="db" text-anchor="middle">54%</text>
+  <rect x="530" y="362" width="200" height="36" rx="6" class="ok"/>
+  <text x="630" y="385" class="okt" text-anchor="middle">61%</text>
+  <line x1="511" y1="380" x2="527" y2="380" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="429" class="db">검색만</text>
+  <rect x="310" y="406" width="200" height="36" rx="6" class="box"/>
+  <text x="410" y="429" class="db" text-anchor="middle">53%</text>
+  <rect x="530" y="406" width="200" height="36" rx="6" class="box"/>
+  <text x="630" y="429" class="db" text-anchor="middle">53% (제자리)</text>
+  <line x1="511" y1="424" x2="527" y2="424" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="473" class="db">위키 규모</text>
+  <rect x="310" y="450" width="200" height="36" rx="6" class="box"/>
+  <text x="410" y="473" class="db" text-anchor="middle">103페이지 · 링크 766개</text>
+  <rect x="530" y="450" width="200" height="36" rx="6" class="ok"/>
+  <text x="630" y="473" class="okt" text-anchor="middle">222페이지 · 링크 12,893개</text>
+  <line x1="511" y1="468" x2="527" y2="468" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="30" y="508" class="sub">위키 + 검색은 질문당 약 2만 토큰도 아꼈다.</text>
+</svg>

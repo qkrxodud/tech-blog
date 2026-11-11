@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 396" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>첫 드리밍 뒤 6개 페이지의 링크 9개가 없는 escrow-agreement 페이지를 가리켰고, 두 번째 드리밍이 이를 같은 문서의 기존 페이지 buyer-form-escrow-agreement로 바꾸고 목차 등 새 페이지 3개를 더한 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="396" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">첫 드리밍 뒤 — 아직 없는 페이지로 걸린 링크</text>
+  <rect x="30" y="70" width="200" height="60" rx="8" class="box"/>
+  <text x="130" y="95" class="db" text-anchor="middle">페이지 6개</text>
+  <text x="130" y="116" class="val" text-anchor="middle">링크 9개</text>
+  <line x1="231" y1="100" x2="327" y2="100" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="330" y="70" width="280" height="60" rx="8" class="bad" stroke-dasharray="5 4"/>
+  <text x="470" y="95" class="badc" text-anchor="middle">escrow-agreement</text>
+  <text x="470" y="116" class="val" text-anchor="middle">아직 없는 페이지</text>
+  <text x="30" y="170" class="sub">위키 규모: 38항목 · 링크 225개</text>
+  <rect x="10" y="206" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="238" class="h">두 번째 드리밍 뒤 — 같은 문서의 기존 페이지로 고침</text>
+  <rect x="30" y="266" width="200" height="60" rx="8" class="box"/>
+  <text x="130" y="291" class="db" text-anchor="middle">페이지 6개</text>
+  <text x="130" y="312" class="val" text-anchor="middle">링크 9개</text>
+  <line x1="231" y1="296" x2="327" y2="296" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="330" y="266" width="280" height="60" rx="8" class="ok"/>
+  <text x="470" y="291" class="okc" text-anchor="middle">buyer-form-escrow-agreement</text>
+  <text x="470" y="312" class="val" text-anchor="middle">이미 있던 페이지</text>
+  <rect x="625" y="266" width="110" height="60" rx="8" class="ok"/>
+  <text x="680" y="291" class="okt" text-anchor="middle">새 페이지 3개</text>
+  <text x="680" y="312" class="val" text-anchor="middle">index 등</text>
+  <text x="30" y="366" class="sub">위키 규모: 41항목 · 링크 278개</text>
+</svg>

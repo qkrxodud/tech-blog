@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 530" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>여러 에이전트가 provisions.md 공유 표 하나에 동시에 적다가 서로 덮어써 채점 사실 57개 중 41개만 남았고, 지시를 고쳐 계약서마다 한 페이지를 에이전트 하나가 맡아 조건을 그대로 인용하자 57개 모두 남은 비교</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="530" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="224" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">처음 지시 — 공유 표 하나에 여러 에이전트가 동시에 적음</text>
+  <rect x="30" y="64" width="140" height="36" rx="8" class="box"/>
+  <text x="100" y="87" class="db" text-anchor="middle">에이전트 1</text>
+  <line x1="171" y1="82" x2="297" y2="130" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="30" y="112" width="140" height="36" rx="8" class="box"/>
+  <text x="100" y="135" class="db" text-anchor="middle">에이전트 2</text>
+  <line x1="171" y1="130" x2="297" y2="130" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="30" y="160" width="140" height="36" rx="8" class="box"/>
+  <text x="100" y="183" class="db" text-anchor="middle">에이전트 3</text>
+  <line x1="171" y1="178" x2="297" y2="130" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="300" y="100" width="170" height="60" rx="8" class="bad"/>
+  <text x="385" y="125" class="badc" text-anchor="middle">provisions.md</text>
+  <text x="385" y="146" class="val" text-anchor="middle">계약 조건 공유 표</text>
+  <line x1="471" y1="130" x2="517" y2="130" stroke="#c4c8ce" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="520" y="106" width="210" height="48" rx="15" class="bad"/>
+  <text x="625" y="136" class="badt" text-anchor="middle">57개 중 41개 (72%)</text>
+  <text x="300" y="214" class="note">서로 덮어쓰고 요약도 부실해 채점할 사실이 빠짐</text>
+  <rect x="10" y="250" width="740" height="270" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="282" class="h">고친 지시 — 계약서마다 한 페이지, 에이전트 하나씩</text>
+  <text x="30" y="304" class="sub">실패를 돌아보고 지시를 고쳐 위키를 다시 만듦 · 조건은 요약하지 않고 그대로 인용</text>
+  <rect x="30" y="322" width="140" height="36" rx="8" class="box"/>
+  <text x="100" y="345" class="db" text-anchor="middle">계약서 A</text>
+  <line x1="171" y1="340" x2="227" y2="340" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="230" y="322" width="140" height="36" rx="8" class="box"/>
+  <text x="300" y="345" class="db" text-anchor="middle">에이전트 1</text>
+  <line x1="371" y1="340" x2="427" y2="340" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="430" y="322" width="150" height="36" rx="8" class="ok"/>
+  <text x="505" y="345" class="okt" text-anchor="middle">계약서 A 페이지</text>
+  <line x1="581" y1="340" x2="605" y2="386" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="30" y="368" width="140" height="36" rx="8" class="box"/>
+  <text x="100" y="391" class="db" text-anchor="middle">계약서 B</text>
+  <line x1="171" y1="386" x2="227" y2="386" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="230" y="368" width="140" height="36" rx="8" class="box"/>
+  <text x="300" y="391" class="db" text-anchor="middle">에이전트 2</text>
+  <line x1="371" y1="386" x2="427" y2="386" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="430" y="368" width="150" height="36" rx="8" class="ok"/>
+  <text x="505" y="391" class="okt" text-anchor="middle">계약서 B 페이지</text>
+  <line x1="581" y1="386" x2="605" y2="386" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="30" y="414" width="140" height="36" rx="8" class="box"/>
+  <text x="100" y="437" class="db" text-anchor="middle">계약서 C</text>
+  <line x1="171" y1="432" x2="227" y2="432" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="230" y="414" width="140" height="36" rx="8" class="box"/>
+  <text x="300" y="437" class="db" text-anchor="middle">에이전트 3</text>
+  <line x1="371" y1="432" x2="427" y2="432" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="430" y="414" width="150" height="36" rx="8" class="ok"/>
+  <text x="505" y="437" class="okt" text-anchor="middle">계약서 C 페이지</text>
+  <line x1="581" y1="432" x2="605" y2="386" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="608" y="354" width="127" height="64" rx="15" class="ok"/>
+  <text x="671" y="381" class="okt" text-anchor="middle">57개 중 57개</text>
+  <text x="671" y="402" class="okt" text-anchor="middle">100%</text>
+  <text x="30" y="480" class="gnote">맡은 영역이 나뉘어 덮어쓸 일이 없음</text>
+  <text x="30" y="502" class="sub">그림의 에이전트·계약서 개수는 예시다.</text>
+</svg>

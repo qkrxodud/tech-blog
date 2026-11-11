@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>대화 기록, 메모리 노트, 메모리 표현, 주입 컨텍스트의 네 층이 아래에서 위로 쌓여 있고, 드리밍이 대화 기록에서 위의 각 층으로, 그리고 이웃한 층 사이로 정보를 옮기는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12px; fill: #15803d; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4c8ce"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="450" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="430" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">메모리의 네 층 — 드리밍이 정보를 옮기는 방향</text>
+  <text x="30" y="104" class="lane">4층</text>
+  <rect x="110" y="70" width="320" height="56" rx="8" class="box"/>
+  <text x="270" y="94" class="db" text-anchor="middle">주입 컨텍스트</text>
+  <text x="270" y="114" class="val" text-anchor="middle">매 세션 시작 때 하네스가 컨텍스트에 바로 넣음</text>
+  <text x="30" y="184" class="lane">3층</text>
+  <rect x="110" y="150" width="320" height="56" rx="8" class="box"/>
+  <text x="270" y="174" class="db" text-anchor="middle">메모리 표현</text>
+  <text x="270" y="194" class="val" text-anchor="middle">노트와 기록을 위키처럼 정리한 구조</text>
+  <text x="30" y="264" class="lane">2층</text>
+  <rect x="110" y="230" width="320" height="56" rx="8" class="box"/>
+  <text x="270" y="254" class="db" text-anchor="middle">메모리 노트</text>
+  <text x="270" y="274" class="val" text-anchor="middle">작업 중 Claude가 중요하다고 보고 적은 노트</text>
+  <text x="30" y="344" class="lane">1층</text>
+  <rect x="110" y="310" width="320" height="56" rx="8" class="hold"/>
+  <text x="270" y="334" class="db" text-anchor="middle">대화 기록</text>
+  <text x="270" y="354" class="val" text-anchor="middle">검색할 수 있는 사건 로그 · 모든 것이 남는 바닥층</text>
+  <line x1="390" y1="309" x2="390" y2="289" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="390" y1="229" x2="390" y2="209" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="390" y1="149" x2="390" y2="129" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <path d="M430,338 C480,338 480,258 433,258" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <path d="M430,346 C540,346 540,178 433,178" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <path d="M430,346 C600,346 600,98 433,98" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="588" y="196" class="lane">드리밍</text>
+  <text x="588" y="218" class="sub">대화 기록에서 위층으로,</text>
+  <text x="588" y="236" class="sub">이웃한 층 사이로도 옮김</text>
+  <text x="30" y="400" class="val">드리밍이 하는 일 — 실수 고치기 · 노트 만들기 · 표현 만들기 · 다음 세션에 실을 것 고르기</text>
+  <text x="30" y="422" class="sub">작업 중에는 Claude가 2층에 직접 적고, 드리밍은 작업이 끝난 뒤 기록을 다시 훑어 옮긴다.</text>
+</svg>
