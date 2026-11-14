@@ -542,7 +542,12 @@ const visitorsRail = () => !visitorsOn ? '' : `<aside class="visitors-rail" aria
 const visitorsStrip = (isHome) => !visitorsOn ? '' : `<div class="visitors-strip${isHome ? ' vs-home' : ''}"><span class="vs-seg"><i class="vr-dot"></i>지금 <b data-visitors="now">--</b>명이 보고 있습니다</span><span class="vs-seg">오늘 <b data-visitors="today">--</b></span><span class="vs-seg">누적 <b data-visitors="total">--</b></span></div>
 `;
 
-function page({ rel, title, description, canonicalPath, content, extraHead = '', shellPath = '~/tech-blog', isHome = false, ogImage = null }) {
+// 글 페이지에만 붙는 og 메타. 날짜가 없는 글은 published_time을 빼고 태그만 단다.
+const articleMeta = ({ date, tags }) =>
+  (date ? `\n<meta property="article:published_time" content="${esc(date)}">` : '')
+  + tags.map(t => `\n<meta property="article:tag" content="${esc(t)}">`).join('');
+
+function page({ rel, title, description, canonicalPath, content, extraHead = '', shellPath = '~/tech-blog', isHome = false, ogImage = null, article = null }) {
   const canonical = `${config.baseUrl}/${canonicalPath}`;
   const tagline = isHome
     ? `<div class="site-tagline"><span class="cmt">//</span> Java, Spring, 데이터베이스, 아키텍처를 탐구하는 백엔드 개발 블로그</div>`
@@ -557,7 +562,7 @@ function page({ rel, title, description, canonicalPath, content, extraHead = '',
 <link rel="canonical" href="${canonical}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:type" content="website">
+<meta property="og:type" content="${article ? 'article' : 'website'}">${article ? articleMeta(article) : ''}
 <meta property="og:url" content="${canonical}">
 <meta property="og:site_name" content="${esc(config.siteTitle)}">
 ${ogImage ? `<meta property="og:image" content="${ogImage}">
@@ -568,10 +573,11 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}">
 <link rel="alternate" type="application/rss+xml" title="${esc(config.siteTitle)}" href="${config.baseUrl}/rss.xml">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="${rel}assets/fonts.css?v=${assetHash}">
+<link rel="preload" href="${rel}assets/fonts.css?v=${assetHash}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="${rel}assets/fonts.css?v=${assetHash}"></noscript>
 <link rel="stylesheet" href="${rel}assets/style.css?v=${assetHash}">
 <script src="${rel}assets/theme.js?v=${assetHash}"></script>
-<script src="${rel}assets/intro.js?v=${assetHash}" data-posts="${posts.length}"></script>${speculationTag()}${analyticsTag()}${visitorsTag(rel)}
+${isHome ? `<script src="${rel}assets/intro.js?v=${assetHash}" data-posts="${posts.length}"></script>` : ''}${speculationTag()}${analyticsTag()}${visitorsTag(rel)}
 ${extraHead}
 </head>
 <body>
@@ -1033,6 +1039,7 @@ function buildPosts() {
     write(`posts/${p.slug}/index.html`, page({
       rel, title: `${p.title} — ${config.siteTitle}`, description: desc,
       canonicalPath: p.url, content, shellPath: `~/tech-blog/posts/${p.slug}`, ogImage: ogFor(p),
+      article: { date: p.date, tags: p.tags },
       extraHead: `<script type="application/ld+json">${JSON.stringify({
         '@context': 'https://schema.org', '@type': 'BlogPosting',
         headline: p.title, description: desc, author: { '@type': 'Person', name: config.author },

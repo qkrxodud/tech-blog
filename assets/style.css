@@ -363,7 +363,7 @@ a { color: var(--ink); text-decoration: none; }
 
 /* 글 상세 */
 .post-header { border-bottom: 1px solid var(--ink); padding-bottom: 22px; }
-.post-title { font-size: 30px; font-weight: 900; line-height: 1.35; letter-spacing: -.02em; margin: 12px 0; }
+.post-title { font-size: 30px; font-weight: 900; line-height: 1.35; letter-spacing: -.02em; margin: 12px 0; word-break: keep-all; overflow-wrap: anywhere; }
 .post-meta { font: 400 12px var(--mono); color: var(--faint); }
 .post-tags { font: 400 12px var(--mono); margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px 10px; }
 .post-tags .tag { color: var(--accent); }
@@ -377,7 +377,8 @@ a { color: var(--ink); text-decoration: none; }
 .tg.warm { color: var(--body); font-weight: 600; }
 .tg.hot { color: var(--ink); font-weight: 800; }
 .tg-n { font: 400 10.5px var(--mono); color: var(--faint); }
-.post-body { font-size: 16.5px; line-height: 1.85; color: var(--body); padding: 28px 0 10px; overflow-wrap: break-word; }
+.post-body { font-size: 16.5px; line-height: 1.85; color: var(--body); padding: 28px 0 10px; word-break: keep-all; overflow-wrap: anywhere; }
+.post-body pre, .post-body code { word-break: normal; }
 .post-body > :first-child { margin-top: 0; }
 .post-body p { margin: 0 0 20px; }
 .post-body h2 { font-size: 21px; font-weight: 800; letter-spacing: -.02em; margin: 40px 0 16px; color: var(--ink); }
