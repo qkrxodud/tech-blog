@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 408" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>연결 2개가 모두 승인 대기에 묶여 조회가 실패하는 모습 — 승인 두 건이 각각 DB 연결을 쥔 채 800ms 뒤에 답하는 Mock PG를 기다리는 동안, 다른 결제를 조회하는 요청은 남은 연결이 없어 250ms를 기다린 뒤 CannotCreateTransactionException으로 실패하는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 13.5px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 13.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 13.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okw { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 13.5px; fill: #b91c1c; }
+    .gnote { font-size: 13.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="408" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="388" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">연결 2개가 모두 승인 대기에 묶이면 — 조회는 250ms 뒤 실패</text>
+  <text x="30" y="66" class="sub">계약 테스트 설정: DB 연결 2개, 연결 대기 250ms, Mock PG는 800ms 뒤에 답함 (트랜잭션 하나로 묶은 출발 코드)</text>
+
+  <text x="230" y="96" class="step" text-anchor="middle">① 승인 두 건이 연결 획득</text>
+  <text x="485" y="96" class="step" text-anchor="middle">② 두 건 모두 PG 답 대기 중에 조회</text>
+  <text x="663" y="96" class="step" text-anchor="middle">③ 250ms 뒤</text>
+  <line x1="160" y1="104" x2="722" y2="104" class="axis" marker-end="url(#ar)"/>
+
+  <text x="30" y="138" class="lane">승인 1</text>
+  <text x="30" y="156" class="sub">PG 답 대기</text>
+  <rect x="150" y="114" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="116" width="136" height="48" rx="8" class="box"/>
+  <text x="230" y="136" class="t" text-anchor="middle">연결 획득</text>
+  <text x="230" y="155" class="val" text-anchor="middle">인증 기록</text>
+  <rect x="310" y="116" width="418" height="48" rx="8" class="hold"/>
+  <text x="519" y="136" class="t" text-anchor="middle">연결을 쥔 채 PG 답 대기</text>
+  <text x="519" y="155" class="val" text-anchor="middle">PG가 답할 때까지 트랜잭션이 끝나지 않음</text>
+
+  <text x="30" y="198" class="lane">승인 2</text>
+  <text x="30" y="216" class="sub">PG 답 대기</text>
+  <rect x="150" y="174" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="176" width="136" height="48" rx="8" class="box"/>
+  <text x="230" y="196" class="t" text-anchor="middle">연결 획득</text>
+  <text x="230" y="215" class="val" text-anchor="middle">인증 기록</text>
+  <rect x="310" y="176" width="418" height="48" rx="8" class="hold"/>
+  <text x="519" y="196" class="t" text-anchor="middle">연결을 쥔 채 PG 답 대기</text>
+  <text x="519" y="215" class="val" text-anchor="middle">PG가 답할 때까지 트랜잭션이 끝나지 않음</text>
+
+  <text x="30" y="258" class="lane">조회</text>
+  <text x="30" y="276" class="sub">다른 결제</text>
+  <rect x="150" y="234" width="585" height="52" rx="6" class="track"/>
+  <rect x="392" y="244" width="186" height="32" rx="6" class="wait"/>
+  <text x="485" y="265" class="waitt" text-anchor="middle">연결 대기 250ms</text>
+  <rect x="598" y="236" width="130" height="48" rx="8" class="bad"/>
+  <text x="663" y="256" class="badt" text-anchor="middle">조회 실패</text>
+  <text x="663" y="275" class="note" text-anchor="middle">연결을 얻지 못함</text>
+  <line x1="578" y1="260" x2="596" y2="260" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+
+  <text x="30" y="324" class="db">연결 풀</text>
+  <rect x="162" y="304" width="136" height="32" rx="6" class="dbbox"/>
+  <text x="230" y="325" class="db" text-anchor="middle">사용 중 2 / 2</text>
+  <rect x="310" y="304" width="418" height="32" rx="6" class="bad"/>
+  <text x="519" y="325" class="badt" text-anchor="middle">남은 연결 0 — 승인이 끝날 때까지 그대로</text>
+
+  <text x="30" y="364" class="note">조회 실패: <tspan font-family="Menlo, Consolas, monospace">CannotCreateTransactionException</tspan> (Could not open JPA EntityManager for transaction)</text>
+  <text x="30" y="384" class="sub">조회는 PG와 상관없지만 연결을 얻지 못해 실패하고, API로 돌린 테스트에서는 이 실패가 500 응답이 됩니다.</text>
+</svg>

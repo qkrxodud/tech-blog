@@ -1489,5 +1489,12 @@
     "series": "결제 시스템 챌린지",
     "seriesOrder": 1,
     "date": "2026-11-14"
+  },
+  {
+    "slug": "payment-transaction-boundary",
+    "category": "spring",
+    "series": "결제 시스템 챌린지",
+    "seriesOrder": 2,
+    "date": "2026-11-15"
   }
 ]

@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 476" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>트랜잭션 하나로 묶기와 나누기에서 DB 연결을 쥐는 구간 비교 — 하나로 묶으면 인증 기록부터 PG 답 대기, 결과 기록까지 연결 하나를 계속 쥐고, 나누면 인증 기록과 결과 기록의 짧은 트랜잭션에서만 연결을 쓰고 PG를 기다리는 동안에는 연결을 놓는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 13.5px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .subc { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #6b7280; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 13.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 13.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okw { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 13.5px; fill: #b91c1c; }
+    .gnote { font-size: 13.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="476" fill="#ffffff"/>
+
+  <!-- 패널 A: 하나로 묶기. 받는 객체를 붙이면 한 줄로는 박스에 안 들어가서 객체는 윗줄에 따로 적는다 -->
+  <rect x="10" y="10" width="740" height="220" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">트랜잭션 하나로 묶기 — PG 답을 기다리는 동안에도 연결을 쥔다</text>
+  <text x="230" y="70" class="step" text-anchor="middle">① 결제 읽기·인증 기록</text>
+  <text x="443" y="70" class="step" text-anchor="middle">② PG 승인 호출</text>
+  <text x="658" y="70" class="step" text-anchor="middle">③ 결과 기록</text>
+  <line x1="160" y1="78" x2="722" y2="78" class="axis" marker-end="url(#ar)"/>
+
+  <text x="30" y="120" class="lane">승인 요청</text>
+  <text x="30" y="138" class="sub">승인 서비스</text>
+  <rect x="150" y="88" width="585" height="68" rx="6" class="track"/>
+  <rect x="162" y="90" width="136" height="64" rx="8" class="box"/>
+  <text x="230" y="108" class="subc" text-anchor="middle">payment.</text>
+  <text x="230" y="127" class="op" text-anchor="middle">authenticate()</text>
+  <text x="230" y="146" class="val" text-anchor="middle">인증 기록</text>
+  <rect x="310" y="90" width="266" height="64" rx="8" class="box"/>
+  <text x="443" y="108" class="subc" text-anchor="middle">paymentGateway.</text>
+  <text x="443" y="127" class="op" text-anchor="middle">approve()</text>
+  <text x="443" y="146" class="val" text-anchor="middle">PG가 답할 때까지 기다림</text>
+  <rect x="588" y="90" width="140" height="64" rx="8" class="box"/>
+  <text x="658" y="108" class="subc" text-anchor="middle">payment.</text>
+  <text x="658" y="127" class="op" text-anchor="middle">approve()</text>
+  <text x="658" y="146" class="val" text-anchor="middle">결과 기록·커밋</text>
+
+  <text x="30" y="188" class="lane">DB 연결</text>
+  <text x="30" y="206" class="sub">트랜잭션 1개</text>
+  <rect x="150" y="164" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="166" width="566" height="48" rx="8" class="bad"/>
+  <text x="445" y="186" class="badt" text-anchor="middle">연결 1개를 쥔 채 PG 답을 기다림</text>
+  <text x="445" y="205" class="note" text-anchor="middle">커밋은 마지막에 한 번, 그때까지 연결을 놓지 않음</text>
+
+  <!-- 패널 B: 나누기 -->
+  <rect x="10" y="246" width="740" height="220" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="278" class="h">트랜잭션 나누기 — PG를 기다리는 동안 연결을 놓는다</text>
+  <text x="230" y="306" class="step" text-anchor="middle">① 결제 읽기·인증 기록</text>
+  <text x="443" y="306" class="step" text-anchor="middle">② PG 승인 호출</text>
+  <text x="658" y="306" class="step" text-anchor="middle">③ 결과 기록</text>
+  <line x1="160" y1="314" x2="722" y2="314" class="axis" marker-end="url(#ar)"/>
+
+  <text x="30" y="356" class="lane">승인 요청</text>
+  <text x="30" y="374" class="sub">승인 서비스</text>
+  <rect x="150" y="324" width="585" height="68" rx="6" class="track"/>
+  <rect x="162" y="326" width="136" height="64" rx="8" class="box"/>
+  <text x="230" y="344" class="subc" text-anchor="middle">paymentRecorder.</text>
+  <text x="230" y="363" class="op" text-anchor="middle">authenticate()</text>
+  <text x="230" y="382" class="val" text-anchor="middle">인증 기록·커밋</text>
+  <rect x="310" y="326" width="266" height="64" rx="8" class="box"/>
+  <text x="443" y="344" class="subc" text-anchor="middle">paymentGateway.</text>
+  <text x="443" y="363" class="op" text-anchor="middle">approve()</text>
+  <text x="443" y="382" class="val" text-anchor="middle">트랜잭션 밖에서 호출</text>
+  <rect x="588" y="326" width="140" height="64" rx="8" class="box"/>
+  <text x="658" y="344" class="subc" text-anchor="middle">paymentRecorder.</text>
+  <text x="658" y="363" class="op" text-anchor="middle" style="font-size: 13px">recordApproval()</text>
+  <text x="658" y="382" class="val" text-anchor="middle">결과 기록·커밋</text>
+
+  <text x="30" y="424" class="lane">DB 연결</text>
+  <text x="30" y="442" class="sub">짧은 트랜잭션 2개</text>
+  <rect x="150" y="400" width="585" height="52" rx="6" class="track"/>
+  <rect x="162" y="402" width="136" height="48" rx="8" class="hold"/>
+  <text x="230" y="422" class="t" text-anchor="middle">트랜잭션 1</text>
+  <text x="230" y="441" class="val" text-anchor="middle">커밋 후 반납</text>
+  <rect x="310" y="402" width="266" height="48" rx="8" class="okw"/>
+  <text x="443" y="422" class="okt" text-anchor="middle">연결을 쓰지 않음</text>
+  <text x="443" y="441" class="gnote" text-anchor="middle">다른 요청이 그 연결을 쓸 수 있음</text>
+  <rect x="588" y="402" width="140" height="48" rx="8" class="hold"/>
+  <text x="658" y="422" class="t" text-anchor="middle">트랜잭션 2</text>
+  <text x="658" y="441" class="val" text-anchor="middle">다시 읽고 기록</text>
+</svg>
