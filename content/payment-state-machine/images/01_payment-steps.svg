@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 586" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>카드 결제의 네 단계 — 고객이 결제창에서 카드사 인증을 마치고, 가맹점 서버가 PG를 거쳐 카드사에 승인을 요청하며, 승인 마감 뒤 PG가 전날 승인 건을 카드사에 청구해 매입하고, 취소는 매입 전이면 승인 취소, 매입 후면 매입 취소로 갈라지는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 14px; fill: #6b7280; }
+    .subc { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
+    .lbl { font-family: Menlo, Consolas, monospace; font-size: 11px; fill: #6b7280; }
+    .step { font-size: 13.5px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .st { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 13.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .term { fill: #f3f4f6; stroke: #374151; stroke-width: 2.6; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 13.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="586" fill="#ffffff"/>
+
+  <rect x="10" y="10" width="740" height="370" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">결제의 단계 — 인증, 승인, 매입</text>
+
+  <!-- 승인 마감: 카드사가 정한 시각이라 어느 레인에도 두지 않고, 시간축 위 ②와 ③ 사이 경계선 꼭대기에 단다 -->
+  <rect x="435" y="54" width="200" height="28" rx="6" class="wait"/>
+  <text x="535" y="73" class="waitt" text-anchor="middle">카드사 승인 마감 23:59:59</text>
+
+  <g transform="translate(0,30)">
+  <text x="250" y="68" class="step" text-anchor="middle">① 인증</text>
+  <text x="440" y="68" class="step" text-anchor="middle">② 승인</text>
+  <text x="630" y="68" class="step" text-anchor="middle">③ 매입</text>
+  <line x1="160" y1="76" x2="722" y2="76" class="axis" marker-end="url(#ar)"/>
+
+  <!-- 고객 -->
+  <text x="30" y="108" class="lane">고객</text>
+  <text x="30" y="126" class="sub">결제창</text>
+  <rect x="150" y="86" width="585" height="52" rx="6" class="track"/>
+  <rect x="180" y="88" width="140" height="48" rx="8" class="box"/>
+  <text x="250" y="108" class="t" text-anchor="middle">카드사 인증</text>
+  <text x="250" y="127" class="val" text-anchor="middle">결제창에서 진행</text>
+
+  <!-- 가맹점 서버 -->
+  <text x="30" y="172" class="lane">가맹점 서버</text>
+  <text x="30" y="190" class="sub">승인 API 호출</text>
+  <rect x="150" y="150" width="585" height="52" rx="6" class="track"/>
+  <rect x="370" y="152" width="140" height="48" rx="8" class="box"/>
+  <text x="440" y="172" class="t" text-anchor="middle">승인 요청</text>
+  <text x="440" y="191" class="val" text-anchor="middle">인증 유효 시간 안</text>
+
+  <!-- PG -->
+  <text x="30" y="236" class="lane">PG</text>
+  <text x="30" y="254" class="sub">결제대행사</text>
+  <rect x="150" y="214" width="585" height="52" rx="6" class="track"/>
+  <rect x="370" y="216" width="140" height="48" rx="8" class="box"/>
+  <text x="440" y="236" class="t" text-anchor="middle">승인 요청 전달</text>
+  <text x="440" y="255" class="val" text-anchor="middle">카드사로</text>
+  <rect x="560" y="216" width="140" height="48" rx="8" class="box"/>
+  <text x="630" y="236" class="t" text-anchor="middle">매입 청구</text>
+  <text x="630" y="255" class="val" text-anchor="middle">24:00부터 전날 건</text>
+
+  <!-- 카드사 -->
+  <text x="30" y="300" class="lane">카드사</text>
+  <text x="30" y="318" class="sub">허용·대금 지급</text>
+  <rect x="150" y="278" width="585" height="52" rx="6" class="track"/>
+  <rect x="180" y="280" width="140" height="48" rx="8" class="ok"/>
+  <text x="250" y="300" class="okt" text-anchor="middle">인증</text>
+  <text x="250" y="319" class="val" text-anchor="middle">거래 허용 확인</text>
+  <rect x="370" y="280" width="140" height="48" rx="8" class="ok"/>
+  <text x="440" y="300" class="okt" text-anchor="middle">승인</text>
+  <text x="440" y="319" class="val" text-anchor="middle">최종 결과 응답</text>
+  <rect x="560" y="280" width="140" height="48" rx="8" class="ok"/>
+  <text x="630" y="300" class="okt" text-anchor="middle">매입</text>
+  <text x="630" y="319" class="val" text-anchor="middle">대금 지급 청구됨</text>
+
+  <!-- 승인 마감 경계선: 레인 바탕에 가리지 않게 레인을 다 그린 뒤에 긋는다 (위 라벨 아래 끝에서 시작) -->
+  <line x1="535" y1="52" x2="535" y2="332" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="4 4"/>
+
+  <!-- 화살표 -->
+  <line x1="250" y1="136" x2="250" y2="278" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="440" y1="200" x2="440" y2="214" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="440" y1="264" x2="440" y2="278" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="630" y1="264" x2="630" y2="278" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+
+
+  <!-- 취소 -->
+  <rect x="10" y="366" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="398" class="h">④ 취소 — 매입 전인지 후인지에 따라 갈라짐</text>
+
+  <rect x="40" y="448" width="150" height="48" rx="8" class="box"/>
+  <text x="115" y="468" class="t" text-anchor="middle">취소 요청</text>
+  <text x="115" y="487" class="val" text-anchor="middle">가맹점 서버</text>
+
+  <path d="M190,472 L250,472 L250,438 L324,438" class="flow" marker-end="url(#ar)"/>
+  <path d="M250,472 L250,506 L324,506" class="flow" marker-end="url(#ar)"/>
+  <text x="290" y="430" class="sub" text-anchor="middle">매입 전</text>
+  <text x="290" y="498" class="sub" text-anchor="middle">매입 후</text>
+
+  <rect x="330" y="414" width="220" height="48" rx="8" class="box"/>
+  <text x="440" y="434" class="t" text-anchor="middle">승인 취소</text>
+  <text x="440" y="453" class="val" text-anchor="middle">기록도 남지 않고 간단</text>
+  <rect x="330" y="482" width="220" height="48" rx="8" class="box"/>
+  <text x="440" y="502" class="t" text-anchor="middle">매입 취소</text>
+  <text x="440" y="521" class="val" text-anchor="middle">카드사에서 보통 D+3일가량</text>
+
+  <text x="572" y="443" class="code">APPROVAL_CANCELED</text>
+  <text x="572" y="511" class="code">CAPTURE_CANCELED</text>
+  </g>
+</svg>

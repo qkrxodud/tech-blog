@@ -1482,5 +1482,12 @@
     "slug": "agent-memory-components",
     "category": "ai-dev",
     "date": "2026-11-11"
+  },
+  {
+    "slug": "payment-state-machine",
+    "category": "spring",
+    "series": "결제 시스템 챌린지",
+    "seriesOrder": 1,
+    "date": "2026-11-14"
   }
 ]

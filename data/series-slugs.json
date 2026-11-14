@@ -18,5 +18,6 @@
   "GC 챌린지": "gc-challenge",
   "AI 협업 개발": "ai-dev",
   "인프런 워밍업 클럽 발자국": "inflearn-warmup",
-  "고성능 JPA & Hibernate": "high-performance-jpa"
+  "고성능 JPA & Hibernate": "high-performance-jpa",
+  "결제 시스템 챌린지": "payment-challenge"
 }

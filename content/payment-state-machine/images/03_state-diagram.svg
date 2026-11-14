@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 414" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결제 상태 다이어그램 — READY, AUTHENTICATED, APPROVED, CAPTURED로 이어지는 정상 흐름과, 인증 실패·승인 실패·만료로 갈라지는 전이, APPROVED와 CAPTURED에서 CANCEL이 각각 APPROVAL_CANCELED와 CAPTURE_CANCELED로 가는 전이, 더 갈 곳이 없는 상태 5개를 굵은 테두리로 구분한 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .subc { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
+    .lbl { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .st { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .term { fill: #f3f4f6; stroke: #374151; stroke-width: 2.6; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 13.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="414" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="394" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">결제 상태 전이 — 허용 전이 표의 9개 전이</text>
+
+  <!-- 위: 실패 -->
+  <rect x="18" y="64" width="104" height="40" rx="8" class="term"/>
+  <text x="70" y="88" class="st" text-anchor="middle">AUTH_FAILED</text>
+  <rect x="210" y="64" width="132" height="40" rx="8" class="term"/>
+  <text x="276" y="88" class="st" text-anchor="middle">APPROVAL_FAILED</text>
+
+  <!-- 가운데: 정상 흐름 -->
+  <rect x="30" y="164" width="80" height="40" rx="8" class="box"/>
+  <text x="70" y="188" class="st" text-anchor="middle">READY</text>
+  <rect x="216" y="164" width="120" height="40" rx="8" class="box"/>
+  <text x="276" y="188" class="st" text-anchor="middle">AUTHENTICATED</text>
+  <rect x="442" y="164" width="90" height="40" rx="8" class="box"/>
+  <text x="487" y="188" class="st" text-anchor="middle">APPROVED</text>
+  <rect x="638" y="164" width="90" height="40" rx="8" class="box"/>
+  <text x="683" y="188" class="st" text-anchor="middle">CAPTURED</text>
+
+  <line x1="110" y1="184" x2="214" y2="184" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="163" y="176" class="lbl" text-anchor="middle">AUTHENTICATE</text>
+  <line x1="336" y1="184" x2="440" y2="184" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="389" y="176" class="lbl" text-anchor="middle">APPROVE</text>
+  <line x1="532" y1="184" x2="636" y2="184" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="585" y="176" class="lbl" text-anchor="middle">CAPTURE</text>
+
+  <!-- 실패 전이 -->
+  <line x1="70" y1="164" x2="70" y2="106" class="flow" marker-end="url(#ar)"/>
+  <text x="78" y="139" class="lbl">FAIL_AUTHENTICATION</text>
+  <line x1="276" y1="164" x2="276" y2="106" class="flow" marker-end="url(#ar)"/>
+  <text x="284" y="139" class="lbl">FAIL_APPROVAL</text>
+
+  <!-- 만료 -->
+  <rect x="135" y="264" width="76" height="40" rx="8" class="term"/>
+  <text x="173" y="288" class="st" text-anchor="middle">EXPIRED</text>
+  <line x1="88" y1="204" x2="152" y2="262" class="flow" marker-end="url(#ar)"/>
+  <line x1="258" y1="204" x2="194" y2="262" class="flow" marker-end="url(#ar)"/>
+  <text x="112" y="246" class="lbl" text-anchor="end">EXPIRE</text>
+  <text x="236" y="246" class="lbl">EXPIRE</text>
+
+  <!-- 취소 -->
+  <rect x="414" y="264" width="146" height="40" rx="8" class="term"/>
+  <text x="487" y="288" class="st" text-anchor="middle">APPROVAL_CANCELED</text>
+  <rect x="601" y="264" width="138" height="40" rx="8" class="term"/>
+  <text x="670" y="288" class="st" text-anchor="middle">CAPTURE_CANCELED</text>
+  <line x1="487" y1="204" x2="487" y2="262" class="flow" marker-end="url(#ar)"/>
+  <text x="495" y="238" class="lbl">CANCEL</text>
+  <line x1="683" y1="204" x2="671" y2="262" class="flow" marker-end="url(#ar)"/>
+  <text x="687" y="238" class="lbl">CANCEL</text>
+
+  <!-- 범례 -->
+  <rect x="30" y="332" width="34" height="20" rx="5" class="box"/>
+  <text x="72" y="347" class="sub">다음 전이가 있는 상태</text>
+  <rect x="230" y="332" width="34" height="20" rx="5" class="term"/>
+  <text x="272" y="347" class="sub">더 갈 곳이 없는 상태(실패·만료·취소)</text>
+  <line x1="546" y1="342" x2="586" y2="342" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="594" y="347" class="sub">정상 흐름</text>
+  <text x="30" y="380" class="note">표에 없는 (상태, 행위) 조합은 InvalidPaymentTransitionException으로 거부합니다.</text>
+</svg>

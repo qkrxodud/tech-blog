@@ -101,5 +101,7 @@
   "자기 호출": "self-call",
   "@Transactional": "transactional-annotation",
   "레이스 컨디션": "race-condition",
-  "불변 객체": "immutable-object"
+  "불변 객체": "immutable-object",
+  "결제": "payment",
+  "상태 머신": "state-machine"
 }
