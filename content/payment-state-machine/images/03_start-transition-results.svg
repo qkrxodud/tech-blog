@@ -1,218 +1,205 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 506" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
   <title>출발 구조의 전이 규칙 테스트 결과 — 상태 9개와 행위 7개로 만든 63개 조합 중 허용 표에 있는 전이 8개만 통과하고, 거부되어야 할 조합 47개는 예외 없이 실행되어 40개는 상태가 바뀌고 7개는 같은 값을 다시 대입했으며, CAPTURE_CANCELED에서 출발하는 7개는 그 상태에 도달하지 못했고, CAPTURED에서의 취소 1개는 APPROVAL_CANCELED가 된 그림</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .subc { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
-    .lbl { font-family: Menlo, Consolas, monospace; font-size: 11px; fill: #6b7280; }
-    .step { font-size: 12px; fill: #9ca3af; }
-    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
-    .sub { font-size: 12px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .st { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .val { font-size: 12.5px; fill: #4b5563; }
-    .db { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .term { fill: #f3f4f6; stroke: #374151; stroke-width: 2.6; }
-    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
-    .track { fill: #ffffff; stroke: #eceef1; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .waitt { font-size: 12.5px; fill: #6b7280; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .t13 { font-size: 13.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .step { font-size: 12.5px; font-weight: 700; fill: #374151; }
+    .lane { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
     .note { font-size: 12.5px; fill: #b91c1c; }
     .gnote { font-size: 12.5px; fill: #15803d; }
-    .hd { font-family: Menlo, Consolas, monospace; font-size: 10.5px; fill: #6b7280; }
-    .rh { font-family: Menlo, Consolas, monospace; font-size: 11px; font-weight: 700; fill: #374151; }
-    .gc { font-size: 11.5px; font-weight: 700; fill: #15803d; }
-    .rc { font-size: 11.5px; fill: #b91c1c; }
-    .rcb { font-size: 11.5px; font-weight: 700; fill: #b91c1c; }
-    .nc { font-size: 11.5px; fill: #6b7280; }
-    .lg { font-size: 12.5px; fill: #374151; }
+    .mute { font-size: 12px; fill: #6b7280; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
   </defs>
-
-  <rect width="760" height="540" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="520" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">출발 구조의 전이 규칙 테스트 — 63개 조합의 결과</text>
-  <text x="730" y="42" class="code" text-anchor="end">failures=61</text>
-  <text x="30" y="68" class="sub">세로는 출발 상태, 가로는 요청한 행위입니다. 표에 없는 조합은 예외로 거부되어야 합니다.</text>
-  <text x="148" y="118" class="step" text-anchor="end">출발 상태 \ 행위</text>
-  <text x="199" y="104" class="hd" text-anchor="middle">AUTHENTICATE</text>
-  <text x="281" y="104" class="hd" text-anchor="middle">FAIL_</text>
-  <text x="281" y="118" class="hd" text-anchor="middle">AUTHENTICATION</text>
-  <text x="363" y="118" class="hd" text-anchor="middle">APPROVE</text>
-  <text x="445" y="104" class="hd" text-anchor="middle">FAIL_</text>
-  <text x="445" y="118" class="hd" text-anchor="middle">APPROVAL</text>
-  <text x="527" y="118" class="hd" text-anchor="middle">EXPIRE</text>
-  <text x="609" y="118" class="hd" text-anchor="middle">CAPTURE</text>
-  <text x="691" y="118" class="hd" text-anchor="middle">CANCEL</text>
-  <text x="148" y="146" class="rh" text-anchor="end">READY</text>
-  <rect x="160" y="130" width="78" height="24" rx="5" class="ok"/>
-  <text x="199" y="146.5" class="gc" text-anchor="middle">통과</text>
-  <rect x="242" y="130" width="78" height="24" rx="5" class="ok"/>
-  <text x="281" y="146.5" class="gc" text-anchor="middle">통과</text>
-  <rect x="324" y="130" width="78" height="24" rx="5" class="bad"/>
-  <text x="363" y="146.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="406" y="130" width="78" height="24" rx="5" class="bad"/>
-  <text x="445" y="146.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="488" y="130" width="78" height="24" rx="5" class="ok"/>
-  <text x="527" y="146.5" class="gc" text-anchor="middle">통과</text>
-  <rect x="570" y="130" width="78" height="24" rx="5" class="bad"/>
-  <text x="609" y="146.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="652" y="130" width="78" height="24" rx="5" class="bad"/>
-  <text x="691" y="146.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <text x="148" y="174" class="rh" text-anchor="end">AUTHENTICATED</text>
-  <rect x="160" y="158" width="78" height="24" rx="5" class="bad"/>
-  <text x="199" y="174.5" class="rc" text-anchor="middle">같은 값 대입</text>
-  <rect x="242" y="158" width="78" height="24" rx="5" class="bad"/>
-  <text x="281" y="174.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="324" y="158" width="78" height="24" rx="5" class="ok"/>
-  <text x="363" y="174.5" class="gc" text-anchor="middle">통과</text>
-  <rect x="406" y="158" width="78" height="24" rx="5" class="ok"/>
-  <text x="445" y="174.5" class="gc" text-anchor="middle">통과</text>
-  <rect x="488" y="158" width="78" height="24" rx="5" class="ok"/>
-  <text x="527" y="174.5" class="gc" text-anchor="middle">통과</text>
-  <rect x="570" y="158" width="78" height="24" rx="5" class="bad"/>
-  <text x="609" y="174.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="652" y="158" width="78" height="24" rx="5" class="bad"/>
-  <text x="691" y="174.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <text x="148" y="202" class="rh" text-anchor="end">AUTH_FAILED</text>
-  <rect x="160" y="186" width="78" height="24" rx="5" class="bad"/>
-  <text x="199" y="202.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="242" y="186" width="78" height="24" rx="5" class="bad"/>
-  <text x="281" y="202.5" class="rc" text-anchor="middle">같은 값 대입</text>
-  <rect x="324" y="186" width="78" height="24" rx="5" class="bad"/>
-  <text x="363" y="202.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="406" y="186" width="78" height="24" rx="5" class="bad"/>
-  <text x="445" y="202.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="488" y="186" width="78" height="24" rx="5" class="bad"/>
-  <text x="527" y="202.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="570" y="186" width="78" height="24" rx="5" class="bad"/>
-  <text x="609" y="202.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="652" y="186" width="78" height="24" rx="5" class="bad"/>
-  <text x="691" y="202.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <text x="148" y="230" class="rh" text-anchor="end">APPROVED</text>
-  <rect x="160" y="214" width="78" height="24" rx="5" class="bad"/>
-  <text x="199" y="230.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="242" y="214" width="78" height="24" rx="5" class="bad"/>
-  <text x="281" y="230.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="324" y="214" width="78" height="24" rx="5" class="bad"/>
-  <text x="363" y="230.5" class="rc" text-anchor="middle">같은 값 대입</text>
-  <rect x="406" y="214" width="78" height="24" rx="5" class="bad"/>
-  <text x="445" y="230.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="488" y="214" width="78" height="24" rx="5" class="bad"/>
-  <text x="527" y="230.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="570" y="214" width="78" height="24" rx="5" class="ok"/>
-  <text x="609" y="230.5" class="gc" text-anchor="middle">통과</text>
-  <rect x="652" y="214" width="78" height="24" rx="5" class="ok"/>
-  <text x="691" y="230.5" class="gc" text-anchor="middle">통과</text>
-  <text x="148" y="258" class="rh" text-anchor="end">APPROVAL_FAILED</text>
-  <rect x="160" y="242" width="78" height="24" rx="5" class="bad"/>
-  <text x="199" y="258.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="242" y="242" width="78" height="24" rx="5" class="bad"/>
-  <text x="281" y="258.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="324" y="242" width="78" height="24" rx="5" class="bad"/>
-  <text x="363" y="258.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="406" y="242" width="78" height="24" rx="5" class="bad"/>
-  <text x="445" y="258.5" class="rc" text-anchor="middle">같은 값 대입</text>
-  <rect x="488" y="242" width="78" height="24" rx="5" class="bad"/>
-  <text x="527" y="258.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="570" y="242" width="78" height="24" rx="5" class="bad"/>
-  <text x="609" y="258.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="652" y="242" width="78" height="24" rx="5" class="bad"/>
-  <text x="691" y="258.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <text x="148" y="286" class="rh" text-anchor="end">EXPIRED</text>
-  <rect x="160" y="270" width="78" height="24" rx="5" class="bad"/>
-  <text x="199" y="286.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="242" y="270" width="78" height="24" rx="5" class="bad"/>
-  <text x="281" y="286.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="324" y="270" width="78" height="24" rx="5" class="bad"/>
-  <text x="363" y="286.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="406" y="270" width="78" height="24" rx="5" class="bad"/>
-  <text x="445" y="286.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="488" y="270" width="78" height="24" rx="5" class="bad"/>
-  <text x="527" y="286.5" class="rc" text-anchor="middle">같은 값 대입</text>
-  <rect x="570" y="270" width="78" height="24" rx="5" class="bad"/>
-  <text x="609" y="286.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="652" y="270" width="78" height="24" rx="5" class="bad"/>
-  <text x="691" y="286.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <text x="148" y="314" class="rh" text-anchor="end">CAPTURED</text>
-  <rect x="160" y="298" width="78" height="24" rx="5" class="bad"/>
-  <text x="199" y="314.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="242" y="298" width="78" height="24" rx="5" class="bad"/>
-  <text x="281" y="314.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="324" y="298" width="78" height="24" rx="5" class="bad"/>
-  <text x="363" y="314.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="406" y="298" width="78" height="24" rx="5" class="bad"/>
-  <text x="445" y="314.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="488" y="298" width="78" height="24" rx="5" class="bad"/>
-  <text x="527" y="314.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="570" y="298" width="78" height="24" rx="5" class="bad"/>
-  <text x="609" y="314.5" class="rc" text-anchor="middle">같은 값 대입</text>
-  <rect x="652" y="298" width="78" height="24" rx="5" class="bad"/>
-  <text x="691" y="314.5" class="rcb" text-anchor="middle">방향 틀림</text>
-  <text x="148" y="342" class="rh" text-anchor="end">APPROVAL_CANCELED</text>
-  <rect x="160" y="326" width="78" height="24" rx="5" class="bad"/>
-  <text x="199" y="342.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="242" y="326" width="78" height="24" rx="5" class="bad"/>
-  <text x="281" y="342.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="324" y="326" width="78" height="24" rx="5" class="bad"/>
-  <text x="363" y="342.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="406" y="326" width="78" height="24" rx="5" class="bad"/>
-  <text x="445" y="342.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="488" y="326" width="78" height="24" rx="5" class="bad"/>
-  <text x="527" y="342.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="570" y="326" width="78" height="24" rx="5" class="bad"/>
-  <text x="609" y="342.5" class="rc" text-anchor="middle">상태 바뀜</text>
-  <rect x="652" y="326" width="78" height="24" rx="5" class="bad"/>
-  <text x="691" y="342.5" class="rc" text-anchor="middle">같은 값 대입</text>
-  <text x="148" y="370" class="rh" text-anchor="end">CAPTURE_CANCELED</text>
-  <rect x="160" y="354" width="78" height="24" rx="5" class="wait"/>
-  <text x="199" y="370.5" class="nc" text-anchor="middle">도달 못함</text>
-  <rect x="242" y="354" width="78" height="24" rx="5" class="wait"/>
-  <text x="281" y="370.5" class="nc" text-anchor="middle">도달 못함</text>
-  <rect x="324" y="354" width="78" height="24" rx="5" class="wait"/>
-  <text x="363" y="370.5" class="nc" text-anchor="middle">도달 못함</text>
-  <rect x="406" y="354" width="78" height="24" rx="5" class="wait"/>
-  <text x="445" y="370.5" class="nc" text-anchor="middle">도달 못함</text>
-  <rect x="488" y="354" width="78" height="24" rx="5" class="wait"/>
-  <text x="527" y="370.5" class="nc" text-anchor="middle">도달 못함</text>
-  <rect x="570" y="354" width="78" height="24" rx="5" class="wait"/>
-  <text x="609" y="370.5" class="nc" text-anchor="middle">도달 못함</text>
-  <rect x="652" y="354" width="78" height="24" rx="5" class="wait"/>
-  <text x="691" y="370.5" class="nc" text-anchor="middle">도달 못함</text>
-
-  <!-- 범례 -->
-  <rect x="30" y="398" width="70" height="22" rx="5" class="ok"/>
-  <text x="65" y="413.5" class="gc" text-anchor="middle">통과 8</text>
-  <text x="112" y="414" class="lg">허용 표에 있는 전이 9개 중 <tspan font-family="Menlo, Consolas, monospace">CAPTURED</tspan>의 취소를 뺀 8개</text>
-  <rect x="30" y="428" width="70" height="22" rx="5" class="bad"/>
-  <text x="65" y="443.5" class="rcb" text-anchor="middle">47</text>
-  <text x="112" y="444" class="lg">거부되어야 하는데 예외 없이 실행 — 상태 바뀜 40, 같은 값 대입 7</text>
-  <rect x="30" y="458" width="70" height="22" rx="5" class="wait"/>
-  <text x="65" y="473.5" class="nc" text-anchor="middle">7</text>
-  <text x="112" y="474" class="lg"><tspan font-family="Menlo, Consolas, monospace">cancel()</tspan>이 매입 취소를 만들지 못해 <tspan font-family="Menlo, Consolas, monospace">CAPTURE_CANCELED</tspan>까지 가지 못함</text>
-  <rect x="30" y="488" width="70" height="22" rx="5" class="bad"/>
-  <text x="65" y="503.5" class="rcb" text-anchor="middle">1</text>
-  <text x="112" y="504" class="lg">매입이 끝난 결제를 취소했는데 <tspan font-family="Menlo, Consolas, monospace">APPROVAL_CANCELED</tspan>가 됨</text>
-  <text x="730" y="504" class="note" text-anchor="end">개별 테스트 7개 중 6개 실패</text>
+  <rect width="760" height="506" fill="#ffffff"/>
+  <text x="24" y="32" class="h">출발 구조의 전이 규칙 테스트 — 63개 조합의 결과</text>
+  <text x="736" y="32" class="s m" text-anchor="end" style="font-size: 12.5px">failures=61</text>
+  <text x="24" y="56" class="s">세로는 출발 상태, 가로는 요청한 행위입니다. 표에 없는 조합은 예외로 거부되어야 합니다.</text>
+  <text x="199.0" y="88" class="s m" text-anchor="middle" style="font-size: 10.5px">AUTHENTICATE</text>
+  <text x="281.0" y="88" class="s m" text-anchor="middle" style="font-size: 10.5px">FAIL_</text>
+  <text x="281.0" y="102" class="s m" text-anchor="middle" style="font-size: 10.5px">AUTHENTICATION</text>
+  <text x="363.0" y="102" class="s m" text-anchor="middle" style="font-size: 10.5px">APPROVE</text>
+  <text x="445.0" y="88" class="s m" text-anchor="middle" style="font-size: 10.5px">FAIL_</text>
+  <text x="445.0" y="102" class="s m" text-anchor="middle" style="font-size: 10.5px">APPROVAL</text>
+  <text x="527.0" y="102" class="s m" text-anchor="middle" style="font-size: 10.5px">EXPIRE</text>
+  <text x="609.0" y="102" class="s m" text-anchor="middle" style="font-size: 10.5px">CAPTURE</text>
+  <text x="691.0" y="102" class="s m" text-anchor="middle" style="font-size: 10.5px">CANCEL</text>
+  <text x="148" y="102" class="mute" text-anchor="end">출발 상태 \ 행위</text>
+  <text x="148" y="130" class="t m" text-anchor="end" style="font-size: 11px">READY</text>
+  <rect x="160" y="114" width="78" height="24" rx="5" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.4"/>
+  <text x="199.0" y="130.5" class="okt" text-anchor="middle" style="font-size: 11.5px">통과</text>
+  <rect x="242" y="114" width="78" height="24" rx="5" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.4"/>
+  <text x="281.0" y="130.5" class="okt" text-anchor="middle" style="font-size: 11.5px">통과</text>
+  <rect x="324" y="114" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="363.0" y="130.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="406" y="114" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="445.0" y="130.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="488" y="114" width="78" height="24" rx="5" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.4"/>
+  <text x="527.0" y="130.5" class="okt" text-anchor="middle" style="font-size: 11.5px">통과</text>
+  <rect x="570" y="114" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="609.0" y="130.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="652" y="114" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="691.0" y="130.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <text x="148" y="158" class="t m" text-anchor="end" style="font-size: 11px">AUTHENTICATED</text>
+  <rect x="160" y="142" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="199.0" y="158.5" class="bads" text-anchor="middle">같은 값 대입</text>
+  <rect x="242" y="142" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="281.0" y="158.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="324" y="142" width="78" height="24" rx="5" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.4"/>
+  <text x="363.0" y="158.5" class="okt" text-anchor="middle" style="font-size: 11.5px">통과</text>
+  <rect x="406" y="142" width="78" height="24" rx="5" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.4"/>
+  <text x="445.0" y="158.5" class="okt" text-anchor="middle" style="font-size: 11.5px">통과</text>
+  <rect x="488" y="142" width="78" height="24" rx="5" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.4"/>
+  <text x="527.0" y="158.5" class="okt" text-anchor="middle" style="font-size: 11.5px">통과</text>
+  <rect x="570" y="142" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="609.0" y="158.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="652" y="142" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="691.0" y="158.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <text x="148" y="186" class="t m" text-anchor="end" style="font-size: 11px">AUTH_FAILED</text>
+  <rect x="160" y="170" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="199.0" y="186.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="242" y="170" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="281.0" y="186.5" class="bads" text-anchor="middle">같은 값 대입</text>
+  <rect x="324" y="170" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="363.0" y="186.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="406" y="170" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="445.0" y="186.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="488" y="170" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="527.0" y="186.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="570" y="170" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="609.0" y="186.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="652" y="170" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="691.0" y="186.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <text x="148" y="214" class="t m" text-anchor="end" style="font-size: 11px">APPROVED</text>
+  <rect x="160" y="198" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="199.0" y="214.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="242" y="198" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="281.0" y="214.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="324" y="198" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="363.0" y="214.5" class="bads" text-anchor="middle">같은 값 대입</text>
+  <rect x="406" y="198" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="445.0" y="214.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="488" y="198" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="527.0" y="214.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="570" y="198" width="78" height="24" rx="5" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.4"/>
+  <text x="609.0" y="214.5" class="okt" text-anchor="middle" style="font-size: 11.5px">통과</text>
+  <rect x="652" y="198" width="78" height="24" rx="5" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.4"/>
+  <text x="691.0" y="214.5" class="okt" text-anchor="middle" style="font-size: 11.5px">통과</text>
+  <text x="148" y="242" class="t m" text-anchor="end" style="font-size: 11px">APPROVAL_FAILED</text>
+  <rect x="160" y="226" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="199.0" y="242.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="242" y="226" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="281.0" y="242.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="324" y="226" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="363.0" y="242.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="406" y="226" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="445.0" y="242.5" class="bads" text-anchor="middle">같은 값 대입</text>
+  <rect x="488" y="226" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="527.0" y="242.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="570" y="226" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="609.0" y="242.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="652" y="226" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="691.0" y="242.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <text x="148" y="270" class="t m" text-anchor="end" style="font-size: 11px">EXPIRED</text>
+  <rect x="160" y="254" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="199.0" y="270.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="242" y="254" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="281.0" y="270.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="324" y="254" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="363.0" y="270.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="406" y="254" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="445.0" y="270.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="488" y="254" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="527.0" y="270.5" class="bads" text-anchor="middle">같은 값 대입</text>
+  <rect x="570" y="254" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="609.0" y="270.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="652" y="254" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="691.0" y="270.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <text x="148" y="298" class="t m" text-anchor="end" style="font-size: 11px">CAPTURED</text>
+  <rect x="160" y="282" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="199.0" y="298.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="242" y="282" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="281.0" y="298.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="324" y="282" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="363.0" y="298.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="406" y="282" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="445.0" y="298.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="488" y="282" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="527.0" y="298.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="570" y="282" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="609.0" y="298.5" class="bads" text-anchor="middle">같은 값 대입</text>
+  <rect x="652" y="282" width="78" height="24" rx="5" fill="#fde8e8" stroke="#dc2626" stroke-width="2.4"/>
+  <text x="691.0" y="298.5" class="badt" text-anchor="middle" style="font-size: 11.5px">방향 틀림</text>
+  <text x="148" y="326" class="t m" text-anchor="end" style="font-size: 11px">APPROVAL_CANCELED</text>
+  <rect x="160" y="310" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="199.0" y="326.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="242" y="310" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="281.0" y="326.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="324" y="310" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="363.0" y="326.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="406" y="310" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="445.0" y="326.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="488" y="310" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="527.0" y="326.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="570" y="310" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="609.0" y="326.5" class="bads" text-anchor="middle">상태 바뀜</text>
+  <rect x="652" y="310" width="78" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="691.0" y="326.5" class="bads" text-anchor="middle">같은 값 대입</text>
+  <text x="148" y="354" class="t m" text-anchor="end" style="font-size: 11px">CAPTURE_CANCELED</text>
+  <rect x="160" y="338" width="78" height="24" rx="5" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="199.0" y="354.5" class="mute" text-anchor="middle" style="font-size: 11.5px">도달 못함</text>
+  <rect x="242" y="338" width="78" height="24" rx="5" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="281.0" y="354.5" class="mute" text-anchor="middle" style="font-size: 11.5px">도달 못함</text>
+  <rect x="324" y="338" width="78" height="24" rx="5" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="363.0" y="354.5" class="mute" text-anchor="middle" style="font-size: 11.5px">도달 못함</text>
+  <rect x="406" y="338" width="78" height="24" rx="5" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="445.0" y="354.5" class="mute" text-anchor="middle" style="font-size: 11.5px">도달 못함</text>
+  <rect x="488" y="338" width="78" height="24" rx="5" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="527.0" y="354.5" class="mute" text-anchor="middle" style="font-size: 11.5px">도달 못함</text>
+  <rect x="570" y="338" width="78" height="24" rx="5" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="609.0" y="354.5" class="mute" text-anchor="middle" style="font-size: 11.5px">도달 못함</text>
+  <rect x="652" y="338" width="78" height="24" rx="5" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="691.0" y="354.5" class="mute" text-anchor="middle" style="font-size: 11.5px">도달 못함</text>
+  <rect x="24" y="384" width="76" height="24" rx="5" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.4"/>
+  <use href="#vmark" x="38" y="396"/>
+  <text x="70" y="400.5" class="okt" text-anchor="middle" style="font-size: 12px">통과 8</text>
+  <text x="114" y="401" class="s" style="font-size: 12.5px; fill: #374151">허용 표에 있는 전이 9개 중 <tspan font-family="Menlo, Consolas, monospace">CAPTURED</tspan>의 취소를 뺀 8개</text>
+  <rect x="24" y="414" width="76" height="24" rx="5" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="38" y="426"/>
+  <text x="70" y="430.5" class="badt" text-anchor="middle" style="font-size: 12px">47</text>
+  <text x="114" y="431" class="s" style="font-size: 12.5px; fill: #374151">거부되어야 하는데 예외 없이 실행 — 상태 바뀜 40, 같은 값 대입 7</text>
+  <rect x="24" y="444" width="76" height="24" rx="5" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="62" y="460.5" class="mute" text-anchor="middle">7</text>
+  <text x="114" y="461" class="s" style="font-size: 12.5px; fill: #374151"><tspan font-family="Menlo, Consolas, monospace">cancel()</tspan>이 매입 취소를 만들지 못해 <tspan font-family="Menlo, Consolas, monospace">CAPTURE_CANCELED</tspan>까지 가지 못함</text>
+  <rect x="24" y="474" width="76" height="24" rx="5" fill="#fde8e8" stroke="#dc2626" stroke-width="2.4"/>
+  <use href="#xmark" x="38" y="486"/>
+  <text x="70" y="490.5" class="badt" text-anchor="middle" style="font-size: 12px">1</text>
+  <text x="114" y="491" class="s" style="font-size: 12.5px; fill: #374151">매입이 끝난 결제를 취소했는데 <tspan font-family="Menlo, Consolas, monospace">APPROVAL_CANCELED</tspan>가 됨</text>
+  <text x="736" y="491" class="note" text-anchor="end">개별 테스트 7개 중 6개 실패</text>
 </svg>

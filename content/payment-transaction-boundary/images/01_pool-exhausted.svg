@@ -1,90 +1,155 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 408" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
-  <title>연결 2개가 모두 승인 대기에 묶여 조회가 실패하는 모습 — 승인 두 건이 각각 DB 연결을 쥔 채 800ms 뒤에 답하는 Mock PG를 기다리는 동안, 다른 결제를 조회하는 요청은 남은 연결이 없어 250ms를 기다린 뒤 CannotCreateTransactionException으로 실패하는 그림</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 416" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>연결 2개가 모두 승인 대기에 묶여 조회가 실패하는 모습 — 트랜잭션 하나로 묶은 출발 코드에서 승인 두 건이 각각 DB 연결을 쥔 채 800ms 뒤에 답하는 Mock PG를 기다리는 동안, 다른 결제를 조회하는 요청은 남은 연결이 없어 250ms를 기다린 뒤 CannotCreateTransactionException으로 실패하는 그림</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .step { font-size: 13.5px; fill: #9ca3af; }
-    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
-    .sub { font-size: 13.5px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .val { font-size: 13.5px; fill: #4b5563; }
-    .db { font-size: 14px; font-weight: 700; fill: #374151; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
-    .track { fill: #ffffff; stroke: #eceef1; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .waitt { font-size: 13.5px; fill: #6b7280; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okw { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
-    .note { font-size: 13.5px; fill: #b91c1c; }
-    .gnote { font-size: 13.5px; fill: #15803d; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .ax { font-size: 12.5px; fill: #4b5563; font-weight: 700; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <!-- 자물쇠: 연결을 쥐고 있음 -->
+    <g id="lock">
+      <path d="M-5.5,-3 v-4 a5.5,5.5 0 0 1 11,0 v4" fill="none" stroke="#1f2937" stroke-width="2.2"/>
+      <rect x="-8.5" y="-3" width="17" height="13" rx="3" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+      <circle cx="0" cy="3" r="1.8" fill="#1f2937"/>
+    </g>
+    <!-- DB 원통(작게) -->
+    <g id="db">
+      <path d="M0,4 v16 a11,4 0 0 0 22,0 v-16 a11,4 0 0 1 -22,0 z" fill="#60a5fa" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M0,12 a11,4 0 0 0 22,0" fill="none" stroke="#1f2937" stroke-width="1.5"/>
+      <ellipse cx="11" cy="4" rx="11" ry="4" fill="#bfdbfe" stroke="#1f2937" stroke-width="1.5"/>
+    </g>
   </defs>
-  <rect width="760" height="408" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="388" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">연결 2개가 모두 승인 대기에 묶이면 — 조회는 250ms 뒤 실패</text>
-  <text x="30" y="66" class="sub">계약 테스트 설정: DB 연결 2개, 연결 대기 250ms, Mock PG는 800ms 뒤에 답함 (트랜잭션 하나로 묶은 출발 코드)</text>
+  <rect width="760" height="416" fill="#ffffff"/>
+  <text x="24" y="32" class="h">연결 2개가 모두 승인 대기에 묶이면 — 조회는 250ms 뒤 실패</text>
+  <text x="24" y="54" class="s">계약 테스트 설정: DB 연결 2개, 연결 대기 250ms, Mock PG는 800ms 뒤에 답함 (트랜잭션 하나로 묶은 출발 코드)</text>
 
-  <text x="230" y="96" class="step" text-anchor="middle">① 승인 두 건이 연결 획득</text>
-  <text x="485" y="96" class="step" text-anchor="middle">② 두 건 모두 PG 답 대기 중에 조회</text>
-  <text x="663" y="96" class="step" text-anchor="middle">③ 250ms 뒤</text>
-  <line x1="160" y1="104" x2="722" y2="104" class="axis" marker-end="url(#ar)"/>
+  <!-- 시간 축 -->
+  <circle cx="162" cy="78" r="11" fill="#111827"/><text x="162" y="82" class="num" text-anchor="middle">1</text>
+  <text x="180" y="83" class="ax">승인 두 건이 연결 획득</text>
+  <circle cx="340" cy="78" r="11" fill="#111827"/><text x="340" y="82" class="num" text-anchor="middle">2</text>
+  <text x="358" y="83" class="ax">두 건 모두 PG 답 대기 중에 조회</text>
+  <circle cx="568" cy="78" r="11" fill="#111827"/><text x="568" y="82" class="num" text-anchor="middle">3</text>
+  <text x="586" y="83" class="ax">250ms 뒤</text>
+  <line x1="150" y1="96" x2="604" y2="96" stroke="#c4c8ce" stroke-width="1.2"/>
 
-  <text x="30" y="138" class="lane">승인 1</text>
-  <text x="30" y="156" class="sub">PG 답 대기</text>
-  <rect x="150" y="114" width="585" height="52" rx="6" class="track"/>
-  <rect x="162" y="116" width="136" height="48" rx="8" class="box"/>
-  <text x="230" y="136" class="t" text-anchor="middle">연결 획득</text>
-  <text x="230" y="155" class="val" text-anchor="middle">인증 기록</text>
-  <rect x="310" y="116" width="418" height="48" rx="8" class="hold"/>
-  <text x="519" y="136" class="t" text-anchor="middle">연결을 쥔 채 PG 답 대기</text>
-  <text x="519" y="155" class="val" text-anchor="middle">PG가 답할 때까지 트랜잭션이 끝나지 않음</text>
+  <!-- 승인 1 -->
+  <text x="24" y="126" class="t">승인 1</text>
+  <text x="24" y="144" class="s">PG 답 대기</text>
+  <rect x="150" y="106" width="130" height="48" rx="10" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="150" y="106" width="130" height="48" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.049;0.059;0.109;0.119;1"/></rect>
+  <use href="#db" x="160" y="117"/>
+  <text x="192" y="126" class="t">연결 획득</text>
+  <text x="192" y="144" class="s">인증 기록</text>
+  <rect x="290" y="106" width="310" height="48" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <rect x="290" y="106" width="310" height="48" rx="10" fill="none" stroke="#dc2626" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.093;0.103;0.95;0.96;1"/></rect>
+  <use href="#lock" x="312" y="128"/>
+  <text x="458" y="126" class="badt" text-anchor="middle">연결을 쥔 채 PG 답 대기</text>
+  <text x="458" y="144" class="bads" text-anchor="middle">PG가 답할 때까지 트랜잭션이 끝나지 않음</text>
+  <line x1="600" y1="130" x2="614" y2="130" stroke="#c2410c" stroke-width="1.5" class="run" marker-end="url(#aor)"/>
 
-  <text x="30" y="198" class="lane">승인 2</text>
-  <text x="30" y="216" class="sub">PG 답 대기</text>
-  <rect x="150" y="174" width="585" height="52" rx="6" class="track"/>
-  <rect x="162" y="176" width="136" height="48" rx="8" class="box"/>
-  <text x="230" y="196" class="t" text-anchor="middle">연결 획득</text>
-  <text x="230" y="215" class="val" text-anchor="middle">인증 기록</text>
-  <rect x="310" y="176" width="418" height="48" rx="8" class="hold"/>
-  <text x="519" y="196" class="t" text-anchor="middle">연결을 쥔 채 PG 답 대기</text>
-  <text x="519" y="215" class="val" text-anchor="middle">PG가 답할 때까지 트랜잭션이 끝나지 않음</text>
+  <!-- 승인 2 -->
+  <text x="24" y="190" class="t">승인 2</text>
+  <text x="24" y="208" class="s">PG 답 대기</text>
+  <rect x="150" y="170" width="130" height="48" rx="10" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="150" y="170" width="130" height="48" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.092;0.102;0.152;0.162;1"/></rect>
+  <use href="#db" x="160" y="181"/>
+  <text x="192" y="190" class="t">연결 획득</text>
+  <text x="192" y="208" class="s">인증 기록</text>
+  <rect x="290" y="170" width="310" height="48" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <rect x="290" y="170" width="310" height="48" rx="10" fill="none" stroke="#dc2626" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.14;0.15;0.95;0.96;1"/></rect>
+  <use href="#lock" x="312" y="192"/>
+  <text x="458" y="190" class="badt" text-anchor="middle">연결을 쥔 채 PG 답 대기</text>
+  <text x="458" y="208" class="bads" text-anchor="middle">PG가 답할 때까지 트랜잭션이 끝나지 않음</text>
+  <line x1="600" y1="194" x2="614" y2="194" stroke="#c2410c" stroke-width="1.5" class="run" marker-end="url(#aor)"/>
 
-  <text x="30" y="258" class="lane">조회</text>
-  <text x="30" y="276" class="sub">다른 결제</text>
-  <rect x="150" y="234" width="585" height="52" rx="6" class="track"/>
-  <rect x="392" y="244" width="186" height="32" rx="6" class="wait"/>
-  <text x="485" y="265" class="waitt" text-anchor="middle">연결 대기 250ms</text>
-  <rect x="598" y="236" width="130" height="48" rx="8" class="bad"/>
-  <text x="663" y="256" class="badt" text-anchor="middle">조회 실패</text>
-  <text x="663" y="275" class="note" text-anchor="middle">연결을 얻지 못함</text>
-  <line x1="578" y1="260" x2="596" y2="260" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <!-- Mock PG -->
+  <rect x="616" y="106" width="128" height="112" rx="12" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <rect x="616" y="106" width="128" height="112" rx="12" fill="none" stroke="#ea580c" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.27;0.28;0.95;0.96;1"/></rect>
+  <g transform="translate(682,124)">
+    <rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/>
+    <rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/>
+    <circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/>
+    <circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/>
+    <path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <text x="700" y="174" class="t" text-anchor="middle">Mock PG</text>
+  <text x="704" y="194" class="s" text-anchor="middle">800ms 뒤</text>
+  <text x="704" y="209" class="s" text-anchor="middle">답함</text>
 
-  <text x="30" y="324" class="db">연결 풀</text>
-  <rect x="162" y="304" width="136" height="32" rx="6" class="dbbox"/>
-  <text x="230" y="325" class="db" text-anchor="middle">사용 중 2 / 2</text>
-  <rect x="310" y="304" width="418" height="32" rx="6" class="bad"/>
-  <text x="519" y="325" class="badt" text-anchor="middle">남은 연결 0 — 승인이 끝날 때까지 그대로</text>
+  <!-- 조회 -->
+  <text x="24" y="254" class="t">조회</text>
+  <text x="24" y="272" class="s">다른 결제</text>
+  <line x1="150" y1="258" x2="328" y2="258" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="3 4"/>
+  <rect x="330" y="236" width="190" height="44" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <rect x="330" y="236" width="190" height="44" rx="10" fill="none" stroke="#6b7280" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.428;0.438;0.688;0.698;1"/></rect>
+  <g transform="translate(344,245)">
+    <circle cx="13" cy="13" r="12" fill="#e5e7eb" class="o"/>
+    <path d="M13,6 V13 L18,16" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+  <text x="378" y="263" class="t" style="font-size: 13.5px; fill: #374151">연결 대기 250ms</text>
+  <line x1="520" y1="258" x2="538" y2="258" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <rect x="540" y="234" width="204" height="48" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <rect x="540" y="234" width="204" height="48" rx="10" fill="none" stroke="#dc2626" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.71;0.72;0.96;0.97;1"/></rect>
+  <use href="#xmark" x="576" y="258"/>
+  <text x="596" y="254" class="badt">조회 실패</text>
+  <text x="596" y="272" class="bads">연결을 얻지 못함</text>
 
-  <text x="30" y="364" class="note">조회 실패: <tspan font-family="Menlo, Consolas, monospace">CannotCreateTransactionException</tspan> (Could not open JPA EntityManager for transaction)</text>
-  <text x="30" y="384" class="sub">조회는 PG와 상관없지만 연결을 얻지 못해 실패하고, API로 돌린 테스트에서는 이 실패가 500 응답이 됩니다.</text>
+  <!-- 연결 풀 -->
+  <text x="24" y="322" class="t">연결 풀</text>
+  <text x="24" y="340" class="s">최대 2개</text>
+  <rect x="150" y="302" width="62" height="44" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="150" y="302" width="62" height="44" rx="8" fill="none" stroke="#2563eb" stroke-width="3" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.049;0.059;0.95;0.96;1"/></rect>
+  <use href="#lock" x="170" y="322"/>
+  <text x="194" y="330" class="t" style="font-size: 13px">1</text>
+  <rect x="218" y="302" width="62" height="44" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="218" y="302" width="62" height="44" rx="8" fill="none" stroke="#2563eb" stroke-width="3" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.092;0.102;0.95;0.96;1"/></rect>
+  <use href="#lock" x="238" y="322"/>
+  <text x="262" y="330" class="t" style="font-size: 13px">2</text>
+  <rect x="290" y="302" width="454" height="44" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <rect x="290" y="302" width="454" height="44" rx="10" fill="none" stroke="#dc2626" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.428;0.438;0.95;0.96;1"/></rect>
+  <text x="517" y="329" class="badt" text-anchor="middle">남은 연결 0 — 승인이 끝날 때까지 그대로</text>
+
+  <text x="24" y="376" class="bads" style="font-size: 12px">조회 실패: <tspan class="m">CannotCreateTransactionException</tspan> (Could not open JPA EntityManager for transaction)</text>
+  <text x="24" y="398" class="s">조회는 PG와 상관없지만 연결을 얻지 못해 실패하고, API로 돌린 테스트에서는 이 실패가 500 응답이 됩니다.</text>
+
+  <!-- 봉투: 승인 1, 승인 2는 연결을 쥔 채 PG에서 멈춰 기다리고, 조회는 250ms 기다린 뒤 실패한다 -->
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M140,130 H640"
+      keyPoints="0;0;0.15;0.32;1;1" keyTimes="0;0.02;0.059;0.1032;0.28;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.015;0.02;0.92;0.935;1"/>
+  </g>
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M140,194 H640"
+      keyPoints="0;0;0.15;0.32;1;1" keyTimes="0;0.06;0.102;0.1496;0.34;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.055;0.06;0.92;0.935;1"/>
+  </g>
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M300,258 H556"
+      keyPoints="0;0;0.4883;0.4883;1;1" keyTimes="0;0.36;0.4381;0.6381;0.72;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.355;0.36;0.72;0.735;1"/>
+  </g>
 </svg>

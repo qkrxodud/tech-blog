@@ -1,104 +1,103 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 414" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
-  <title>결제 상태 다이어그램 — READY, AUTHENTICATED, APPROVED, CAPTURED로 이어지는 정상 흐름과, 인증 실패·승인 실패·만료로 갈라지는 전이, APPROVED와 CAPTURED에서 CANCEL이 각각 APPROVAL_CANCELED와 CAPTURE_CANCELED로 가는 전이, 더 갈 곳이 없는 상태 5개를 굵은 테두리로 구분한 그림</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 404" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결제 상태 전이 — READY에서 CAPTURED까지 이어지는 정상 흐름과, 인증 실패·승인 실패·만료로 갈라지는 전이, APPROVED와 CAPTURED에서 CANCEL이 각각 APPROVAL_CANCELED와 CAPTURE_CANCELED로 가는 상태 다이어그램. 움직이는 봉투는 READY에서 매입 후 취소까지의 경로를 따라간다</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .subc { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
-    .lbl { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #6b7280; }
-    .step { font-size: 12px; fill: #9ca3af; }
-    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
-    .sub { font-size: 13.5px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .st { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .val { font-size: 12.5px; fill: #4b5563; }
-    .db { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .term { fill: #f3f4f6; stroke: #374151; stroke-width: 2.6; }
-    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
-    .track { fill: #ffffff; stroke: #eceef1; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .waitt { font-size: 12.5px; fill: #6b7280; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
-    .note { font-size: 13.5px; fill: #b91c1c; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .t13 { font-size: 13.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .step { font-size: 12.5px; font-weight: 700; fill: #374151; }
+    .lane { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
     .gnote { font-size: 12.5px; fill: #15803d; }
+    .mute { font-size: 12px; fill: #6b7280; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
   </defs>
-  <rect width="760" height="414" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="394" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">결제 상태 전이 — 허용 전이 표의 9개 전이</text>
-
-  <!-- 위: 실패 -->
-  <rect x="18" y="64" width="104" height="40" rx="8" class="term"/>
-  <text x="70" y="88" class="st" text-anchor="middle">AUTH_FAILED</text>
-  <rect x="210" y="64" width="132" height="40" rx="8" class="term"/>
-  <text x="276" y="88" class="st" text-anchor="middle">APPROVAL_FAILED</text>
-
-  <!-- 가운데: 정상 흐름 -->
-  <rect x="30" y="164" width="80" height="40" rx="8" class="box"/>
-  <text x="70" y="188" class="st" text-anchor="middle">READY</text>
-  <rect x="216" y="164" width="120" height="40" rx="8" class="box"/>
-  <text x="276" y="188" class="st" text-anchor="middle">AUTHENTICATED</text>
-  <rect x="442" y="164" width="90" height="40" rx="8" class="box"/>
-  <text x="487" y="188" class="st" text-anchor="middle">APPROVED</text>
-  <rect x="638" y="164" width="90" height="40" rx="8" class="box"/>
-  <text x="683" y="188" class="st" text-anchor="middle">CAPTURED</text>
-
-  <line x1="110" y1="184" x2="214" y2="184" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <text x="163" y="176" class="lbl" text-anchor="middle">AUTHENTICATE</text>
-  <line x1="336" y1="184" x2="440" y2="184" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <text x="389" y="176" class="lbl" text-anchor="middle">APPROVE</text>
-  <line x1="532" y1="184" x2="636" y2="184" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <text x="585" y="176" class="lbl" text-anchor="middle">CAPTURE</text>
-
-  <!-- 실패 전이 -->
-  <line x1="70" y1="164" x2="70" y2="106" class="flow" marker-end="url(#ar)"/>
-  <text x="78" y="139" class="lbl">FAIL_AUTHENTICATION</text>
-  <line x1="276" y1="164" x2="276" y2="106" class="flow" marker-end="url(#ar)"/>
-  <text x="284" y="139" class="lbl">FAIL_APPROVAL</text>
-
-  <!-- 만료 -->
-  <rect x="135" y="264" width="76" height="40" rx="8" class="term"/>
-  <text x="173" y="288" class="st" text-anchor="middle">EXPIRED</text>
-  <line x1="88" y1="204" x2="152" y2="262" class="flow" marker-end="url(#ar)"/>
-  <line x1="258" y1="204" x2="194" y2="262" class="flow" marker-end="url(#ar)"/>
-  <text x="112" y="246" class="lbl" text-anchor="end">EXPIRE</text>
-  <text x="236" y="246" class="lbl">EXPIRE</text>
-
-  <!-- 취소 -->
-  <rect x="414" y="264" width="146" height="40" rx="8" class="term"/>
-  <text x="487" y="288" class="st" text-anchor="middle">APPROVAL_CANCELED</text>
-  <rect x="601" y="264" width="138" height="40" rx="8" class="term"/>
-  <text x="670" y="288" class="st" text-anchor="middle">CAPTURE_CANCELED</text>
-  <line x1="487" y1="204" x2="487" y2="262" class="flow" marker-end="url(#ar)"/>
-  <text x="495" y="238" class="lbl">CANCEL</text>
-  <line x1="683" y1="204" x2="671" y2="262" class="flow" marker-end="url(#ar)"/>
-  <text x="687" y="238" class="lbl">CANCEL</text>
-
-  <!-- 범례 -->
-  <rect x="30" y="332" width="34" height="20" rx="5" class="box"/>
-  <text x="72" y="347" class="sub">다음 전이가 있는 상태</text>
-  <rect x="230" y="332" width="34" height="20" rx="5" class="term"/>
-  <text x="272" y="347" class="sub">더 갈 곳이 없는 상태(실패·만료·취소)</text>
-  <line x1="546" y1="342" x2="586" y2="342" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <text x="594" y="347" class="sub">정상 흐름</text>
-  <text x="30" y="380" class="note">표에 없는 (상태, 행위) 조합은 InvalidPaymentTransitionException으로 거부합니다.</text>
+  <rect width="760" height="404" fill="#ffffff"/>
+  <text x="24" y="30" class="h">결제 상태 전이 — 허용 전이 표의 9개 전이</text>
+  <line x1="110" y1="184" x2="214" y2="184" stroke="#16a34a" stroke-width="1.8" marker-end="url(#agr)"/>
+  <line x1="336" y1="184" x2="440" y2="184" stroke="#16a34a" stroke-width="1.8" marker-end="url(#agr)"/>
+  <line x1="532" y1="184" x2="636" y2="184" stroke="#16a34a" stroke-width="1.8" marker-end="url(#agr)"/>
+  <line x1="683" y1="204" x2="671" y2="262" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <line x1="70" y1="164" x2="70" y2="106" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <line x1="276" y1="164" x2="276" y2="106" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <line x1="88" y1="204" x2="152" y2="262" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <line x1="258" y1="204" x2="194" y2="262" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <line x1="487" y1="204" x2="487" y2="262" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ag)"/>
+  <text x="163" y="176" class="s m" text-anchor="middle" style="font-size: 11.5px">AUTHENTICATE</text>
+  <text x="389" y="176" class="s m" text-anchor="middle" style="font-size: 11.5px">APPROVE</text>
+  <text x="585" y="176" class="s m" text-anchor="middle" style="font-size: 11.5px">CAPTURE</text>
+  <text x="78" y="139" class="s m" style="font-size: 11.5px">FAIL_AUTHENTICATION</text>
+  <text x="284" y="139" class="s m" style="font-size: 11.5px">FAIL_APPROVAL</text>
+  <text x="112" y="246" class="s m" text-anchor="end" style="font-size: 11.5px">EXPIRE</text>
+  <text x="236" y="246" class="s m" style="font-size: 11.5px">EXPIRE</text>
+  <text x="495" y="238" class="s m" style="font-size: 11.5px">CANCEL</text>
+  <text x="687" y="238" class="s m" style="font-size: 11.5px">CANCEL</text>
+  <circle cx="163" cy="202" r="10" fill="#111827"/><text x="163" y="206" class="num" text-anchor="middle" style="font-size: 11px">1</text>
+  <circle cx="389" cy="202" r="10" fill="#111827"/><text x="389" y="206" class="num" text-anchor="middle" style="font-size: 11px">2</text>
+  <circle cx="585" cy="202" r="10" fill="#111827"/><text x="585" y="206" class="num" text-anchor="middle" style="font-size: 11px">3</text>
+  <circle cx="662" cy="233" r="10" fill="#111827"/><text x="662" y="237" class="num" text-anchor="middle" style="font-size: 11px">4</text>
+  <rect x="18" y="64" width="104" height="40" rx="8" fill="#fde8e8" stroke="#374151" stroke-width="2.6"/>
+  <text x="70.0" y="88.5" class="badt m" text-anchor="middle" style="font-size: 12px">AUTH_FAILED</text>
+  <rect x="210" y="64" width="132" height="40" rx="8" fill="#fde8e8" stroke="#374151" stroke-width="2.6"/>
+  <text x="276.0" y="88.5" class="badt m" text-anchor="middle" style="font-size: 12px">APPROVAL_FAILED</text>
+  <rect x="30" y="164" width="80" height="40" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <rect x="27" y="161" width="86" height="46" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.03;0.04;0.09;0.1;1"/></rect>
+  <text x="70.0" y="188.5" class="t m" text-anchor="middle" style="font-size: 12px">READY</text>
+  <rect x="216" y="164" width="120" height="40" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="213" y="161" width="126" height="46" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.2667;0.2767;0.3267;0.3367;1"/></rect>
+  <text x="276.0" y="188.5" class="t m" text-anchor="middle" style="font-size: 12px">AUTHENTICATED</text>
+  <rect x="442" y="164" width="90" height="40" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="439" y="161" width="96" height="46" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5091;0.5191;0.5691;0.5791;1"/></rect>
+  <text x="487.0" y="188.5" class="t m" text-anchor="middle" style="font-size: 12px">APPROVED</text>
+  <rect x="638" y="164" width="90" height="40" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="635" y="161" width="96" height="46" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.7343;0.7443;0.7943;0.8043;1"/></rect>
+  <text x="683.0" y="188.5" class="t m" text-anchor="middle" style="font-size: 12px">CAPTURED</text>
+  <rect x="135" y="264" width="76" height="40" rx="8" fill="#fde8e8" stroke="#374151" stroke-width="2.6"/>
+  <text x="173.0" y="288.5" class="badt m" text-anchor="middle" style="font-size: 12px">EXPIRED</text>
+  <rect x="414" y="264" width="146" height="40" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="2.6"/>
+  <text x="487.0" y="288.5" class="t m" text-anchor="middle" style="font-size: 12px">APPROVAL_CANCELED</text>
+  <rect x="601" y="264" width="138" height="40" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="2.6"/>
+  <rect x="598" y="261" width="144" height="46" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.85;0.86;0.91;0.92;1"/></rect>
+  <text x="670.0" y="288.5" class="t m" text-anchor="middle" style="font-size: 12px">CAPTURE_CANCELED</text>
+  <rect x="24" y="330" width="34" height="20" rx="5" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="66" y="345" class="s">다음 전이가 있는 상태</text>
+  <rect x="210" y="330" width="34" height="20" rx="5" fill="#f3f4f6" stroke="#374151" stroke-width="2.6"/>
+  <text x="252" y="345" class="s">더 갈 곳이 없는 상태(실패·만료·취소)</text>
+  <line x1="492" y1="340" x2="528" y2="340" stroke="#16a34a" stroke-width="1.8" marker-end="url(#agr)"/>
+  <text x="536" y="345" class="s">정상 흐름</text>
+  <use href="#pkt" x="616" y="340"/>
+  <text x="634" y="345" class="s">1~4 대표 경로</text>
+  <text x="24" y="382" class="note">표에 없는 (상태, 행위) 조합은 <tspan font-family="Menlo, Consolas, monospace">InvalidPaymentTransitionException</tspan>으로 거부합니다.</text>
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M70,184 H683 L671,284"
+      keyPoints="0;0;0;0.2886;0.5843;0.8589;1;1;1" keyTimes="0;0.04;0.04;0.2767;0.5191;0.7443;0.86;0.86;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.04;0.86;0.875;1"/>
+  </g>
 </svg>

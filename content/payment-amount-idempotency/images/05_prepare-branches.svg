@@ -1,87 +1,163 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 486" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
-  <title>같은 주문번호로 다시 준비할 때의 갈래 — 주문번호로 결제를 찾아 없으면 새로 만들어 201 READY로 답하고, 있으면서 금액이 같으면 이미 있는 결제를 지금 상태로 201 응답하고, 금액이 다르면 409 DUPLICATE_ORDER로 거부하며, 금액이 없거나 0 이하이면 결제가 있든 없든 400 INVALID_AMOUNT로 답하는 그림</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 496" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>같은 주문번호로 다시 준비할 때의 갈래 — 주문번호로 결제를 찾아 없으면 새로 만들면서 금액이 없거나 0 이하이면 400 INVALID_AMOUNT, 양수이면 저장하고 201 READY로 답하고, 있으면 금액을 확인해 없거나 0 이하이면 400 INVALID_AMOUNT, 다르면 409 DUPLICATE_ORDER, 같으면 이미 있는 결제를 지금 상태로 201 응답하는 그림. 처음 준비 요청과 같은 주문번호·같은 금액으로 다시 온 준비 요청이 차례로 지나간다</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .step { font-size: 13.5px; fill: #9ca3af; }
-    .sub { font-size: 13.5px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .val { font-size: 13.5px; fill: #4b5563; }
+    .h2 { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
     .m { font-family: Menlo, Consolas, monospace; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .note { font-size: 13.5px; fill: #b91c1c; }
-    .gnote { font-size: 13.5px; fill: #15803d; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 11.5px; fill: #6b7280; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="gmark"><circle r="9" fill="#9ca3af"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
   </defs>
-  <rect width="760" height="486" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="466" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">같은 주문번호로 다시 준비할 때 — 결제가 있는지와 금액으로 나뉨</text>
+  <rect width="760" height="496" fill="#ffffff"/>
+  <text x="24" y="30" class="h">같은 주문번호로 다시 준비할 때 — 결제가 있는지와 금액으로 나뉨</text>
 
-  <rect x="230" y="62" width="300" height="44" rx="8" class="hold"/>
-  <text x="380" y="89" class="t" text-anchor="middle">준비 요청 도착 <tspan class="m" font-weight="400" style="font-size: 13px">(orderId, amount)</tspan></text>
-  <line x1="380" y1="106" x2="380" y2="126" class="flow" marker-end="url(#ar)"/>
-  <rect x="230" y="128" width="300" height="52" rx="8" class="box"/>
-  <text x="380" y="149" class="t" text-anchor="middle">주문번호로 결제 찾기</text>
-  <text x="380" y="168" class="val m" text-anchor="middle" style="font-size: 13px">findByOrderId(orderId)</text>
+  <!-- 요청 -->
+  <rect x="230" y="44" width="300" height="48" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <g transform="translate(248,53)">
+    <rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/>
+    <rect x="0" y="8" width="32" height="5" fill="#1f2937"/>
+    <rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/>
+  </g>
+  <text x="292" y="65" class="t">준비 요청</text>
+  <text x="292" y="82" class="s m" style="font-size: 11px">POST /api/v1/payments</text>
+  <text x="540" y="73" class="lbl">본문: <tspan class="m">orderId</tspan> · <tspan class="m">amount</tspan></text>
 
-  <path d="M330,180 L330,194 L200,194 L200,208" class="flow" marker-end="url(#ar)"/>
-  <path d="M430,180 L430,194 L560,194 L560,208" class="flow" marker-end="url(#ar)"/>
+  <rect x="14" y="112" width="732" height="340" rx="16" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <rect x="28" y="99" width="196" height="26" rx="6" fill="#5b7194"/>
+  <text x="126" y="117" class="tab" text-anchor="middle">결제 서버 · 준비 트랜잭션</text>
+  <line x1="380" y1="92" x2="380" y2="130" class="spine" marker-end="url(#ak)"/>
 
-  <!-- 왼쪽: 없음 -->
-  <rect x="40" y="210" width="320" height="52" rx="8" class="box"/>
-  <text x="200" y="231" class="t" text-anchor="middle">없음 — 새로 만들기</text>
-  <text x="200" y="250" class="val m" text-anchor="middle" style="font-size: 12.5px">Payment.create(orderId, amount)</text>
-  <line x1="52" y1="262" x2="52" y2="379" class="flow"/>
+  <!-- 1 결제 찾기 -->
+  <rect x="230" y="132" width="300" height="48" rx="10" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="230" y="132" width="300" height="48" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0;0.052;0.062;0.112;0.122;0.5471;0.5571;0.6071;0.6171;1"/></rect>
+  <circle cx="230" cy="132" r="12" fill="#111827"/><text x="230" y="136" class="num" text-anchor="middle">1</text>
+  <g transform="translate(250,140)">
+    <path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/>
+    <path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/>
+    <ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/>
+  </g>
+  <text x="292" y="152" class="t">주문번호로 결제 찾기</text>
+  <text x="292" y="170" class="s m" style="font-size: 11px">findByOrderId(orderId)</text>
+  <path d="M380,180 V196 H200 V212 M380,196 H560 V212" class="spine"/>
+  <line x1="200" y1="204" x2="200" y2="214" class="spine" marker-end="url(#ak)"/>
+  <line x1="560" y1="204" x2="560" y2="214" class="spine" marker-end="url(#ak)"/>
+  <text x="210" y="210" class="lbl">없음</text>
+  <text x="570" y="210" class="lbl">있음</text>
 
-  <line x1="52" y1="323" x2="62" y2="323" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
-  <rect x="64" y="300" width="296" height="46" rx="8" class="bad"/>
-  <text x="80" y="319" class="badt">금액 없음·0 이하</text>
-  <text x="80" y="337" class="note m" style="font-size: 12.5px">400 INVALID_AMOUNT</text>
+  <!-- 2 새로 만들기 -->
+  <rect x="40" y="216" width="320" height="48" rx="10" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="40" y="216" width="320" height="48" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.2254;0.2354;0.2854;0.2954;1"/></rect>
+  <circle cx="40" cy="216" r="12" fill="#111827"/><text x="40" y="220" class="num" text-anchor="middle">2</text>
+  <g transform="translate(62,223) scale(0.82)">
+    <path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/>
+    <path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/>
+    <circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/>
+    <path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <text x="102" y="236" class="t">새로 만들기</text>
+  <text x="102" y="254" class="s m" style="font-size: 11px">Payment.create(orderId, amount)</text>
 
-  <line x1="52" y1="379" x2="62" y2="379" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <rect x="64" y="356" width="296" height="46" rx="8" class="ok"/>
-  <text x="80" y="375" class="okt">양수</text>
-  <text x="80" y="393" class="gnote">새 결제를 저장하고 <tspan class="m" style="font-size: 12.5px">201 READY</tspan></text>
+  <!-- 3 금액 확인 -->
+  <rect x="400" y="216" width="320" height="48" rx="10" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/>
+  <rect x="400" y="216" width="320" height="48" rx="10" fill="none" stroke="#d97706" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.7003;0.7103;0.7603;0.7703;1"/></rect>
+  <circle cx="400" cy="216" r="12" fill="#111827"/><text x="400" y="220" class="num" text-anchor="middle">3</text>
+  <g transform="translate(420,228)">
+    <circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/>
+    <circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/>
+    <text x="12" y="16.5" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">₩</text>
+  </g>
+  <text x="462" y="236" class="t">금액 확인</text>
+  <text x="462" y="254" class="s m" style="font-size: 11px">verifyPreparedAmount(amount)</text>
 
-  <!-- 오른쪽: 있음 -->
-  <rect x="400" y="210" width="320" height="52" rx="8" class="box"/>
-  <text x="560" y="231" class="t" text-anchor="middle">있음 — 금액 확인</text>
-  <text x="560" y="250" class="val m" text-anchor="middle" style="font-size: 12.5px">verifyPreparedAmount(amount)</text>
-  <line x1="412" y1="262" x2="412" y2="435" class="flow"/>
+  <!-- 왼쪽 결과 -->
+  <line x1="56" y1="264" x2="56" y2="364" class="spine"/>
+  <line x1="56" y1="310" x2="70" y2="310" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="72" y="290" width="288" height="40" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="90" y="310"/>
+  <text x="106" y="306" class="badt">금액 없음·0 이하</text>
+  <text x="106" y="322" class="bads m">400 INVALID_AMOUNT</text>
+  <line x1="56" y1="364" x2="70" y2="364" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <rect x="72" y="344" width="288" height="40" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <rect x="72" y="344" width="288" height="40" rx="8" fill="none" stroke="#16a34a" stroke-width="3" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.45;0.46;0.50;0.51;1"/></rect>
+  <use href="#vmark" x="90" y="364"/>
+  <text x="106" y="360" class="okt">양수</text>
+  <text x="106" y="376" class="oks">새 결제를 저장하고 <tspan class="m">201 READY</tspan></text>
+  <text x="40" y="414" class="s">금액 검사는 결제가 있든 없든</text>
+  <text x="40" y="432" class="s">같은 <tspan class="m">400</tspan>으로 답함</text>
 
-  <line x1="412" y1="323" x2="422" y2="323" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
-  <rect x="424" y="300" width="296" height="46" rx="8" class="bad"/>
-  <text x="440" y="319" class="badt">금액 없음·0 이하</text>
-  <text x="440" y="337" class="note m" style="font-size: 12.5px">400 INVALID_AMOUNT</text>
+  <!-- 오른쪽 결과: 코드 순서대로 0 이하 → 다른 금액 → 같은 금액 -->
+  <line x1="416" y1="264" x2="416" y2="418" class="spine"/>
+  <line x1="416" y1="310" x2="430" y2="310" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="432" y="290" width="288" height="40" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="450" y="310"/>
+  <text x="466" y="306" class="badt">금액 없음·0 이하</text>
+  <text x="466" y="322" class="bads m">400 INVALID_AMOUNT</text>
+  <line x1="416" y1="364" x2="430" y2="364" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="432" y="344" width="288" height="40" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="450" y="364"/>
+  <text x="466" y="360" class="badt">다른 금액</text>
+  <text x="466" y="376" class="bads m">409 DUPLICATE_ORDER</text>
+  <line x1="416" y1="418" x2="430" y2="418" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <rect x="432" y="398" width="288" height="40" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <rect x="432" y="398" width="288" height="40" rx="8" fill="none" stroke="#16a34a" stroke-width="3" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.93;0.94;0.985;0.995;1"/></rect>
+  <use href="#vmark" x="450" y="418"/>
+  <text x="466" y="414" class="okt">같은 금액</text>
+  <text x="466" y="430" class="oks">이미 있는 결제를 지금 상태로 <tspan class="m">201</tspan></text>
 
-  <line x1="412" y1="379" x2="422" y2="379" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <rect x="424" y="356" width="296" height="46" rx="8" class="ok"/>
-  <text x="440" y="375" class="okt">같은 금액</text>
-  <text x="440" y="393" class="gnote">이미 있는 결제를 지금 상태로 <tspan class="m" style="font-size: 12.5px">201</tspan></text>
+  <!-- 범례 -->
+  <use href="#pkt" x="40" y="476"/>
+  <text x="58" y="480" class="lbl">처음 준비</text>
+  <use href="#pkt2" x="150" y="476"/>
+  <text x="168" y="480" class="lbl" style="fill: #c2410c">같은 주문번호·같은 금액으로 다시 준비</text>
 
-  <line x1="412" y1="435" x2="422" y2="435" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
-  <rect x="424" y="412" width="296" height="46" rx="8" class="bad"/>
-  <text x="440" y="431" class="badt">다른 금액</text>
-  <text x="440" y="449" class="note m" style="font-size: 12.5px">409 DUPLICATE_ORDER</text>
-
-  <text x="40" y="440" class="sub">금액 검사는 결제가 있든 없든</text>
-  <text x="40" y="459" class="sub">같은 400으로 답함</text>
+  <!-- 처음 준비: 없음 → 새로 만들어 201 READY -->
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M380,92 V196 H200 V240 H56 V364 H130"
+      keyPoints="0;0;0.0955;0.4896;1;1;1" keyTimes="0;0.02;0.062;0.2354;0.46;0.46;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.02;0.46;0.475;1"/>
+  </g>
+  <!-- 같은 주문번호·같은 금액으로 다시 준비: 있음 → 금액 확인 → 201 -->
+  <g class="anim" opacity="0">
+    <use href="#pkt2"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M380,92 V196 H560 V240 H416 V418 H490"
+      keyPoints="0;0;0.0884;0.453;1;1;1" keyTimes="0;0.52;0.5571;0.7103;0.94;0.94;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.515;0.52;0.94;0.955;1"/>
+  </g>
 </svg>

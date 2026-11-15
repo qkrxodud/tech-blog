@@ -1,72 +1,108 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
-  <title>금액이 다를 때 결제 상태를 바꿀지 — AUTH_FAILED로 닫으면 시도가 결제 기록에 남지만 올바른 금액으로 다시 온 요청은 닫힌 결제라 결제할 수 없어 고객이 새 주문으로 다시 시작해야 하고, 상태를 바꾸지 않고 400 AMOUNT_MISMATCH로 거부하면 결제는 READY 그대로라 같은 결제로 다시 시도할 수 있지만 조작 시도는 로그에만 남는 그림</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 452" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>금액이 다를 때 결제 상태를 바꿀지 — AUTH_FAILED로 닫으면(이 장에서 구현하지 않은 선택) 시도가 결제 기록에 남지만 올바른 금액으로 다시 온 요청은 닫힌 결제라 결제할 수 없어 고객이 새 주문으로 다시 시작해야 하고, 상태를 바꾸지 않고 400 AMOUNT_MISMATCH로 거부하면(고른 선택) 결제는 READY 그대로라 같은 결제로 다시 시도할 수 있지만 조작 시도는 로그에만 남는 그림</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .step { font-size: 13.5px; fill: #9ca3af; }
-    .sub { font-size: 13.5px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .val { font-size: 13.5px; fill: #4b5563; }
+    .h2 { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
     .m { font-family: Menlo, Consolas, monospace; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .note { font-size: 13.5px; fill: #b91c1c; }
-    .gnote { font-size: 13.5px; fill: #15803d; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 11.5px; fill: #6b7280; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="gmark"><circle r="9" fill="#9ca3af"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
   </defs>
-  <rect width="760" height="440" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">금액이 다를 때 결제 상태 — 닫을지, 그대로 둘지</text>
+  <rect width="760" height="452" fill="#ffffff"/>
+  <text x="24" y="32" class="h">금액이 다를 때 결제 상태 — 닫을지, 그대로 둘지</text>
 
-  <rect x="40" y="62" width="320" height="42" rx="8" class="hold"/>
-  <text x="200" y="88" class="t" text-anchor="middle"><tspan class="m">AUTH_FAILED</tspan>로 닫기 <tspan font-weight="400" class="val">(검토한 선택)</tspan></text>
-  <rect x="400" y="62" width="320" height="42" rx="8" class="hold"/>
-  <text x="560" y="88" class="t" text-anchor="middle">상태를 바꾸지 않기 <tspan font-weight="400" class="val">(고른 선택)</tspan></text>
+  <!-- 열 머리 -->
+  <rect x="40" y="50" width="320" height="46" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <text x="200" y="70" class="t" text-anchor="middle" style="fill: #4b5563"><tspan class="m">AUTH_FAILED</tspan>로 닫기</text>
+  <text x="200" y="87" class="gs" text-anchor="middle">검토한 선택 · 구현해서 돌려 보지 않음</text>
+  <rect x="400" y="50" width="320" height="46" rx="10" fill="#e6edfa" stroke="#2563eb" stroke-width="1.8"/>
+  <text x="560" y="70" class="t" text-anchor="middle">상태를 바꾸지 않기</text>
+  <text x="560" y="87" class="s" text-anchor="middle">고른 선택 · 3장 완성 코드</text>
 
-  <text x="380" y="128" class="step" text-anchor="middle">① 금액이 다른 승인 요청</text>
-  <line x1="200" y1="104" x2="200" y2="138" class="flow" marker-end="url(#ar)"/>
-  <line x1="560" y1="104" x2="560" y2="138" class="flow" marker-end="url(#ar)"/>
-  <rect x="40" y="140" width="320" height="52" rx="8" class="box"/>
-  <text x="200" y="161" class="t" text-anchor="middle">결제를 <tspan class="m">AUTH_FAILED</tspan>로 닫음</text>
-  <text x="200" y="180" class="val" text-anchor="middle">시도가 결제 기록에 남음</text>
-  <rect x="400" y="140" width="320" height="52" rx="8" class="box"/>
-  <text x="560" y="161" class="t" text-anchor="middle"><tspan class="m">400 AMOUNT_MISMATCH</tspan></text>
-  <text x="560" y="180" class="val" text-anchor="middle">결제는 <tspan class="m" style="font-size: 13px">READY</tspan> 그대로, 시도는 로그에만 남음</text>
+  <!-- 1. 금액이 다른 승인 요청 -->
+  <circle cx="266" cy="124" r="12" fill="#111827"/><text x="266" y="128" class="num" text-anchor="middle">1</text>
+  <g transform="translate(284,112)">
+    <circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/>
+    <circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/>
+    <text x="12" y="16.5" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">₩</text>
+  </g>
+  <text x="316" y="129" class="t2">금액이 다른 승인 요청</text>
+  <line x1="200" y1="96" x2="200" y2="146" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <line x1="560" y1="96" x2="560" y2="146" class="spine" marker-end="url(#ak)"/>
+  <rect x="40" y="148" width="320" height="54" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <g transform="translate(58,164)">
+    <rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/>
+    <rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/>
+    <path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/>
+  </g>
+  <text x="106" y="170" class="t2" style="fill: #4b5563">결제를 <tspan class="m">AUTH_FAILED</tspan>로 닫음</text>
+  <text x="106" y="189" class="gs">시도가 결제 기록에 남음</text>
+  <rect x="400" y="148" width="320" height="54" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="422" y="175"/>
+  <text x="442" y="170" class="badt">거부 <tspan class="m">400 AMOUNT_MISMATCH</tspan></text>
+  <text x="442" y="189" class="bads">결제는 <tspan class="m">READY</tspan> 그대로, 시도는 로그에만 남음</text>
 
-  <text x="380" y="216" class="step" text-anchor="middle">② 올바른 금액으로 다시 온 요청</text>
-  <line x1="200" y1="192" x2="200" y2="226" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
-  <line x1="560" y1="192" x2="560" y2="226" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <rect x="40" y="228" width="320" height="52" rx="8" class="bad"/>
-  <text x="200" y="249" class="badt" text-anchor="middle">닫힌 결제라 다시 결제할 수 없음</text>
-  <text x="200" y="268" class="note" text-anchor="middle">고객은 새 주문으로 다시 시작</text>
-  <rect x="400" y="228" width="320" height="52" rx="8" class="ok"/>
-  <text x="560" y="249" class="okt" text-anchor="middle">같은 결제로 다시 시도할 수 있음</text>
-  <text x="560" y="268" class="gnote" text-anchor="middle">결제가 닫히지 않았으므로</text>
+  <!-- 2. 올바른 금액으로 다시 온 요청 -->
+  <circle cx="246" cy="230" r="12" fill="#111827"/><text x="246" y="234" class="num" text-anchor="middle">2</text>
+  <g transform="translate(264,218)">
+    <circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/>
+    <circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/>
+    <text x="12" y="16.5" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">₩</text>
+  </g>
+  <text x="296" y="235" class="t2">올바른 금액으로 다시 온 요청</text>
+  <line x1="200" y1="202" x2="200" y2="252" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <line x1="560" y1="202" x2="560" y2="252" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <rect x="40" y="254" width="320" height="54" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <use href="#gmark" x="62" y="281"/>
+  <text x="82" y="276" class="gt">닫힌 결제라 다시 결제할 수 없음</text>
+  <text x="82" y="295" class="gs">고객은 새 주문으로 다시 시작</text>
+  <rect x="400" y="254" width="320" height="54" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="422" y="281"/>
+  <text x="442" y="276" class="okt">같은 결제로 다시 시도할 수 있음</text>
+  <text x="442" y="295" class="oks">결제가 닫히지 않았으므로</text>
 
-  <text x="380" y="304" class="step" text-anchor="middle">어떤 경우에 맞는지</text>
-  <rect x="40" y="314" width="320" height="64" rx="8" class="wait"/>
-  <text x="56" y="340" class="sub">조작 시도를 결제 기록으로 남겨 감사하거나,</text>
-  <text x="56" y="362" class="sub">조작이 의심된 주문을 다시 결제 못 하게 할 때</text>
-  <rect x="400" y="314" width="320" height="64" rx="8" class="wait"/>
-  <text x="416" y="340" class="sub">금액이 다른 요청이 클라이언트 버그에서도</text>
-  <text x="416" y="362" class="sub">나올 수 있을 때 — 대신 조작 시도는 DB에 남지 않음</text>
+  <!-- 어떤 경우에 맞는지 -->
+  <rect x="14" y="340" width="732" height="72" rx="16" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <rect x="28" y="327" width="150" height="26" rx="6" fill="#5b7194"/>
+  <text x="103" y="345" class="tab" text-anchor="middle">어떤 경우에 맞는지</text>
+  <text x="40" y="372" class="s">조작 시도를 결제 기록으로 남겨 감사하거나,</text>
+  <text x="40" y="392" class="s">조작이 의심된 주문을 다시 결제 못 하게 할 때</text>
+  <text x="400" y="372" class="s">금액이 다른 요청이 클라이언트 버그에서도</text>
+  <text x="400" y="392" class="s">나올 수 있을 때 — 대신 조작 시도는 DB에 남지 않음</text>
+  <line x1="380" y1="358" x2="380" y2="400" stroke="#c4c8ce" stroke-width="1"/>
 
-  <text x="30" y="408" class="sub">두 선택 모두 금액이 다르면 PG를 부르지 않으므로 PG 쪽에는 정리할 것이 없음. 왼쪽은 이 장에서 구현하지 않은 선택</text>
+  <text x="24" y="438" class="gs" style="font-size: 12px">두 선택 모두 금액이 다르면 PG를 부르지 않으므로 PG 쪽에는 정리할 것이 없음. 점선은 이 장에서 구현하지 않은 선택</text>
 </svg>

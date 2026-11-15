@@ -1,124 +1,131 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 550" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
-  <title>허용되지 않은 전이를 알리는 방식 비교 — 예외는 호출하는 쪽이 확인하지 않아도 호출이 멈춰 원인이 드러나고, 성공 여부를 반환하면 반환값을 보지 않을 때 잘못된 전이가 그대로 지나가며, 아무 일도 하지 않으면 조용히 넘어가 원인을 찾기 어렵다. 아래는 예외 방식에서 같은 취소 요청이 두 번 들어오면 두 번째 요청이 APPROVAL_CANCELED 상태 때문에 실패하는 그림</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 530" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>알리는 방식 — 취소된 결제에 매입을 요청하면, 예외는 호출하는 쪽이 확인하지 않아도 호출이 멈춰 원인이 드러나고, 성공 여부를 반환하면 반환값을 보지 않을 때 잘못된 전이가 그대로 지나가며, 아무 일도 하지 않으면 조용히 넘어간다(이 둘은 구현하지 않음). 아래는 예외 방식에서 같은 취소 요청이 두 번 들어오면 두 번째 요청이 실패하는 그림</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .subc { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
-    .lbl { font-family: Menlo, Consolas, monospace; font-size: 11px; fill: #6b7280; }
-    .step { font-size: 12px; fill: #9ca3af; }
-    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
-    .sub { font-size: 12px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .st { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .val { font-size: 12.5px; fill: #4b5563; }
-    .db { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .term { fill: #f3f4f6; stroke: #374151; stroke-width: 2.6; }
-    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
-    .track { fill: #ffffff; stroke: #eceef1; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .waitt { font-size: 12.5px; fill: #6b7280; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .t13 { font-size: 13.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .step { font-size: 12.5px; font-weight: 700; fill: #374151; }
+    .lane { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
     .note { font-size: 12.5px; fill: #b91c1c; }
     .gnote { font-size: 12.5px; fill: #15803d; }
-    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .t13 { font-size: 13.5px; font-weight: 700; fill: #1f2937; }
-    .okst { font-size: 11px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
-    .rcode { font-family: Menlo, Consolas, monospace; font-size: 12.5px; fill: #b91c1c; }
+    .mute { font-size: 12px; fill: #6b7280; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
   </defs>
-
-  <rect width="760" height="550" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="300" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">알리는 방식 — 취소된 결제에 매입을 요청하면</text>
-  <text x="255" y="70" class="step" text-anchor="middle">① 결제 객체의 응답</text>
-  <text x="440" y="70" class="step" text-anchor="middle">② 호출하는 쪽이 확인하지 않으면</text>
-  <text x="625" y="70" class="step" text-anchor="middle">③ 결과</text>
-  <line x1="180" y1="78" x2="722" y2="78" class="axis" marker-end="url(#ar)"/>
-  <text x="30" y="112" class="lane">예외</text>
-  <text x="30" y="130" class="sub">이 장의 선택</text>
-  <rect x="180" y="86" width="555" height="60" rx="6" class="track"/>
-  <rect x="180" y="90" width="150" height="52" rx="8" class="hold"/>
-  <text x="255" y="111" class="op2" text-anchor="middle">throw</text>
-  <text x="255" y="131" class="val" text-anchor="middle">예외 던짐</text>
-  <rect x="365" y="90" width="150" height="52" rx="8" class="box"/>
-  <text x="440" y="111" class="t13" text-anchor="middle">확인 코드가 없어도</text>
-  <text x="440" y="131" class="val" text-anchor="middle">호출이 여기서 멈춤</text>
-  <rect x="550" y="90" width="150" height="52" rx="8" class="ok"/>
-  <text x="625" y="111" class="okt" text-anchor="middle">원인이 드러남</text>
-  <text x="625" y="131" class="val" text-anchor="middle">상태·행위가 로그에</text>
-  <line x1="330" y1="116" x2="363" y2="116" class="flow" marker-end="url(#ar)"/>
-  <line x1="515" y1="116" x2="548" y2="116" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <text x="30" y="184" class="lane">반환값</text>
-  <text x="30" y="202" class="sub">boolean·결과 객체</text>
-  <rect x="180" y="158" width="555" height="60" rx="6" class="track"/>
-  <rect x="180" y="162" width="150" height="52" rx="8" class="hold"/>
-  <text x="255" y="183" class="op2" text-anchor="middle">return false</text>
-  <text x="255" y="203" class="val" text-anchor="middle">성공 여부만 돌려줌</text>
-  <rect x="365" y="172" width="150" height="32" rx="6" class="wait"/>
-  <text x="440" y="193" class="waitt" text-anchor="middle">반환값을 보지 않음</text>
-  <rect x="550" y="162" width="150" height="52" rx="8" class="bad"/>
-  <text x="625" y="183" class="badt" text-anchor="middle">잘못된 전이가</text>
-  <text x="625" y="203" class="note" text-anchor="middle">그대로 지나감</text>
-  <line x1="330" y1="188" x2="363" y2="188" class="flow" marker-end="url(#ar)"/>
-  <line x1="515" y1="188" x2="548" y2="188" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
-  <text x="30" y="256" class="lane">무시</text>
-  <text x="30" y="274" class="sub">아무 일도 하지 않기</text>
-  <rect x="180" y="230" width="555" height="60" rx="6" class="track"/>
-  <rect x="180" y="234" width="150" height="52" rx="8" class="hold"/>
-  <text x="255" y="255" class="t13" text-anchor="middle">아무 일도 안 함</text>
-  <text x="255" y="275" class="val" text-anchor="middle">상태 그대로</text>
-  <rect x="365" y="244" width="150" height="32" rx="6" class="wait"/>
-  <text x="440" y="265" class="waitt" text-anchor="middle">알릴 것이 없음</text>
-  <rect x="550" y="234" width="150" height="52" rx="8" class="bad"/>
-  <text x="625" y="255" class="badt" text-anchor="middle">조용히 넘어감</text>
-  <text x="625" y="275" class="note" text-anchor="middle">원인 찾기 어려움</text>
-  <line x1="330" y1="260" x2="363" y2="260" class="flow" marker-end="url(#ar)"/>
-  <line x1="515" y1="260" x2="548" y2="260" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
-  <rect x="10" y="326" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="358" class="h">예외의 비용 — 같은 취소 요청이 두 번 들어오면</text>
-  <text x="246" y="386" class="step" text-anchor="middle">① 첫 번째 요청</text>
-  <text x="384" y="386" class="step" text-anchor="middle">② 결제 상태</text>
-  <text x="522" y="386" class="step" text-anchor="middle">③ 같은 요청 다시</text>
-  <text x="664" y="386" class="step" text-anchor="middle">④ 응답</text>
-  <line x1="180" y1="394" x2="722" y2="394" class="axis" marker-end="url(#ar)"/>
-  <text x="30" y="428" class="lane">취소 요청</text>
-  <text x="30" y="446" class="sub">네트워크 문제로 두 번</text>
-  <rect x="180" y="402" width="555" height="60" rx="6" class="track"/>
-  <rect x="184" y="406" width="124" height="52" rx="8" class="box"/>
-  <text x="246" y="427" class="op2" text-anchor="middle">cancel()</text>
-  <text x="246" y="447" class="val" text-anchor="middle">APPROVED 결제</text>
-  <rect x="322" y="406" width="124" height="52" rx="8" class="ok"/>
-  <text x="384" y="427" class="okst" text-anchor="middle">APPROVAL_CANCELED</text>
-  <text x="384" y="447" class="val" text-anchor="middle">취소 완료</text>
-  <rect x="460" y="406" width="124" height="52" rx="8" class="box"/>
-  <text x="522" y="427" class="op2" text-anchor="middle">cancel()</text>
-  <text x="522" y="447" class="val" text-anchor="middle">두 번째 요청</text>
-  <rect x="602" y="406" width="124" height="52" rx="8" class="bad"/>
-  <text x="664" y="427" class="badt" text-anchor="middle">실패</text>
-  <text x="664" y="447" class="note" text-anchor="middle">이미 취소된 상태</text>
-  <line x1="308" y1="432" x2="320" y2="432" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <line x1="446" y1="432" x2="458" y2="432" class="flow" marker-end="url(#ar)"/>
-  <line x1="584" y1="432" x2="600" y2="432" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
-  <text x="30" y="494" class="rcode">Cannot CANCEL a payment in APPROVAL_CANCELED status.</text>
-  <text x="30" y="520" class="sub">이미 목표 상태에 있는 같은 요청을 성공으로 응답하려면 ‘같은 요청인지’ 판단 기준이 필요해 3장에서 다룹니다.</text>
+  <rect width="760" height="530" fill="#ffffff"/>
+  <text x="24" y="30" class="h">알리는 방식 — 취소된 결제에 매입을 요청하면</text>
+  <circle cx="190" cy="58" r="10" fill="#111827"/><text x="190" y="62" class="num" text-anchor="middle" style="font-size: 11px">1</text>
+  <text x="205" y="63" class="step">결제 객체의 응답</text>
+  <circle cx="350" cy="58" r="10" fill="#111827"/><text x="350" y="62" class="num" text-anchor="middle" style="font-size: 11px">2</text>
+  <text x="365" y="63" class="step">호출하는 쪽이 확인하지 않으면</text>
+  <circle cx="604" cy="58" r="10" fill="#111827"/><text x="604" y="62" class="num" text-anchor="middle" style="font-size: 11px">3</text>
+  <text x="619" y="63" class="step">결과</text>
+  <line x1="180" y1="76" x2="735" y2="76" stroke="#c4c8ce" stroke-width="1.2" marker-end="url(#ag)"/>
+  <rect x="172" y="86" width="566" height="64" rx="10" fill="#f9fafb" stroke="#16a34a" stroke-width="2"/>
+  <g transform="translate(20,96)"><path d="M14,1 L28,26 L0,26 Z" fill="#fca5a5" class="o"/><path d="M14,9 v8" stroke="#7f1d1d" stroke-width="2.4" stroke-linecap="round"/><circle cx="14" cy="21.5" r="1.6" fill="#7f1d1d"/></g>
+  <text x="58" y="112" class="lane">예외</text>
+  <text x="58" y="130" class="s" style="font-size: 11.5px">이 장의 선택</text>
+  <rect x="180" y="92" width="150" height="52" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="255" y="114" class="t13 m" text-anchor="middle" style="font-size: 13px">throw</text>
+  <text x="255" y="132" class="s" text-anchor="middle">예외 던짐</text>
+  <rect x="365" y="92" width="150" height="52" rx="8" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="440" y="114" class="t13" text-anchor="middle" style="font-size: 13.5px">확인 코드가 없어도</text>
+  <text x="440" y="132" class="s" text-anchor="middle">호출이 여기서 멈춤</text>
+  <rect x="550" y="92" width="150" height="52" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <use href="#vmark" x="700" y="92"/>
+  <text x="625" y="114" class="okt" text-anchor="middle" style="font-size: 13.5px">원인이 드러남</text>
+  <text x="625" y="132" class="s" text-anchor="middle">상태·행위가 로그에</text>
+  <line x1="330" y1="118" x2="363" y2="118" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="515" y1="118" x2="548" y2="118" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="172" y="158" width="566" height="64" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <g transform="translate(20,168)"><rect x="0" y="2" width="28" height="22" rx="4" fill="#e5e7eb" class="o"/><path d="M20,8 v6 h-11" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12,10.5 l-3.5,3.5 l3.5,3.5" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text x="58" y="184" class="lane">반환값</text>
+  <text x="58" y="202" class="s" style="font-size: 11.5px">boolean·결과 객체</text>
+  <text x="58" y="217" class="s" style="font-size: 11.5px; font-size: 11px; fill: #6b7280">구현해서 돌려 보지 않음</text>
+  <rect x="180" y="164" width="150" height="52" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="255" y="186" class="t13 m" text-anchor="middle" style="font-size: 13px">return false</text>
+  <text x="255" y="204" class="s" text-anchor="middle">성공 여부만 돌려줌</text>
+  <rect x="365" y="174" width="150" height="32" rx="6" fill="#ffffff" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="440" y="195" class="mute" text-anchor="middle" style="font-size: 12.5px">반환값을 보지 않음</text>
+  <rect x="550" y="164" width="150" height="52" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <use href="#xmark" x="700" y="164"/>
+  <text x="625" y="186" class="badt" text-anchor="middle" style="font-size: 13.5px">잘못된 전이가</text>
+  <text x="625" y="204" class="bads" text-anchor="middle">그대로 지나감</text>
+  <line x1="330" y1="190" x2="363" y2="190" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="515" y1="190" x2="548" y2="190" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="172" y="230" width="566" height="64" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <g transform="translate(20,240)"><circle cx="13" cy="13" r="12" fill="#e5e7eb" class="o"/><path d="M7,13 h12" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/></g>
+  <text x="58" y="256" class="lane">무시</text>
+  <text x="58" y="274" class="s" style="font-size: 11.5px">아무 일도 하지 않기</text>
+  <text x="58" y="289" class="s" style="font-size: 11.5px; font-size: 11px; fill: #6b7280">구현해서 돌려 보지 않음</text>
+  <rect x="180" y="236" width="150" height="52" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="255" y="258" class="t13" text-anchor="middle" style="font-size: 13.5px">아무 일도 안 함</text>
+  <text x="255" y="276" class="s" text-anchor="middle">상태 그대로</text>
+  <rect x="365" y="246" width="150" height="32" rx="6" fill="#ffffff" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="440" y="267" class="mute" text-anchor="middle" style="font-size: 12.5px">알릴 것이 없음</text>
+  <rect x="550" y="236" width="150" height="52" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <use href="#xmark" x="700" y="236"/>
+  <text x="625" y="258" class="badt" text-anchor="middle" style="font-size: 13.5px">조용히 넘어감</text>
+  <text x="625" y="276" class="bads" text-anchor="middle">원인 찾기 어려움</text>
+  <line x1="330" y1="262" x2="363" y2="262" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="515" y1="262" x2="548" y2="262" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="16" y="318" width="728" height="202" rx="16" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <rect x="32" y="306" width="330" height="26" rx="6" fill="#5b7194"/>
+  <text x="197" y="324" class="tab" text-anchor="middle">예외의 비용 — 같은 취소 요청이 두 번 들어오면</text>
+  <circle cx="196" cy="356" r="10" fill="#111827"/><text x="196" y="360" class="num" text-anchor="middle" style="font-size: 11px">1</text>
+  <text x="211" y="361" class="step">첫 번째 요청</text>
+  <circle cx="334" cy="356" r="10" fill="#111827"/><text x="334" y="360" class="num" text-anchor="middle" style="font-size: 11px">2</text>
+  <text x="349" y="361" class="step">결제 상태</text>
+  <circle cx="472" cy="356" r="10" fill="#111827"/><text x="472" y="360" class="num" text-anchor="middle" style="font-size: 11px">3</text>
+  <text x="487" y="361" class="step">같은 요청 다시</text>
+  <circle cx="614" cy="356" r="10" fill="#111827"/><text x="614" y="360" class="num" text-anchor="middle" style="font-size: 11px">4</text>
+  <text x="629" y="361" class="step">응답</text>
+  <line x1="180" y1="374" x2="735" y2="374" stroke="#c4c8ce" stroke-width="1.2" marker-end="url(#ag)"/>
+  <g transform="translate(24,400)"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+  <text x="64" y="412" class="lane">취소 요청</text>
+  <text x="64" y="430" class="s" style="font-size: 11.5px">네트워크 문제로 두 번</text>
+  <rect x="184" y="390" width="124" height="52" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="246" y="412" class="t13 m" text-anchor="middle" style="font-size: 13px">cancel()</text>
+  <text x="246" y="430" class="s" text-anchor="middle">APPROVED 결제</text>
+  <rect x="322" y="390" width="124" height="52" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <use href="#vmark" x="446" y="390"/>
+  <text x="384" y="412" class="okt m" text-anchor="middle" style="font-size: 10.5px">APPROVAL_CANCELED</text>
+  <text x="384" y="430" class="s" text-anchor="middle">취소 완료</text>
+  <rect x="460" y="390" width="124" height="52" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="522" y="412" class="t13 m" text-anchor="middle" style="font-size: 13px">cancel()</text>
+  <text x="522" y="430" class="s" text-anchor="middle">두 번째 요청</text>
+  <rect x="602" y="390" width="124" height="52" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xmark" x="726" y="390"/>
+  <text x="664" y="412" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
+  <text x="664" y="430" class="bads" text-anchor="middle">이미 취소된 상태</text>
+  <line x1="308" y1="416" x2="320" y2="416" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="446" y1="416" x2="458" y2="416" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="584" y1="416" x2="600" y2="416" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="32" y="478" class="badt m" style="font-size: 12.5px; font-weight: 400">Cannot CANCEL a payment in APPROVAL_CANCELED status.</text>
+  <text x="32" y="504" class="s">이미 목표 상태에 있는 같은 요청을 성공으로 응답하려면 ‘같은 요청인지’ 판단 기준이 필요해 3장에서 다룹니다.</text>
 </svg>

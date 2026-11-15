@@ -1,90 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 344" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
-  <title>상태 컬럼 저장 방식 비교 — V1 코드가 APPROVED를 저장하면 ORDINAL 컬럼에는 1, varchar 컬럼에는 APPROVED가 들어가고, AUTHENTICATED를 끼워 넣은 V2 코드가 읽으면 ORDINAL은 AUTHENTICATED로, varchar는 APPROVED로 읽히는 그림</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 336" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>상태 컬럼 저장 — V1 코드가 APPROVED를 저장하면 ORDINAL 컬럼에는 1, varchar 컬럼에는 APPROVED가 들어가고, V2 코드가 읽으면 ORDINAL은 AUTHENTICATED로, varchar는 APPROVED로 읽히는 그림</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .subc { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
-    .lbl { font-family: Menlo, Consolas, monospace; font-size: 11px; fill: #6b7280; }
-    .step { font-size: 12px; fill: #9ca3af; }
-    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
-    .sub { font-size: 12px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .st { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .val { font-size: 12.5px; fill: #4b5563; }
-    .db { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .term { fill: #f3f4f6; stroke: #374151; stroke-width: 2.6; }
-    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
-    .track { fill: #ffffff; stroke: #eceef1; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .waitt { font-size: 12.5px; fill: #6b7280; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .t13 { font-size: 13.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .step { font-size: 12.5px; font-weight: 700; fill: #374151; }
+    .lane { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
     .note { font-size: 12.5px; fill: #b91c1c; }
     .gnote { font-size: 12.5px; fill: #15803d; }
+    .mute { font-size: 12px; fill: #6b7280; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
   </defs>
-  <rect width="760" height="344" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="324" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">상태 컬럼 저장 — V1이 저장한 행을 V2가 읽으면</text>
-  <text x="30" y="70" class="code">V1: READY(0) APPROVED(1) CAPTURED(2) CANCELED(3)</text>
-  <text x="30" y="90" class="code">V2: READY(0) AUTHENTICATED(1) APPROVED(2) CAPTURED(3) CANCELED(4)</text>
-
-  <text x="235" y="122" class="step" text-anchor="middle">① V1 코드가 저장</text>
-  <text x="440" y="122" class="step" text-anchor="middle">② 컬럼에 들어간 값</text>
-  <text x="645" y="122" class="step" text-anchor="middle">③ V2 코드가 읽음</text>
-  <line x1="160" y1="130" x2="722" y2="130" class="axis" marker-end="url(#ar)"/>
-
-  <!-- ORDINAL -->
-  <text x="30" y="162" class="lane">ORDINAL</text>
-  <text x="30" y="180" class="sub">순서 번호</text>
-  <rect x="150" y="140" width="585" height="52" rx="6" class="track"/>
-  <rect x="160" y="142" width="150" height="48" rx="8" class="box"/>
-  <text x="235" y="162" class="op" text-anchor="middle">APPROVED</text>
-  <text x="235" y="181" class="val" text-anchor="middle">승인된 결제</text>
-  <rect x="365" y="142" width="150" height="48" rx="8" class="dbbox"/>
-  <text x="440" y="162" class="db" text-anchor="middle">1</text>
-  <text x="440" y="181" class="val" text-anchor="middle">숫자로 저장</text>
-  <rect x="570" y="142" width="150" height="48" rx="8" class="bad"/>
-  <text x="645" y="162" class="badc" text-anchor="middle">AUTHENTICATED</text>
-  <text x="645" y="181" class="note" text-anchor="middle">오류 없이 잘못 읽힘</text>
-  <line x1="310" y1="166" x2="363" y2="166" class="flow" marker-end="url(#ar)"/>
+  <rect width="760" height="336" fill="#ffffff"/>
+  <text x="24" y="30" class="h">상태 컬럼 저장 — V1이 저장한 행을 V2가 읽으면</text>
+  <text x="24" y="58" class="s m" style="font-size: 12.5px">V1: READY(0) APPROVED(1) CAPTURED(2) CANCELED(3)</text>
+  <rect x="119" y="64" width="124" height="19" rx="4" fill="#fdf3d7" stroke="#d4a845" stroke-width="1"/>
+  <text x="24" y="78" class="s m" style="font-size: 12.5px">V2: READY(0) AUTHENTICATED(1) APPROVED(2) CAPTURED(3) CANCELED(4)</text>
+  <circle cx="179" cy="108" r="10" fill="#111827"/><text x="179" y="112" class="num" text-anchor="middle" style="font-size: 11px">1</text>
+  <text x="194" y="113" class="step">V1 코드가 저장</text>
+  <circle cx="384" cy="108" r="10" fill="#111827"/><text x="384" y="112" class="num" text-anchor="middle" style="font-size: 11px">2</text>
+  <text x="399" y="113" class="step">컬럼에 들어간 값</text>
+  <circle cx="589" cy="108" r="10" fill="#111827"/><text x="589" y="112" class="num" text-anchor="middle" style="font-size: 11px">3</text>
+  <text x="604" y="113" class="step">V2 코드가 읽음</text>
+  <line x1="150" y1="126" x2="735" y2="126" stroke="#c4c8ce" stroke-width="1.2" marker-end="url(#ag)"/>
+  <rect x="150" y="136" width="588" height="60" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <g transform="translate(20,146)"><rect x="0" y="0" width="28" height="26" rx="5" fill="#fde68a" class="o"/><text x="14" y="18" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle" font-family="Menlo, Consolas, monospace">#</text></g>
+  <text x="58" y="162" class="lane">ORDINAL</text>
+  <text x="58" y="180" class="s">순서 번호</text>
+  <rect x="160" y="142" width="150" height="48" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="235" y="162" class="t m" text-anchor="middle" style="font-size: 13px">APPROVED</text>
+  <text x="235" y="180" class="s" text-anchor="middle">승인된 결제</text>
+  <rect x="365" y="142" width="150" height="48" rx="8" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <g transform="translate(377,151)"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+  <text x="458" y="162" class="t m" text-anchor="middle" style="font-size: 13.5px">1</text>
+  <text x="458" y="180" class="s" text-anchor="middle">숫자로 저장</text>
+  <rect x="570" y="142" width="150" height="48" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xmark" x="720" y="142"/>
+  <text x="645" y="162" class="badt m" text-anchor="middle" style="font-size: 13px">AUTHENTICATED</text>
+  <text x="645" y="180" class="bads" text-anchor="middle" style="font-size: 12px">오류 없이 잘못 읽힘</text>
+  <line x1="310" y1="166" x2="363" y2="166" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
   <line x1="515" y1="166" x2="568" y2="166" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
-
-  <!-- varchar -->
-  <text x="30" y="226" class="lane">varchar</text>
-  <text x="30" y="244" class="sub">enum 이름</text>
-  <rect x="150" y="204" width="585" height="52" rx="6" class="track"/>
-  <rect x="160" y="206" width="150" height="48" rx="8" class="box"/>
-  <text x="235" y="226" class="op" text-anchor="middle">APPROVED</text>
-  <text x="235" y="245" class="val" text-anchor="middle">승인된 결제</text>
-  <rect x="365" y="206" width="150" height="48" rx="8" class="dbbox"/>
-  <text x="440" y="226" class="db" text-anchor="middle">'APPROVED'</text>
-  <text x="440" y="245" class="val" text-anchor="middle">문자열로 저장</text>
-  <rect x="570" y="206" width="150" height="48" rx="8" class="ok"/>
-  <text x="645" y="226" class="okc" text-anchor="middle">APPROVED</text>
-  <text x="645" y="245" class="gnote" text-anchor="middle">그대로 읽힘</text>
-  <line x1="310" y1="230" x2="363" y2="230" class="flow" marker-end="url(#ar)"/>
-  <line x1="515" y1="230" x2="568" y2="230" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-
-  <text x="30" y="290" class="note">ORDINAL — 중간에 상태가 추가되면 기존 행의 숫자 1이 다른 상태를 가리킵니다.</text>
-  <text x="30" y="314" class="gnote">varchar — 이름으로 저장되어 enum 순서가 바뀌어도 의미가 유지됩니다.</text>
+  <rect x="150" y="204" width="588" height="60" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <g transform="translate(20,214)"><rect x="0" y="0" width="28" height="26" rx="5" fill="#bfdbfe" class="o"/><text x="14" y="18" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle" font-family="Menlo, Consolas, monospace">Aa</text></g>
+  <text x="58" y="230" class="lane">varchar</text>
+  <text x="58" y="248" class="s">enum 이름</text>
+  <rect x="160" y="210" width="150" height="48" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="235" y="230" class="t m" text-anchor="middle" style="font-size: 13px">APPROVED</text>
+  <text x="235" y="248" class="s" text-anchor="middle">승인된 결제</text>
+  <rect x="365" y="210" width="150" height="48" rx="8" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <g transform="translate(377,219)"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+  <text x="458" y="230" class="t m" text-anchor="middle" style="font-size: 13.5px">'APPROVED'</text>
+  <text x="458" y="248" class="s" text-anchor="middle">문자열로 저장</text>
+  <rect x="570" y="210" width="150" height="48" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <use href="#vmark" x="720" y="210"/>
+  <text x="645" y="230" class="okt m" text-anchor="middle" style="font-size: 13px">APPROVED</text>
+  <text x="645" y="248" class="oks" text-anchor="middle" style="font-size: 12px">그대로 읽힘</text>
+  <line x1="310" y1="234" x2="363" y2="234" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ag)"/>
+  <line x1="515" y1="234" x2="568" y2="234" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="24" y="300" class="note">ORDINAL — 중간에 상태가 추가되면 기존 행의 숫자 1이 다른 상태를 가리킵니다.</text>
+  <text x="24" y="324" class="gnote">varchar — 이름으로 저장되어 <tspan font-family="Menlo, Consolas, monospace">enum</tspan> 순서가 바뀌어도 의미가 유지됩니다.</text>
 </svg>

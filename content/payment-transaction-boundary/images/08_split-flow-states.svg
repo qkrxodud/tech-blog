@@ -1,109 +1,168 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
-  <title>나눈 구조의 승인 흐름과 실패 지점별로 남는 상태 — 별도 요청인 결제 준비(READY) 뒤, 승인 요청에서 인증 기록 트랜잭션(AUTHENTICATED 커밋), 트랜잭션 밖 PG 승인 호출, 결과 기록 트랜잭션 순으로 진행하며, PG가 승인하면 APPROVED, 거절하면 APPROVAL_FAILED가 남고, PG 답이 시간 안에 오지 않으면 AUTHENTICATED로 남은 채 504로 답하고, PG 승인 뒤 결과 기록이 실패하면 AUTHENTICATED로 남고 Mock PG에는 승인이 남는 그림</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 570" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>나눈 구조의 승인 흐름과 실패 지점별로 남는 상태 — 별도 요청인 결제 준비(READY) 뒤, 승인 요청에서 인증 기록 트랜잭션(AUTHENTICATED 커밋), 트랜잭션 밖 PG 승인 호출, 결과 기록 트랜잭션 순으로 진행하며, PG가 승인하면 APPROVED, 거절하면 APPROVAL_FAILED가 남고 둘 다 200으로 답하고, PG 답이 시간 안에 오지 않으면 AUTHENTICATED로 남은 채 504로 답하고, PG 승인 뒤 결과 기록이 실패하면 AUTHENTICATED로 남고 Mock PG에는 승인이 남는 그림</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .step { font-size: 13.5px; fill: #9ca3af; }
-    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
-    .sub { font-size: 13.5px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .val { font-size: 13.5px; fill: #4b5563; }
-    .db { font-size: 14px; font-weight: 700; fill: #374151; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
-    .track { fill: #ffffff; stroke: #eceef1; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .waitt { font-size: 13.5px; fill: #6b7280; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okw { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
-    .note { font-size: 13.5px; fill: #b91c1c; }
-    .gnote { font-size: 13.5px; fill: #15803d; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .ax { font-size: 12.5px; fill: #4b5563; font-weight: 700; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <!-- 자물쇠: 트랜잭션·연결을 쥐고 있음 -->
+    <g id="lock">
+      <path d="M-5.5,-3 v-4 a5.5,5.5 0 0 1 11,0 v4" fill="none" stroke="#1f2937" stroke-width="2.2"/>
+      <rect x="-8.5" y="-3" width="17" height="13" rx="3" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+      <circle cx="0" cy="3" r="1.8" fill="#1f2937"/>
+    </g>
+    <!-- 두 상태 칩 + 화살표: 상태 전이 -->
+    <g id="chips">
+      <rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+      <rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M14,11 h6 M17,8 l3,3 l-3,3" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- 종이비행기: 바깥 호출 -->
+    <g id="plane">
+      <path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+    </g>
+    <!-- 체크 문서: 기록 -->
+    <g id="doc">
+      <path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M18,0 v8 h8" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+      <circle cx="20" cy="26" r="8" fill="#22c55e" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <!-- DB 원통 -->
+    <g id="db">
+      <path d="M0,4 v16 a11,4 0 0 0 22,0 v-16 a11,4 0 0 1 -22,0 z" fill="#60a5fa" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M0,12 a11,4 0 0 0 22,0" fill="none" stroke="#1f2937" stroke-width="1.5"/>
+      <ellipse cx="11" cy="4" rx="11" ry="4" fill="#bfdbfe" stroke="#1f2937" stroke-width="1.5"/>
+    </g>
+    <!-- 서버 두 칸 + 불빛: PG -->
+    <g id="srv">
+      <rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" stroke="#1f2937" stroke-width="1.5"/>
+      <rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" stroke="#1f2937" stroke-width="1.5"/>
+      <circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/>
+      <circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/>
+      <path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <!-- 시계: 시간 제한·대기 -->
+    <g id="clock">
+      <circle cx="13" cy="13" r="12" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M13,6 V13 L18,16" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
   </defs>
-  <rect width="760" height="420" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="400" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">나눈 구조의 승인 흐름 — 실패 지점별로 남는 상태</text>
 
-  <rect x="30" y="62" width="160" height="52" rx="8" class="box"/>
-  <text x="110" y="83" class="t" text-anchor="middle">① 결제 준비</text>
-  <text x="110" y="102" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">READY</tspan> 커밋</text>
-  <rect x="210" y="62" width="160" height="52" rx="8" class="hold"/>
-  <text x="290" y="83" class="t" text-anchor="middle">② 인증 기록</text>
-  <text x="290" y="102" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">AUTHENTICATED</tspan> 커밋</text>
-  <rect x="390" y="62" width="160" height="52" rx="8" class="box"/>
-  <text x="470" y="83" class="t" text-anchor="middle">③ PG 승인 호출</text>
-  <text x="470" y="102" class="val" text-anchor="middle">트랜잭션 밖</text>
-  <rect x="570" y="62" width="160" height="52" rx="8" class="hold"/>
-  <text x="650" y="83" class="t" text-anchor="middle">④ 결과 기록</text>
-  <text x="650" y="102" class="val" text-anchor="middle">결제를 다시 읽고 커밋</text>
-  <!-- ①은 승인과 다른 요청(POST /api/v1/payments)이라 점선으로 잇는다 -->
-  <line x1="190" y1="88" x2="208" y2="88" class="flow" stroke-dasharray="3 3" marker-end="url(#ar)"/>
-  <line x1="370" y1="88" x2="388" y2="88" class="flow" marker-end="url(#ar)"/>
-  <line x1="550" y1="88" x2="568" y2="88" class="flow" marker-end="url(#ar)"/>
-  <text x="110" y="132" class="sub" text-anchor="middle">준비 API(별도 요청)</text>
-  <text x="290" y="132" class="sub" text-anchor="middle">트랜잭션 1</text>
-  <text x="470" y="132" class="sub" text-anchor="middle">연결을 쓰지 않음</text>
-  <text x="650" y="132" class="sub" text-anchor="middle">트랜잭션 2</text>
-
-  <line x1="30" y1="150" x2="730" y2="150" class="axis"/>
-  <text x="30" y="176" class="step">어디서 끝났는지</text>
-  <text x="420" y="176" class="step" text-anchor="middle">남는 결제 상태</text>
-  <text x="520" y="176" class="step">응답과 PG 쪽</text>
-
-  <!-- 1. 승인 -->
-  <rect x="30" y="186" width="290" height="48" rx="8" class="box"/>
-  <text x="175" y="206" class="t" text-anchor="middle">PG 승인</text>
-  <text x="175" y="225" class="val" text-anchor="middle">④ 결과 기록까지 성공</text>
-  <line x1="320" y1="210" x2="338" y2="210" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <rect x="340" y="190" width="160" height="40" rx="8" class="ok"/>
-  <text x="420" y="215" class="okc" text-anchor="middle">APPROVED</text>
-  <text x="520" y="206" class="gnote">200 응답</text>
-  <text x="520" y="225" class="gnote">승인 완료</text>
-
-  <!-- 2. 거절 -->
-  <rect x="30" y="244" width="290" height="48" rx="8" class="box"/>
-  <text x="175" y="264" class="t" text-anchor="middle">PG 거절</text>
-  <text x="175" y="283" class="val" text-anchor="middle">④ 거절도 결과로 기록하고 커밋</text>
-  <line x1="320" y1="268" x2="338" y2="268" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <rect x="340" y="248" width="160" height="40" rx="8" class="ok"/>
-  <text x="420" y="273" class="okc" text-anchor="middle">APPROVAL_FAILED</text>
-  <text x="520" y="264" class="gnote">200 응답</text>
-  <text x="520" y="283" class="gnote"><tspan font-family="Menlo, Consolas, monospace">status</tspan>로 거절을 알림</text>
-
-  <!-- 3. 시간 초과 -->
-  <rect x="30" y="302" width="290" height="48" rx="8" class="bad"/>
-  <text x="175" y="322" class="badt" text-anchor="middle">PG 답 없음</text>
-  <text x="175" y="341" class="note" text-anchor="middle">③ 읽기 시간 초과로 기다리기를 그만둠</text>
-  <line x1="320" y1="326" x2="338" y2="326" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
-  <rect x="340" y="306" width="160" height="40" rx="8" class="bad"/>
-  <text x="420" y="331" class="badc" text-anchor="middle">AUTHENTICATED</text>
-  <text x="520" y="322" class="note">504 응답, 결과를 모름</text>
-  <text x="520" y="341" class="note" style="font-family: Menlo, Consolas, monospace; font-size: 12.5px">PAYMENT_GATEWAY_NO_RESPONSE</text>
-
-  <!-- 4. 기록 실패 -->
-  <rect x="30" y="360" width="290" height="40" rx="8" class="bad"/>
-  <text x="175" y="385" class="badt" text-anchor="middle">PG 승인 뒤 ④ 결과 기록 실패</text>
-  <line x1="320" y1="380" x2="338" y2="380" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
-  <rect x="340" y="360" width="160" height="40" rx="8" class="bad"/>
-  <text x="420" y="385" class="badc" text-anchor="middle">AUTHENTICATED</text>
-  <text x="520" y="385" class="note">Mock PG에는 승인 1건이 남음</text>
+  <rect width="760" height="570" fill="#ffffff"/>
+  <text x="24" y="32" class="h">나눈 구조의 승인 흐름 — 실패 지점별로 남는 상태</text>
+  <g transform="translate(0,10)">
+  <rect x="60" y="46" width="280" height="50" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <rect x="60" y="46" width="280" height="50" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0;0.005;0.04;0.05;1"/></rect>
+  <circle cx="60" cy="46" r="12" fill="#111827"/><text x="60" y="50" class="num" text-anchor="middle">1</text>
+  <g transform="translate(76,56)"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+  <text x="122" y="67" class="t">결제 준비</text>
+  <text x="200" y="67" class="lbl">별도 요청</text>
+  <text x="122" y="85" class="s"><tspan font-family="Menlo, Consolas, monospace" font-size="11px">POST /api/v1/payments</tspan> → <tspan font-family="Menlo, Consolas, monospace" font-size="11px">READY</tspan> 커밋</text>
+  <line x1="200" y1="96" x2="200" y2="148" stroke="#1f2937" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#ak)"/>
+  <rect x="16" y="130" width="584" height="418" rx="16" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <rect x="352" y="118" width="232" height="24" rx="6" fill="#5b7194"/>
+  <text x="468" y="135" class="tab" text-anchor="middle">승인 요청 — <tspan font-family="Menlo, Consolas, monospace" font-size="11.5px">POST …/confirm</tspan></text>
+  <rect x="60" y="150" width="280" height="50" rx="10" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="60" y="150" width="280" height="50" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.0585;0.0635;0.1135;0.1235;1"/></rect>
+  <circle cx="60" cy="150" r="12" fill="#111827"/><text x="60" y="154" class="num" text-anchor="middle">2</text>
+  <use href="#chips" x="76" y="164"/>
+  <text x="122" y="171" class="t">인증 기록</text>
+  <text x="204" y="171" class="lbl">트랜잭션 1</text>
+  <text x="122" y="189" class="s"><tspan font-family="Menlo, Consolas, monospace" font-size="11.5px">AUTHENTICATED</tspan> 커밋</text>
+  <use href="#lock" x="318" y="172"/>
+  <line x1="200" y1="200" x2="200" y2="222" class="spine" marker-end="url(#ak)"/>
+  <rect x="60" y="224" width="280" height="50" rx="10" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/>
+  <rect x="60" y="224" width="280" height="50" rx="10" fill="none" stroke="#ea580c" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.0944;0.0994;0.553;0.563;1"/></rect>
+  <circle cx="60" cy="224" r="12" fill="#111827"/><text x="60" y="228" class="num" text-anchor="middle">3</text>
+  <g transform="translate(78,234)"><use href="#plane"/></g>
+  <text x="122" y="245" class="t">PG 승인 호출</text>
+  <text x="122" y="263" class="s">트랜잭션 밖 · 연결을 쓰지 않음</text>
+  <line x1="340" y1="240" x2="614" y2="240" stroke="#c2410c" stroke-width="1.5" class="run" marker-end="url(#aor)"/>
+  <text x="470" y="233" class="lbl" text-anchor="middle">승인 요청</text>
+  <line x1="614" y1="258" x2="342" y2="258" stroke="#c2410c" stroke-width="1.5" class="run" marker-end="url(#aor)"/>
+  <text x="470" y="274" class="lbl" text-anchor="middle">승인 / 거절</text>
+  <line x1="200" y1="274" x2="200" y2="298" class="spine" marker-end="url(#ak)"/>
+  <rect x="616" y="206" width="128" height="86" rx="12" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <rect x="616" y="206" width="128" height="86" rx="12" fill="none" stroke="#ea580c" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.3198;0.3248;0.4548;0.4648;1"/></rect>
+  <use href="#srv" x="662" y="214"/>
+  <text x="680" y="262" class="t" text-anchor="middle">Mock PG</text>
+  <text x="680" y="279" class="s" text-anchor="middle">외부 결제 대행</text>
+  <polygon points="200,300 360,330 200,360 40,330" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/>
+  <polygon points="200,300 360,330 200,360 40,330" fill="none" stroke="#d97706" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.6649;0.6699;0.7199;0.7299;1"/></polygon>
+  <use href="#clock" x="96" y="317"/>
+  <text x="212" y="328" class="t" text-anchor="middle" style="font-size: 13.5px">시간 안에 답이 왔나</text>
+  <text x="212" y="345" class="s" text-anchor="middle" style="font-size: 11px">읽기 시간 제한</text>
+  <path d="M360,330 L384,330" fill="none" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="372" y="296" class="bads" text-anchor="middle">시간 초과</text>
+  <rect x="386" y="303" width="210" height="54" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="404" y="318"/>
+  <text x="420" y="323" class="badt"><tspan font-family="Menlo, Consolas, monospace" font-size="12px">AUTHENTICATED</tspan> 그대로</text>
+  <text x="420" y="339" class="bads"><tspan font-family="Menlo, Consolas, monospace" font-size="11px">504</tspan> 응답, 결과를 모름</text>
+  <text x="420" y="352" class="bads m" style="font-size: 9.5px">PAYMENT_GATEWAY_NO_RESPONSE</text>
+  <line x1="200" y1="360" x2="200" y2="378" class="spine" marker-end="url(#ak)"/>
+  <text x="210" y="373" class="lbl">승인·거절로 답함</text>
+  <rect x="60" y="380" width="280" height="50" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <rect x="60" y="380" width="280" height="50" rx="10" fill="none" stroke="#16a34a" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.7062;0.7112;0.8;0.81;1"/></rect>
+  <circle cx="60" cy="380" r="12" fill="#111827"/><text x="60" y="384" class="num" text-anchor="middle">4</text>
+  <use href="#doc" x="80" y="388"/>
+  <text x="122" y="401" class="t">결과 기록</text>
+  <text x="204" y="401" class="lbl">트랜잭션 2</text>
+  <text x="122" y="419" class="s">결제를 다시 읽고 커밋</text>
+  <use href="#lock" x="318" y="402"/>
+  <path d="M340,405 L384,405" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <text x="362" y="398" class="oks" text-anchor="middle">승인</text>
+  <rect x="386" y="383" width="210" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <rect x="386" y="383" width="210" height="44" rx="8" fill="none" stroke="#16a34a" stroke-width="3" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.855;0.86;0.97;0.98;1"/></rect>
+  <use href="#vmark" x="404" y="405"/>
+  <text x="420" y="401" class="okt"><tspan font-family="Menlo, Consolas, monospace" font-size="12.5px">APPROVED</tspan></text>
+  <text x="420" y="418" class="oks">200 응답, 승인 완료</text>
+  <path d="M340,420 L384,452" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <text x="358" y="458" class="oks" text-anchor="middle">거절</text>
+  <rect x="386" y="437" width="210" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="404" y="459"/>
+  <text x="420" y="455" class="okt"><tspan font-family="Menlo, Consolas, monospace" font-size="12.5px">APPROVAL_FAILED</tspan></text>
+  <text x="420" y="472" class="oks">200 응답, <tspan font-family="Menlo, Consolas, monospace" font-size="11px">status</tspan>로 거절을 알림</text>
+  <path d="M290,430 V513 H384" fill="none" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="280" y="500" class="bads" text-anchor="end">PG 승인 뒤</text>
+  <text x="280" y="514" class="bads" text-anchor="end">기록 실패</text>
+  <rect x="386" y="491" width="210" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="404" y="513"/>
+  <text x="420" y="509" class="badt"><tspan font-family="Menlo, Consolas, monospace" font-size="12px">AUTHENTICATED</tspan> 그대로</text>
+  <text x="420" y="526" class="bads">Mock PG에는 승인 1건이 남음</text>
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M200,96 V240 H600 V258 H200 V405 H470"
+      keyPoints="0;0;0.0573;0.1044;0.401;0.401;0.7498;0.8042;1;1" keyTimes="0;0.02;0.0635;0.0994;0.3248;0.4048;0.6699;0.7112;0.86;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.015;0.02;0.86;0.875;1"/>
+  </g>
+  </g>
 </svg>

@@ -1,97 +1,131 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 412" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
   <title>거절을 알리는 네 방식 비교 — 예외로 알리고 롤백하면 거절 기록이 사라져 READY로 남은 채 422로 답하고, noRollbackFor를 붙이면 APPROVAL_FAILED가 커밋되지만 트랜잭션 하나로 묶은 구조라 연결 대기 테스트는 실패하며, 거절을 기록하고 커밋한 뒤 422로 알리는 방식은 구현해 돌려 보지 않았고, 이 장에서 고른 방식은 거절도 결과로 기록하고 커밋한 뒤 200 응답의 status에 APPROVAL_FAILED를 담는 그림</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .step { font-size: 13.5px; fill: #9ca3af; }
-    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
-    .sub { font-size: 13.5px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .val { font-size: 13.5px; fill: #4b5563; }
-    .db { font-size: 14px; font-weight: 700; fill: #374151; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
-    .track { fill: #ffffff; stroke: #eceef1; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .waitt { font-size: 13.5px; fill: #6b7280; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okw { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
-    .note { font-size: 13.5px; fill: #b91c1c; }
-    .gnote { font-size: 13.5px; fill: #15803d; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .ax { font-size: 12.5px; fill: #4b5563; font-weight: 700; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <!-- 자물쇠: 트랜잭션·연결을 쥐고 있음 -->
+    <g id="lock">
+      <path d="M-5.5,-3 v-4 a5.5,5.5 0 0 1 11,0 v4" fill="none" stroke="#1f2937" stroke-width="2.2"/>
+      <rect x="-8.5" y="-3" width="17" height="13" rx="3" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+      <circle cx="0" cy="3" r="1.8" fill="#1f2937"/>
+    </g>
+    <!-- 두 상태 칩 + 화살표: 상태 전이 -->
+    <g id="chips">
+      <rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+      <rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M14,11 h6 M17,8 l3,3 l-3,3" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- 종이비행기: 바깥 호출 -->
+    <g id="plane">
+      <path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+    </g>
+    <!-- 체크 문서: 기록 -->
+    <g id="doc">
+      <path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M18,0 v8 h8" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+      <circle cx="20" cy="26" r="8" fill="#22c55e" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <!-- DB 원통 -->
+    <g id="db">
+      <path d="M0,4 v16 a11,4 0 0 0 22,0 v-16 a11,4 0 0 1 -22,0 z" fill="#60a5fa" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M0,12 a11,4 0 0 0 22,0" fill="none" stroke="#1f2937" stroke-width="1.5"/>
+      <ellipse cx="11" cy="4" rx="11" ry="4" fill="#bfdbfe" stroke="#1f2937" stroke-width="1.5"/>
+    </g>
+    <!-- 서버 두 칸 + 불빛: PG -->
+    <g id="srv">
+      <rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" stroke="#1f2937" stroke-width="1.5"/>
+      <rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" stroke="#1f2937" stroke-width="1.5"/>
+      <circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/>
+      <circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/>
+      <path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <!-- 시계: 시간 제한·대기 -->
+    <g id="clock">
+      <circle cx="13" cy="13" r="12" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M13,6 V13 L18,16" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
   </defs>
-  <rect width="760" height="440" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">거절을 어떻게 알릴까 — 거절 기록이 남는가</text>
-  <text x="160" y="76" class="step" text-anchor="middle">알리는 방식</text>
-  <text x="400" y="76" class="step" text-anchor="middle">DB에 남는 결제 상태</text>
-  <text x="510" y="76" class="step">API 응답과 남는 문제</text>
-  <line x1="30" y1="84" x2="730" y2="84" class="axis"/>
 
-  <!-- A: 예외 + 롤백 -->
-  <rect x="30" y="96" width="260" height="56" rx="8" class="box"/>
-  <text x="160" y="118" class="t" text-anchor="middle">예외로 알리고 롤백</text>
-  <text x="160" y="139" class="val" text-anchor="middle">출발 코드, 비교 A</text>
-  <line x1="290" y1="124" x2="318" y2="124" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
-  <rect x="320" y="100" width="160" height="48" rx="8" class="bad"/>
-  <text x="400" y="120" class="badc" text-anchor="middle">READY</text>
-  <text x="400" y="139" class="note" text-anchor="middle">인증·거절 기록 롤백</text>
-  <text x="510" y="119" class="note">422 응답(전역 예외 처리기)</text>
-  <text x="510" y="139" class="note">DB에는 거절된 흔적이 없음</text>
-
-  <!-- A': noRollbackFor -->
-  <rect x="30" y="164" width="260" height="56" rx="8" class="box"/>
-  <text x="160" y="186" class="t" text-anchor="middle">예외로 알리되 롤백하지 않기</text>
-  <text x="160" y="207" class="val" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace">noRollbackFor</tspan>, 비교 A'</text>
-  <line x1="290" y1="192" x2="318" y2="192" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <rect x="320" y="168" width="160" height="48" rx="8" class="ok"/>
-  <text x="400" y="188" class="okc" text-anchor="middle">APPROVAL_FAILED</text>
-  <text x="400" y="207" class="gnote" text-anchor="middle">거절 기록 커밋</text>
-  <text x="510" y="187" class="note">연결 대기 테스트는 실패</text>
-  <text x="510" y="207" class="note">트랜잭션 하나로 묶은 구조 그대로</text>
-
-  <!-- 기록 후 422: 구현하지 않음 -->
-  <rect x="30" y="232" width="260" height="56" rx="8" class="wait"/>
-  <text x="160" y="254" class="waitt" text-anchor="middle" style="font-weight: 700">거절을 기록·커밋한 뒤 422로 알리기</text>
-  <text x="160" y="275" class="waitt" text-anchor="middle">구현해서 돌려 보지 않음</text>
-  <line x1="290" y1="260" x2="318" y2="260" class="flow" stroke-dasharray="3 3" marker-end="url(#ar)"/>
-  <rect x="320" y="236" width="160" height="48" rx="8" class="wait"/>
-  <text x="400" y="256" class="waitt" text-anchor="middle">같은 구조에서</text>
-  <text x="400" y="275" class="waitt" text-anchor="middle">할 수 있는 선택지</text>
-  <text x="510" y="255" class="waitt">422면 HTTP 상태로 거절을 알 수 있음</text>
-  <text x="510" y="275" class="waitt">거절은 정상 처리된 결과로 보아 제외</text>
-
-  <!-- 고른 방식 -->
-  <rect x="30" y="300" width="260" height="56" rx="8" class="ok"/>
-  <text x="160" y="322" class="okt" text-anchor="middle">거절도 결과로 기록·커밋</text>
-  <text x="160" y="343" class="gnote" text-anchor="middle">이 장에서 고른 방식</text>
-  <line x1="290" y1="328" x2="318" y2="328" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
-  <rect x="320" y="304" width="160" height="48" rx="8" class="ok"/>
-  <text x="400" y="324" class="okc" text-anchor="middle">APPROVAL_FAILED</text>
-  <text x="400" y="343" class="gnote" text-anchor="middle">거절 기록 커밋</text>
-  <text x="510" y="323" class="gnote">200 응답, <tspan font-family="Menlo, Consolas, monospace">status</tspan>에 담아 알림</text>
-  <text x="510" y="343" class="val">부르는 쪽은 반드시 <tspan font-family="Menlo, Consolas, monospace">status</tspan>를 봐야 함</text>
-
-  <line x1="30" y1="376" x2="730" y2="376" stroke="#e5e7eb"/>
-  <rect x="30" y="392" width="28" height="18" rx="4" class="wait"/>
-  <text x="68" y="406" class="sub">점선은 구현하지 않은 선택지 — 실행 결과가 아니라 설계상 그렇게 된다는 뜻</text>
+  <rect width="760" height="412" fill="#ffffff"/>
+  <text x="24" y="32" class="h">거절을 어떻게 알릴까 — 거절 기록이 남는가</text>
+  <text x="158" y="64" class="ax" text-anchor="middle">알리는 방식</text>
+  <text x="403" y="64" class="ax" text-anchor="middle">DB에 남는 결제 상태</text>
+  <text x="506" y="64" class="ax">API 응답과 남는 문제</text>
+  <line x1="24" y1="74" x2="736" y2="74" stroke="#c4c8ce" stroke-width="1.2"/>
+  <rect x="26" y="88" width="264" height="56" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="158" y="112" class="t" text-anchor="middle" style="font-size: 14px">예외로 알리고 롤백</text>
+  <text x="158" y="131" class="s" text-anchor="middle">출발 코드, 비교 A</text>
+  <circle cx="26" cy="88" r="11" fill="#111827"/><text x="26" y="92" class="num" text-anchor="middle">1</text>
+  <line x1="290" y1="116" x2="318" y2="116" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="320" y="92" width="166" height="48" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xmark" x="338" y="116"/>
+  <text x="354" y="112" class="badt"><tspan font-family="Menlo, Consolas, monospace" font-size="12.5px">READY</tspan></text>
+  <text x="354" y="130" class="bads">인증·거절 기록 롤백</text>
+  <text x="506" y="112" class="badt" style="font-size: 12.5px">422 응답(전역 예외 처리기)</text>
+  <text x="506" y="131" class="bads" style="font-size: 12px">DB에는 거절된 흔적이 없음</text>
+  <rect x="26" y="156" width="264" height="56" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="158" y="180" class="t" text-anchor="middle" style="font-size: 14px">예외로 알리되 롤백하지 않기</text>
+  <text x="158" y="199" class="s" text-anchor="middle"><tspan font-family="Menlo, Consolas, monospace" font-size="11.5px">noRollbackFor</tspan>, 비교 A'</text>
+  <circle cx="26" cy="156" r="11" fill="#111827"/><text x="26" y="160" class="num" text-anchor="middle">2</text>
+  <line x1="290" y1="184" x2="318" y2="184" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <rect x="320" y="160" width="166" height="48" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <use href="#vmark" x="338" y="184"/>
+  <text x="354" y="180" class="okt"><tspan font-family="Menlo, Consolas, monospace" font-size="12.5px">APPROVAL_FAILED</tspan></text>
+  <text x="354" y="198" class="oks">거절 기록 커밋</text>
+  <text x="506" y="180" class="badt" style="font-size: 12.5px">연결 대기 테스트는 실패</text>
+  <text x="506" y="199" class="bads" style="font-size: 12px">트랜잭션 하나로 묶은 구조 그대로</text>
+  <rect x="26" y="224" width="264" height="56" rx="10" fill="#ffffff" stroke="#9ca3af" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <text x="158" y="248" class="t" text-anchor="middle" style="font-size: 13.5px; fill: #6b7280">거절을 기록·커밋한 뒤 422로 알리기</text>
+  <text x="158" y="267" class="s" text-anchor="middle" style="fill: #6b7280">구현해서 돌려 보지 않음</text>
+  <circle cx="26" cy="224" r="11" fill="#111827"/><text x="26" y="228" class="num" text-anchor="middle">3</text>
+  <line x1="290" y1="252" x2="318" y2="252" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="3 3" marker-end="url(#ak)"/>
+  <rect x="320" y="228" width="166" height="48" rx="10" fill="#ffffff" stroke="#9ca3af" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <text x="403" y="248" class="s" text-anchor="middle" style="fill: #6b7280">같은 구조에서</text>
+  <text x="403" y="266" class="s" text-anchor="middle" style="fill: #6b7280">할 수 있는 선택지</text>
+  <text x="506" y="248" class="s" style="fill: #6b7280">422면 HTTP 상태로 거절을 알 수 있음</text>
+  <text x="506" y="267" class="s" style="fill: #6b7280">거절은 정상 처리된 결과로 보아 제외</text>
+  <rect x="26" y="292" width="264" height="56" rx="10" fill="#e3f3e6" stroke="#16a34a" stroke-width="2"/>
+  <text x="158" y="316" class="okt" text-anchor="middle" style="font-size: 14px">거절도 결과로 기록·커밋</text>
+  <text x="158" y="335" class="oks" text-anchor="middle" style="font-size: 12px">이 장에서 고른 방식</text>
+  <circle cx="26" cy="292" r="11" fill="#111827"/><text x="26" y="296" class="num" text-anchor="middle">4</text>
+  <line x1="290" y1="320" x2="318" y2="320" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <rect x="320" y="296" width="166" height="48" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <use href="#vmark" x="338" y="320"/>
+  <text x="354" y="316" class="okt"><tspan font-family="Menlo, Consolas, monospace" font-size="12.5px">APPROVAL_FAILED</tspan></text>
+  <text x="354" y="334" class="oks">거절 기록 커밋</text>
+  <text x="506" y="316" class="okt" style="font-size: 12.5px">200 응답, <tspan font-family="Menlo, Consolas, monospace" font-size="12px">status</tspan>에 담아 알림</text>
+  <text x="506" y="335" class="s">부르는 쪽은 반드시 <tspan font-family="Menlo, Consolas, monospace" font-size="11.5px">status</tspan>를 봐야 함</text>
+  <line x1="24" y1="366" x2="736" y2="366" stroke="#e5e7eb"/>
+  <rect x="26" y="380" width="28" height="18" rx="4" fill="#ffffff" stroke="#9ca3af" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <text x="64" y="394" class="s">점선은 구현하지 않은 선택지 — 실행 결과가 아니라 설계상 그렇게 된다는 뜻</text>
 </svg>

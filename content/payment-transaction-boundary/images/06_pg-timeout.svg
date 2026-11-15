@@ -1,101 +1,178 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 512" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 490" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
   <title>PG 호출 시간 제한이 없을 때와 있을 때 PG가 늦게 답하면 요청이 끝나는 모습 비교 — 시간 제한이 없는 출발 코드는 3초 뒤 답하는 PG를 DB 연결을 쥔 채 끝까지 기다려 약 3초 뒤 승인으로 끝나고, 읽기 시간 제한을 1초로 두면 1초에 기다리기를 그만두고 결제를 AUTHENTICATED로 둔 채 504 PAYMENT_GATEWAY_NO_RESPONSE로 답하지만 1.5초 뒤 승인하는 Mock PG에는 그 뒤에 승인이 1건 남는 그림</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .step { font-size: 13.5px; fill: #9ca3af; }
-    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
-    .sub { font-size: 13.5px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .val { font-size: 13.5px; fill: #4b5563; }
-    .db { font-size: 14px; font-weight: 700; fill: #374151; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
-    .track { fill: #ffffff; stroke: #eceef1; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .waitt { font-size: 13.5px; fill: #6b7280; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okw { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
-    .note { font-size: 13.5px; fill: #b91c1c; }
-    .gnote { font-size: 13.5px; fill: #15803d; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .ax { font-size: 12.5px; fill: #4b5563; font-weight: 700; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <!-- 자물쇠: 트랜잭션·연결을 쥐고 있음 -->
+    <g id="lock">
+      <path d="M-5.5,-3 v-4 a5.5,5.5 0 0 1 11,0 v4" fill="none" stroke="#1f2937" stroke-width="2.2"/>
+      <rect x="-8.5" y="-3" width="17" height="13" rx="3" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+      <circle cx="0" cy="3" r="1.8" fill="#1f2937"/>
+    </g>
+    <!-- 두 상태 칩 + 화살표: 상태 전이 -->
+    <g id="chips">
+      <rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+      <rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M14,11 h6 M17,8 l3,3 l-3,3" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- 종이비행기: 바깥 호출 -->
+    <g id="plane">
+      <path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+    </g>
+    <!-- 체크 문서: 기록 -->
+    <g id="doc">
+      <path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M18,0 v8 h8" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+      <circle cx="20" cy="26" r="8" fill="#22c55e" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <!-- DB 원통 -->
+    <g id="db">
+      <path d="M0,4 v16 a11,4 0 0 0 22,0 v-16 a11,4 0 0 1 -22,0 z" fill="#60a5fa" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M0,12 a11,4 0 0 0 22,0" fill="none" stroke="#1f2937" stroke-width="1.5"/>
+      <ellipse cx="11" cy="4" rx="11" ry="4" fill="#bfdbfe" stroke="#1f2937" stroke-width="1.5"/>
+    </g>
+    <!-- 서버 두 칸 + 불빛: PG -->
+    <g id="srv">
+      <rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" stroke="#1f2937" stroke-width="1.5"/>
+      <rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" stroke="#1f2937" stroke-width="1.5"/>
+      <circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/>
+      <circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/>
+      <path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <!-- 시계: 시간 제한·대기 -->
+    <g id="clock">
+      <circle cx="13" cy="13" r="12" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+      <path d="M13,6 V13 L18,16" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
   </defs>
-  <rect width="760" height="512" fill="#ffffff"/>
-  <!-- 패널 A: 시간 제한 없음. 1초 = 160px, 0초는 x=160 -->
-  <rect x="10" y="10" width="740" height="214" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">시간 제한 없음(출발 코드) — PG가 3초 뒤 답할 때까지 기다림</text>
-  <text x="160" y="72" class="step" text-anchor="middle">0초</text>
-  <text x="320" y="72" class="step" text-anchor="middle">1초</text>
-  <text x="480" y="72" class="step" text-anchor="middle">2초</text>
-  <text x="640" y="72" class="step" text-anchor="middle">3초</text>
-  <line x1="150" y1="80" x2="735" y2="80" class="axis" marker-end="url(#ar)"/>
 
-  <text x="30" y="116" class="lane">결제 서버</text>
-  <text x="30" y="134" class="sub">승인 요청</text>
-  <rect x="150" y="90" width="585" height="56" rx="6" class="track"/>
-  <rect x="160" y="94" width="476" height="48" rx="8" class="hold"/>
-  <text x="398" y="114" class="t" text-anchor="middle">PG 답을 끝까지 기다림</text>
-  <text x="398" y="133" class="val" text-anchor="middle">그동안 DB 연결도 함께 붙잡혀 있음</text>
-  <rect x="644" y="94" width="86" height="48" rx="8" class="box"/>
-  <text x="687" y="114" class="t" text-anchor="middle">약 3초 뒤</text>
-  <text x="687" y="133" class="val" text-anchor="middle">승인으로 끝남</text>
-
-  <text x="30" y="180" class="lane">Mock PG</text>
-  <text x="30" y="198" class="sub">3초 지연</text>
-  <rect x="150" y="154" width="585" height="56" rx="6" class="track"/>
-  <rect x="160" y="158" width="476" height="48" rx="8" class="wait"/>
-  <text x="398" y="187" class="waitt" text-anchor="middle">3초 뒤에 답하도록 설정</text>
-  <rect x="644" y="158" width="86" height="48" rx="8" class="box"/>
-  <text x="687" y="187" class="t" text-anchor="middle">승인 응답</text>
-  <line x1="687" y1="158" x2="687" y2="144" stroke="#9ca3af" stroke-width="1.4" marker-end="url(#ar)"/>
-
-  <!-- 패널 B: 읽기 시간 제한 1초 -->
-  <rect x="10" y="240" width="740" height="262" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="272" class="h">읽기 시간 제한 1초 — 1초에 기다리기를 그만두고 504</text>
-  <text x="30" y="296" class="sub">테스트 설정: 읽기 시간 제한 1초, Mock PG는 1.5초 뒤 승인 (운영 설정은 연결 1초, 읽기 5초)</text>
-  <text x="160" y="324" class="step" text-anchor="middle">0초</text>
-  <text x="320" y="324" class="step" text-anchor="middle">1초</text>
-  <text x="400" y="324" class="step" text-anchor="middle">1.5초</text>
-  <line x1="150" y1="332" x2="735" y2="332" class="axis" marker-end="url(#ar)"/>
-
-  <text x="30" y="368" class="lane">결제 서버</text>
-  <text x="30" y="386" class="sub">승인 요청</text>
-  <rect x="150" y="342" width="585" height="56" rx="6" class="track"/>
-  <rect x="160" y="346" width="156" height="48" rx="8" class="wait"/>
-  <text x="238" y="375" class="waitt" text-anchor="middle">PG 답 대기</text>
-  <rect x="324" y="346" width="238" height="48" rx="8" class="bad"/>
-  <text x="443" y="366" class="badt" text-anchor="middle">기다리기를 그만두고 504</text>
-  <text x="443" y="385" class="note" text-anchor="middle" style="font-family: Menlo, Consolas, monospace; font-size: 12px">PAYMENT_GATEWAY_NO_RESPONSE</text>
-  <rect x="570" y="346" width="160" height="48" rx="8" class="bad"/>
-  <text x="650" y="366" class="badt" text-anchor="middle">결제 상태</text>
-  <text x="650" y="385" class="note" text-anchor="middle" style="font-family: Menlo, Consolas, monospace; font-size: 12.5px">AUTHENTICATED</text>
-
-  <text x="30" y="432" class="lane">Mock PG</text>
-  <text x="30" y="450" class="sub">1.5초 뒤 승인</text>
-  <rect x="150" y="406" width="585" height="56" rx="6" class="track"/>
-  <rect x="160" y="410" width="236" height="48" rx="8" class="wait"/>
-  <text x="278" y="439" class="waitt" text-anchor="middle">승인 처리 중</text>
-  <rect x="404" y="410" width="326" height="48" rx="8" class="bad"/>
-  <text x="567" y="430" class="badt" text-anchor="middle">기다리기를 그만둬도 승인 처리는 계속</text>
-  <text x="567" y="449" class="note" text-anchor="middle">Mock PG에 승인 1건이 남음</text>
-  <text x="30" y="486" class="note">PG에는 승인, 우리는 인증 상태인 결제가 생김 — 보정은 4장에서 다룸</text>
+  <rect width="760" height="490" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="202" rx="12" fill="#fafafa" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="26" y="38" class="h">시간 제한 없음(출발 코드) — PG가 3초 뒤 답할 때까지 기다림</text>
+  <text x="160" y="62" class="ax" text-anchor="middle">0초</text>
+  <line x1="160" y1="66" x2="160" y2="72" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="320" y="62" class="ax" text-anchor="middle">1초</text>
+  <line x1="320" y1="66" x2="320" y2="72" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="480" y="62" class="ax" text-anchor="middle">2초</text>
+  <line x1="480" y1="66" x2="480" y2="72" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="640" y="62" class="ax" text-anchor="middle">3초</text>
+  <line x1="640" y1="66" x2="640" y2="72" stroke="#c4c8ce" stroke-width="1.2"/>
+  <line x1="150" y1="70" x2="736" y2="70" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="26" y="102" class="t">결제 서버</text>
+  <text x="26" y="120" class="s">승인 요청</text>
+  <rect x="160" y="82" width="476" height="48" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <rect x="160" y="82" width="476" height="48" rx="10" fill="none" stroke="#dc2626" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.045;0.05;0.8;0.81;1"/></rect>
+  <use href="#lock" x="182" y="103"/>
+  <text x="408" y="102" class="badt" text-anchor="middle">PG 답을 끝까지 기다림</text>
+  <text x="408" y="120" class="bads" text-anchor="middle">그동안 DB 연결도 함께 붙잡혀 있음</text>
+  <rect x="644" y="82" width="94" height="48" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <rect x="644" y="82" width="94" height="48" rx="10" fill="none" stroke="#16a34a" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.795;0.8;0.96;0.97;1"/></rect>
+  <text x="691" y="102" class="okt" text-anchor="middle">약 3초 뒤</text>
+  <text x="691" y="120" class="oks" text-anchor="middle">승인으로 끝남</text>
+  <text x="26" y="166" class="t">Mock PG</text>
+  <text x="26" y="184" class="s">3초 지연</text>
+  <rect x="160" y="146" width="476" height="48" rx="10" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <rect x="160" y="146" width="476" height="48" rx="10" fill="none" stroke="#ea580c" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.045;0.05;0.8;0.81;1"/></rect>
+  <use href="#clock" x="300" y="157"/>
+  <text x="336" y="175" class="t" style="font-size: 13.5px">3초 뒤에 답하도록 설정</text>
+  <rect x="644" y="146" width="94" height="48" rx="10" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/>
+  <rect x="644" y="146" width="94" height="48" rx="10" fill="none" stroke="#ea580c" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.795;0.8;0.96;0.97;1"/></rect>
+  <text x="691" y="175" class="t" text-anchor="middle" style="font-size: 13.5px">승인 응답</text>
+  <line x1="691" y1="146" x2="691" y2="134" stroke="#c2410c" stroke-width="1.5" marker-end="url(#aor)"/>
+  <g class="anim"><line x1="160" y1="70" x2="160" y2="198" stroke="#6b7280" stroke-width="1.3" stroke-dasharray="3 3"/><animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0,0;0,0;480,0;480,0" keyTimes="0;0.05;0.8;1"/></g>
+  <rect x="10" y="226" width="740" height="254" rx="12" fill="#fafafa" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="26" y="254" class="h">읽기 시간 제한 1초 — 1초에 기다리기를 그만두고 504</text>
+  <text x="26" y="276" class="s">테스트 설정: 읽기 시간 제한 1초, Mock PG는 1.5초 뒤 승인 (운영 설정은 연결 1초, 읽기 5초)</text>
+  <text x="160" y="302" class="ax" text-anchor="middle">0초</text>
+  <line x1="160" y1="306" x2="160" y2="312" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="320" y="302" class="ax" text-anchor="middle">1초</text>
+  <line x1="320" y1="306" x2="320" y2="312" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="400" y="302" class="ax" text-anchor="middle">1.5초</text>
+  <line x1="400" y1="306" x2="400" y2="312" stroke="#c4c8ce" stroke-width="1.2"/>
+  <line x1="150" y1="310" x2="736" y2="310" stroke="#c4c8ce" stroke-width="1.2"/>
+  <text x="26" y="342" class="t">결제 서버</text>
+  <text x="26" y="360" class="s">승인 요청</text>
+  <rect x="160" y="322" width="156" height="48" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <rect x="160" y="322" width="156" height="48" rx="10" fill="none" stroke="#6b7280" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.045;0.05;0.3;0.31;1"/></rect>
+  <use href="#clock" x="172" y="333"/>
+  <text x="206" y="351" class="t" style="font-size: 13.5px; fill: #374151">PG 답 대기</text>
+  <rect x="324" y="322" width="238" height="48" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <rect x="324" y="322" width="238" height="48" rx="10" fill="none" stroke="#dc2626" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.295;0.3;0.96;0.97;1"/></rect>
+  <use href="#xmark" x="344" y="346"/>
+  <text x="362" y="342" class="badt">기다리기를 그만두고 <tspan font-family="Menlo, Consolas, monospace">504</tspan></text>
+  <text x="362" y="360" class="bads m" style="font-size: 10.5px">PAYMENT_GATEWAY_NO_RESPONSE</text>
+  <rect x="570" y="322" width="168" height="48" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <rect x="570" y="322" width="168" height="48" rx="10" fill="none" stroke="#dc2626" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.305;0.31;0.96;0.97;1"/></rect>
+  <text x="654" y="342" class="badt" text-anchor="middle">결제 상태</text>
+  <text x="654" y="360" class="bads m" text-anchor="middle" style="font-size: 11.5px">AUTHENTICATED</text>
+  <text x="26" y="406" class="t">Mock PG</text>
+  <text x="26" y="424" class="s">1.5초 뒤 승인</text>
+  <rect x="160" y="386" width="236" height="48" rx="10" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <rect x="160" y="386" width="236" height="48" rx="10" fill="none" stroke="#ea580c" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.045;0.05;0.425;0.435;1"/></rect>
+  <use href="#clock" x="222" y="397"/>
+  <text x="258" y="415" class="t" style="font-size: 13.5px">승인 처리 중</text>
+  <rect x="404" y="386" width="334" height="48" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <rect x="404" y="386" width="334" height="48" rx="10" fill="none" stroke="#dc2626" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.42;0.425;0.96;0.97;1"/></rect>
+  <text x="571" y="406" class="badt" text-anchor="middle">기다리기를 그만둬도 승인 처리는 계속</text>
+  <text x="571" y="424" class="bads" text-anchor="middle">Mock PG에 승인 1건이 남음</text>
+  <text x="26" y="462" class="bads" style="font-size: 12.5px">PG에는 승인, 우리는 인증 상태인 결제가 생김 — 보정은 4장에서 다룸</text>
+  <g class="anim"><line x1="160" y1="310" x2="160" y2="438" stroke="#6b7280" stroke-width="1.3" stroke-dasharray="3 3"/><animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0,0;0,0;480,0;480,0" keyTimes="0;0.05;0.8;1"/></g>
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M160,106 H640"
+      keyPoints="0;0;1;1" keyTimes="0;0.05;0.8;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.045;0.05;0.8;0.815;1"/>
+  </g>
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M160,170 H640"
+      keyPoints="0;0;1;1" keyTimes="0;0.05;0.8;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.045;0.05;0.8;0.815;1"/>
+  </g>
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M160,346 H320"
+      keyPoints="0;0;1;1" keyTimes="0;0.05;0.3;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.045;0.05;0.3;0.315;1"/>
+  </g>
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M160,410 H400"
+      keyPoints="0;0;1;1" keyTimes="0;0.05;0.425;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.045;0.05;0.425;0.44;1"/>
+  </g>
 </svg>

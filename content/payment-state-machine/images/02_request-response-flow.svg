@@ -1,125 +1,139 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 672" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
-  <title>결제 요청과 응답 흐름 — 고객이 결제 버튼을 누르면 READY, 결제창에서 카드사 인증을 마치면 AUTHENTICATED, 가맹점 서버가 PG를 거쳐 카드사에 승인을 요청해 결과를 받으면 APPROVED, 승인 마감 뒤 PG가 매입을 청구하면 CAPTURED, 취소는 매입 전이면 APPROVAL_CANCELED, 매입 후면 CAPTURE_CANCELED가 되고, 인증 실패·만료·승인 거절은 각각 AUTH_FAILED·EXPIRED·APPROVAL_FAILED가 되는 그림. 1장 코드는 상태 전이만 구현하고 API와 PG 호출은 2장부터 만든다</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 656" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결제 요청과 응답 — 고객이 결제 버튼을 누르면 READY, 결제창에서 카드사 인증을 마치면 AUTHENTICATED, 가맹점 서버가 PG를 거쳐 카드사에 승인을 요청해 결과를 받으면 APPROVED, 승인 마감 뒤 PG가 매입을 청구하면 CAPTURED, 취소는 매입 전이면 APPROVAL_CANCELED, 매입 후면 CAPTURE_CANCELED가 되는 요청·응답 흐름도. 1장 코드가 구현한 것은 결제 상태의 전이뿐이다</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .subc { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
-    .lbl { font-family: Menlo, Consolas, monospace; font-size: 11px; fill: #6b7280; }
-    .step { font-size: 12px; fill: #9ca3af; }
-    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
-    .sub { font-size: 12px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .st { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
-    .val { font-size: 12.5px; fill: #4b5563; }
-    .db { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .term { fill: #f3f4f6; stroke: #374151; stroke-width: 2.6; }
-    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
-    .track { fill: #ffffff; stroke: #eceef1; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .waitt { font-size: 12.5px; fill: #6b7280; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .t13 { font-size: 13.5px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .step { font-size: 12.5px; font-weight: 700; fill: #374151; }
+    .lane { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
     .note { font-size: 12.5px; fill: #b91c1c; }
     .gnote { font-size: 12.5px; fill: #15803d; }
-    .msg { font-size: 12.5px; fill: #1f2937; }
-    .num { font-size: 12.5px; font-weight: 700; fill: #374151; }
-    .life { stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 3 4; }
-    .req { stroke: #6b7280; stroke-width: 1.5; }
-    .res { stroke: #6b7280; stroke-width: 1.5; stroke-dasharray: 5 4; }
-    .stc { font-family: Menlo, Consolas, monospace; font-size: 11.5px; font-weight: 700; fill: #1f2937; }
-    .fail { font-size: 11px; fill: #b91c1c; }
-    .sep { font-size: 12px; fill: #6b7280; }
-    .hdr { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .mute { font-size: 12px; fill: #6b7280; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
   </defs>
-
-  <rect width="760" height="672" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="652" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">결제 요청과 응답 — 누가 무엇을 보내고 무엇을 받는지</text>
-  <rect x="21" y="58" width="128" height="44" rx="8" class="box"/>
-  <text x="85" y="77" class="hdr" text-anchor="middle">고객</text>
-  <text x="85" y="94" class="sub" text-anchor="middle">브라우저</text>
-  <rect x="171" y="58" width="128" height="44" rx="8" class="box"/>
-  <text x="235" y="77" class="hdr" text-anchor="middle">가맹점 서버</text>
-  <text x="235" y="94" class="sub" text-anchor="middle">결제 생성·승인 요청</text>
-  <rect x="321" y="58" width="128" height="44" rx="8" class="box"/>
-  <text x="385" y="77" class="hdr" text-anchor="middle">PG</text>
-  <text x="385" y="94" class="sub" text-anchor="middle">결제대행사·결제창</text>
-  <rect x="461" y="58" width="128" height="44" rx="8" class="box"/>
-  <text x="525" y="77" class="hdr" text-anchor="middle">카드사</text>
-  <text x="525" y="94" class="sub" text-anchor="middle">인증·승인·매입</text>
-  <rect x="606" y="58" width="132" height="44" rx="8" class="hold"/>
-  <text x="672" y="77" class="hdr" text-anchor="middle">결제 상태</text>
-  <text x="672" y="94" class="sub" text-anchor="middle">1장 코드가 다루는 부분</text>
-  <line x1="85" y1="102" x2="85" y2="584" class="life"/>
-  <line x1="235" y1="102" x2="235" y2="584" class="life"/>
-  <line x1="385" y1="102" x2="385" y2="584" class="life"/>
-  <line x1="525" y1="102" x2="525" y2="584" class="life"/>
-  <line x1="672" y1="102" x2="672" y2="584" class="life"/>
-  <line x1="88" y1="132" x2="230" y2="132" class="req" marker-end="url(#ar)"/>
-  <text x="95" y="125" class="msg"><tspan class="num">①</tspan> 결제 버튼</text>
-  <rect x="610" y="119" width="124" height="24" rx="6" class="hold"/>
-  <text x="672" y="135" class="stc" text-anchor="middle">READY</text>
-  <line x1="88" y1="170" x2="520" y2="170" class="req" marker-end="url(#ar)"/>
-  <text x="95" y="163" class="msg"><tspan class="num">②</tspan> 결제창에서 카드 정보로 카드사 인증</text>
-  <line x1="522" y1="208" x2="90" y2="208" class="res" marker-end="url(#ar)"/>
-  <text x="95" y="201" class="msg"><tspan class="num">③</tspan> 거래 허용 확인</text>
-  <text x="672" y="211" class="fail" text-anchor="middle">인증 실패 → <tspan font-family="Menlo, Consolas, monospace">AUTH_FAILED</tspan></text>
-  <line x1="88" y1="246" x2="230" y2="246" class="req" marker-end="url(#ar)"/>
-  <text x="95" y="239" class="msg"><tspan class="num">④</tspan> 인증 완료 전달</text>
-  <rect x="610" y="233" width="124" height="24" rx="6" class="hold"/>
-  <text x="672" y="249" class="stc" text-anchor="middle">AUTHENTICATED</text>
-  <line x1="238" y1="284" x2="380" y2="284" class="req" marker-end="url(#ar)"/>
-  <text x="245" y="277" class="msg"><tspan class="num">⑤</tspan> 승인 요청</text>
-  <text x="672" y="287" class="fail" text-anchor="middle">10분 지나면 → <tspan font-family="Menlo, Consolas, monospace">EXPIRED</tspan></text>
-  <line x1="388" y1="322" x2="520" y2="322" class="req" marker-end="url(#ar)"/>
-  <text x="395" y="315" class="msg"><tspan class="num">⑥</tspan> 승인 요청 전달</text>
-  <line x1="522" y1="360" x2="390" y2="360" class="res" marker-end="url(#ar)"/>
-  <text x="395" y="353" class="msg"><tspan class="num">⑦</tspan> 승인 결과</text>
-  <text x="672" y="363" class="fail" text-anchor="middle">거절 → <tspan font-family="Menlo, Consolas, monospace">APPROVAL_FAILED</tspan></text>
-  <line x1="382" y1="398" x2="240" y2="398" class="res" marker-end="url(#ar)"/>
-  <text x="245" y="391" class="msg"><tspan class="num">⑧</tspan> 최종 결제 결과</text>
-  <rect x="610" y="385" width="124" height="24" rx="6" class="hold"/>
-  <text x="672" y="401" class="stc" text-anchor="middle">APPROVED</text>
-  <line x1="30" y1="430" x2="730" y2="430" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 4"/>
-  <rect x="200" y="418" width="320" height="24" rx="6" fill="#fafafa"/>
-  <text x="360" y="434" class="sep" text-anchor="middle">승인 마감 23:59:59 — 24:00부터 전날 승인 건 매입</text>
-  <line x1="388" y1="466" x2="520" y2="466" class="req" marker-end="url(#ar)"/>
-  <text x="395" y="459" class="msg"><tspan class="num">⑨</tspan> 매입 청구</text>
-  <text x="395" y="483" class="sub">전날 승인 건</text>
-  <rect x="610" y="453" width="124" height="24" rx="6" class="hold"/>
-  <text x="672" y="469" class="stc" text-anchor="middle">CAPTURED</text>
-  <line x1="30" y1="498" x2="730" y2="498" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 4"/>
-  <rect x="260" y="486" width="200" height="24" rx="6" fill="#fafafa"/>
-  <text x="360" y="502" class="sep" text-anchor="middle">취소 — 매입 전이든 후든</text>
-  <line x1="238" y1="534" x2="380" y2="534" class="req" marker-end="url(#ar)"/>
-  <text x="245" y="527" class="msg"><tspan class="num">⑩</tspan> 취소 요청</text>
-  <line x1="388" y1="572" x2="520" y2="572" class="req" marker-end="url(#ar)"/>
-  <text x="395" y="565" class="msg"><tspan class="num">⑪</tspan> 승인 취소 또는 매입 취소</text>
-  <rect x="610" y="536" width="124" height="22" rx="6" class="hold"/>
-  <text x="672" y="551.5" class="stc" text-anchor="middle" style="font-size: 10.5px">APPROVAL_CANCELED</text>
-  <rect x="610" y="564" width="124" height="22" rx="6" class="hold"/>
-  <text x="672" y="579.5" class="stc" text-anchor="middle" style="font-size: 10.5px">CAPTURE_CANCELED</text>
-  <text x="672" y="602" class="sub" text-anchor="middle">매입 전 / 매입 후</text>
-  <text x="30" y="628" class="sub">실선은 요청, 점선은 응답입니다. 실패·만료는 오른쪽에 작게 적었습니다.</text>
-  <text x="30" y="650" class="msg" font-weight="700">1장 코드가 구현한 것은 오른쪽 결제 상태의 전이뿐이고, 가맹점 서버의 API와 PG 호출은 2장부터 만듭니다.</text>
+  <rect width="760" height="656" fill="#ffffff"/>
+  <text x="24" y="32" class="h">결제 요청과 응답 — 누가 무엇을 보내고 무엇을 받는지</text>
+  <rect x="596" y="44" width="152" height="560" rx="14" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <g transform="translate(655,48)"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+  <rect x="606" y="80" width="132" height="40" rx="8" fill="#5b7194"/>
+  <text x="672" y="97" class="tab" text-anchor="middle" style="font-size: 13.5px">결제 상태</text>
+  <text x="672" y="113" class="tab" text-anchor="middle" style="font-size: 11px; font-weight: 400; letter-spacing: 0">1장 코드가 다루는 부분</text>
+  <g transform="translate(64,46)"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+  <rect x="14" y="80" width="132" height="40" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="80" y="97" class="t13" text-anchor="middle">고객</text>
+  <text x="80" y="113" class="s" text-anchor="middle" style="font-size: 11px">브라우저</text>
+  <line x1="80" y1="120" x2="80" y2="584" stroke="#c4c8ce" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <g transform="translate(208,46)"><rect x="0" y="0" width="34" height="13" rx="3" fill="#93c5fd" class="o"/><rect x="0" y="16" width="34" height="13" rx="3" fill="#93c5fd" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"></circle><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h14 M14,22.5 h14" stroke="#475569" stroke-width="1.5" stroke-linecap="round"/></g>
+  <rect x="159" y="80" width="132" height="40" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="225" y="97" class="t13" text-anchor="middle">가맹점 서버</text>
+  <text x="225" y="113" class="s" text-anchor="middle" style="font-size: 11px">결제 생성·승인 요청</text>
+  <line x1="225" y1="120" x2="225" y2="584" stroke="#c4c8ce" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <g transform="translate(353,46)"><rect x="0" y="0" width="34" height="13" rx="3" fill="#fdba74" class="o"/><rect x="0" y="16" width="34" height="13" rx="3" fill="#fdba74" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"><animate attributeName="fill" dur="1.2s" repeatCount="indefinite" values="#22c55e;#bbf7d0;#22c55e"/></circle><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h14 M14,22.5 h14" stroke="#475569" stroke-width="1.5" stroke-linecap="round"/></g>
+  <rect x="304" y="80" width="132" height="40" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/>
+  <text x="370" y="97" class="t13" text-anchor="middle">PG</text>
+  <text x="370" y="113" class="s" text-anchor="middle" style="font-size: 11px">결제대행사·결제창</text>
+  <line x1="370" y1="120" x2="370" y2="584" stroke="#c4c8ce" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <g transform="translate(499,46)"><path d="M0,10 L16,1 L32,10 Z" fill="#86efac" class="o"/><rect x="4" y="12" width="5" height="11" fill="#bbf7d0" class="o" stroke-width="1.2"/><rect x="13.5" y="12" width="5" height="11" fill="#bbf7d0" class="o" stroke-width="1.2"/><rect x="23" y="12" width="5" height="11" fill="#bbf7d0" class="o" stroke-width="1.2"/><rect x="0" y="24" width="32" height="5" rx="1" fill="#4ade80" class="o"/></g>
+  <rect x="449" y="80" width="132" height="40" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="515" y="97" class="t13" text-anchor="middle">카드사</text>
+  <text x="515" y="113" class="s" text-anchor="middle" style="font-size: 11px">인증·승인·매입</text>
+  <line x1="515" y1="120" x2="515" y2="584" stroke="#c4c8ce" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="20" y1="420" x2="590" y2="420" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="140.0" y="409" width="320" height="22" rx="6" fill="#ffffff"/>
+  <g transform="translate(152.0,420)"><circle r="7" fill="#fde68a" class="o" stroke-width="1.2"/><path d="M0,-4 V0 H4" fill="none" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round"/></g>
+  <text x="308" y="424" class="lbl" text-anchor="middle">승인 마감 23:59:59 — 24:00부터 전날 승인 건 매입</text>
+  <line x1="20" y1="486" x2="590" y2="486" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="205.0" y="475" width="190" height="22" rx="6" fill="#ffffff"/>
+  <text x="300" y="490" class="lbl" text-anchor="middle">취소 — 매입 전이든 후든</text>
+  <line x1="84" y1="152" x2="217" y2="152" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="98" cy="140" r="9" fill="#111827"/><text x="98" y="144" class="num" text-anchor="middle" style="font-size: 10.5px">1</text>
+  <text x="113" y="145" class="lbl" style="fill: #1f2937">결제 버튼</text>
+  <line x1="84" y1="186" x2="507" y2="186" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="98" cy="174" r="9" fill="#111827"/><text x="98" y="178" class="num" text-anchor="middle" style="font-size: 10.5px">2</text>
+  <text x="113" y="179" class="lbl" style="fill: #1f2937">결제창에서 카드 정보로 카드사 인증</text>
+  <line x1="511" y1="220" x2="88" y2="220" stroke="#4b5563" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ak)"/>
+  <circle cx="110" cy="208" r="9" fill="#111827"/><text x="110" y="212" class="num" text-anchor="middle" style="font-size: 10.5px">3</text>
+  <text x="125" y="213" class="lbl" style="fill: #1f2937">거래 허용 확인</text>
+  <line x1="84" y1="254" x2="217" y2="254" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="98" cy="242" r="9" fill="#111827"/><text x="98" y="246" class="num" text-anchor="middle" style="font-size: 10.5px">4</text>
+  <text x="113" y="247" class="lbl" style="fill: #1f2937">인증 완료 전달</text>
+  <line x1="229" y1="288" x2="362" y2="288" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="243" cy="276" r="9" fill="#111827"/><text x="243" y="280" class="num" text-anchor="middle" style="font-size: 10.5px">5</text>
+  <text x="258" y="281" class="lbl" style="fill: #1f2937">승인 요청</text>
+  <line x1="374" y1="322" x2="507" y2="322" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="388" cy="310" r="9" fill="#111827"/><text x="388" y="314" class="num" text-anchor="middle" style="font-size: 10.5px">6</text>
+  <text x="403" y="315" class="lbl" style="fill: #1f2937">승인 요청 전달</text>
+  <line x1="511" y1="356" x2="378" y2="356" stroke="#4b5563" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ak)"/>
+  <circle cx="400" cy="344" r="9" fill="#111827"/><text x="400" y="348" class="num" text-anchor="middle" style="font-size: 10.5px">7</text>
+  <text x="415" y="349" class="lbl" style="fill: #1f2937">승인 결과</text>
+  <line x1="366" y1="390" x2="233" y2="390" stroke="#4b5563" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ak)"/>
+  <circle cx="255" cy="378" r="9" fill="#111827"/><text x="255" y="382" class="num" text-anchor="middle" style="font-size: 10.5px">8</text>
+  <text x="270" y="383" class="lbl" style="fill: #1f2937">최종 결제 결과</text>
+  <line x1="374" y1="450" x2="507" y2="450" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="388" cy="438" r="9" fill="#111827"/><text x="388" y="442" class="num" text-anchor="middle" style="font-size: 10.5px">9</text>
+  <text x="403" y="443" class="lbl" style="fill: #1f2937">매입 청구</text>
+  <line x1="229" y1="516" x2="362" y2="516" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="243" cy="504" r="9" fill="#111827"/><text x="243" y="508" class="num" text-anchor="middle" style="font-size: 10.5px">10</text>
+  <text x="258" y="509" class="lbl" style="fill: #1f2937">취소 요청</text>
+  <line x1="374" y1="550" x2="507" y2="550" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="388" cy="538" r="9" fill="#111827"/><text x="388" y="542" class="num" text-anchor="middle" style="font-size: 10.5px">11</text>
+  <text x="403" y="543" class="lbl" style="fill: #1f2937">승인 취소 또는 매입 취소</text>
+  <text x="388" y="468" class="mute">전날 승인 건</text>
+  <rect x="610" y="140" width="124" height="24" rx="6" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <rect x="610" y="140" width="124" height="24" rx="6" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.0575;0.0675;0.1175;0.1275;1"/></rect>
+  <text x="672" y="156" class="t m" text-anchor="middle" style="font-size: 11.5px">READY</text>
+  <rect x="610" y="242" width="124" height="24" rx="6" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="610" y="242" width="124" height="24" rx="6" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.452;0.462;0.512;0.522;1"/></rect>
+  <text x="672" y="258" class="t m" text-anchor="middle" style="font-size: 11.5px">AUTHENTICATED</text>
+  <rect x="610" y="378" width="124" height="24" rx="6" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="610" y="378" width="124" height="24" rx="6" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.7265;0.7365;0.7865;0.7965;1"/></rect>
+  <text x="672" y="394" class="t m" text-anchor="middle" style="font-size: 11.5px">APPROVED</text>
+  <rect x="610" y="438" width="124" height="24" rx="6" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="610" y="438" width="124" height="24" rx="6" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.7739;0.7839;0.8639;0.8739;1"/></rect>
+  <text x="672" y="454" class="t m" text-anchor="middle" style="font-size: 11.5px">CAPTURED</text>
+  <rect x="610" y="526" width="124" height="24" rx="6" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="610" y="526" width="124" height="24" rx="6" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.91;0.92;0.97;0.98;1"/></rect>
+  <text x="672" y="542" class="t m" text-anchor="middle" style="font-size: 10.5px">APPROVAL_CANCELED</text>
+  <rect x="610" y="554" width="124" height="24" rx="6" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="610" y="554" width="124" height="24" rx="6" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.91;0.92;0.97;0.98;1"/></rect>
+  <text x="672" y="570" class="t m" text-anchor="middle" style="font-size: 10.5px">CAPTURE_CANCELED</text>
+  <text x="672" y="594" class="mute" text-anchor="middle">매입 전 / 매입 후</text>
+  <text x="672" y="224" class="bads" text-anchor="middle" style="font-size: 11px">인증 실패 → <tspan font-family="Menlo, Consolas, monospace" font-size="10.5">AUTH_FAILED</tspan></text>
+  <text x="672" y="292" class="bads" text-anchor="middle" style="font-size: 11px">10분 지나면 → <tspan font-family="Menlo, Consolas, monospace" font-size="10.5">EXPIRED</tspan></text>
+  <text x="672" y="360" class="bads" text-anchor="middle" style="font-size: 11px">거절 → <tspan font-family="Menlo, Consolas, monospace" font-size="10.5">APPROVAL_FAILED</tspan></text>
+  <text x="24" y="626" class="mute">실선은 요청, 점선은 응답입니다. 실패·만료는 오른쪽에 빨간 글자로 적었습니다.</text>
+  <text x="24" y="646" class="t" style="font-size: 12.5px">1장 코드가 구현한 것은 오른쪽 결제 상태의 전이뿐이고, 가맹점 서버의 API와 PG 호출은 2장부터 만듭니다.</text>
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M80,152 H225 M80,186 H515 V220 H80 V254 H225 V288 H370 V322 H515 V356 H370 V390 H225 M370,450 H515 M225,516 H370 V550 H515"
+      keyPoints="0;0;0.0601;0.2404;0.2404;0.5089;0.6573;0.6573;0.8056;0.8657;0.8657;1;1;1" keyTimes="0;0.02;0.0675;0.2099;0.2499;0.462;0.5792;0.6192;0.7365;0.7839;0.8139;0.92;0.92;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.02;0.92;0.935;1"/>
+  </g>
 </svg>

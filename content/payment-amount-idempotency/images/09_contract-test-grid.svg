@@ -1,139 +1,160 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 552" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 600" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
   <title>승인 요청 확인 계약 테스트 7개를 비교 구현 4개와 완성 코드에 돌린 결과 — 비교 A(요청 금액을 그대로 PG)는 금액이 다를 때의 두 테스트에서 실패해 2개 실패, 비교 B(equals 비교)는 금액이 다를 때의 두 테스트만 통과하고 5개 실패, 비교 C(다시 온 요청을 가리지 않음)는 같은 요청에 승인·거절로 답하는 두 테스트에서 실패, 비교 D(상태만으로 가림)는 다른 결제 키 거부 테스트 하나에서 실패, 완성 코드는 7개 모두 통과한 격자</title>
   <style>
     .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
-    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
-    .step { font-size: 13.5px; fill: #9ca3af; }
-    .sub { font-size: 13.5px; fill: #6b7280; }
-    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
-    .val { font-size: 13.5px; fill: #4b5563; }
+    .h2 { font-size: 15px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14.5px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
     .m { font-family: Menlo, Consolas, monospace; }
-    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
-    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
-    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
-    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
-    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
-    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
-    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
-    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
-    .note { font-size: 13.5px; fill: #b91c1c; }
-    .gnote { font-size: 13.5px; fill: #15803d; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 11.5px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 11.5px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 11.5px; fill: #6b7280; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
   </style>
   <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
-    </marker>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
-    </marker>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="gmark"><circle r="9" fill="#9ca3af"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
   </defs>
-  <rect width="760" height="552" fill="#ffffff"/>
-  <rect x="10" y="10" width="740" height="532" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
-  <text x="30" y="42" class="h">승인 요청 확인 계약 7개 — 비교 구현 4개와 완성 코드</text>
-  <text x="436" y="78" class="t" text-anchor="middle">A</text>
-  <text x="494" y="78" class="t" text-anchor="middle">B</text>
-  <text x="552" y="78" class="t" text-anchor="middle">C</text>
-  <text x="610" y="78" class="t" text-anchor="middle">D</text>
-  <text x="680" y="78" class="t" text-anchor="middle">완성</text>
-  <text x="30" y="78" class="step">계약 테스트</text>
-  <text x="30" y="110" class="val">요청 금액이 다르면 카드사에 승인을 요청하지 않음</text>
-  <rect x="410" y="90" width="52" height="30" rx="6" class="bad"/>
-  <text x="436" y="110" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
-  <rect x="468" y="90" width="52" height="30" rx="6" class="hold"/>
-  <text x="494" y="110" class="t" text-anchor="middle" style="font-size: 13px; fill: #6b7280">통과</text>
-  <rect x="526" y="90" width="52" height="30" rx="6" class="ok"/>
-  <text x="552" y="110" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="584" y="90" width="52" height="30" rx="6" class="ok"/>
-  <text x="610" y="110" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="644" y="90" width="72" height="30" rx="6" class="ok"/>
-  <text x="680" y="110" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <text x="30" y="146" class="val">요청 금액이 다르면 결제는 준비 상태 그대로</text>
-  <rect x="410" y="126" width="52" height="30" rx="6" class="bad"/>
-  <text x="436" y="146" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
-  <rect x="468" y="126" width="52" height="30" rx="6" class="hold"/>
-  <text x="494" y="146" class="t" text-anchor="middle" style="font-size: 13px; fill: #6b7280">통과</text>
-  <rect x="526" y="126" width="52" height="30" rx="6" class="ok"/>
-  <text x="552" y="146" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="584" y="126" width="52" height="30" rx="6" class="ok"/>
-  <text x="610" y="146" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="644" y="126" width="72" height="30" rx="6" class="ok"/>
-  <text x="680" y="146" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <text x="30" y="182" class="val">소수 자릿수만 다르게 적은 같은 금액이면 승인</text>
-  <rect x="410" y="162" width="52" height="30" rx="6" class="ok"/>
-  <text x="436" y="182" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="468" y="162" width="52" height="30" rx="6" class="bad"/>
-  <text x="494" y="182" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
-  <rect x="526" y="162" width="52" height="30" rx="6" class="ok"/>
-  <text x="552" y="182" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="584" y="162" width="52" height="30" rx="6" class="ok"/>
-  <text x="610" y="182" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="644" y="162" width="72" height="30" rx="6" class="ok"/>
-  <text x="680" y="182" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <text x="30" y="218" class="val">승인된 결제에 같은 요청이 다시 오면 승인으로 답함</text>
-  <rect x="410" y="198" width="52" height="30" rx="6" class="ok"/>
-  <text x="436" y="218" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="468" y="198" width="52" height="30" rx="6" class="bad"/>
-  <text x="494" y="218" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
-  <rect x="526" y="198" width="52" height="30" rx="6" class="bad"/>
-  <text x="552" y="218" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
-  <rect x="584" y="198" width="52" height="30" rx="6" class="ok"/>
-  <text x="610" y="218" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="644" y="198" width="72" height="30" rx="6" class="ok"/>
-  <text x="680" y="218" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <text x="30" y="254" class="val">같은 요청이 다시 와도 카드사에는 한 번만 요청</text>
-  <rect x="410" y="234" width="52" height="30" rx="6" class="ok"/>
-  <text x="436" y="254" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="468" y="234" width="52" height="30" rx="6" class="bad"/>
-  <text x="494" y="254" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
-  <rect x="526" y="234" width="52" height="30" rx="6" class="hold"/>
-  <text x="552" y="254" class="t" text-anchor="middle" style="font-size: 13px; fill: #6b7280">통과</text>
-  <rect x="584" y="234" width="52" height="30" rx="6" class="ok"/>
-  <text x="610" y="254" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="644" y="234" width="72" height="30" rx="6" class="ok"/>
-  <text x="680" y="254" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <text x="30" y="290" class="val">거절된 결제에 같은 요청이 다시 오면 거절로 답함</text>
-  <rect x="410" y="270" width="52" height="30" rx="6" class="ok"/>
-  <text x="436" y="290" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="468" y="270" width="52" height="30" rx="6" class="bad"/>
-  <text x="494" y="290" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
-  <rect x="526" y="270" width="52" height="30" rx="6" class="bad"/>
-  <text x="552" y="290" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
-  <rect x="584" y="270" width="52" height="30" rx="6" class="ok"/>
-  <text x="610" y="290" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="644" y="270" width="72" height="30" rx="6" class="ok"/>
-  <text x="680" y="290" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <text x="30" y="326" class="val">승인된 결제에 다른 결제 키로 오면 받아들이지 않음</text>
-  <rect x="410" y="306" width="52" height="30" rx="6" class="ok"/>
-  <text x="436" y="326" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="468" y="306" width="52" height="30" rx="6" class="bad"/>
-  <text x="494" y="326" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
-  <rect x="526" y="306" width="52" height="30" rx="6" class="ok"/>
-  <text x="552" y="326" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <rect x="584" y="306" width="52" height="30" rx="6" class="bad"/>
-  <text x="610" y="326" class="badt" text-anchor="middle" style="font-size: 13px">실패</text>
-  <rect x="644" y="306" width="72" height="30" rx="6" class="ok"/>
-  <text x="680" y="326" class="okt" text-anchor="middle" style="font-size: 13px">통과</text>
-  <line x1="30" y1="344" x2="730" y2="344" class="axis"/>
-  <text x="30" y="368" class="t">실패 수</text>
-  <text x="436" y="368" class="badt" text-anchor="middle">2</text>
-  <text x="494" y="368" class="badt" text-anchor="middle">5</text>
-  <text x="552" y="368" class="badt" text-anchor="middle">2</text>
-  <text x="610" y="368" class="badt" text-anchor="middle">1</text>
-  <text x="680" y="368" class="okt" text-anchor="middle">0</text>
-  <text x="30" y="392" class="t" style="font-size: 13.5px">A</text>
-  <text x="76" y="392" class="val">요청 금액을 그대로 PG에 보냄 — 결제가 <tspan class="m" style="font-size: 12.5px">APPROVED</tspan>, Mock PG에 <tspan class="m" style="font-size: 12.5px">[100]</tspan></text>
-  <text x="30" y="414" class="t" style="font-size: 13.5px">B</text>
-  <text x="76" y="414" class="val">금액을 <tspan class="m" style="font-size: 12.5px">equals</tspan>로 비교 — 실패 5개 모두 <tspan class="m" style="font-size: 12.5px">AmountMismatchException</tspan></text>
-  <text x="30" y="436" class="t" style="font-size: 13.5px">C</text>
-  <text x="76" y="436" class="val">다시 온 요청을 가리지 않음 — <tspan class="m" style="font-size: 12.5px">InvalidPaymentTransitionException</tspan></text>
-  <text x="30" y="458" class="t" style="font-size: 13.5px">D</text>
-  <text x="76" y="458" class="val">결제 키 없이 상태만으로 가림 — 다른 결제 키의 요청에도 승인으로 답함</text>
-  <text x="30" y="480" class="t" style="font-size: 13.5px">완성</text>
-  <text x="76" y="480" class="val">결제 키 저장과 금액 비교 — 7개 모두 통과</text>
-  <rect x="30" y="494" width="34" height="18" rx="4" class="hold"/>
-  <text x="76" y="508" class="sub">회색 통과는 다른 이유로 막혀서 통과한 것 — B는 모든 요청을 거부, C는 PG 전에 409로 막힘</text>
+  <rect width="760" height="600" fill="#ffffff"/>
+  <text x="24" y="32" class="h">승인 요청 확인 계약 7개 — 비교 구현 4개와 완성 코드</text>
+  <rect x="396" y="50" width="62" height="26" rx="13" fill="#f9fafb" stroke="#374151" stroke-width="1.3"/>
+  <text x="427" y="68" class="t2" text-anchor="middle">A</text>
+  <rect x="464" y="50" width="62" height="26" rx="13" fill="#f9fafb" stroke="#374151" stroke-width="1.3"/>
+  <text x="495" y="68" class="t2" text-anchor="middle">B</text>
+  <rect x="532" y="50" width="62" height="26" rx="13" fill="#f9fafb" stroke="#374151" stroke-width="1.3"/>
+  <text x="563" y="68" class="t2" text-anchor="middle">C</text>
+  <rect x="600" y="50" width="62" height="26" rx="13" fill="#f9fafb" stroke="#374151" stroke-width="1.3"/>
+  <text x="631" y="68" class="t2" text-anchor="middle">D</text>
+  <rect x="668" y="50" width="74" height="26" rx="13" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.3"/>
+  <text x="705" y="68" class="t2" text-anchor="middle" style="fill: #15803d">완성</text>
+  <rect x="14" y="98" width="732" height="128" rx="16" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <rect x="28" y="85" width="132" height="26" rx="6" fill="#5b7194"/>
+  <text x="94" y="103" class="tab" text-anchor="middle">금액 확인</text>
+  <circle cx="44" cy="132" r="11" fill="#111827"/><text x="44" y="136" class="num" text-anchor="middle" style="font-size: 11px">1</text>
+  <text x="64" y="137" class="s" style="font-size: 12.5px; fill: #1f2937">요청 금액이 다르면 카드사에 승인을 요청하지 않음</text>
+  <rect x="396" y="118" width="62" height="28" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="411" y="132"/><text x="424" y="137" class="badt">실패</text>
+  <rect x="464" y="118" width="62" height="28" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.2"/>
+  <use href="#gmark" x="479" y="132"/><text x="492" y="137" class="gt">통과</text>
+  <rect x="532" y="118" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="547" y="132"/><text x="560" y="137" class="okt">통과</text>
+  <rect x="600" y="118" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="615" y="132"/><text x="628" y="137" class="okt">통과</text>
+  <rect x="668" y="118" width="74" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="683" y="132"/><text x="696" y="137" class="okt">통과</text>
+  <circle cx="44" cy="166" r="11" fill="#111827"/><text x="44" y="170" class="num" text-anchor="middle" style="font-size: 11px">2</text>
+  <text x="64" y="171" class="s" style="font-size: 12.5px; fill: #1f2937">요청 금액이 다르면 결제는 준비 상태 그대로</text>
+  <rect x="396" y="152" width="62" height="28" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="411" y="166"/><text x="424" y="171" class="badt">실패</text>
+  <rect x="464" y="152" width="62" height="28" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.2"/>
+  <use href="#gmark" x="479" y="166"/><text x="492" y="171" class="gt">통과</text>
+  <rect x="532" y="152" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="547" y="166"/><text x="560" y="171" class="okt">통과</text>
+  <rect x="600" y="152" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="615" y="166"/><text x="628" y="171" class="okt">통과</text>
+  <rect x="668" y="152" width="74" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="683" y="166"/><text x="696" y="171" class="okt">통과</text>
+  <circle cx="44" cy="200" r="11" fill="#111827"/><text x="44" y="204" class="num" text-anchor="middle" style="font-size: 11px">3</text>
+  <text x="64" y="205" class="s" style="font-size: 12.5px; fill: #1f2937">소수 자릿수만 다르게 적은 같은 금액이면 승인</text>
+  <rect x="396" y="186" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="411" y="200"/><text x="424" y="205" class="okt">통과</text>
+  <rect x="464" y="186" width="62" height="28" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="479" y="200"/><text x="492" y="205" class="badt">실패</text>
+  <rect x="532" y="186" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="547" y="200"/><text x="560" y="205" class="okt">통과</text>
+  <rect x="600" y="186" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="615" y="200"/><text x="628" y="205" class="okt">통과</text>
+  <rect x="668" y="186" width="74" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="683" y="200"/><text x="696" y="205" class="okt">통과</text>
+  <rect x="14" y="258" width="732" height="162" rx="16" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <rect x="28" y="245" width="132" height="26" rx="6" fill="#5b7194"/>
+  <text x="94" y="263" class="tab" text-anchor="middle">다시 온 요청</text>
+  <circle cx="44" cy="292" r="11" fill="#111827"/><text x="44" y="296" class="num" text-anchor="middle" style="font-size: 11px">4</text>
+  <text x="64" y="297" class="s" style="font-size: 12.5px; fill: #1f2937">승인된 결제에 같은 요청이 다시 오면 승인으로 답함</text>
+  <rect x="396" y="278" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="411" y="292"/><text x="424" y="297" class="okt">통과</text>
+  <rect x="464" y="278" width="62" height="28" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="479" y="292"/><text x="492" y="297" class="badt">실패</text>
+  <rect x="532" y="278" width="62" height="28" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="547" y="292"/><text x="560" y="297" class="badt">실패</text>
+  <rect x="600" y="278" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="615" y="292"/><text x="628" y="297" class="okt">통과</text>
+  <rect x="668" y="278" width="74" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="683" y="292"/><text x="696" y="297" class="okt">통과</text>
+  <circle cx="44" cy="326" r="11" fill="#111827"/><text x="44" y="330" class="num" text-anchor="middle" style="font-size: 11px">5</text>
+  <text x="64" y="331" class="s" style="font-size: 12.5px; fill: #1f2937">같은 요청이 다시 와도 카드사에는 한 번만 요청</text>
+  <rect x="396" y="312" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="411" y="326"/><text x="424" y="331" class="okt">통과</text>
+  <rect x="464" y="312" width="62" height="28" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="479" y="326"/><text x="492" y="331" class="badt">실패</text>
+  <rect x="532" y="312" width="62" height="28" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.2"/>
+  <use href="#gmark" x="547" y="326"/><text x="560" y="331" class="gt">통과</text>
+  <rect x="600" y="312" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="615" y="326"/><text x="628" y="331" class="okt">통과</text>
+  <rect x="668" y="312" width="74" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="683" y="326"/><text x="696" y="331" class="okt">통과</text>
+  <circle cx="44" cy="360" r="11" fill="#111827"/><text x="44" y="364" class="num" text-anchor="middle" style="font-size: 11px">6</text>
+  <text x="64" y="365" class="s" style="font-size: 12.5px; fill: #1f2937">거절된 결제에 같은 요청이 다시 오면 거절로 답함</text>
+  <rect x="396" y="346" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="411" y="360"/><text x="424" y="365" class="okt">통과</text>
+  <rect x="464" y="346" width="62" height="28" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="479" y="360"/><text x="492" y="365" class="badt">실패</text>
+  <rect x="532" y="346" width="62" height="28" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="547" y="360"/><text x="560" y="365" class="badt">실패</text>
+  <rect x="600" y="346" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="615" y="360"/><text x="628" y="365" class="okt">통과</text>
+  <rect x="668" y="346" width="74" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="683" y="360"/><text x="696" y="365" class="okt">통과</text>
+  <circle cx="44" cy="394" r="11" fill="#111827"/><text x="44" y="398" class="num" text-anchor="middle" style="font-size: 11px">7</text>
+  <text x="64" y="399" class="s" style="font-size: 12.5px; fill: #1f2937">승인된 결제에 다른 결제 키로 오면 받아들이지 않음</text>
+  <rect x="396" y="380" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="411" y="394"/><text x="424" y="399" class="okt">통과</text>
+  <rect x="464" y="380" width="62" height="28" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="479" y="394"/><text x="492" y="399" class="badt">실패</text>
+  <rect x="532" y="380" width="62" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="547" y="394"/><text x="560" y="399" class="okt">통과</text>
+  <rect x="600" y="380" width="62" height="28" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="615" y="394"/><text x="628" y="399" class="badt">실패</text>
+  <rect x="668" y="380" width="74" height="28" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="683" y="394"/><text x="696" y="399" class="okt">통과</text>
+  <line x1="24" y1="432" x2="742" y2="432" stroke="#c4c8ce" stroke-width="1"/>
+  <text x="64" y="456" class="t2">실패 수</text>
+  <text x="427" y="457" class="badt" text-anchor="middle" style="font-size: 16px">2</text>
+  <text x="495" y="457" class="badt" text-anchor="middle" style="font-size: 16px">5</text>
+  <text x="563" y="457" class="badt" text-anchor="middle" style="font-size: 16px">2</text>
+  <text x="631" y="457" class="badt" text-anchor="middle" style="font-size: 16px">1</text>
+  <text x="705" y="457" class="okt" text-anchor="middle" style="font-size: 16px">0</text>
+  <text x="40" y="484" class="t2" style="font-size: 12.5px">A</text><text x="80" y="484" class="s">요청 금액을 그대로 PG에 보냄 — 결제가 <tspan class="m">APPROVED</tspan>, Mock PG에 <tspan class="m">[100]</tspan></text>
+  <text x="40" y="504" class="t2" style="font-size: 12.5px">B</text><text x="80" y="504" class="s">금액을 <tspan class="m">equals</tspan>로 비교 — 실패 5개 모두 <tspan class="m">AmountMismatchException</tspan></text>
+  <text x="40" y="524" class="t2" style="font-size: 12.5px">C</text><text x="80" y="524" class="s">다시 온 요청을 가리지 않음 — <tspan class="m">InvalidPaymentTransitionException</tspan></text>
+  <text x="40" y="544" class="t2" style="font-size: 12.5px">D</text><text x="80" y="544" class="s">결제 키 없이 상태만으로 가림 — 다른 결제 키의 요청에도 승인으로 답함</text>
+  <text x="40" y="564" class="t2" style="font-size: 12.5px">완성</text><text x="80" y="564" class="s">결제 키 저장과 금액 비교 — 7개 모두 통과</text>
+  <rect x="34" y="572" width="30" height="16" rx="4" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="80" y="584" class="gs">회색 통과는 다른 이유로 막혀서 통과한 것 — B는 모든 요청을 거부, C는 PG 전에 409로 막힘</text>
 </svg>
