@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 486" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>같은 주문번호로 다시 준비할 때의 갈래 — 주문번호로 결제를 찾아 없으면 새로 만들어 201 READY로 답하고, 있으면서 금액이 같으면 이미 있는 결제를 지금 상태로 201 응답하고, 금액이 다르면 409 DUPLICATE_ORDER로 거부하며, 금액이 없거나 0 이하이면 결제가 있든 없든 400 INVALID_AMOUNT로 답하는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 13.5px; fill: #9ca3af; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 13.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 13.5px; fill: #b91c1c; }
+    .gnote { font-size: 13.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="486" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="466" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">같은 주문번호로 다시 준비할 때 — 결제가 있는지와 금액으로 나뉨</text>
+
+  <rect x="230" y="62" width="300" height="44" rx="8" class="hold"/>
+  <text x="380" y="89" class="t" text-anchor="middle">준비 요청 도착 <tspan class="m" font-weight="400" style="font-size: 13px">(orderId, amount)</tspan></text>
+  <line x1="380" y1="106" x2="380" y2="126" class="flow" marker-end="url(#ar)"/>
+  <rect x="230" y="128" width="300" height="52" rx="8" class="box"/>
+  <text x="380" y="149" class="t" text-anchor="middle">주문번호로 결제 찾기</text>
+  <text x="380" y="168" class="val m" text-anchor="middle" style="font-size: 13px">findByOrderId(orderId)</text>
+
+  <path d="M330,180 L330,194 L200,194 L200,208" class="flow" marker-end="url(#ar)"/>
+  <path d="M430,180 L430,194 L560,194 L560,208" class="flow" marker-end="url(#ar)"/>
+
+  <!-- 왼쪽: 없음 -->
+  <rect x="40" y="210" width="320" height="52" rx="8" class="box"/>
+  <text x="200" y="231" class="t" text-anchor="middle">없음 — 새로 만들기</text>
+  <text x="200" y="250" class="val m" text-anchor="middle" style="font-size: 12.5px">Payment.create(orderId, amount)</text>
+  <line x1="52" y1="262" x2="52" y2="379" class="flow"/>
+
+  <line x1="52" y1="323" x2="62" y2="323" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="64" y="300" width="296" height="46" rx="8" class="bad"/>
+  <text x="80" y="319" class="badt">금액 없음·0 이하</text>
+  <text x="80" y="337" class="note m" style="font-size: 12.5px">400 INVALID_AMOUNT</text>
+
+  <line x1="52" y1="379" x2="62" y2="379" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="64" y="356" width="296" height="46" rx="8" class="ok"/>
+  <text x="80" y="375" class="okt">양수</text>
+  <text x="80" y="393" class="gnote">새 결제를 저장하고 <tspan class="m" style="font-size: 12.5px">201 READY</tspan></text>
+
+  <!-- 오른쪽: 있음 -->
+  <rect x="400" y="210" width="320" height="52" rx="8" class="box"/>
+  <text x="560" y="231" class="t" text-anchor="middle">있음 — 금액 확인</text>
+  <text x="560" y="250" class="val m" text-anchor="middle" style="font-size: 12.5px">verifyPreparedAmount(amount)</text>
+  <line x1="412" y1="262" x2="412" y2="435" class="flow"/>
+
+  <line x1="412" y1="323" x2="422" y2="323" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="424" y="300" width="296" height="46" rx="8" class="bad"/>
+  <text x="440" y="319" class="badt">금액 없음·0 이하</text>
+  <text x="440" y="337" class="note m" style="font-size: 12.5px">400 INVALID_AMOUNT</text>
+
+  <line x1="412" y1="379" x2="422" y2="379" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="424" y="356" width="296" height="46" rx="8" class="ok"/>
+  <text x="440" y="375" class="okt">같은 금액</text>
+  <text x="440" y="393" class="gnote">이미 있는 결제를 지금 상태로 <tspan class="m" style="font-size: 12.5px">201</tspan></text>
+
+  <line x1="412" y1="435" x2="422" y2="435" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="424" y="412" width="296" height="46" rx="8" class="bad"/>
+  <text x="440" y="431" class="badt">다른 금액</text>
+  <text x="440" y="449" class="note m" style="font-size: 12.5px">409 DUPLICATE_ORDER</text>
+
+  <text x="40" y="440" class="sub">금액 검사는 결제가 있든 없든</text>
+  <text x="40" y="459" class="sub">같은 400으로 답함</text>
+</svg>

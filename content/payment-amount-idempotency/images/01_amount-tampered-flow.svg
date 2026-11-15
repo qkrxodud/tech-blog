@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 392" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결제창에서 금액을 바꿨을 때 — 15000원으로 준비한 결제에 100원으로 승인을 요청하면, 3장 출발 코드는 받은 100원을 그대로 PG에 보내 결제가 APPROVED가 되고 Mock PG에 100원 승인이 남지만, 3장 완성 코드는 저장한 15000.00과 비교해 400 AMOUNT_MISMATCH로 거부하고 결제는 READY 그대로, PG 호출은 없는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 13.5px; fill: #9ca3af; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 13.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 13.5px; fill: #b91c1c; }
+    .gnote { font-size: 13.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="392" fill="#ffffff"/>
+
+  <!-- 패널 A: 출발 코드 -->
+  <rect x="10" y="10" width="740" height="176" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">3장 출발 코드 — 받은 금액을 그대로 PG에 보냄</text>
+
+  <rect x="30" y="62" width="128" height="52" rx="8" class="box"/>
+  <text x="94" y="83" class="t" text-anchor="middle">① 결제 준비</text>
+  <text x="94" y="102" class="val" text-anchor="middle">15000 저장</text>
+  <rect x="173" y="62" width="128" height="52" rx="8" class="box"/>
+  <text x="237" y="83" class="t" text-anchor="middle">② 결제창 인증</text>
+  <text x="237" y="102" class="val" text-anchor="middle">100원으로 인증</text>
+  <rect x="316" y="62" width="128" height="52" rx="8" class="box"/>
+  <text x="380" y="83" class="t" text-anchor="middle">③ 승인 요청</text>
+  <text x="380" y="102" class="val m" text-anchor="middle">amount=100</text>
+  <rect x="459" y="62" width="128" height="52" rx="8" class="bad"/>
+  <text x="523" y="83" class="badt" text-anchor="middle">④ PG 승인 호출</text>
+  <text x="523" y="102" class="note" text-anchor="middle">100 그대로 전송</text>
+  <rect x="602" y="62" width="128" height="52" rx="8" class="bad"/>
+  <text x="666" y="83" class="badt" text-anchor="middle">⑤ 결과 기록</text>
+  <text x="666" y="102" class="note m" text-anchor="middle">APPROVED</text>
+  <line x1="158" y1="88" x2="171" y2="88" class="flow" marker-end="url(#ar)"/>
+  <line x1="301" y1="88" x2="314" y2="88" class="flow" marker-end="url(#ar)"/>
+  <line x1="444" y1="88" x2="457" y2="88" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="587" y1="88" x2="600" y2="88" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+
+  <line x1="30" y1="132" x2="730" y2="132" class="axis"/>
+  <text x="30" y="156" class="note">Mock PG 승인 기록 <tspan class="m">[100]</tspan> — 우리 기록은 15000원 결제가 승인된 것처럼 보이지만</text>
+  <text x="30" y="175" class="note">실제로 카드사에 승인된 금액은 100원</text>
+
+  <!-- 패널 B: 완성 코드 -->
+  <rect x="10" y="202" width="740" height="180" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="234" class="h">3장 완성 코드 — 저장한 금액과 비교하고 다르면 멈춤</text>
+
+  <rect x="30" y="254" width="128" height="52" rx="8" class="box"/>
+  <text x="94" y="275" class="t" text-anchor="middle">① 결제 준비</text>
+  <text x="94" y="294" class="val" text-anchor="middle">15000 저장</text>
+  <rect x="173" y="254" width="128" height="52" rx="8" class="box"/>
+  <text x="237" y="275" class="t" text-anchor="middle">② 결제창 인증</text>
+  <text x="237" y="294" class="val" text-anchor="middle">100원으로 인증</text>
+  <rect x="316" y="254" width="128" height="52" rx="8" class="box"/>
+  <text x="380" y="275" class="t" text-anchor="middle">③ 승인 요청</text>
+  <text x="380" y="294" class="val m" text-anchor="middle">amount=100</text>
+  <rect x="459" y="254" width="128" height="52" rx="8" class="ok"/>
+  <text x="523" y="275" class="okt" text-anchor="middle">④ 금액 비교</text>
+  <text x="523" y="294" class="gnote m" text-anchor="middle" style="font-size: 12.5px">15000.00 ≠ 100</text>
+  <rect x="602" y="254" width="128" height="52" rx="8" class="ok"/>
+  <text x="666" y="275" class="okt" text-anchor="middle">⑤ 400 거부</text>
+  <text x="666" y="294" class="gnote m" text-anchor="middle" style="font-size: 12.5px">AMOUNT_MISMATCH</text>
+  <line x1="158" y1="280" x2="171" y2="280" class="flow" marker-end="url(#ar)"/>
+  <line x1="301" y1="280" x2="314" y2="280" class="flow" marker-end="url(#ar)"/>
+  <line x1="444" y1="280" x2="457" y2="280" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <line x1="587" y1="280" x2="600" y2="280" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+
+  <line x1="30" y1="324" x2="730" y2="324" class="axis"/>
+  <text x="30" y="348" class="gnote">결제는 <tspan class="m">READY</tspan> 그대로, Mock PG 승인 0건 — PG를 부르기 전에 멈춤</text>
+  <text x="30" y="367" class="gnote">PG를 부를 때는 요청 금액이 아니라 저장한 금액을 보냄</text>
+</svg>

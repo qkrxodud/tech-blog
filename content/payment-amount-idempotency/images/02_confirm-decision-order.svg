@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 530" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>승인 요청의 판단 순서 — 주문번호로 결제를 찾아 없으면 2장과 같이 404로 답하고, 금액을 먼저 확인해 없으면 400 INVALID_AMOUNT, 다르면 400 AMOUNT_MISMATCH로 상태를 바꾸지 않고 거부하고, 같은 결제 키로 결과가 기록된 결제이면 PG를 부르지 않고 저장된 결과로 답하며, 아니면 인증 전이를 시도해 실패하면 409로 답하고, 성공하면 저장한 금액으로 PG에 승인을 요청해 결과를 기록하는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 13.5px; fill: #9ca3af; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 13.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 13.5px; fill: #b91c1c; }
+    .gnote { font-size: 13.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="530" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="510" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">승인 요청의 판단 순서 — 결제를 찾은 뒤 금액 확인이 가장 먼저</text>
+
+  <!-- 시작 -->
+  <rect x="30" y="62" width="300" height="44" rx="8" class="hold"/>
+  <text x="180" y="89" class="t" text-anchor="middle">승인 요청 도착 <tspan class="m" font-weight="400" style="font-size: 13px">(paymentKey, amount)</tspan></text>
+  <line x1="180" y1="106" x2="180" y2="138" class="flow" marker-end="url(#ar)"/>
+  <text x="190" y="127" class="sub">없는 주문은 404 (2장과 같음)</text>
+
+  <!-- ① 금액 확인 -->
+  <rect x="30" y="140" width="300" height="52" rx="8" class="box"/>
+  <text x="180" y="161" class="t" text-anchor="middle">① 금액 확인</text>
+  <text x="180" y="180" class="val m" text-anchor="middle" style="font-size: 13px">verifyAmount(amount)</text>
+  <line x1="330" y1="156" x2="408" y2="144" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="330" y1="176" x2="408" y2="188" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <rect x="410" y="126" width="320" height="36" rx="8" class="bad"/>
+  <text x="426" y="149" class="badt">금액 없음 — <tspan class="m" style="font-size: 13px">400 INVALID_AMOUNT</tspan></text>
+  <rect x="410" y="170" width="320" height="36" rx="8" class="bad"/>
+  <text x="426" y="193" class="badt">금액 다름 — <tspan class="m" style="font-size: 13px">400 AMOUNT_MISMATCH</tspan></text>
+  <text x="410" y="226" class="sub">두 경우 모두 상태를 바꾸지 않고 PG를 부르지 않음</text>
+  <line x1="180" y1="192" x2="180" y2="248" class="flow" marker-end="url(#ar)"/>
+  <text x="190" y="225" class="sub">같은 금액</text>
+
+  <!-- ② 같은 요청인가 -->
+  <rect x="30" y="250" width="300" height="52" rx="8" class="box"/>
+  <text x="180" y="271" class="t" text-anchor="middle">② 같은 결제 키로 결과가 기록됐나</text>
+  <text x="180" y="290" class="val m" text-anchor="middle" style="font-size: 13px">isConfirmedWith(paymentKey)</text>
+  <line x1="330" y1="276" x2="408" y2="276" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="369" y="268" class="gnote" text-anchor="middle">예</text>
+  <rect x="410" y="254" width="320" height="44" rx="8" class="ok"/>
+  <text x="570" y="272" class="okt" text-anchor="middle">저장된 결과로 답 — PG 호출 없음</text>
+  <text x="570" y="290" class="gnote" text-anchor="middle" style="font-size: 12.5px"><tspan class="m">APPROVED</tspan>·<tspan class="m">APPROVAL_FAILED</tspan> 그대로</text>
+  <line x1="180" y1="302" x2="180" y2="348" class="flow" marker-end="url(#ar)"/>
+  <text x="190" y="330" class="sub">아니오</text>
+
+  <!-- ③ 인증 전이 -->
+  <rect x="30" y="350" width="300" height="52" rx="8" class="box"/>
+  <text x="180" y="371" class="t" text-anchor="middle">③ 인증 전이</text>
+  <text x="180" y="390" class="val m" text-anchor="middle" style="font-size: 13px">authenticate(paymentKey)</text>
+  <line x1="330" y1="376" x2="408" y2="376" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="369" y="368" class="note" text-anchor="middle">실패</text>
+  <rect x="410" y="354" width="320" height="44" rx="8" class="bad"/>
+  <text x="570" y="372" class="badt m" text-anchor="middle" style="font-size: 12.5px">409 INVALID_PAYMENT_TRANSITION</text>
+  <text x="570" y="390" class="note" text-anchor="middle" style="font-size: 12.5px">다른 키 요청·아직 <tspan class="m">AUTHENTICATED</tspan>인 결제</text>
+  <line x1="180" y1="402" x2="180" y2="448" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="190" y="430" class="gnote">성공</text>
+
+  <!-- ④ PG 승인 -->
+  <rect x="30" y="450" width="300" height="52" rx="8" class="box"/>
+  <text x="180" y="471" class="t" text-anchor="middle">④ PG 승인 요청</text>
+  <text x="180" y="490" class="val" text-anchor="middle">저장한 금액으로 보냄</text>
+  <line x1="330" y1="476" x2="408" y2="476" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="410" y="454" width="320" height="44" rx="8" class="ok"/>
+  <text x="570" y="472" class="okt" text-anchor="middle">결과 기록</text>
+  <text x="570" y="490" class="gnote" text-anchor="middle" style="font-size: 12.5px"><tspan class="m">APPROVED</tspan> 또는 <tspan class="m">APPROVAL_FAILED</tspan></text>
+</svg>

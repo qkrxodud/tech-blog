@@ -1496,5 +1496,12 @@
     "series": "결제 시스템 챌린지",
     "seriesOrder": 2,
     "date": "2026-11-15"
+  },
+  {
+    "slug": "payment-amount-idempotency",
+    "category": "spring",
+    "series": "결제 시스템 챌린지",
+    "seriesOrder": 3,
+    "date": "2026-11-15"
   }
 ]
