@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 352" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>3장 완성 코드의 결제 준비 요청과 응답 — 클라이언트가 POST /api/v1/payments로 orderId와 amount를 보내면 결제 서버가 DB를 조회해 없으면 READY로 저장하고 201로 답하며, 같은 주문번호로 다시 준비하면 같은 금액은 이미 있는 결제를 지금 상태로 201, 다른 금액은 409 DUPLICATE_ORDER로 답하는 시퀀스</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 13.5px; fill: #9ca3af; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 13.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 13.5px; fill: #b91c1c; }
+    .gnote { font-size: 13.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="352" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="332" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">3장 완성 코드의 결제 준비 — 요청과 응답, 다시 준비할 때</text>
+  <rect x="16" y="58" width="120" height="46" rx="8" class="hold"/>
+  <text x="76" y="86" class="t" text-anchor="middle">클라이언트</text>
+  <line x1="76" y1="104" x2="76" y2="258" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="204" y="58" width="156" height="46" rx="8" class="hold"/>
+  <text x="282" y="78" class="t" text-anchor="middle">결제 서버</text>
+  <text x="282" y="96" class="val m" text-anchor="middle" style="font-size: 11.5px">/api/v1/payments</text>
+  <line x1="282" y1="104" x2="282" y2="258" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="432" y="58" width="120" height="46" rx="8" class="hold"/>
+  <text x="492" y="78" class="t" text-anchor="middle">DB</text>
+  <text x="492" y="96" class="val m" text-anchor="middle" style="font-size: 11.5px">payment 테이블</text>
+  <line x1="492" y1="104" x2="492" y2="258" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="584" y="58" width="156" height="46" rx="8" class="hold"/>
+  <text x="662" y="78" class="t" text-anchor="middle">Mock PG</text>
+  <text x="662" y="96" class="val m" text-anchor="middle" style="font-size: 11.5px">/v1/payments/confirm</text>
+  <line x1="662" y1="104" x2="662" y2="258" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="20" y="120" width="720" height="24" rx="6" fill="#f3f4f6"/>
+  <text x="32" y="137" class="t" style="font-size: 13px">① 결제 준비</text>
+  <line x1="76" y1="176" x2="278" y2="176" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="179" y="168" class="val" text-anchor="middle"><tspan class="m" style="font-size: 12px">POST {orderId, amount}</tspan></text>
+  <line x1="282" y1="212" x2="488" y2="212" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="387" y="204" class="val" text-anchor="middle">조회, 없으면 READY 저장</text>
+  <line x1="282" y1="248" x2="80" y2="248" stroke="#9ca3af" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+  <text x="179" y="240" class="val" text-anchor="middle"><tspan class="m" style="font-size: 12px">201 {status: READY}</tspan></text>
+  <rect x="40" y="268" width="680" height="44" rx="8" class="ok"/>
+  <text x="56" y="286" class="gnote" style="font-weight: 700">3장 · 같은 주문번호로 다시 준비하면</text>
+  <text x="56" y="304" class="gnote">같은 금액은 <tspan class="m" style="font-size: 12px">201</tspan>(이미 있는 결제를 지금 상태로), 다른 금액은 <tspan class="m" style="font-size: 12px">409 DUPLICATE_ORDER</tspan></text>
+  <text x="30" y="332" class="sub">초록은 3장에서 더한 것, 점선 화살표는 응답</text>
+</svg>

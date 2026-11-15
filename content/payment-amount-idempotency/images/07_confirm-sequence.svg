@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 650" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>3장 완성 코드의 승인 요청과 응답 — POST /{orderId}/confirm으로 paymentKey와 amount가 오면 결제 서버가 결제를 조회해 금액을 비교하고, 다르면 PG를 부르지 않고 상태도 그대로 둔 채 400 AMOUNT_MISMATCH로 답하며, 같으면 paymentKey를 저장해 AUTHENTICATED로 바꾸고 Mock PG에 저장한 금액으로 승인을 요청해 200 DONE 또는 400 CARD_REJECTED를 받아 결과를 기록한 뒤 200으로 답하고, 같은 paymentKey로 다시 오면 PG를 부르지 않고 기록된 결과로 200 답하는 시퀀스</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 13.5px; fill: #9ca3af; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 13.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 13.5px; fill: #b91c1c; }
+    .gnote { font-size: 13.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="650" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="630" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">3장 완성 코드의 승인 요청 — 처음 요청과 다시 온 요청</text>
+  <rect x="16" y="58" width="120" height="46" rx="8" class="hold"/>
+  <text x="76" y="86" class="t" text-anchor="middle">클라이언트</text>
+  <line x1="76" y1="104" x2="76" y2="606" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="204" y="58" width="156" height="46" rx="8" class="hold"/>
+  <text x="282" y="78" class="t" text-anchor="middle">결제 서버</text>
+  <text x="282" y="96" class="val m" text-anchor="middle" style="font-size: 11.5px">/api/v1/payments</text>
+  <line x1="282" y1="104" x2="282" y2="606" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="432" y="58" width="120" height="46" rx="8" class="hold"/>
+  <text x="492" y="78" class="t" text-anchor="middle">DB</text>
+  <text x="492" y="96" class="val m" text-anchor="middle" style="font-size: 11.5px">payment 테이블</text>
+  <line x1="492" y1="104" x2="492" y2="606" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="584" y="58" width="156" height="46" rx="8" class="hold"/>
+  <text x="662" y="78" class="t" text-anchor="middle">Mock PG</text>
+  <text x="662" y="96" class="val m" text-anchor="middle" style="font-size: 11.5px">/v1/payments/confirm</text>
+  <line x1="662" y1="104" x2="662" y2="606" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="20" y="112" width="720" height="24" rx="6" fill="#f3f4f6"/>
+  <text x="32" y="129" class="t" style="font-size: 13px">② 승인 요청</text>
+  <text x="140" y="129" class="sub" style="font-size: 12.5px">결제창 인증을 마친 고객이 paymentKey, amount를 받아 돌아옴</text>
+  <line x1="76" y1="176" x2="278" y2="176" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="179" y="152" class="val" text-anchor="middle"><tspan class="m" style="font-size: 12px">POST /{orderId}/confirm</tspan></text>
+  <text x="179" y="168" class="val" text-anchor="middle"><tspan class="m" style="font-size: 12px">{paymentKey, amount}</tspan></text>
+  <line x1="282" y1="212" x2="488" y2="212" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="387" y="204" class="val" text-anchor="middle">결제 조회</text>
+  <line x1="282" y1="266" x2="80" y2="266" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="179" y="242" class="note" text-anchor="middle"><tspan font-weight="700">금액 비교</tspan> — 다르면</text>
+  <text x="179" y="258" class="note" text-anchor="middle"><tspan class="m" style="font-size: 12px">400 AMOUNT_MISMATCH</tspan></text>
+  <text x="179" y="283" class="note" text-anchor="middle">PG를 부르지 않고 상태도 그대로</text>
+  <line x1="282" y1="312" x2="488" y2="312" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="387" y="304" class="gnote" text-anchor="middle">같으면 <tspan class="m" style="font-size: 12px">paymentKey</tspan> 저장</text>
+  <text x="387" y="329" class="gnote" text-anchor="middle"><tspan class="m" style="font-size: 12px">AUTHENTICATED</tspan></text>
+  <line x1="282" y1="380" x2="658" y2="380" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="472" y="356" class="gnote" text-anchor="middle"><tspan class="m" style="font-size: 12px">POST /v1/payments/confirm</tspan></text>
+  <text x="472" y="372" class="gnote" text-anchor="middle"><tspan class="m" style="font-size: 12px">{paymentKey, orderId, amount}</tspan> — <tspan font-weight="700">저장한 금액</tspan></text>
+  <line x1="662" y1="414" x2="286" y2="414" stroke="#9ca3af" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+  <text x="472" y="406" class="val" text-anchor="middle"><tspan class="m" style="font-size: 12px">200 DONE</tspan> 또는 <tspan class="m" style="font-size: 12px">400 CARD_REJECTED</tspan></text>
+  <line x1="282" y1="448" x2="488" y2="448" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="387" y="440" class="val" text-anchor="middle">결과 기록</text>
+  <text x="387" y="465" class="val" text-anchor="middle"><tspan class="m" style="font-size: 12px">APPROVED / APPROVAL_FAILED</tspan></text>
+  <line x1="282" y1="496" x2="80" y2="496" stroke="#9ca3af" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+  <text x="179" y="488" class="val" text-anchor="middle"><tspan class="m" style="font-size: 12px">200 {status: APPROVED}</tspan></text>
+  <rect x="20" y="512" width="720" height="24" rx="6" fill="#f3f4f6"/>
+  <text x="32" y="529" class="t" style="font-size: 13px">③ 같은 승인 요청이 다시 옴</text>
+  <line x1="76" y1="562" x2="278" y2="562" stroke="#9ca3af" stroke-width="1.6" marker-end="url(#ar)"/>
+  <text x="179" y="554" class="val" text-anchor="middle">같은 <tspan class="m" style="font-size: 12px">paymentKey</tspan>로 다시 confirm</text>
+  <line x1="282" y1="562" x2="488" y2="562" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="387" y="554" class="gnote" text-anchor="middle">조회 · 같은 키, 결과 기록됨</text>
+  <text x="577" y="567" class="gnote" text-anchor="middle">PG 호출 없음</text>
+  <line x1="282" y1="598" x2="80" y2="598" stroke="#16a34a" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#agr)"/>
+  <text x="179" y="590" class="gnote" text-anchor="middle"><tspan class="m" style="font-size: 12px">200</tspan> 기록된 결과로 답</text>
+  <text x="30" y="630" class="sub">초록은 3장에서 더한 것, 빨강은 거부, 점선 화살표는 응답</text>
+</svg>

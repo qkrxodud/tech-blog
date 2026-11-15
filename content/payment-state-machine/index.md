@@ -30,6 +30,12 @@ summary: "결제의 인증·승인·매입·취소 단계를 정리하고, 상�
 
 그림에서 승인과 매입은 서로 다른 시점에 일어나고, 취소는 매입이 끝났는지에 따라 승인 취소와 매입 취소로 갈라지는 것을 확인할 수 있습니다.
 
+같은 흐름을 누가 누구에게 무엇을 보내고 무엇을 돌려받는지 순서대로 그리고, 각 시점에 이 글의 결제 상태가 무엇이 되는지 오른쪽에 붙이면 아래와 같습니다.
+
+![고객이 결제 버튼을 누르면 READY, 결제창에서 카드사 인증을 마치면 AUTHENTICATED, 가맹점 서버가 PG를 거쳐 카드사에 승인을 요청해 결과를 받으면 APPROVED, 승인 마감 뒤 PG가 매입을 청구하면 CAPTURED, 취소는 매입 전이면 APPROVAL_CANCELED, 매입 후면 CAPTURE_CANCELED가 되는 요청·응답 흐름도](images/02_request-response-flow.svg)
+
+인증 실패, 승인 요청 없이 유효 시간이 지난 경우, 승인 거절은 각각 `AUTH_FAILED`, `EXPIRED`, `APPROVAL_FAILED`로 끝납니다. 다만 1장 코드가 구현한 것은 오른쪽 결제 상태의 전이뿐이고, 가맹점 서버의 API와 PG 호출은 2장부터 만듭니다.
+
 참고로 토스페이먼츠의 결제 객체는 결제 상태(`status`)와 카드 매입 상태(`acquireStatus`)를 서로 다른 필드로 둡니다. 결제 상태는 `READY`, `IN_PROGRESS`(인증 완료), `DONE`(승인), `CANCELED`, `PARTIAL_CANCELED`, `ABORTED`(승인 실패), `EXPIRED` 등이고, 매입 상태는 `READY`, `REQUESTED`, `COMPLETED`, `CANCEL_REQUESTED`, `CANCELED`입니다. 이 차이는 아래 첫 번째 결정에서 다시 다룹니다.
 
 ## 현재 구조: 이름은 있지만 검사하지 않는 변경 메서드
@@ -174,6 +180,12 @@ FAIL CAPTURED 상태에서 CANCEL 요청 | org.opentest4j.AssertionFailedError: 
 - 거부되어야 할 54개 조합 중 47개는 예외 없이 그대로 실행되었습니다. 40개는 상태가 바뀌었고(승인 전 매입, 취소 후 재승인, 인증 실패 후 승인 등), 7개는 `APPROVED`에서 다시 승인하는 경우처럼 같은 상태를 다시 대입했습니다. 나머지 7개는 `CAPTURE_CANCELED`에서 출발하는 조합인데, 출발 구조의 `cancel()`이 매입 취소를 만들지 못해 그 상태까지 가지도 못하고 실패하였습니다.
 - 매입이 끝난 결제를 취소해도 `APPROVAL_CANCELED`가 되었습니다. 매입 후 취소는 카드사 처리 기간도, 이후 대사(가맹점의 결제 기록을 PG·카드사 기록과 맞춰 보는 작업)에서 맞춰 볼 대상도 다른데, 상태만 보면 매입 전 취소와 구분할 수 없습니다.
 
+63개 조합의 결과를 출발 상태와 요청한 행위별로 한 칸씩 나누어 그리면 아래와 같습니다.
+
+![출발 구조에서 상태 9개와 행위 7개로 만든 63개 조합 중 허용 표에 있는 전이 8개만 통과하고, 거부되어야 할 47개는 예외 없이 실행되었으며, CAPTURE_CANCELED에서 출발하는 7개는 그 상태에 도달하지 못했고, CAPTURED에서의 취소는 APPROVAL_CANCELED가 된 그림](images/03_start-transition-results.svg)
+
+그림에서 통과한 칸은 허용 표에 있는 전이에만 있고, 거부되어야 할 칸은 대부분 예외 없이 실행된 것을 확인할 수 있습니다.
+
 메서드 이름을 명시적으로 만든 것만으로는 "지금 상태에서 이 행위를 해도 되는가"를 막을 수 없다는 것을 확인할 수 있었습니다.
 
 ## 선택지와 트레이드오프
@@ -182,13 +194,17 @@ FAIL CAPTURED 상태에서 CANCEL 요청 | org.opentest4j.AssertionFailedError: 
 
 ### 결정 1. 결제 단계를 상태로 어떻게 나눌까
 
-검토한 선택지는 세 가지입니다.
+이 장에서는 인증·승인·매입을 하나의 상태 필드에 모두 두는 방식을 골랐습니다. 검토한 선택지는 세 가지입니다.
 
 - 승인 하나로 묶기: 인증·승인·매입을 구분하지 않고 "결제 완료" 하나로 둡니다.
 - 하나의 상태 필드에 인증, 승인, 매입을 모두 두기: 매입 여부까지 상태 하나로 표현합니다.
 - 결제 상태와 매입 상태를 다른 필드로 나누기: 토스페이먼츠의 `status` / `acquireStatus`와 같은 방식입니다.
 
-승인 하나로 묶으면 매입 전인지 후인지를 알 수 없어, 위에서 본 승인 취소와 매입 취소를 가를 수 없습니다. 그래서 이 장에서는 두 번째, 하나의 상태 필드에 인증·승인·매입을 모두 두는 방식을 골랐습니다. 취소가 매입 여부에 따라 `APPROVAL_CANCELED`와 `CAPTURE_CANCELED`로 갈라져야 하는데, 상태가 한 필드에 있으면 이 분기가 전이 표 한 곳에 모입니다. 매입 상태를 따로 두면 "승인됨 + 매입 완료"처럼 두 필드를 함께 봐야 취소 방향이 정해집니다.
+세 방식에서 상태 필드가 어떻게 생기고, 취소 요청이 왔을 때 무엇을 보고 방향을 정하는지 나란히 그리면 아래와 같습니다.
+
+![승인 하나로 묶으면 취소할 때 매입 전후를 알 수 없고, 하나의 상태 필드에 모두 두면 APPROVED와 CAPTURED에서 취소가 전이 표 한 곳에서 갈라지며, 두 필드로 나누면 두 필드를 함께 봐야 취소 방향이 정해지는 그림](images/04_state-split-options.svg)
+
+승인 하나로 묶으면 매입 전인지 후인지를 알 수 없어, 위에서 본 승인 취소와 매입 취소를 가를 수 없습니다. 한 필드에 모두 둔 이유는 취소 방향 때문입니다. 취소가 매입 여부에 따라 `APPROVAL_CANCELED`와 `CAPTURE_CANCELED`로 갈라져야 하는데, 상태가 한 필드에 있으면 이 분기가 전이 표 한 곳에 모입니다. 매입 상태를 따로 두면 "승인됨 + 매입 완료"처럼 두 필드를 함께 봐야 취소 방향이 정해집니다.
 
 이 선택으로 치르는 비용은 매입의 중간 단계를 표현하지 못한다는 점입니다. 토스페이먼츠의 매입 상태에는 매입 요청됨(`REQUESTED`)과 매입 취소 요청됨(`CANCEL_REQUESTED`) 같은 중간 상태가 있지만, 이 장의 모델은 매입을 한 번에 `CAPTURED`가 되는 일로 취급합니다. 또한 인증 실패와 승인 실패를 다른 상태로 두면서 상태가 9개로 늘었습니다.
 
@@ -196,7 +212,7 @@ FAIL CAPTURED 상태에서 CANCEL 요청 | org.opentest4j.AssertionFailedError: 
 
 ### 결정 2. 상태 전이를 어디서 막을까
 
-이번에는 아래 세 방식을 모두 구현해서 같은 테스트로 돌려 보았습니다.
+이 장에서는 enum에 허용 전이 표를 두고, 엔티티의 변경 메서드가 그 표를 거쳐서만 상태를 바꾸는 방식을 골랐습니다. 이번에는 아래 세 방식을 모두 구현해서 같은 테스트로 돌려 보았습니다.
 
 - enum에 허용 전이 표를 두고, 엔티티의 변경 메서드가 그 표를 거쳐서만 상태를 바꾸기
 - State 패턴: 상태마다 클래스를 두고, 그 상태에서 허용되는 행위만 재정의하기
@@ -285,6 +301,12 @@ private boolean isRejected(StateMachineEventResult<PaymentStatus, PaymentAction>
 }
 ```
 
+승인 전 결제(`READY`)에 매입을 요청했을 때, 출발 구조와 세 구현에서 이 호출이 어디서 걸리는지 그리면 아래와 같습니다.
+
+![승인 전 결제에 매입을 요청하면 출발 구조는 확인 없이 CAPTURED를 대입하고, 허용 전이 표는 next()에서, State 패턴은 기본 구현의 reject()에서, Spring Statemachine은 DENIED 결과를 예외로 바꿔 거부해 세 구현 모두 READY를 유지하는 그림](images/05_transition-guard-options.svg)
+
+출발 구조에서는 확인 없이 `CAPTURED`가 대입되지만, 세 구현은 모두 요청을 거부하고 상태를 `READY`로 둡니다. 차이는 규칙을 확인하는 곳과, Spring Statemachine처럼 거부를 예외로 바꾸는 코드를 따로 붙여야 하는지에 있습니다.
+
 세 구현 모두 같은 70개 테스트를 통과하였습니다. 규칙을 지키는 능력은 같았기 때문에, 고르는 기준은 코드를 읽고 고칠 때의 비용과 의존성이었습니다.
 
 - 코드 양(구현 파일 하나씩, package·import·빈 줄·주석 제외): 허용 전이 표를 둔 `PaymentStatus`가 34줄, State 패턴이 72줄, Spring Statemachine 구현이 47줄이었습니다. `PaymentStatus`의 34줄에는 상태 선언이 들어 있고, 나머지 두 구현은 이 enum을 가져다 쓰기 때문에 상태 선언이 줄 수에 들어 있지 않습니다.
@@ -292,7 +314,7 @@ private boolean isRejected(StateMachineEventResult<PaymentStatus, PaymentAction>
 - 의존성: Spring Statemachine 저장소의 README에는 "Spring Statemachine is no longer maintained"라고 적혀 있고, GitHub 저장소는 2026-07-05에 보관(archived) 처리되었습니다. 마지막 버전인 4.0.2는 Spring Framework 6.2.19를 기준으로 만들어졌습니다. 이번 테스트에서는 Spring Framework 7.0.10(Spring Boot 4.1.2) 위에서도 동작했지만, 앞으로 버전을 올릴 때 계속 동작한다는 보장은 없습니다.
 - 영속성: 이번 Statemachine 구현은 메모리에서만 돌렸고, DB에 저장된 상태로 머신을 다시 세우는 코드는 만들지 않았습니다. 엔티티의 상태 컬럼과 머신의 상태를 맞추는 일이 따로 남습니다.
 
-이 장에서는 허용 전이 표 방식을 골랐습니다. 규칙이 한 곳에 모여 있고, 추가 의존성 없이 JPA 엔티티의 상태 컬럼과 그대로 맞물립니다.
+허용 전이 표 방식을 고른 이유는 규칙이 한 곳에 모여 있고, 추가 의존성 없이 JPA 엔티티의 상태 컬럼과 그대로 맞물리기 때문입니다.
 
 다만 전이에 조건이나 부수 효과가 붙으면 이 방식의 한계가 드러납니다. 표는 "이 상태에서 이 행위를 하면 저 상태가 된다"만 표현합니다. "취소 금액이 남은 금액보다 크면 거부한다" 같은 조건은 표 밖, 엔티티 메서드 안에 따로 써야 합니다. 이런 조건이 늘어날수록 규칙이 표와 메서드 두 곳으로 나뉩니다.
 
@@ -300,13 +322,19 @@ private boolean isRejected(StateMachineEventResult<PaymentStatus, PaymentAction>
 
 ### 결정 3. 허용되지 않은 전이를 어떻게 알릴까
 
-알리는 방법으로는 아래 세 가지를 비교하였습니다.
+이 장에서는 허용되지 않은 전이를 예외로 알리는 방식을 골랐습니다. 알리는 방법으로는 아래 세 가지를 비교하였습니다.
 
 - 예외를 던지기
 - 성공 여부를 반환하기(`boolean`이나 결과 객체)
 - 아무 일도 하지 않기
 
-이 장에서는 예외를 던지는 방식을 골랐습니다. 잘못된 전이는 호출하는 쪽의 버그이거나 이미 처리된 요청이 다시 들어온 경우이고, 어느 쪽이든 조용히 넘어가면 원인을 찾기 어렵습니다. 성공 여부를 반환하는 방식도 호출하는 쪽이 반환값을 확인하지 않으면 잘못된 전이가 그대로 지나가기 때문에, 확인을 빠뜨릴 수 없는 예외를 골랐습니다.
+잘못된 전이는 호출하는 쪽의 버그이거나 이미 처리된 요청이 다시 들어온 경우이고, 어느 쪽이든 조용히 넘어가면 원인을 찾기 어렵습니다. 성공 여부를 반환하는 방식도 호출하는 쪽이 반환값을 확인하지 않으면 잘못된 전이가 그대로 지나갑니다. 예외는 확인을 빠뜨려도 호출이 그 자리에서 멈춥니다.
+
+취소된 결제에 매입을 요청했을 때 세 방식이 어떻게 되는지, 그리고 예외 방식에서 같은 취소 요청이 두 번 들어오면 어떻게 되는지 그리면 아래와 같습니다.
+
+![예외는 호출하는 쪽이 확인하지 않아도 호출이 멈춰 원인이 드러나고, 성공 여부를 반환하면 반환값을 보지 않을 때 잘못된 전이가 그대로 지나가며, 아무 일도 하지 않으면 조용히 넘어간다. 아래는 같은 취소 요청이 두 번 들어오면 두 번째 요청이 실패하는 그림](images/06_reject-signal-options.svg)
+
+위 그림에서 예외만 호출하는 쪽의 확인 여부와 상관없이 잘못된 전이가 드러나는 것을 확인할 수 있습니다. 아래 그림의 두 번째 요청이 실패하는 문제는 뒤에서 다시 다룹니다.
 
 예외(`InvalidPaymentTransitionException`)는 여러 도메인이 함께 쓰는 공통 패키지(`global/error`)에 모아 두고, 오류 코드와 함께 원래 상태와 시도한 행위를 로그용 문장에 담았습니다. 이 패키지가 결제 도메인 타입에 의존하지 않도록 상태와 행위는 이름(`String`)으로 받습니다.
 
@@ -322,7 +350,7 @@ public InvalidPaymentTransitionException(String status, String action) {
 
 ### 결정 4. 상태를 DB에 어떻게 저장할까
 
-저장 방식은 아래 세 가지를 비교하였습니다.
+이 장에서는 상태를 `varchar(30)` 컬럼에 enum 이름으로 저장하고, 스키마는 `schema.sql`로 직접 관리하도록 하였습니다. 저장 방식은 아래 세 가지를 비교하였습니다.
 
 - `@Enumerated(EnumType.ORDINAL)`: enum의 순서 번호를 숫자로 저장
 - `@Enumerated(EnumType.STRING)` + `varchar` 컬럼: enum 이름을 문자열로 저장
@@ -344,7 +372,7 @@ public enum StatusV2 {
 
 V1이 저장한 `APPROVED`를 V2가 읽을 때 ORDINAL과 varchar 컬럼에서 어떤 값이 오가는지 그리면 아래와 같습니다.
 
-![V1 코드가 APPROVED를 저장하면 ORDINAL 컬럼에는 1, varchar 컬럼에는 APPROVED가 들어가고, V2 코드가 읽으면 ORDINAL은 AUTHENTICATED로, varchar는 APPROVED로 읽히는 그림](images/02_ordinal-vs-varchar.svg)
+![V1 코드가 APPROVED를 저장하면 ORDINAL 컬럼에는 1, varchar 컬럼에는 APPROVED가 들어가고, V2 코드가 읽으면 ORDINAL은 AUTHENTICATED로, varchar는 APPROVED로 읽히는 그림](images/07_ordinal-vs-varchar.svg)
 
 실행 결과는 아래와 같습니다.
 
@@ -363,7 +391,7 @@ enum insert error: Data truncated for column 'enum_status' at row 1
 hibernate status column_type = enum('APPROVAL_CANCELED','APPROVAL_FAILED','APPROVED','AUTHENTICATED','AUTH_FAILED','CAPTURED','CAPTURE_CANCELED','EXPIRED','READY')
 ```
 
-그래서 이 장에서는 `varchar(30)`을 골랐고, 스키마는 Hibernate에게 맡기지 않고 `schema.sql`로 직접 관리하도록 하였습니다(`spring.jpa.hibernate.ddl-auto=none`).
+그래서 스키마는 Hibernate에게 맡기지 않고 `schema.sql`로 직접 관리합니다(`spring.jpa.hibernate.ddl-auto=none`).
 
 ```sql
 create table if not exists payment (
@@ -411,7 +439,7 @@ private void changeStatus(PaymentAction action) {
 
 바뀐 전이 표를 상태 다이어그램으로 그리면 아래와 같습니다.
 
-![READY에서 CAPTURED까지 이어지는 정상 흐름과, 인증 실패·승인 실패·만료로 갈라지는 전이, APPROVED와 CAPTURED에서 CANCEL이 각각 APPROVAL_CANCELED와 CAPTURE_CANCELED로 가는 상태 다이어그램](images/03_state-diagram.svg)
+![READY에서 CAPTURED까지 이어지는 정상 흐름과, 인증 실패·승인 실패·만료로 갈라지는 전이, APPROVED와 CAPTURED에서 CANCEL이 각각 APPROVAL_CANCELED와 CAPTURE_CANCELED로 가는 상태 다이어그램](images/08_state-diagram.svg)
 
 굵은 테두리로 표시한 실패·만료·취소 5개 상태는 더 갈 곳이 없는 상태이고, 이 상태에서 들어오는 행위는 모두 예외로 거부됩니다.
 

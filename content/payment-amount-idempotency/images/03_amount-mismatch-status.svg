@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>금액이 다를 때 결제 상태를 바꿀지 — AUTH_FAILED로 닫으면 시도가 결제 기록에 남지만 올바른 금액으로 다시 온 요청은 닫힌 결제라 결제할 수 없어 고객이 새 주문으로 다시 시작해야 하고, 상태를 바꾸지 않고 400 AMOUNT_MISMATCH로 거부하면 결제는 READY 그대로라 같은 결제로 다시 시도할 수 있지만 조작 시도는 로그에만 남는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 13.5px; fill: #9ca3af; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .val { font-size: 13.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .note { font-size: 13.5px; fill: #b91c1c; }
+    .gnote { font-size: 13.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="440" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="420" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">금액이 다를 때 결제 상태 — 닫을지, 그대로 둘지</text>
+
+  <rect x="40" y="62" width="320" height="42" rx="8" class="hold"/>
+  <text x="200" y="88" class="t" text-anchor="middle"><tspan class="m">AUTH_FAILED</tspan>로 닫기 <tspan font-weight="400" class="val">(검토한 선택)</tspan></text>
+  <rect x="400" y="62" width="320" height="42" rx="8" class="hold"/>
+  <text x="560" y="88" class="t" text-anchor="middle">상태를 바꾸지 않기 <tspan font-weight="400" class="val">(고른 선택)</tspan></text>
+
+  <text x="380" y="128" class="step" text-anchor="middle">① 금액이 다른 승인 요청</text>
+  <line x1="200" y1="104" x2="200" y2="138" class="flow" marker-end="url(#ar)"/>
+  <line x1="560" y1="104" x2="560" y2="138" class="flow" marker-end="url(#ar)"/>
+  <rect x="40" y="140" width="320" height="52" rx="8" class="box"/>
+  <text x="200" y="161" class="t" text-anchor="middle">결제를 <tspan class="m">AUTH_FAILED</tspan>로 닫음</text>
+  <text x="200" y="180" class="val" text-anchor="middle">시도가 결제 기록에 남음</text>
+  <rect x="400" y="140" width="320" height="52" rx="8" class="box"/>
+  <text x="560" y="161" class="t" text-anchor="middle"><tspan class="m">400 AMOUNT_MISMATCH</tspan></text>
+  <text x="560" y="180" class="val" text-anchor="middle">결제는 <tspan class="m" style="font-size: 13px">READY</tspan> 그대로, 시도는 로그에만 남음</text>
+
+  <text x="380" y="216" class="step" text-anchor="middle">② 올바른 금액으로 다시 온 요청</text>
+  <line x1="200" y1="192" x2="200" y2="226" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <line x1="560" y1="192" x2="560" y2="226" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <rect x="40" y="228" width="320" height="52" rx="8" class="bad"/>
+  <text x="200" y="249" class="badt" text-anchor="middle">닫힌 결제라 다시 결제할 수 없음</text>
+  <text x="200" y="268" class="note" text-anchor="middle">고객은 새 주문으로 다시 시작</text>
+  <rect x="400" y="228" width="320" height="52" rx="8" class="ok"/>
+  <text x="560" y="249" class="okt" text-anchor="middle">같은 결제로 다시 시도할 수 있음</text>
+  <text x="560" y="268" class="gnote" text-anchor="middle">결제가 닫히지 않았으므로</text>
+
+  <text x="380" y="304" class="step" text-anchor="middle">어떤 경우에 맞는지</text>
+  <rect x="40" y="314" width="320" height="64" rx="8" class="wait"/>
+  <text x="56" y="340" class="sub">조작 시도를 결제 기록으로 남겨 감사하거나,</text>
+  <text x="56" y="362" class="sub">조작이 의심된 주문을 다시 결제 못 하게 할 때</text>
+  <rect x="400" y="314" width="320" height="64" rx="8" class="wait"/>
+  <text x="416" y="340" class="sub">금액이 다른 요청이 클라이언트 버그에서도</text>
+  <text x="416" y="362" class="sub">나올 수 있을 때 — 대신 조작 시도는 DB에 남지 않음</text>
+
+  <text x="30" y="408" class="sub">두 선택 모두 금액이 다르면 PG를 부르지 않으므로 PG 쪽에는 정리할 것이 없음. 왼쪽은 이 장에서 구현하지 않은 선택</text>
+</svg>

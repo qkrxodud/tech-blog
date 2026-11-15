@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 530" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>비교 구현별 테스트 통과·실패 — 운영 구현은 계약 테스트 4개와 API 대기 중 조회를 모두 통과하고, 비교 B'(TransactionTemplate)는 계약 테스트 4개를 통과하며, 비교 A(하나로 묶기)는 거절 기록(READY로 남음)과 연결 대기 중 조회가, 비교 A'(noRollbackFor)는 연결 대기 중 조회가, 같은 클래스 안 호출은 승인(승인 전이 거부)과 거절 기록이, Open Session In View 켬은 API 대기 중 조회(500)가 실패하는 격자</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .step { font-size: 13.5px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 13.5px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 13.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 13.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okw { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 13.5px; fill: #b91c1c; }
+    .gnote { font-size: 13.5px; fill: #15803d; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="760" height="530" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="510" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">같은 테스트로 돌린 결과 — 구현별 통과와 실패</text>
+  <text x="416" y="72" class="step" text-anchor="middle">계약 테스트(서비스를 직접 부름)</text>
+  <line x1="210" y1="80" x2="622" y2="80" class="axis"/>
+  <text x="684" y="72" class="step" text-anchor="middle">API 테스트</text>
+  <line x1="634" y1="80" x2="734" y2="80" class="axis"/>
+  <text x="260" y="100" class="t" text-anchor="middle" style="font-size: 13px">승인하면</text>
+  <text x="260" y="117" class="sub" text-anchor="middle" style="font-size: 12px">승인 상태</text>
+  <text x="364" y="100" class="t" text-anchor="middle" style="font-size: 13px">거절하면</text>
+  <text x="364" y="117" class="sub" text-anchor="middle" style="font-size: 12px">거절 상태 남음</text>
+  <text x="468" y="100" class="t" text-anchor="middle" style="font-size: 13px">대기 중 조회</text>
+  <text x="468" y="117" class="sub" text-anchor="middle" style="font-size: 12px">연결 수만큼</text>
+  <text x="572" y="100" class="t" text-anchor="middle" style="font-size: 13px">답이 늦으면</text>
+  <text x="572" y="117" class="sub" text-anchor="middle" style="font-size: 12px">응답 없음 알림</text>
+  <text x="684" y="100" class="t" text-anchor="middle" style="font-size: 13px">대기 중 조회</text>
+  <text x="684" y="117" class="sub" text-anchor="middle" style="font-size: 12px">API로 한 번 더</text>
+  <text x="30" y="151" class="t">운영 구현</text>
+  <text x="30" y="170" class="sub" style="font-size: 12.5px">빈 분리</text>
+  <rect x="210" y="130" width="100" height="50" rx="8" class="ok"/>
+  <text x="260" y="160" class="okt" text-anchor="middle">통과</text>
+  <rect x="314" y="130" width="100" height="50" rx="8" class="ok"/>
+  <text x="364" y="160" class="okt" text-anchor="middle">통과</text>
+  <rect x="418" y="130" width="100" height="50" rx="8" class="ok"/>
+  <text x="468" y="160" class="okt" text-anchor="middle">통과</text>
+  <rect x="522" y="130" width="100" height="50" rx="8" class="ok"/>
+  <text x="572" y="160" class="okt" text-anchor="middle">통과</text>
+  <rect x="634" y="130" width="100" height="50" rx="8" class="ok"/>
+  <text x="684" y="160" class="okt" text-anchor="middle">통과</text>
+  <text x="30" y="207" class="t">비교 B'</text>
+  <text x="30" y="226" class="sub" style="font-size: 12.5px"><tspan font-family="Menlo, Consolas, monospace" font-size="12px">TransactionTemplate</tspan></text>
+  <rect x="210" y="186" width="100" height="50" rx="8" class="ok"/>
+  <text x="260" y="216" class="okt" text-anchor="middle">통과</text>
+  <rect x="314" y="186" width="100" height="50" rx="8" class="ok"/>
+  <text x="364" y="216" class="okt" text-anchor="middle">통과</text>
+  <rect x="418" y="186" width="100" height="50" rx="8" class="ok"/>
+  <text x="468" y="216" class="okt" text-anchor="middle">통과</text>
+  <rect x="522" y="186" width="100" height="50" rx="8" class="ok"/>
+  <text x="572" y="216" class="okt" text-anchor="middle">통과</text>
+  <rect x="634" y="186" width="100" height="50" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="684" y="216" class="step" text-anchor="middle">—</text>
+  <text x="30" y="263" class="t">비교 A</text>
+  <text x="30" y="282" class="sub" style="font-size: 12.5px">하나로 묶기</text>
+  <rect x="210" y="242" width="100" height="50" rx="8" class="ok"/>
+  <text x="260" y="272" class="okt" text-anchor="middle">통과</text>
+  <rect x="314" y="242" width="100" height="50" rx="8" class="bad"/>
+  <text x="364" y="263" class="badt" text-anchor="middle">실패</text>
+  <text x="364" y="282" class="note" text-anchor="middle" style="font-size: 12px">READY로 남음</text>
+  <rect x="418" y="242" width="100" height="50" rx="8" class="bad"/>
+  <text x="468" y="263" class="badt" text-anchor="middle">실패</text>
+  <text x="468" y="282" class="note" text-anchor="middle" style="font-size: 12px">연결 못 얻음</text>
+  <rect x="522" y="242" width="100" height="50" rx="8" class="ok"/>
+  <text x="572" y="272" class="okt" text-anchor="middle">통과</text>
+  <rect x="634" y="242" width="100" height="50" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="684" y="272" class="step" text-anchor="middle">—</text>
+  <text x="30" y="319" class="t">비교 A'</text>
+  <text x="30" y="338" class="sub" style="font-size: 12.5px"><tspan font-family="Menlo, Consolas, monospace" font-size="12px">noRollbackFor</tspan></text>
+  <rect x="210" y="298" width="100" height="50" rx="8" class="ok"/>
+  <text x="260" y="328" class="okt" text-anchor="middle">통과</text>
+  <rect x="314" y="298" width="100" height="50" rx="8" class="ok"/>
+  <text x="364" y="328" class="okt" text-anchor="middle">통과</text>
+  <rect x="418" y="298" width="100" height="50" rx="8" class="bad"/>
+  <text x="468" y="319" class="badt" text-anchor="middle">실패</text>
+  <text x="468" y="338" class="note" text-anchor="middle" style="font-size: 12px">연결 못 얻음</text>
+  <rect x="522" y="298" width="100" height="50" rx="8" class="ok"/>
+  <text x="572" y="328" class="okt" text-anchor="middle">통과</text>
+  <rect x="634" y="298" width="100" height="50" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="684" y="328" class="step" text-anchor="middle">—</text>
+  <text x="30" y="375" class="t">비교</text>
+  <text x="30" y="394" class="sub" style="font-size: 12.5px">같은 클래스 안 호출</text>
+  <rect x="210" y="354" width="100" height="50" rx="8" class="bad"/>
+  <text x="260" y="375" class="badt" text-anchor="middle">실패</text>
+  <text x="260" y="394" class="note" text-anchor="middle" style="font-size: 12px">승인 전이 거부</text>
+  <rect x="314" y="354" width="100" height="50" rx="8" class="bad"/>
+  <text x="364" y="375" class="badt" text-anchor="middle">실패</text>
+  <text x="364" y="394" class="note" text-anchor="middle" style="font-size: 12px">READY로 남음</text>
+  <rect x="418" y="354" width="100" height="50" rx="8" class="ok"/>
+  <text x="468" y="384" class="okt" text-anchor="middle">통과</text>
+  <rect x="522" y="354" width="100" height="50" rx="8" class="ok"/>
+  <text x="572" y="384" class="okt" text-anchor="middle">통과</text>
+  <rect x="634" y="354" width="100" height="50" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="684" y="384" class="step" text-anchor="middle">—</text>
+  <text x="30" y="431" class="t">비교</text>
+  <text x="30" y="450" class="sub" style="font-size: 12.5px">Open Session In View 켬</text>
+  <rect x="210" y="410" width="100" height="50" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="260" y="440" class="step" text-anchor="middle">—</text>
+  <rect x="314" y="410" width="100" height="50" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="364" y="440" class="step" text-anchor="middle">—</text>
+  <rect x="418" y="410" width="100" height="50" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="468" y="440" class="step" text-anchor="middle">—</text>
+  <rect x="522" y="410" width="100" height="50" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="572" y="440" class="step" text-anchor="middle">—</text>
+  <rect x="634" y="410" width="100" height="50" rx="8" class="bad"/>
+  <text x="684" y="431" class="badt" text-anchor="middle">실패</text>
+  <text x="684" y="450" class="note" text-anchor="middle" style="font-size: 12px">500 응답</text>
+  <line x1="30" y1="474" x2="730" y2="474" stroke="#e5e7eb"/>
+  <text x="30" y="496" class="sub">운영 구현·비교 B'는 <tspan font-family="Menlo, Consolas, monospace" font-size="12px">./gradlew check</tspan>, 나머지는 <tspan font-family="Menlo, Consolas, monospace" font-size="12px">./gradlew knownFailingTest</tspan> 결과</text>
+  <text x="30" y="514" class="sub">— 는 그 구현으로 돌리지 않은 테스트</text>
+</svg>

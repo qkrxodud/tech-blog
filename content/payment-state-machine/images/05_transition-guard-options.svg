@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 482" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>전이를 막는 곳 비교 — 승인 전 결제에 매입을 요청하면 출발 구조는 확인 없이 CAPTURED를 대입하고, 허용 전이 표는 next()가 표에 없는 조합에서 예외를 던지고, State 패턴은 Ready 상태가 capture()를 재정의하지 않아 기본 구현이 거부하며, Spring Statemachine은 DENIED 결과를 isRejected()로 확인해 예외로 바꿔 세 구현 모두 READY를 유지하는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .code { font-family: Menlo, Consolas, monospace; font-size: 13px; fill: #6b7280; }
+    .subc { font-family: Menlo, Consolas, monospace; font-size: 12px; fill: #6b7280; }
+    .lbl { font-family: Menlo, Consolas, monospace; font-size: 11px; fill: #6b7280; }
+    .step { font-size: 12px; fill: #9ca3af; }
+    .lane { font-size: 16px; font-weight: 700; fill: #1f2937; }
+    .sub { font-size: 12px; fill: #6b7280; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .op { font-size: 14px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .st { font-size: 12.5px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .val { font-size: 12.5px; fill: #4b5563; }
+    .db { font-size: 14px; font-weight: 700; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+    .hold { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .term { fill: #f3f4f6; stroke: #374151; stroke-width: 2.6; }
+    .dbbox { fill: #f3f4f6; stroke: #d1d5db; stroke-width: 1.2; }
+    .track { fill: #ffffff; stroke: #eceef1; }
+    .axis { stroke: #c4c8ce; stroke-width: 1.2; }
+    .flow { stroke: #9ca3af; stroke-width: 1.4; fill: none; }
+    .wait { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .waitt { font-size: 12.5px; fill: #6b7280; }
+    .ok { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+    .okt { font-size: 14px; font-weight: 700; fill: #15803d; }
+    .okc { font-size: 14px; font-weight: 700; fill: #15803d; font-family: Menlo, Consolas, monospace; }
+    .bad { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.5; }
+    .badt { font-size: 14px; font-weight: 700; fill: #b91c1c; }
+    .badc { font-size: 14px; font-weight: 700; fill: #b91c1c; font-family: Menlo, Consolas, monospace; }
+    .note { font-size: 12.5px; fill: #b91c1c; }
+    .gnote { font-size: 12.5px; fill: #15803d; }
+    .op2 { font-size: 13px; font-weight: 700; fill: #1f2937; font-family: Menlo, Consolas, monospace; }
+    .t13 { font-size: 13.5px; font-weight: 700; fill: #1f2937; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="482" fill="#ffffff"/>
+  <rect x="10" y="10" width="740" height="462" rx="12" fill="#fafafa" stroke="#e5e7eb"/>
+  <text x="30" y="42" class="h">전이를 막는 곳 — 승인 전 결제(READY)에 매입을 요청하면</text>
+  <text x="250" y="72" class="step" text-anchor="middle">① 호출</text>
+  <text x="385" y="72" class="step" text-anchor="middle">② 규칙 확인</text>
+  <text x="520" y="72" class="step" text-anchor="middle">③ 거부 방식</text>
+  <text x="660" y="72" class="step" text-anchor="middle">④ 결과</text>
+  <line x1="180" y1="80" x2="722" y2="80" class="axis" marker-end="url(#ar)"/>
+  <text x="30" y="112" class="lane">출발 구조</text>
+  <text x="30" y="130" class="sub">검사 없이 대입</text>
+  <rect x="180" y="88" width="555" height="60" rx="6" class="track"/>
+  <rect x="192" y="92" width="116" height="52" rx="8" class="box"/>
+  <text x="250" y="113" class="op2" text-anchor="middle">capture()</text>
+  <text x="250" y="133" class="val" text-anchor="middle">READY 결제</text>
+  <rect x="327" y="102" width="116" height="32" rx="6" class="wait"/>
+  <text x="385" y="123" class="waitt" text-anchor="middle">확인 없음</text>
+  <rect x="462" y="92" width="116" height="52" rx="8" class="bad"/>
+  <text x="520" y="113" class="badc" text-anchor="middle">CAPTURED</text>
+  <text x="520" y="133" class="val" text-anchor="middle">그대로 대입</text>
+  <rect x="602" y="92" width="116" height="52" rx="8" class="bad"/>
+  <text x="660" y="113" class="badt" text-anchor="middle">승인 전 매입</text>
+  <text x="660" y="133" class="val" text-anchor="middle">실행됨</text>
+  <line x1="308" y1="118" x2="325" y2="118" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="443" y1="118" x2="460" y2="118" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="578" y1="118" x2="600" y2="118" stroke="#dc2626" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="30" y="186" class="lane">허용 전이 표</text>
+  <text x="30" y="204" class="sub">규칙: 표 한 곳</text>
+  <text x="30" y="220" class="sub">34줄(상태 선언 포함)</text>
+  <rect x="180" y="162" width="555" height="60" rx="6" class="track"/>
+  <rect x="192" y="166" width="116" height="52" rx="8" class="box"/>
+  <text x="250" y="187" class="op2" text-anchor="middle">capture()</text>
+  <text x="250" y="207" class="val" text-anchor="middle">READY 결제</text>
+  <rect x="327" y="166" width="116" height="52" rx="8" class="box"/>
+  <text x="385" y="187" class="op2" text-anchor="middle">next()</text>
+  <text x="385" y="207" class="val" text-anchor="middle">표에 없는 조합</text>
+  <rect x="462" y="166" width="116" height="52" rx="8" class="box"/>
+  <text x="520" y="187" class="op2" text-anchor="middle">throw</text>
+  <text x="520" y="207" class="val" text-anchor="middle">예외 던짐</text>
+  <rect x="602" y="166" width="116" height="52" rx="8" class="ok"/>
+  <text x="660" y="187" class="okt" text-anchor="middle">거부</text>
+  <text x="660" y="207" class="val" text-anchor="middle">READY 유지</text>
+  <line x1="308" y1="192" x2="325" y2="192" class="flow" marker-end="url(#ar)"/>
+  <line x1="443" y1="192" x2="460" y2="192" class="flow" marker-end="url(#ar)"/>
+  <line x1="578" y1="192" x2="600" y2="192" class="flow" marker-end="url(#ar)"/>
+  <text x="30" y="260" class="lane">State 패턴</text>
+  <text x="30" y="278" class="sub">규칙: 상태 클래스마다</text>
+  <text x="30" y="294" class="sub">72줄</text>
+  <rect x="180" y="236" width="555" height="60" rx="6" class="track"/>
+  <rect x="192" y="240" width="116" height="52" rx="8" class="box"/>
+  <text x="250" y="261" class="op2" text-anchor="middle">capture()</text>
+  <text x="250" y="281" class="val" text-anchor="middle">READY 결제</text>
+  <rect x="327" y="240" width="116" height="52" rx="8" class="box"/>
+  <text x="385" y="261" class="op2" text-anchor="middle">Ready</text>
+  <text x="385" y="281" class="val" text-anchor="middle">재정의 없음</text>
+  <rect x="462" y="240" width="116" height="52" rx="8" class="box"/>
+  <text x="520" y="261" class="op2" text-anchor="middle">reject()</text>
+  <text x="520" y="281" class="val" text-anchor="middle">기본 구현</text>
+  <rect x="602" y="240" width="116" height="52" rx="8" class="ok"/>
+  <text x="660" y="261" class="okt" text-anchor="middle">거부</text>
+  <text x="660" y="281" class="val" text-anchor="middle">READY 유지</text>
+  <line x1="308" y1="266" x2="325" y2="266" class="flow" marker-end="url(#ar)"/>
+  <line x1="443" y1="266" x2="460" y2="266" class="flow" marker-end="url(#ar)"/>
+  <line x1="578" y1="266" x2="600" y2="266" class="flow" marker-end="url(#ar)"/>
+  <text x="30" y="334" class="lane">Statemachine</text>
+  <text x="30" y="352" class="sub">규칙: 빌더 선언 한 곳</text>
+  <text x="30" y="368" class="sub">47줄</text>
+  <rect x="180" y="310" width="555" height="60" rx="6" class="track"/>
+  <rect x="192" y="314" width="116" height="52" rx="8" class="box"/>
+  <text x="250" y="335" class="op2" text-anchor="middle">sendEvent</text>
+  <text x="250" y="355" class="val" text-anchor="middle">CAPTURE 이벤트</text>
+  <rect x="327" y="314" width="116" height="52" rx="8" class="box"/>
+  <text x="385" y="335" class="t13" text-anchor="middle">선언에 없음</text>
+  <text x="385" y="355" class="val" text-anchor="middle">전이 없음</text>
+  <rect x="462" y="314" width="116" height="52" rx="8" class="hold"/>
+  <text x="520" y="335" class="op2" text-anchor="middle">DENIED</text>
+  <text x="520" y="355" class="val" text-anchor="middle">예외가 아닌 결과</text>
+  <rect x="602" y="314" width="116" height="52" rx="8" class="ok"/>
+  <text x="660" y="335" class="okt" text-anchor="middle">거부</text>
+  <text x="660" y="355" class="val" text-anchor="middle">직접 예외로 바꿈</text>
+  <line x1="308" y1="340" x2="325" y2="340" class="flow" marker-end="url(#ar)"/>
+  <line x1="443" y1="340" x2="460" y2="340" class="flow" marker-end="url(#ar)"/>
+  <line x1="578" y1="340" x2="600" y2="340" class="flow" marker-end="url(#ar)"/>
+  <text x="30" y="408" class="gnote">세 구현 모두 같은 70개 테스트를 통과합니다. 고르는 기준은 규칙을 읽는 곳, 코드 양, 의존성입니다.</text>
+  <text x="30" y="432" class="note">Statemachine은 거부해도 예외 없이 DENIED가 돌아와, 예외로 바꾸는 코드를 직접 붙였습니다.</text>
+  <text x="30" y="456" class="sub">Spring Statemachine 저장소는 2026-07-05에 보관(archived) 처리되어 유지보수가 끝났습니다.</text>
+</svg>
