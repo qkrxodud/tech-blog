@@ -1503,5 +1503,12 @@
     "series": "결제 시스템 챌린지",
     "seriesOrder": 3,
     "date": "2026-11-15"
+  },
+  {
+    "slug": "payment-approval-unknown",
+    "category": "spring",
+    "series": "결제 시스템 챌린지",
+    "seriesOrder": 4,
+    "date": "2026-11-16"
   }
 ]

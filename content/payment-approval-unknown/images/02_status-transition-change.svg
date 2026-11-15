@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 600" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결과 모름 표시 — 4장 완성 코드에서 AUTHENTICATED는 시간 안에 답을 받으면 3장까지처럼 APPROVE로 APPROVED, FAIL_APPROVAL로 APPROVAL_FAILED가 되고, 읽기 시간 초과면 MARK_APPROVAL_UNKNOWN으로 새 상태 APPROVAL_UNKNOWN이 된다. APPROVAL_UNKNOWN은 PG 조회 결과로만 APPROVE 또는 FAIL_APPROVAL로 닫고 EXPIRE와 CAPTURE는 허용하지 않는다. 아래는 AUTHENTICATED 그대로 두기, 새 상태 두기(고름), 별도 승인 시도 테이블(구현해서 돌려 보지 않음) 세 선택지</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ot { font-size: 13px; font-weight: 700; fill: #b45309; }
+    .os { font-size: 12px; fill: #b45309; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="omark"><circle r="9" fill="#f59e0b"/><path d="M-4,0 H4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-docx"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#ef4444" class="o"/><path d="M17,23 l6,6 M23,23 l-6,6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-undo"><circle cx="14" cy="14" r="13" fill="#fecaca" class="o"/><path d="M8,14 a6,6 0 1 1 6,6" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round"/><path d="M5,11 l3,3.5 l3.5,-3" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-pause"><circle cx="14" cy="14" r="13" fill="#e5e7eb" class="o"/><path d="M10,8 v12 M18,8 v12" stroke="#4b5563" stroke-width="3" stroke-linecap="round"/></g>
+  </defs>
+  <rect width="760" height="600" fill="#ffffff"/>
+  <text x="24" y="32" class="h">결과 모름 표시 — 새 상태 APPROVAL_UNKNOWN과 전이</text>
+
+  <rect x="14" y="56" width="732" height="296" rx="16" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <rect x="28" y="43" width="250" height="26" rx="6" fill="#5b7194"/>
+  <text x="153" y="61" class="tab" text-anchor="middle">4장 완성 코드의 전이 (승인 앞뒤)</text>
+
+  <!-- 기존 전이(회색) -->
+  <path d="M120,170 V88 H606" fill="none" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#agy)"/>
+  <text x="330" y="81" class="gs"><tspan class="m">APPROVE</tspan> — 시간 안에 승인 답(3장까지와 같음)</text>
+  <path d="M170,210 V300 H606" fill="none" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#agy)"/>
+  <text x="330" y="318" class="gs"><tspan class="m">FAIL_APPROVAL</tspan> — 시간 안에 거절 답</text>
+  <line x1="72" y1="210" x2="72" y2="284" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#agy)"/>
+  <text x="80" y="252" class="gs m" style="font-size: 12px">EXPIRE</text>
+  <rect x="32" y="286" width="104" height="30" rx="15" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="84" y="305" class="gs m" text-anchor="middle" style="font-size: 12px">EXPIRED</text>
+
+  <!-- AUTHENTICATED -->
+  <rect x="32" y="170" width="176" height="40" rx="20" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <rect x="32" y="170" width="176" height="40" rx="20" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.03;0.04;0.09;0.1;1"/></rect>
+  <text x="120" y="195" class="t2 m" text-anchor="middle" style="font-size: 12px; fill: #1e3a8a">AUTHENTICATED</text>
+
+  <!-- 새 전이(초록) -->
+  <line x1="208" y1="190" x2="340" y2="190" stroke="#16a34a" stroke-width="2" marker-end="url(#agr)"/>
+  <text x="274" y="182" class="oks m" text-anchor="middle" style="font-size: 12px">MARK_APPROVAL_UNKNOWN</text>
+  <text x="274" y="206" class="oks" text-anchor="middle" style="font-size: 12px">읽기 시간 초과</text>
+
+  <!-- APPROVAL_UNKNOWN -->
+  <rect x="342" y="170" width="168" height="40" rx="20" fill="#e3f3e6" stroke="#16a34a" stroke-width="2"/>
+  <rect x="342" y="170" width="168" height="40" rx="20" fill="none" stroke="#16a34a" stroke-width="4" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.358;0.368;0.538;0.548;1"/></rect>
+  <text x="426" y="195" class="okt m" text-anchor="middle" style="font-size: 12px">APPROVAL_UNKNOWN</text>
+  <rect x="374" y="140" width="104" height="22" rx="11" fill="#16a34a"/>
+  <text x="426" y="155" class="tab" text-anchor="middle" style="font-size: 12px">4장에서 더함</text>
+  <text x="426" y="228" class="oks" text-anchor="middle" style="font-size: 12px">PG에 확인한 결과로만 닫음</text>
+
+  <line x1="510" y1="182" x2="604" y2="114" stroke="#16a34a" stroke-width="2" marker-end="url(#agr)"/>
+  <line x1="510" y1="198" x2="604" y2="266" stroke="#16a34a" stroke-width="2" marker-end="url(#agr)"/>
+
+  <!-- 닫히는 곳 -->
+  <rect x="606" y="76" width="132" height="44" rx="22" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <rect x="606" y="76" width="132" height="44" rx="22" fill="none" stroke="#16a34a" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.77;0.78;0.83;0.84;1"/></rect>
+  <text x="672" y="103" class="okt m" text-anchor="middle" style="font-size: 12px">APPROVED</text>
+  <text x="614" y="140" class="oks"><tspan class="m" style="font-size: 12px">APPROVE</tspan> · 조회 <tspan class="m" style="font-size: 12px">DONE</tspan></text>
+
+  <rect x="606" y="276" width="132" height="44" rx="22" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="672" y="303" class="badt m" text-anchor="middle" style="font-size: 12px">APPROVAL_FAILED</text>
+  <text x="738" y="338" class="oks" text-anchor="end"><tspan class="m" style="font-size: 12px">FAIL_APPROVAL</tspan> · 조회 거절·404</text>
+
+  <!-- 허용하지 않는 전이 -->
+  <rect x="342" y="240" width="190" height="34" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <use href="#xmark" x="358" y="257"/>
+  <text x="374" y="261" class="bads"><tspan class="m" style="font-size: 12px">EXPIRE</tspan>·<tspan class="m" style="font-size: 12px">CAPTURE</tspan> 허용 안 함</text>
+
+  <!-- 선택지 -->
+  <rect x="14" y="378" width="732" height="182" rx="16" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <rect x="28" y="365" width="290" height="26" rx="6" fill="#5b7194"/>
+  <text x="173" y="383" class="tab" text-anchor="middle">결과 모름을 어떻게 표시할까 — 세 선택지</text>
+
+  <rect x="32" y="402" width="270" height="44" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="48" y="420" class="t2"><tspan class="m" style="font-size: 12px">AUTHENTICATED</tspan> 그대로</text>
+  <text x="48" y="437" class="s" style="font-size: 12px">4장 출발 코드</text>
+  <line x1="302" y1="424" x2="326" y2="424" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="328" y="402" width="410" height="44" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="346" y="424"/>
+  <text x="362" y="420" class="badt">요청 직전·답 대기·결과 모름·기록 실패가 한 상태</text>
+  <text x="362" y="437" class="bads">재요청은 409, 보정할 결제를 상태로 가려낼 수 없음</text>
+
+  <rect x="32" y="456" width="270" height="44" rx="10" fill="#e3f3e6" stroke="#16a34a" stroke-width="2"/>
+  <text x="48" y="474" class="t2">새 상태 <tspan class="m" style="font-size: 12px">APPROVAL_UNKNOWN</tspan></text>
+  <text x="48" y="491" class="oks" style="font-size: 12px">이 장에서 고름</text>
+  <line x1="302" y1="478" x2="326" y2="478" stroke="#16a34a" stroke-width="1.5" marker-end="url(#agr)"/>
+  <rect x="328" y="456" width="410" height="44" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="346" y="478"/>
+  <text x="362" y="474" class="okt">시간 초과로 결과를 모르는 결제만 따로 보임</text>
+  <text x="362" y="491" class="oks">재요청은 PG를 부르지 않음, 확인한 결과로만 닫음</text>
+
+  <rect x="32" y="510" width="270" height="44" rx="10" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="48" y="528" class="gt">별도 승인 시도 테이블</text>
+  <text x="48" y="545" class="gs" style="font-size: 12px">결제 상태는 그대로, 시도마다 행</text>
+  <line x1="302" y1="532" x2="326" y2="532" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#agy)"/>
+  <rect x="328" y="510" width="410" height="44" rx="10" fill="#ffffff" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="346" y="528" class="gt">구현해서 돌려 보지 않음</text>
+  <text x="346" y="545" class="gs">결제 하나에 결제 키 여러 개, 시도마다 요청·응답을 대조할 때 맞음</text>
+
+  <text x="24" y="584" class="gs">움직이는 봉투: 시간 초과로 결과 모름이 된 결제가 보정에서 PG 조회 <tspan class="m">DONE</tspan>을 받아 승인으로 닫히는 길</text>
+
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M120,190 H510 L608,112 H660"
+      keyPoints="0;0;0.5291;0.5291;1;1" keyTimes="0;0.04;0.368;0.488;0.78;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.035;0.04;0.78;0.79;1"/>
+  </g>
+</svg>

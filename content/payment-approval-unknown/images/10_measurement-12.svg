@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 442" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>같은 결제 12건으로 잰 결과 — 승인으로 남은 결제는 운영 6, 망취소 0(PG 취소 6), 비교 B 0, 비교 C 0, 비교 D 4이고, PG와 어긋난 결제는 0, 0, 12, 6, 2, 확정하지 못한 결제는 0, 0, 12, 2, 2이며, 보정은 운영과 망취소가 1번(1403ms, 1424ms), 첫 확인 요청이 늦으면 2번(16322ms, 16325ms)에 끝나고 B·C·D는 5번 돌고도 확정하지 못한 결제가 남았다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ot { font-size: 13px; font-weight: 700; fill: #b45309; }
+    .os { font-size: 12px; fill: #b45309; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="omark"><circle r="9" fill="#f59e0b"/><path d="M-4,0 H4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-docx"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#ef4444" class="o"/><path d="M17,23 l6,6 M23,23 l-6,6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-undo"><circle cx="14" cy="14" r="13" fill="#fecaca" class="o"/><path d="M8,14 a6,6 0 1 1 6,6" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round"/><path d="M5,11 l3,3.5 l3.5,-3" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-pause"><circle cx="14" cy="14" r="13" fill="#e5e7eb" class="o"/><path d="M10,8 v12 M18,8 v12" stroke="#4b5563" stroke-width="3" stroke-linecap="round"/></g>
+  </defs>
+  <rect width="760" height="442" fill="#ffffff"/>
+  <text x="24" y="30" class="h">같은 결제 12건으로 잰 결과 — 구현 5개</text>
+  <text x="24" y="52" class="gs">PG 1.5초 뒤 승인 4건 · 거절 3건 · 닿지 않음 3건 · 승인 뒤 기록 실패 2건, 읽기 시간 제한 1초, 한 번 실행</text>
+  <rect x="206" y="66" width="84" height="44" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <text x="248.0" y="84" class="t2" text-anchor="middle" style="font-size: 12px">승인으로 남음</text>
+  <text x="248.0" y="100" class="gs" text-anchor="middle" style="font-size: 12px">PG 승인 6건 중</text>
+  <rect x="296" y="66" width="84" height="44" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <text x="338.0" y="84" class="t2" text-anchor="middle" style="font-size: 12px">PG 취소</text>
+  <text x="338.0" y="100" class="gs" text-anchor="middle" style="font-size: 12px">망취소가 보냄</text>
+  <rect x="386" y="66" width="84" height="44" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <text x="428.0" y="84" class="t2" text-anchor="middle" style="font-size: 12px">PG와 어긋남</text>
+  <text x="428.0" y="100" class="gs" text-anchor="middle" style="font-size: 12px">결제 12건 중</text>
+  <rect x="476" y="66" width="84" height="44" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <text x="518.0" y="84" class="t2" text-anchor="middle" style="font-size: 12px">확정 못 한 결제</text>
+  <text x="518.0" y="100" class="gs" text-anchor="middle" style="font-size: 12px">인증·결과 모름</text>
+  <rect x="566" y="66" width="84" height="44" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <text x="608.0" y="84" class="t2" text-anchor="middle" style="font-size: 12px">보정 횟수·시간</text>
+  <text x="608.0" y="100" class="gs" text-anchor="middle" style="font-size: 12px">PG가 바로 답함</text>
+  <rect x="656" y="66" width="84" height="44" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <text x="698.0" y="84" class="t2" text-anchor="middle" style="font-size: 12px">보정 횟수·시간</text>
+  <text x="698.0" y="100" class="gs" text-anchor="middle" style="font-size: 12px">첫 확인 요청 늦음</text>
+  <rect x="24" y="120" width="174" height="44" rx="10" fill="#e3f3e6" stroke="#16a34a" stroke-width="2"/>
+  <text x="38" y="139" class="t2">운영 구현</text>
+  <text x="38" y="156" class="gs" style="font-size: 12px">조회 보정 · 고름</text>
+  <rect x="206" y="120" width="84" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <text x="248.0" y="148" class="okt" text-anchor="middle" style="font-size: 17px">6</text>
+  <rect x="296" y="120" width="84" height="44" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1.2"/>
+  <text x="338.0" y="148" class="gt" text-anchor="middle" style="font-size: 17px">0</text>
+  <rect x="386" y="120" width="84" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <text x="428.0" y="148" class="okt" text-anchor="middle" style="font-size: 17px">0</text>
+  <rect x="476" y="120" width="84" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <text x="518.0" y="148" class="okt" text-anchor="middle" style="font-size: 17px">0</text>
+  <rect x="566" y="120" width="84" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <text x="608.0" y="140" class="okt" text-anchor="middle" style="font-size: 14px">1번</text>
+  <text x="608.0" y="156" class="oks" text-anchor="middle" style="font-size: 12px">1403ms</text>
+  <rect x="656" y="120" width="84" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <text x="698.0" y="140" class="okt" text-anchor="middle" style="font-size: 14px">2번</text>
+  <text x="698.0" y="156" class="oks" text-anchor="middle" style="font-size: 12px">16322ms</text>
+  <rect x="24" y="172" width="174" height="44" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="38" y="191" class="t2">비교 A</text>
+  <text x="38" y="208" class="gs" style="font-size: 12px">망취소</text>
+  <rect x="206" y="172" width="84" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="248.0" y="192" class="ot" text-anchor="middle" style="font-size: 14px">0</text>
+  <text x="248.0" y="208" class="os" text-anchor="middle" style="font-size: 12px">6건 취소</text>
+  <rect x="296" y="172" width="84" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="338.0" y="200" class="ot" text-anchor="middle" style="font-size: 17px">6</text>
+  <rect x="386" y="172" width="84" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <text x="428.0" y="200" class="okt" text-anchor="middle" style="font-size: 17px">0</text>
+  <rect x="476" y="172" width="84" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <text x="518.0" y="200" class="okt" text-anchor="middle" style="font-size: 17px">0</text>
+  <rect x="566" y="172" width="84" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <text x="608.0" y="192" class="okt" text-anchor="middle" style="font-size: 14px">1번</text>
+  <text x="608.0" y="208" class="oks" text-anchor="middle" style="font-size: 12px">1424ms</text>
+  <rect x="656" y="172" width="84" height="44" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <text x="698.0" y="192" class="okt" text-anchor="middle" style="font-size: 14px">2번</text>
+  <text x="698.0" y="208" class="oks" text-anchor="middle" style="font-size: 12px">16325ms</text>
+  <rect x="24" y="224" width="174" height="44" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="38" y="243" class="t2">비교 B</text>
+  <text x="38" y="260" class="gs" style="font-size: 12px">아무것도 안 함</text>
+  <rect x="206" y="224" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="248.0" y="252" class="badt" text-anchor="middle" style="font-size: 17px">0</text>
+  <rect x="296" y="224" width="84" height="44" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1.2"/>
+  <text x="338.0" y="252" class="gt" text-anchor="middle" style="font-size: 17px">0</text>
+  <rect x="386" y="224" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="428.0" y="252" class="badt" text-anchor="middle" style="font-size: 17px">12</text>
+  <rect x="476" y="224" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="518.0" y="252" class="badt" text-anchor="middle" style="font-size: 17px">12</text>
+  <rect x="566" y="224" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="608.0" y="244" class="badt" text-anchor="middle" style="font-size: 14px">5번</text>
+  <text x="608.0" y="260" class="bads" text-anchor="middle" style="font-size: 12px">미확정 남음</text>
+  <rect x="656" y="224" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="698.0" y="244" class="badt" text-anchor="middle" style="font-size: 14px">5번</text>
+  <text x="698.0" y="260" class="bads" text-anchor="middle" style="font-size: 12px">미확정 남음</text>
+  <rect x="24" y="276" width="174" height="44" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="38" y="295" class="t2">비교 C</text>
+  <text x="38" y="312" class="gs" style="font-size: 12px">요청 안에서 바로 조회</text>
+  <rect x="206" y="276" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="248.0" y="304" class="badt" text-anchor="middle" style="font-size: 17px">0</text>
+  <rect x="296" y="276" width="84" height="44" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1.2"/>
+  <text x="338.0" y="304" class="gt" text-anchor="middle" style="font-size: 17px">0</text>
+  <rect x="386" y="276" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="428.0" y="304" class="badt" text-anchor="middle" style="font-size: 17px">6</text>
+  <rect x="476" y="276" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="518.0" y="304" class="badt" text-anchor="middle" style="font-size: 17px">2</text>
+  <rect x="566" y="276" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="608.0" y="296" class="badt" text-anchor="middle" style="font-size: 14px">5번</text>
+  <text x="608.0" y="312" class="bads" text-anchor="middle" style="font-size: 12px">미확정 남음</text>
+  <rect x="656" y="276" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="698.0" y="296" class="badt" text-anchor="middle" style="font-size: 14px">5번</text>
+  <text x="698.0" y="312" class="bads" text-anchor="middle" style="font-size: 12px">미확정 남음</text>
+  <rect x="24" y="328" width="174" height="44" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="38" y="347" class="t2">비교 D</text>
+  <text x="38" y="364" class="gs" style="font-size: 12px">기록 재시도</text>
+  <rect x="206" y="328" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="248.0" y="356" class="badt" text-anchor="middle" style="font-size: 17px">4</text>
+  <rect x="296" y="328" width="84" height="44" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1.2"/>
+  <text x="338.0" y="356" class="gt" text-anchor="middle" style="font-size: 17px">0</text>
+  <rect x="386" y="328" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="428.0" y="356" class="badt" text-anchor="middle" style="font-size: 17px">2</text>
+  <rect x="476" y="328" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="518.0" y="356" class="badt" text-anchor="middle" style="font-size: 17px">2</text>
+  <rect x="566" y="328" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="608.0" y="348" class="badt" text-anchor="middle" style="font-size: 14px">5번</text>
+  <text x="608.0" y="364" class="bads" text-anchor="middle" style="font-size: 12px">미확정 남음</text>
+  <rect x="656" y="328" width="84" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="698.0" y="348" class="badt" text-anchor="middle" style="font-size: 14px">5번</text>
+  <text x="698.0" y="364" class="bads" text-anchor="middle" style="font-size: 12px">미확정 남음</text>
+  <line x1="24" y1="382" x2="740" y2="382" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="24" y="394" width="14" height="14" rx="3" fill="#fef3c7" stroke="#f59e0b"/><text x="46" y="406" class="s">망취소는 PG와 어긋나지 않지만, PG가 승인한 6건(늦은 승인 4 + 기록 실패 2)을 모두 취소함</text>
+  <text x="24" y="428" class="gs">보정 시간에는 운영에서 더해질 대기 시간과 주기가 들어 있지 않음. 보정은 확정 못 한 결제가 남으면 5번까지 돌림</text>
+</svg>

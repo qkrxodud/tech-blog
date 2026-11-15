@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 462" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>PG 답을 받지 못한 결제를 맞추는 세 방법 — 늦은 승인, 늦은 거절, 닿지 않은 요청, 승인 뒤 기록 실패 네 경우에서 조회 보정은 조회 200 DONE이면 APPROVED, ABORTED나 404면 APPROVAL_FAILED로 닫아 모두 PG와 짝이 맞고, 망취소(비교 A)는 PG가 승인한 두 경우에 취소를 보내 200을 받고 PG를 CANCELED로 되돌린 뒤 APPROVAL_FAILED로 닫고 나머지는 403·404를 받아 APPROVAL_FAILED로 닫으며, 아무것도 하지 않으면(비교 B) APPROVAL_UNKNOWN이나 AUTHENTICATED로 남아 네 경우 모두 어긋난다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ot { font-size: 13px; font-weight: 700; fill: #b45309; }
+    .os { font-size: 12px; fill: #b45309; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="omark"><circle r="9" fill="#f59e0b"/><path d="M-4,0 H4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-docx"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#ef4444" class="o"/><path d="M17,23 l6,6 M23,23 l-6,6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-undo"><circle cx="14" cy="14" r="13" fill="#fecaca" class="o"/><path d="M8,14 a6,6 0 1 1 6,6" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round"/><path d="M5,11 l3,3.5 l3.5,-3" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-pause"><circle cx="14" cy="14" r="13" fill="#e5e7eb" class="o"/><path d="M10,8 v12 M18,8 v12" stroke="#4b5563" stroke-width="3" stroke-linecap="round"/></g>
+  </defs>
+  <rect width="760" height="462" fill="#ffffff"/>
+  <text x="24" y="32" class="h">PG 답을 받지 못한 결제를 맞추는 세 방법 — 네 경우의 결과</text>
+  <rect x="184" y="50" width="134" height="44" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="251.0" y="68" class="t2" text-anchor="middle">늦은 승인</text>
+  <text x="251.0" y="85" class="gs" text-anchor="middle" style="font-size: 12px">PG 1.5초 뒤 승인</text>
+  <rect x="324" y="50" width="134" height="44" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="391.0" y="68" class="t2" text-anchor="middle">늦은 거절</text>
+  <text x="391.0" y="85" class="gs" text-anchor="middle" style="font-size: 12px">PG 1.5초 뒤 거절</text>
+  <rect x="464" y="50" width="134" height="44" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="531.0" y="68" class="t2" text-anchor="middle">닿지 않은 요청</text>
+  <text x="531.0" y="85" class="gs" text-anchor="middle" style="font-size: 12px">PG 기록 없음</text>
+  <rect x="604" y="50" width="134" height="44" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="671.0" y="68" class="t2" text-anchor="middle">승인 뒤 기록 실패</text>
+  <text x="671.0" y="85" class="gs" text-anchor="middle" style="font-size: 12px">PG 승인, 우리 기록 막힘</text>
+  <rect x="24" y="108" width="150" height="76" rx="10" fill="#e3f3e6" stroke="#16a34a" stroke-width="2"/>
+  <text x="38" y="142" class="t2">조회 보정</text>
+  <text x="38" y="161" class="gs" style="font-size: 12px">이 장에서 고름</text>
+  <rect x="184" y="108" width="134" height="76" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="200" y="124"/>
+  <text x="214" y="128" class="oks" style="font-size: 12px">조회 <tspan class="m">200</tspan> <tspan class="m">DONE</tspan></text>
+  <text x="251.0" y="153" class="okt m" text-anchor="middle" style="font-size: 12px">APPROVED</text>
+  <text x="251.0" y="173" class="oks" text-anchor="middle" style="font-size: 12px">PG <tspan class="m">DONE</tspan></text>
+  <rect x="324" y="108" width="134" height="76" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="340" y="124"/>
+  <text x="354" y="128" class="oks" style="font-size: 12px">조회 <tspan class="m">200</tspan> <tspan class="m">ABORTED</tspan></text>
+  <text x="391.0" y="153" class="okt m" text-anchor="middle" style="font-size: 12px">APPROVAL_FAILED</text>
+  <text x="391.0" y="173" class="oks" text-anchor="middle" style="font-size: 12px">PG <tspan class="m">ABORTED</tspan></text>
+  <rect x="464" y="108" width="134" height="76" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="480" y="124"/>
+  <text x="494" y="128" class="oks" style="font-size: 12px">조회 <tspan class="m">404</tspan></text>
+  <text x="531.0" y="153" class="okt m" text-anchor="middle" style="font-size: 12px">APPROVAL_FAILED</text>
+  <text x="531.0" y="173" class="oks" text-anchor="middle" style="font-size: 12px">PG 기록 없음</text>
+  <rect x="604" y="108" width="134" height="76" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="620" y="124"/>
+  <text x="634" y="128" class="oks" style="font-size: 12px">조회 <tspan class="m">200</tspan> <tspan class="m">DONE</tspan></text>
+  <text x="671.0" y="153" class="okt m" text-anchor="middle" style="font-size: 12px">APPROVED</text>
+  <text x="671.0" y="173" class="oks" text-anchor="middle" style="font-size: 12px">PG <tspan class="m">DONE</tspan></text>
+  <rect x="24" y="196" width="150" height="76" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="38" y="230" class="t2">망취소</text>
+  <text x="38" y="249" class="gs" style="font-size: 12px">비교 A · 계약 9개 통과</text>
+  <rect x="184" y="196" width="134" height="76" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <use href="#omark" x="200" y="212"/>
+  <text x="214" y="216" class="os" style="font-size: 12px">취소 → <tspan class="m">200</tspan></text>
+  <text x="251.0" y="241" class="ot m" text-anchor="middle" style="font-size: 12px">APPROVAL_FAILED</text>
+  <text x="251.0" y="261" class="os" text-anchor="middle" style="font-size: 12px">PG <tspan class="m">CANCELED</tspan></text>
+  <rect x="324" y="196" width="134" height="76" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="340" y="212"/>
+  <text x="354" y="216" class="oks" style="font-size: 12px">취소 → <tspan class="m">403</tspan></text>
+  <text x="391.0" y="241" class="okt m" text-anchor="middle" style="font-size: 12px">APPROVAL_FAILED</text>
+  <text x="391.0" y="261" class="oks" text-anchor="middle" style="font-size: 12px">PG <tspan class="m">ABORTED</tspan></text>
+  <rect x="464" y="196" width="134" height="76" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <use href="#vmark" x="480" y="212"/>
+  <text x="494" y="216" class="oks" style="font-size: 12px">취소 → <tspan class="m">404</tspan></text>
+  <text x="531.0" y="241" class="okt m" text-anchor="middle" style="font-size: 12px">APPROVAL_FAILED</text>
+  <text x="531.0" y="261" class="oks" text-anchor="middle" style="font-size: 12px">PG 기록 없음</text>
+  <rect x="604" y="196" width="134" height="76" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <use href="#omark" x="620" y="212"/>
+  <text x="634" y="216" class="os" style="font-size: 12px">취소 → <tspan class="m">200</tspan></text>
+  <text x="671.0" y="241" class="ot m" text-anchor="middle" style="font-size: 12px">APPROVAL_FAILED</text>
+  <text x="671.0" y="261" class="os" text-anchor="middle" style="font-size: 12px">PG <tspan class="m">CANCELED</tspan></text>
+  <rect x="24" y="284" width="150" height="76" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="38" y="318" class="t2">아무것도 안 함</text>
+  <text x="38" y="337" class="gs" style="font-size: 12px">비교 B · 계약 5개 실패</text>
+  <rect x="184" y="284" width="134" height="76" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="200" y="300"/>
+  <text x="214" y="304" class="bads" style="font-size: 12px">보정 없음</text>
+  <text x="251.0" y="329" class="badt m" text-anchor="middle" style="font-size: 12px">APPROVAL_UNKNOWN</text>
+  <text x="251.0" y="349" class="bads" text-anchor="middle" style="font-size: 12px">PG <tspan class="m">DONE</tspan></text>
+  <rect x="324" y="284" width="134" height="76" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="340" y="300"/>
+  <text x="354" y="304" class="bads" style="font-size: 12px">보정 없음</text>
+  <text x="391.0" y="329" class="badt m" text-anchor="middle" style="font-size: 12px">APPROVAL_UNKNOWN</text>
+  <text x="391.0" y="349" class="bads" text-anchor="middle" style="font-size: 12px">PG <tspan class="m">ABORTED</tspan></text>
+  <rect x="464" y="284" width="134" height="76" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="480" y="300"/>
+  <text x="494" y="304" class="bads" style="font-size: 12px">보정 없음</text>
+  <text x="531.0" y="329" class="badt m" text-anchor="middle" style="font-size: 12px">APPROVAL_UNKNOWN</text>
+  <text x="531.0" y="349" class="bads" text-anchor="middle" style="font-size: 12px">PG 기록 없음</text>
+  <rect x="604" y="284" width="134" height="76" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <use href="#xmark" x="620" y="300"/>
+  <text x="634" y="304" class="bads" style="font-size: 12px">보정 없음</text>
+  <text x="671.0" y="329" class="badt m" text-anchor="middle" style="font-size: 12px">AUTHENTICATED</text>
+  <text x="671.0" y="349" class="bads" text-anchor="middle" style="font-size: 12px">PG <tspan class="m">DONE</tspan></text>
+  <line x1="24" y1="376" x2="738" y2="376" stroke="#e5e7eb" stroke-width="1"/>
+  <use href="#vmark" x="34" y="394"/><text x="50" y="398" class="s">결제 상태와 PG 최종 상태의 짝이 맞음</text>
+  <use href="#omark" x="304" y="394"/><text x="320" y="398" class="s">짝은 맞지만 PG가 승인한 결제를 취소로 되돌림</text>
+  <use href="#xmark" x="34" y="416"/><text x="50" y="420" class="s">어긋난 채 남음</text>
+  <text x="304" y="420" class="gs" style="font-size: 12px">망취소의 403·404는 <tspan class="m">NOT_CANCELABLE_PAYMENT</tspan>·<tspan class="m">NOT_FOUND_PAYMENT</tspan></text>
+  <text x="24" y="448" class="s">같은 12건 측정에서 승인으로 남은 결제: 조회 보정 6건 · 망취소 0건(PG 취소 6건) · 비교 B 0건(어긋남 12건)</text>
+</svg>
