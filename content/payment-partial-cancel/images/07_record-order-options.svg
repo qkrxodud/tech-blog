@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 614" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>기록과 PG 호출 순서 비교 — 비교 C는 받을 수 있는 취소인지 확인만 하고 되돌린 뒤 PG에 취소를 보내, 1초에 시간 초과로 504가 나도 DB에 남은 것이 없고 PG는 1.5초에 취소를 DONE으로 남겨 잔액 10000원이 되며, 보정은 대상 결제가 없어 조회하지 않아 우리 남은 금액 15000원과 PG 잔액 10000원이 어긋난다. 이 장에서 고른 방식은 REQUESTED와 requested_at을 먼저 커밋한 뒤 PG를 부르고, 시간 초과 때 UNKNOWN을 커밋하고 504로 답하며, 대기 시간 뒤 보정이 주문번호로 조회해 cancels의 같은 금액 5000원 취소와 짝지어 DONE으로 닫아 남은 10000원이 PG 잔액과 같다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+  </defs>
+  <rect width="760" height="614" fill="#ffffff"/>
+  <text x="24" y="30" class="h">기록과 PG 호출 순서 — 시간 초과된 취소가 보정까지 가는 길</text>
+  <text x="24" y="52" class="gs">부분 취소 5000원 · 읽기 시간 제한 1초 · PG는 1.5초에 취소 · 보정은 요청한 지 대기 시간이 지난 뒤</text>
+  <rect x="10" y="64" width="740" height="256" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <use href="#xmark" x="30" y="84"/>
+  <text x="46" y="89" class="badt">비교 C — 확인만 하고 되돌린 뒤 PG 호출</text>
+  <text x="736" y="89" class="bads" text-anchor="end">보정 뒤 남은 15000원 ≠ PG 잔액 10000원</text>
+  <rect x="20" y="104" width="720" height="58" rx="8" fill="#f3f6fb" stroke="#dbe3ef" stroke-width="1"/>
+  <use href="#i-app" x="30" y="118"/>
+  <text x="72" y="138" class="t2">결제 서버</text>
+  <rect x="20" y="168" width="720" height="58" rx="8" fill="#f3f6fb" stroke="#dbe3ef" stroke-width="1"/>
+  <use href="#i-db" x="30" y="182"/>
+  <text x="72" y="202" class="t2">DB</text>
+  <rect x="20" y="232" width="720" height="58" rx="8" fill="#f3f6fb" stroke="#dbe3ef" stroke-width="1"/>
+  <use href="#i-server" x="30" y="246"/>
+  <text x="72" y="266" class="t2">Mock PG</text>
+  <rect x="138.0" y="110" width="136" height="46" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.3"/>
+  <text x="206" y="129" class="t2" text-anchor="middle" style="font-size: 12.5px">확인만 하고</text>
+  <text x="206" y="147" class="s" text-anchor="middle">되돌림</text>
+  <rect x="316.0" y="110" width="136" height="46" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.3"/>
+  <text x="384" y="129" class="badt" text-anchor="middle" style="font-size: 12.5px">시간 초과</text>
+  <text x="384" y="147" class="bads" text-anchor="middle"><tspan class="m">504</tspan></text>
+  <rect x="604.0" y="110" width="136" height="46" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.3"/>
+  <text x="672" y="129" class="t2" text-anchor="middle" style="font-size: 12.5px">보정 실행</text>
+  <text x="672" y="147" class="s" text-anchor="middle">대상 결제 없음</text>
+  <rect x="138.0" y="174" width="136" height="46" rx="8" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <text x="206" y="202" class="gt" text-anchor="middle" style="font-size: 12.5px">남긴 것 없음</text>
+  <rect x="604.0" y="174" width="136" height="46" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.3"/>
+  <text x="672" y="193" class="badt" text-anchor="middle" style="font-size: 12.5px">보정할 줄 없음</text>
+  <text x="672" y="211" class="bads" text-anchor="middle">남은 15000원</text>
+  <rect x="138.0" y="238" width="136" height="46" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.3"/>
+  <text x="206" y="257" class="t2" text-anchor="middle" style="font-size: 12.5px">취소 요청 받음</text>
+  <text x="206" y="275" class="s" text-anchor="middle">멱등키 포함</text>
+  <rect x="462.0" y="238" width="136" height="46" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.3"/>
+  <text x="530" y="257" class="okt" text-anchor="middle" style="font-size: 12.5px">취소 <tspan class="m">DONE</tspan></text>
+  <text x="530" y="275" class="oks" text-anchor="middle">잔액 10000원</text>
+  <rect x="604.0" y="238" width="136" height="46" rx="8" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <text x="672" y="266" class="gt" text-anchor="middle" style="font-size: 12.5px">조회 없음</text>
+  <path d="M274.0,127 H284 V255 H277.0" fill="none" stroke="#ea580c" stroke-width="2.2" marker-end="url(#aor)"/>
+  <path d="M274.0,269 H300 V141 H315.0" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="206" y="314" class="gs" text-anchor="middle">0초</text>
+  <text x="384" y="314" class="gs" text-anchor="middle">1초</text>
+  <text x="530" y="314" class="gs" text-anchor="middle">1.5초</text>
+  <text x="672" y="314" class="gs" text-anchor="middle">보정</text>
+  <line x1="140" y1="302" x2="740" y2="302" stroke="#9ca3af" stroke-width="1" marker-end="url(#agy)"/>
+  <rect x="10" y="334" width="740" height="256" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <use href="#vmark" x="30" y="354"/>
+  <text x="46" y="359" class="okt">이 장에서 고름 — REQUESTED를 먼저 커밋한 뒤 PG 호출</text>
+  <text x="736" y="359" class="oks" text-anchor="end">보정 뒤 남은 10000원 = PG 잔액 10000원</text>
+  <rect x="20" y="374" width="720" height="58" rx="8" fill="#f3f6fb" stroke="#dbe3ef" stroke-width="1"/>
+  <use href="#i-app" x="30" y="388"/>
+  <text x="72" y="408" class="t2">결제 서버</text>
+  <rect x="20" y="438" width="720" height="58" rx="8" fill="#f3f6fb" stroke="#dbe3ef" stroke-width="1"/>
+  <use href="#i-db" x="30" y="452"/>
+  <text x="72" y="472" class="t2">DB</text>
+  <rect x="20" y="502" width="720" height="58" rx="8" fill="#f3f6fb" stroke="#dbe3ef" stroke-width="1"/>
+  <use href="#i-server" x="30" y="516"/>
+  <text x="72" y="536" class="t2">Mock PG</text>
+  <rect x="138.0" y="380" width="136" height="46" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.3"/>
+  <text x="206" y="399" class="t2" text-anchor="middle" style="font-size: 12.5px">취소 요청 기록</text>
+  <text x="206" y="417" class="s" text-anchor="middle">커밋 뒤 PG 호출</text>
+  <rect x="316.0" y="380" width="136" height="46" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.3"/>
+  <text x="384" y="399" class="badt" text-anchor="middle" style="font-size: 12.5px">시간 초과</text>
+  <text x="384" y="417" class="bads" text-anchor="middle"><tspan class="m">504</tspan></text>
+  <rect x="604.0" y="380" width="136" height="46" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.3"/>
+  <text x="672" y="399" class="t2" text-anchor="middle" style="font-size: 12.5px">보정 실행</text>
+  <text x="672" y="417" class="s" text-anchor="middle">주문번호로 조회</text>
+  <rect x="138.0" y="444" width="136" height="46" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.3"/>
+  <text x="206" y="463" class="t2" text-anchor="middle" style="font-size: 12.5px"><tspan class="m">REQUESTED</tspan></text>
+  <text x="206" y="481" class="s" text-anchor="middle"><tspan class="m">requested_at</tspan></text>
+  <rect x="316.0" y="444" width="136" height="46" rx="8" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.3"/>
+  <text x="384" y="463" class="t2" text-anchor="middle" style="font-size: 12.5px"><tspan class="m">UNKNOWN</tspan></text>
+  <text x="384" y="481" class="s" text-anchor="middle">결과 모름 커밋</text>
+  <rect x="604.0" y="444" width="136" height="46" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.3"/>
+  <text x="672" y="463" class="okt" text-anchor="middle" style="font-size: 12.5px"><tspan class="m">DONE</tspan></text>
+  <text x="672" y="481" class="oks" text-anchor="middle">남은 10000원</text>
+  <rect x="138.0" y="508" width="136" height="46" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.3"/>
+  <text x="206" y="527" class="t2" text-anchor="middle" style="font-size: 12.5px">취소 요청 받음</text>
+  <text x="206" y="545" class="s" text-anchor="middle">멱등키 포함</text>
+  <rect x="462.0" y="508" width="136" height="46" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.3"/>
+  <text x="530" y="527" class="okt" text-anchor="middle" style="font-size: 12.5px">취소 <tspan class="m">DONE</tspan></text>
+  <text x="530" y="545" class="oks" text-anchor="middle">잔액 10000원</text>
+  <rect x="604.0" y="508" width="136" height="46" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.3"/>
+  <text x="672" y="527" class="t2" text-anchor="middle" style="font-size: 12.5px"><tspan class="m">cancels</tspan> 5000원</text>
+  <text x="672" y="545" class="s" text-anchor="middle">같은 금액 → 짝</text>
+  <path d="M274.0,397 H284 V525 H277.0" fill="none" stroke="#ea580c" stroke-width="2.2" marker-end="url(#aor)"/>
+  <path d="M274.0,539 H300 V411 H315.0" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <line x1="206" y1="426" x2="206" y2="443" stroke="#1f2937" stroke-width="1.4" marker-end="url(#ak)"/>
+  <line x1="384" y1="426" x2="384" y2="443" stroke="#1f2937" stroke-width="1.4" marker-end="url(#ak)"/>
+  <text x="206" y="584" class="gs" text-anchor="middle">0초</text>
+  <text x="384" y="584" class="gs" text-anchor="middle">1초</text>
+  <text x="530" y="584" class="gs" text-anchor="middle">1.5초</text>
+  <text x="672" y="584" class="gs" text-anchor="middle">보정</text>
+  <line x1="140" y1="572" x2="740" y2="572" stroke="#9ca3af" stroke-width="1" marker-end="url(#agy)"/>
+  <text x="24" y="606" class="gs">주황 실선은 PG 취소 요청, 빨간 점선은 1초 읽기 시간 제한 안에 답이 오지 않은 것입니다</text>
+</svg>
