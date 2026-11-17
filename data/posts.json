@@ -1517,5 +1517,12 @@
     "series": "결제 시스템 챌린지",
     "seriesOrder": 5,
     "date": "2026-11-16"
+  },
+  {
+    "slug": "payment-webhook",
+    "category": "spring",
+    "series": "결제 시스템 챌린지",
+    "seriesOrder": 6,
+    "date": "2026-11-17"
   }
 ]

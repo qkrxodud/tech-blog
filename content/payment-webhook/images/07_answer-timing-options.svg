@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 616" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>언제 200으로 답할까 — PG 조회가 1.5초 늦고 읽기 시간 제한이 1초일 때, 비교 E는 받은 요청 안에서 조회를 기다리다 1초에 시간 초과로 504를 답하고 Mock PG는 100ms 뒤 같은 알림을 다시 보낸다(측정 18건에서 첫 전송 200 실패 6건, 재전송 10번, 가장 늦은 첫 답 1012ms, 어긋난 결제 0건). 고른 방식은 받은 알림을 payment_webhook에 RECEIVED로 남기고 바로 200으로 답하고(가장 늦은 첫 답 12ms), 처리기가 주기마다 PG에 조회해 실패하면 RECEIVED 그대로 failed_lookups를 하나 늘리고 다음 주기에 성공하면 follow하고 PROCESSED로 닫는다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+  </defs>
+  <rect width="760" height="616" fill="#ffffff"/>
+  <text x="24" y="30" class="h">언제 200으로 답할까 — PG 조회가 1.5초 늦고 읽기 시간 제한이 1초일 때</text>
+  <rect x="10" y="44" width="740" height="262" rx="12" fill="#fafafa" stroke="#e5e7eb" stroke-width="1.5"/>
+  <use href="#xs" x="30" y="64"/>
+  <text x="46" y="69" class="badt">비교 E — 받은 요청 안에서 조회·반영까지 끝내고 답함</text>
+  <line x1="180" y1="100" x2="712" y2="100" stroke="#c4c8ce" stroke-width="1.2"/>
+  <line x1="180" y1="96" x2="180" y2="104" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="184" y="91" class="gs">0초</text>
+  <line x1="480" y1="96" x2="480" y2="104" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="480" y="91" class="gs" text-anchor="middle">1초 · 읽기 시간 제한</text>
+  <line x1="480" y1="106" x2="480" y2="262" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="630.0" y1="96" x2="630.0" y2="104" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="630.0" y="91" class="gs" text-anchor="middle">1.5초 · 조회 답</text>
+  <line x1="630.0" y1="106" x2="630.0" y2="262" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <rect x="16" y="110" width="728" height="46" fill="#ffffff"/>
+  <text x="28" y="138.0" class="t2">Mock PG</text>
+  <rect x="16" y="160" width="728" height="46" fill="#f9fafb"/>
+  <text x="28" y="188.0" class="t2">결제 서버</text>
+  <rect x="16" y="210" width="728" height="46" fill="#ffffff"/>
+  <text x="28" y="238.0" class="t2">Mock PG 조회</text>
+  <rect x="180" y="120" width="86" height="26" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.3"/>
+  <text x="223.0" y="137.0" class="os" text-anchor="middle">알림 전송</text>
+  <line x1="200" y1="146" x2="200" y2="168" stroke="#c2410c" stroke-width="1.4" marker-end="url(#aor)"/>
+  <rect x="180" y="170" width="300" height="26" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="192" y="188" class="gs">요청 안에서 조회를 기다림</text>
+  <rect x="486" y="170" width="56" height="26" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.3"/>
+  <text x="514.0" y="187.0" class="badt" text-anchor="middle"><tspan class="m">504</tspan></text>
+  <line x1="220" y1="196" x2="220" y2="218" stroke="#c2410c" stroke-width="1.4" marker-end="url(#aor)"/>
+  <rect x="180" y="220" width="450" height="26" rx="6" fill="#ffffff" stroke="#c2410c" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="230" y="238" class="os">조회 답은 1.5초 뒤에 옴</text>
+  <path d="M514,170 V133 H636" fill="none" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="640" y="120" width="100" height="26" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.3"/>
+  <text x="690.0" y="137.0" class="os" text-anchor="middle">100ms 뒤 재전송</text>
+  <text x="24" y="288" class="bads">측정 18건 — 첫 전송 200 실패 6건 · 재전송 10번 · 가장 늦은 첫 답 1012ms · 25초 뒤 어긋난 결제 0건</text>
+  <rect x="10" y="318" width="740" height="286" rx="12" fill="#fafafa" stroke="#e5e7eb" stroke-width="1.5"/>
+  <use href="#vs" x="30" y="338"/>
+  <text x="46" y="343" class="okt">이 장에서 고름 — 남기고 바로 200, 조회·반영은 처리기(운영 1초마다)</text>
+  <rect x="16" y="356" width="728" height="44" fill="#ffffff"/>
+  <text x="28" y="383.0" class="t2">Mock PG</text>
+  <rect x="16" y="404" width="728" height="44" fill="#f9fafb"/>
+  <text x="28" y="431.0" class="t2">결제 서버</text>
+  <rect x="16" y="452" width="728" height="64" fill="#ffffff"/>
+  <text x="28" y="489.0" class="t2">처리기</text>
+  <rect x="16" y="520" width="728" height="44" fill="#f9fafb"/>
+  <text x="28" y="547.0" class="t2">Mock PG 조회</text>
+  <rect x="180" y="365" width="86" height="26" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.3"/>
+  <text x="223.0" y="382.0" class="os" text-anchor="middle">알림 전송</text>
+  <line x1="200" y1="391" x2="200" y2="411" stroke="#c2410c" stroke-width="1.4" marker-end="url(#aor)"/>
+  <rect x="180" y="413" width="190" height="26" rx="8" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.3"/>
+  <text x="275.0" y="430.0" class="oks" text-anchor="middle"><tspan class="m">RECEIVED</tspan>로 남김 → <tspan class="m">200</tspan></text>
+  <line x1="330" y1="413" x2="330" y2="393" stroke="#16a34a" stroke-width="1.4" marker-end="url(#agr)"/>
+  <rect x="290" y="365" width="96" height="26" rx="8" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.3"/>
+  <text x="338.0" y="382.0" class="oks" text-anchor="middle"><tspan class="m">200</tspan> 받음</text>
+  <path d="M370,426 H404 V484 H414" fill="none" stroke="#6b7280" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="418" y="457" width="160" height="54" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.3"/>
+  <text x="498.0" y="472.0" class="badt" text-anchor="middle">한 주기 — 조회 실패</text>
+  <text x="498.0" y="488.0" class="bads" text-anchor="middle"><tspan class="m">RECEIVED</tspan> 그대로</text>
+  <text x="498.0" y="504.0" class="bads" text-anchor="middle"><tspan class="m">failed_lookups + 1</tspan></text>
+  <line x1="578" y1="484" x2="594" y2="484" stroke="#6b7280" stroke-width="1.4" marker-end="url(#agy)"/>
+  <rect x="598" y="457" width="142" height="54" rx="8" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.3"/>
+  <text x="669.0" y="472.0" class="okt" text-anchor="middle">다음 주기 — 성공</text>
+  <text x="669.0" y="488.0" class="oks" text-anchor="middle"><tspan class="m">follow</tspan></text>
+  <text x="669.0" y="504.0" class="oks" text-anchor="middle"><tspan class="m">PROCESSED</tspan></text>
+  <line x1="470" y1="511" x2="470" y2="526" stroke="#c2410c" stroke-width="1.4" marker-end="url(#aor)"/>
+  <rect x="418" y="528" width="160" height="28" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.3"/>
+  <text x="498.0" y="546.0" class="bads" text-anchor="middle">답 없음 · 시간 초과</text>
+  <line x1="650" y1="511" x2="650" y2="526" stroke="#c2410c" stroke-width="1.4" marker-end="url(#aor)"/>
+  <rect x="598" y="528" width="142" height="28" rx="8" fill="#e3f3e6" stroke="#16a34a" stroke-width="1.3"/>
+  <text x="669.0" y="546.0" class="oks" text-anchor="middle"><tspan class="m">200</tspan> Payment</text>
+  <text x="24" y="590" class="oks">측정 18건 — 첫 전송 200 실패 0건 · 재전송 0번 · 가장 늦은 첫 답 12ms · 25초 뒤 어긋난 결제 0건</text>
+</svg>

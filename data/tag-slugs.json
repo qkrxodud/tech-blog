@@ -107,5 +107,6 @@
   "보정": "reconciliation",
   "망취소": "net-cancel",
   "스케줄러": "scheduler",
-  "부분 취소": "partial-cancel"
+  "부분 취소": "partial-cancel",
+  "웹훅": "webhook"
 }
