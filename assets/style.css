@@ -209,7 +209,7 @@ a { color: var(--ink); text-decoration: none; }
 .row-main { flex: 1; min-width: 0; }
 .row-cat { font: 700 12px var(--mono); color: var(--dim); margin-bottom: 9px; }
 .row-cat.accent { color: var(--accent); }
-.row-title { font-size: 20px; font-weight: 800; line-height: 1.4; letter-spacing: -.02em; margin: 0 0 8px; }
+.row-title { font-size: 20px; font-weight: 800; line-height: 1.4; letter-spacing: -.02em; margin: 0 0 8px; overflow-wrap: anywhere; }
 .row-title a:hover { color: var(--accent-strong); }
 .row-summary { font-size: 14px; color: var(--muted); line-height: 1.65; margin: 0 0 12px; }
 .row-meta { font: 400 12px var(--mono); color: var(--faint); }

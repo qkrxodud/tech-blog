@@ -8,7 +8,7 @@ summary: "Querydsl 학습을 위해 스프링 부트 프로젝트를 생성하�
 
 ## 프로젝트 생성
 
-프로젝트는 스프링 부트 스타터(https://start.spring.io/)에서 생성합니다.
+프로젝트는 [스프링 부트 스타터](https://start.spring.io/)에서 생성합니다.
 
 - 사용 기능: spring web, jpa, h2, lombok
     - springBootVersion : 2.6.7

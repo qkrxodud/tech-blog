@@ -186,7 +186,8 @@ function headingAnchors(html) {
   const toc = [];
   let n = 0;
   const out = html.replace(/<(h[23])>([\s\S]*?)<\/\1>/g, (whole, tag, inner) => {
-    const text = inner.replace(/<[^>]+>/g, '').trim();
+    // marked가 이미 &를 &amp;로 바꿔 둔 글자라, 되돌려 두지 않으면 차례에서 esc()가 한 번 더 바꿔 &amp;가 그대로 보인다.
+    const text = unesc(inner.replace(/<[^>]+>/g, '')).trim();
     if (!text) return whole;
     const id = `s${++n}`;
     toc.push({ level: Number(tag[1]), id, text });
