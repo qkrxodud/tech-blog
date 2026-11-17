@@ -152,7 +152,7 @@
     <use href="#pkt"/>
     <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
       path="M80,146 H270 V180 H500 V196 H270 V223 V266 H500 V280 H270 V316 H680 V344 H270 V376 H500 V390 H270 V420 H70"
-      keyPoints="0;0;0.0663;0.1585;0.2538;0.3492;0.595;0.595;0.8345;1;1;1" keyTimes="0;0.02;0.0598;0.1151;0.1723;0.2295;0.377;0.457;0.6007;0.7;0.7;1"/>
+      keyPoints="0;0;0.0663;0.1585;0.2538;0.3492;0.5936;0.5936;0.8345;1;1;1" keyTimes="0;0.02;0.0598;0.1151;0.1723;0.2295;0.377;0.457;0.6007;0.7;0.7;1"/>
     <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.02;0.7;0.715;1"/>
   </g>
   <g class="anim" opacity="0">

@@ -10,6 +10,8 @@ summary: "부분 취소 한 번에 결제가 닫히고 같은 취소가 PG에 �
 
 이 글도 결제 서버가 한 대라고 보고 진행합니다. 같은 결제에 취소가 동시에 들어오는 경우는 남은 한계에 적고 7장 동시성 제어에서 다룹니다.
 
+이 장의 코드는 [payment-challenge](https://github.com/qkrxodud/payment-challenge/tree/chapter-05)의 `chapter-05` 브랜치에 있고, 출발 코드는 `ch05-start`, 완성 코드는 `ch05` 태그입니다.
+
 ## 현재 구조: 받은 금액으로 PG에 취소를 보내고 상태만 바꾸는 취소 API
 
 5장 출발 코드에는 결제 취소 API `POST /api/v1/payments/{orderId}/cancel`을 두었습니다. 본문은 `cancelAmount`(없으면 전액)와 `cancelReason`이고, `Idempotency-Key` 헤더도 받지만 쓰지는 않습니다. 취소 서비스는 결제를 읽고, 받은 금액으로 PG에 취소를 보내고, PG가 취소하면 결제를 취소 상태로 바꿉니다. 2장처럼 PG 호출은 트랜잭션 밖에서 합니다.

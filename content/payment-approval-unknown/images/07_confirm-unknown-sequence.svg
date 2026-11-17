@@ -131,7 +131,7 @@
 
   <line x1="261" y1="400" x2="72" y2="400" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
   <circle cx="270" cy="400" r="9" fill="#111827"/><text x="270" y="404" class="num" text-anchor="middle" style="font-size: 12px">8</text>
-  <text x="148" y="393" class="lbl m" text-anchor="middle" style="fill: #b91c1c; font-size: 12px">504 PAYMENT_GATEWAY_NO_RESPONSE</text>
+  <text x="148" y="390" class="lbl m" text-anchor="middle" style="fill: #b91c1c; font-size: 12px">504 PAYMENT_GATEWAY_NO_RESPONSE</text>
 
   <!-- 다시 온 요청 -->
   <rect x="12" y="412" width="732" height="26" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
@@ -155,7 +155,7 @@
 
   <line x1="261" y1="564" x2="72" y2="564" stroke="#16a34a" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#agr)"/>
   <circle cx="270" cy="564" r="9" fill="#111827"/><text x="270" y="568" class="num" text-anchor="middle" style="font-size: 12px">12</text>
-  <text x="148" y="557" class="lbl m" text-anchor="middle" style="fill: #15803d; font-size: 12px">202 {status: APPROVAL_UNKNOWN}</text>
+  <text x="148" y="554" class="lbl m" text-anchor="middle" style="fill: #15803d; font-size: 12px">202 {status: APPROVAL_UNKNOWN}</text>
 
   <!-- 실패 갈래 -->
   <line x1="12" y1="582" x2="744" y2="582" stroke="#e5e7eb" stroke-width="1"/>

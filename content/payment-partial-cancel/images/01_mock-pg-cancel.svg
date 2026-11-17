@@ -102,7 +102,7 @@
   <text x="414" y="320.0" class="bads">처리 중이면 <tspan class="m">409 IDEMPOTENT_REQUEST_PROCESSING</tspan></text>
   <line x1="190" y1="329" x2="190" y2="349" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
   <rect x="40" y="351" width="300" height="46" rx="10" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
-  <rect x="40" y="351" width="300" height="46" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5217;0.5317;0.6217;0.6317;1"/></rect>
+  <rect x="40" y="351" width="300" height="46" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.45;0.46;0.62;0.63;1"/></rect>
   <circle cx="40" cy="351" r="11" fill="#111827"/><text x="40" y="355" class="num" text-anchor="middle">4</text>
   <text x="190" y="371" class="t2" text-anchor="middle">시나리오 시간만큼 기다림</text>
   <text x="190" y="388" class="s" text-anchor="middle">예: 늦은 취소는 1.5초</text>
@@ -133,8 +133,8 @@
   <g class="anim" opacity="0">
     <use href="#pkt"/>
     <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
-      path="M190,100 V526"
-      keyPoints="0;0;0.1362;0.2958;0.4695;0.6432;0.6432;0.8169;1;1;1" keyTimes="0;0.03;0.1362;0.2607;0.3962;0.5317;0.5717;0.7072;0.85;0.85;1"/>
+      path="M190,100 V490"
+      keyPoints="0;0;0.1487;0.3231;0.5128;0.6179;0.6179;0.8923;1;1;1" keyTimes="0;0.03;0.1362;0.2607;0.3962;0.46;0.57;0.7072;0.85;0.85;1"/>
     <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.025;0.03;0.85;0.86;1"/>
   </g>
 </svg>

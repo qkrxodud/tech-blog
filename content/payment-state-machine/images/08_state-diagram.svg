@@ -96,8 +96,8 @@
   <g class="anim" opacity="0">
     <use href="#pkt"/>
     <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
-      path="M70,184 H683 L671,284"
-      keyPoints="0;0;0;0.2886;0.5843;0.8589;1;1;1" keyTimes="0;0.04;0.04;0.2767;0.5191;0.7443;0.86;0.86;1"/>
+      path="M70,184 H683 L673,252"
+      keyPoints="0;0;0;0.3022;0.6117;0.8992;1;1;1" keyTimes="0;0.04;0.04;0.2767;0.5191;0.7443;0.86;0.86;1"/>
     <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.04;0.86;0.875;1"/>
   </g>
 </svg>

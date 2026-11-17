@@ -141,8 +141,8 @@
   <g class="anim" opacity="0">
     <use href="#pkt"/>
     <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
-      path="M80,140 H270 V176 H500 V262 H270 V306 H680 V336 H270 V378 V424 H500 V438 H270"
-      keyPoints="0;0;0.0853;0.2047;0.3465;0.5503;0.5503;0.7666;0.8905;1;1" keyTimes="0;0.03;0.0957;0.1876;0.2968;0.4537;0.5337;0.7003;0.7957;0.88;1"/>
+      path="M80,140 H270 V176 H500 V262 H270 V306 H680 V336 H270 V378 V424 H500 V438 H290"
+      keyPoints="0;0;0.0861;0.2065;0.3496;0.5553;0.5553;0.7736;0.8986;1;1" keyTimes="0;0.03;0.0957;0.1876;0.2968;0.4537;0.5337;0.7003;0.7957;0.88;1"/>
     <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.025;0.03;0.88;0.89;1"/>
   </g>
 </svg>

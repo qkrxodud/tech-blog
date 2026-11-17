@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 472" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>1장부터 6장까지 7장으로 넘긴 항목과 그 항목을 푼 결정 — 1장 동시 전이는 결정 1, 2·3장 동시 승인은 결정 1·2, 3장 동시 준비 500은 결정 3, 4장 서버마다 도는 보정은 결정 5, 4장 인증 상태의 같은 키 409는 결정 2, 5장 같은 키 동시 취소는 결정 4, 남은 금액을 넘는 취소는 결정 1, 6장 처리기와 API의 동시 변경은 결정 1, 서버마다 도는 처리기는 결정 5가 맡고, 4장 보정과 같은 결제 키 재요청의 겹침은 따로 시험하지 않았다</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+  </defs>
+
+  <rect width="760" height="472" fill="#ffffff"/>
+  <text x="24" y="28" class="h">1~6장에서 넘긴 항목은 어느 결정이 맡았나</text>
+  <rect x="16" y="46" width="520" height="34" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <rect x="24" y="52" width="50" height="22" rx="11" fill="#475569"/>
+  <text x="49" y="67" class="num" text-anchor="middle" style="font-size:11.5px">1장</text>
+  <text x="86" y="68" class="s" style="fill:#1f2937">두 요청이 같은 결제를 동시에 읽어 각각 전이</text>
+  <line x1="538" y1="63" x2="558" y2="63" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="50" width="82" height="26" rx="13" fill="#2563eb"/>
+  <text x="601" y="67" class="num" text-anchor="middle" style="font-size:12px">결정 1</text>
+  <rect x="16" y="86" width="520" height="34" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <rect x="24" y="92" width="50" height="22" rx="11" fill="#475569"/>
+  <text x="49" y="107" class="num" text-anchor="middle" style="font-size:11.5px">2·3장</text>
+  <text x="86" y="108" class="s" style="fill:#1f2937">같은 결제에 동시에 들어오는 승인</text>
+  <line x1="538" y1="103" x2="558" y2="103" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="90" width="82" height="26" rx="13" fill="#2563eb"/>
+  <text x="601" y="107" class="num" text-anchor="middle" style="font-size:12px">결정 1</text>
+  <rect x="652" y="90" width="82" height="26" rx="13" fill="#7c3aed"/>
+  <text x="693" y="107" class="num" text-anchor="middle" style="font-size:12px">결정 2</text>
+  <rect x="16" y="126" width="520" height="34" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <rect x="24" y="132" width="50" height="22" rx="11" fill="#475569"/>
+  <text x="49" y="147" class="num" text-anchor="middle" style="font-size:11.5px">3장</text>
+  <text x="86" y="148" class="s" style="fill:#1f2937">같은 주문의 동시 준비가 500</text>
+  <line x1="538" y1="143" x2="558" y2="143" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="130" width="82" height="26" rx="13" fill="#0891b2"/>
+  <text x="601" y="147" class="num" text-anchor="middle" style="font-size:12px">결정 3</text>
+  <rect x="16" y="166" width="520" height="34" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <rect x="24" y="172" width="50" height="22" rx="11" fill="#475569"/>
+  <text x="49" y="187" class="num" text-anchor="middle" style="font-size:11.5px">4장</text>
+  <text x="86" y="188" class="s" style="fill:#1f2937">서버마다 도는 보정과 두 번 가는 망취소</text>
+  <line x1="538" y1="183" x2="558" y2="183" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="170" width="82" height="26" rx="13" fill="#16a34a"/>
+  <text x="601" y="187" class="num" text-anchor="middle" style="font-size:12px">결정 5</text>
+  <rect x="16" y="206" width="520" height="34" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <rect x="24" y="212" width="50" height="22" rx="11" fill="#475569"/>
+  <text x="49" y="227" class="num" text-anchor="middle" style="font-size:11.5px">4장</text>
+  <text x="86" y="228" class="s" style="fill:#1f2937">인증 상태 결제에 같은 결제 키로 다시 온 승인이 409</text>
+  <line x1="538" y1="223" x2="558" y2="223" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="210" width="82" height="26" rx="13" fill="#7c3aed"/>
+  <text x="601" y="227" class="num" text-anchor="middle" style="font-size:12px">결정 2</text>
+  <rect x="16" y="246" width="520" height="34" rx="8" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <rect x="24" y="252" width="50" height="22" rx="11" fill="#9ca3af"/>
+  <text x="49" y="267" class="num" text-anchor="middle" style="font-size:11.5px">4장</text>
+  <text x="86" y="268" class="gs">보정과 같은 결제 키의 재요청이 겹치는 경우</text>
+  <line x1="538" y1="263" x2="558" y2="263" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="250" width="82" height="26" rx="13" fill="#9ca3af"/>
+  <text x="601" y="267" class="num" text-anchor="middle" style="font-size:12px">결정 1</text>
+  <text x="652" y="268" class="gs" style="font-size:11.5px">시험 안 함</text>
+  <rect x="16" y="286" width="520" height="34" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <rect x="24" y="292" width="50" height="22" rx="11" fill="#475569"/>
+  <text x="49" y="307" class="num" text-anchor="middle" style="font-size:11.5px">5장</text>
+  <text x="86" y="308" class="s" style="fill:#1f2937">같은 키로 동시에 온 취소</text>
+  <line x1="538" y1="303" x2="558" y2="303" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="290" width="82" height="26" rx="13" fill="#d97706"/>
+  <text x="601" y="307" class="num" text-anchor="middle" style="font-size:12px">결정 4</text>
+  <rect x="16" y="326" width="520" height="34" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <rect x="24" y="332" width="50" height="22" rx="11" fill="#475569"/>
+  <text x="49" y="347" class="num" text-anchor="middle" style="font-size:11.5px">5장</text>
+  <text x="86" y="348" class="s" style="fill:#1f2937">함께 남은 금액을 넘는 취소</text>
+  <line x1="538" y1="343" x2="558" y2="343" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="330" width="82" height="26" rx="13" fill="#2563eb"/>
+  <text x="601" y="347" class="num" text-anchor="middle" style="font-size:12px">결정 1</text>
+  <rect x="16" y="366" width="520" height="34" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <rect x="24" y="372" width="50" height="22" rx="11" fill="#475569"/>
+  <text x="49" y="387" class="num" text-anchor="middle" style="font-size:11.5px">6장</text>
+  <text x="86" y="388" class="s" style="fill:#1f2937">처리기와 승인·취소 API가 같은 결제를 함께 바꿈</text>
+  <line x1="538" y1="383" x2="558" y2="383" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="370" width="82" height="26" rx="13" fill="#2563eb"/>
+  <text x="601" y="387" class="num" text-anchor="middle" style="font-size:12px">결정 1</text>
+  <rect x="16" y="406" width="520" height="34" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.2"/>
+  <rect x="24" y="412" width="50" height="22" rx="11" fill="#475569"/>
+  <text x="49" y="427" class="num" text-anchor="middle" style="font-size:11.5px">6장</text>
+  <text x="86" y="428" class="s" style="fill:#1f2937">서버마다 도는 알림 처리기</text>
+  <line x1="538" y1="423" x2="558" y2="423" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+  <rect x="560" y="410" width="82" height="26" rx="13" fill="#16a34a"/>
+  <text x="601" y="427" class="num" text-anchor="middle" style="font-size:12px">결정 5</text>
+  <text x="20" y="458" class="gs" style="font-size:11.5px">결정 1 결제 줄 잠금 · 2 다시 온 승인 202 · 3 중복 거부 잡아 다시 읽기 · 4 잠금 뒤 5장 규칙 · 5 작업 잠금</text>
+</svg>

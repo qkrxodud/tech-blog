@@ -160,8 +160,8 @@
   <g class="anim" opacity="0">
     <use href="#pkt"/>
     <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
-      path="M200,96 V240 H600 V258 H200 V405 H470"
-      keyPoints="0;0;0.0573;0.1044;0.401;0.401;0.7498;0.8042;1;1" keyTimes="0;0.02;0.0635;0.0994;0.3248;0.4048;0.6699;0.7112;0.86;1"/>
+      path="M200,96 V240 H600 V258 H200 V405 H382"
+      keyPoints="0;0;0.0612;0.1115;0.4284;0.4284;0.8009;0.859;1;1" keyTimes="0;0.02;0.0635;0.0994;0.3248;0.4048;0.6699;0.7112;0.86;1"/>
     <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.015;0.02;0.86;0.875;1"/>
   </g>
   </g>

@@ -136,15 +136,15 @@
   <g class="anim" opacity="0">
     <use href="#pkt"/>
     <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
-      path="M250,124 V334 M440,194 V334 M630,264 V334"
-      keyPoints="0;0;0;0.5;0.5;0.5;0.6667;0.8333;0.8333;0.8333;1;1;1;1" keyTimes="0;0.02;0.02;0.35;0.39;0.39;0.5;0.61;0.65;0.65;0.76;0.8;0.8;1"/>
-    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.02;0.8;0.815;1"/>
+      path="M250,92 V302 M440,162 V302 M630,232 V302"
+      keyPoints="0;0;0.5;0.5;0.6905;0.8333;0.8333;1;1" keyTimes="0;0.02;0.35;0.39;0.5;0.61;0.65;0.76;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;1;1;0;0;1;1;0;0;1;1;0;0" keyTimes="0;0.02;0.35;0.355;0.389;0.392;0.61;0.615;0.649;0.652;0.76;0.765;1"/>
   </g>
   <g class="anim" opacity="0">
     <use href="#pkt"/>
     <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
-      path="M120,480 H330 V540 H680"
-      keyPoints="0;0;0;0.3387;0.7484;1;1;1" keyTimes="0;0.84;0.84;0.8891;0.9485;0.985;0.985;1"/>
+      path="M212,480 H330 V540 H615"
+      keyPoints="0;0;0;0.2549;0.8035;1;1;1" keyTimes="0;0.84;0.84;0.8891;0.9485;0.985;0.985;1"/>
     <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.835;0.84;0.985;0.995;1"/>
   </g>
 </svg>

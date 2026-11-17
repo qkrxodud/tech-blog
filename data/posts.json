@@ -1524,5 +1524,12 @@
     "series": "결제 시스템 챌린지",
     "seriesOrder": 6,
     "date": "2026-11-17"
+  },
+  {
+    "slug": "payment-concurrency",
+    "category": "spring",
+    "series": "결제 시스템 챌린지",
+    "seriesOrder": 7,
+    "date": "2026-11-17"
   }
 ]

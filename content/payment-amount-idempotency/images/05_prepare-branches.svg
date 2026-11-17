@@ -148,16 +148,16 @@
   <g class="anim" opacity="0">
     <use href="#pkt"/>
     <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
-      path="M380,92 V196 H200 V240 H56 V364 H130"
-      keyPoints="0;0;0.0955;0.4896;1;1;1" keyTimes="0;0.02;0.062;0.2354;0.46;0.46;1"/>
+      path="M380,92 V196 H200 V240 H56 V364 H62"
+      keyPoints="0;0;0.1063;0.5449;1;1;1" keyTimes="0;0.02;0.062;0.2354;0.46;0.46;1"/>
     <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.02;0.46;0.475;1"/>
   </g>
   <!-- 같은 주문번호·같은 금액으로 다시 준비: 있음 → 금액 확인 → 201 -->
   <g class="anim" opacity="0">
     <use href="#pkt2"/>
     <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
-      path="M380,92 V196 H560 V240 H416 V418 H490"
-      keyPoints="0;0;0.0884;0.453;1;1;1" keyTimes="0;0.52;0.5571;0.7103;0.94;0.94;1"/>
+      path="M380,92 V196 H560 V240 H416 V418 H422"
+      keyPoints="0;0;0.0976;0.5;1;1;1" keyTimes="0;0.52;0.5571;0.7103;0.94;0.94;1"/>
     <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.515;0.52;0.94;0.955;1"/>
   </g>
 </svg>
