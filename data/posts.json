@@ -1531,5 +1531,12 @@
     "series": "결제 시스템 챌린지",
     "seriesOrder": 7,
     "date": "2026-11-17"
+  },
+  {
+    "slug": "payment-stock-point-coupon",
+    "category": "spring",
+    "series": "결제 시스템 챌린지",
+    "seriesOrder": 8,
+    "date": "2026-11-19"
   }
 ]
