@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 604" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결정 2 선택지 비교 — 오케스트레이션(이 장에서 고름)은 결제를 바꾸는 기록 다섯 곳이 PaymentHoldings.settle 한 곳을 불러 승인이면 확정, 승인 없이 끝나거나 취소면 해제를 정하고 payment_outbox에 STOCK_CONFIRM·STOCK_RELEASE 줄을 남겨 릴레이가 stock-reservation-commands로 보내며, 재고 서비스는 결제 상태를 모른 채 받은 명령대로 예약 상태만 바꿈. 코레오그래피(비교)는 결제 서버가 쿠폰·포인트만 돌려주고 PAYMENT_RESULT 줄만 남기며, 재고 서비스의 PaymentEventReactionListener가 payment-events를 읽어 APPROVED·CAPTURED면 확정, APPROVAL_FAILED·EXPIRED·APPROVAL_CANCELED·CAPTURE_CANCELED면 해제함. 둘 다 계약 21개를 모두 통과했고 측정 어긋난 재고는 6번 모두 0, 맞춰진 때는 352~716ms와 243~752ms였음. 차이는 결제 서버에 settle과 재고 명령이 생기는 것과, 재고 서비스가 결제 상태 여섯 개의 뜻을 알고 재고를 잡지 않은 결제에도 빈 해제 줄을 남기는 것이며, 결과는 계약과 측정으로 갈리지 않았음</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="604" fill="#ffffff"/>
+  <text x="24" y="28" class="h">결정 2 — Saga 진행을 누가 쥘까</text>
+  <text x="24" y="48" class="gs" style="font-size:11.5px">두 방식 모두 예약은 결제 서버가 동기 HTTP로 보냄 — 갈리는 것은 확정·해제를 누가 정하는가</text>
+  <rect x="14" y="62" width="360" height="46" rx="10" fill="#f9fafb" stroke="#16a34a" stroke-width="3"/>
+  <text x="28" y="82" class="t2">① 오케스트레이션</text>
+  <text x="28" y="100" class="oks" style="font-size:11.5px;font-weight:700">이 장에서 고름 · 운영</text>
+  <rect x="24" y="122" width="340" height="40" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/><text x="194" y="138.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px">결제 상태 전이 — 기록 다섯 곳</text><text x="194" y="153.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px">승인 답 · 결과 모름 보정 · 취소 답 · 취소 보정 · 알림 반영</text>
+  <line x1="194" y1="163" x2="194" y2="173" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="24" y="174" width="340" height="40" rx="8" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/><text x="194" y="190.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px"><tspan class="m">PaymentHoldings.settle</tspan> 한 곳에서 정함</text><text x="194" y="205.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px">승인이면 확정, 승인 없이 끝나거나 취소면 해제</text>
+  <line x1="194" y1="215" x2="194" y2="225" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="24" y="226" width="340" height="36" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/><text x="194" y="248" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px"><tspan class="m">payment_outbox</tspan> — <tspan class="m">STOCK_CONFIRM</tspan> / <tspan class="m">STOCK_RELEASE</tspan> 줄</text>
+  <line x1="194" y1="263" x2="194" y2="273" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="24" y="274" width="340" height="36" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/><text x="194" y="296" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px">릴레이 → <tspan class="m">stock-reservation-commands</tspan></text>
+  <line x1="194" y1="311" x2="194" y2="321" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="24" y="322" width="340" height="40" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/><text x="194" y="338.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px">재고 서비스 — 받은 명령대로 예약 상태만</text><text x="194" y="353.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px">결제 상태는 모름</text>
+  <rect x="388" y="62" width="360" height="46" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="402" y="82" class="t2">② 코레오그래피</text>
+  <text x="402" y="100" class="gs" style="font-size:11.5px">비교 · 계약을 지켜 기본 시험에 있음</text>
+  <rect x="398" y="122" width="340" height="40" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/><text x="568" y="138.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px">결제 상태 전이 — 기록 다섯 곳</text><text x="568" y="153.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px"><tspan class="m">ChoreographyHoldings</tspan>: 쿠폰·포인트만 돌려줌</text>
+  <line x1="568" y1="163" x2="568" y2="173" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="398" y="174" width="340" height="40" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/><text x="568" y="198" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px">확정·해제를 보내지 않음</text>
+  <line x1="568" y1="215" x2="568" y2="225" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="398" y="226" width="340" height="36" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/><text x="568" y="248" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px"><tspan class="m">payment_outbox</tspan> — <tspan class="m">PAYMENT_RESULT</tspan> 줄(9장)</text>
+  <line x1="568" y1="263" x2="568" y2="273" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="398" y="274" width="340" height="36" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/><text x="568" y="296" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px">릴레이 → <tspan class="m">payment-events</tspan></text>
+  <line x1="568" y1="311" x2="568" y2="321" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="398" y="322" width="340" height="72" rx="8" fill="#ece8fb" stroke="#9b88d6" stroke-width="1.5"/><text x="568" y="339.5" class="s2" text-anchor="middle" style="fill:#4c1d95;font-size:11px">재고 서비스 <tspan class="m">PaymentEventReactionListener</tspan>가 정함</text><text x="568" y="354.5" class="s2" text-anchor="middle" style="fill:#4c1d95;font-size:11px"><tspan class="m">APPROVED</tspan>·<tspan class="m">CAPTURED</tspan> → 확정</text><text x="568" y="369.5" class="s2" text-anchor="middle" style="fill:#4c1d95;font-size:11px"><tspan class="m">APPROVAL_FAILED</tspan>·<tspan class="m">EXPIRED</tspan>·</text><text x="568" y="384.5" class="s2" text-anchor="middle" style="fill:#4c1d95;font-size:11px"><tspan class="m">APPROVAL_CANCELED</tspan>·<tspan class="m">CAPTURE_CANCELED</tspan> → 해제</text>
+  <rect x="14" y="412" width="360" height="74" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <use href="#vmark" x="36" y="434"/>
+  <text x="52" y="439" class="okt">계약 21개 모두 통과</text>
+  <text x="52" y="460" class="oks" style="font-size:11.5px">측정 어긋난 재고 0(6번)</text>
+  <text x="52" y="477" class="oks" style="font-size:11.5px">맞춰진 때 352~716ms</text>
+  <rect x="388" y="412" width="360" height="74" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <use href="#vmark" x="410" y="434"/>
+  <text x="426" y="439" class="okt">계약 21개 모두 통과</text>
+  <text x="426" y="460" class="oks" style="font-size:11.5px">측정 어긋난 재고 0(6번)</text>
+  <text x="426" y="477" class="oks" style="font-size:11.5px">맞춰진 때 243~752ms</text>
+  <rect x="14" y="496" width="360" height="44" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/><text x="194" y="514" class="s2" text-anchor="middle" style="fill:#9a3412;font-size:11px">결제 서버에 재고 확정·해제 규칙(<tspan class="m">settle</tspan>)과 재고 명령 보내기</text><text x="194" y="530" class="s2" text-anchor="middle" style="fill:#9a3412;font-size:11px"><tspan class="m">payment_outbox</tspan>에 재고 명령 줄이 더 쌓임</text>
+  <rect x="388" y="496" width="360" height="44" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/><text x="568" y="514" class="s2" text-anchor="middle" style="fill:#9a3412;font-size:11px">재고 서비스가 결제 상태 여섯 개의 뜻을 앎</text><text x="568" y="530" class="s2" text-anchor="middle" style="fill:#9a3412;font-size:11px">재고를 잡지 않은 결제의 실패 이벤트에도 빈 해제 줄</text>
+  <text x="24" y="558" class="os" style="font-size:11.5px">주황 칸은 계약과 측정에 드러나지 않은 차이(코드에서 본 것 — 빈 해제 줄 수는 세지 않음)</text>
+  <line x1="12" y1="570" x2="748" y2="570" stroke="#9ca3af" stroke-width="1"/>
+  <text x="380" y="592" class="gt" text-anchor="middle" style="font-size:13px">결과는 계약과 측정으로 갈리지 않음</text>
+</svg>

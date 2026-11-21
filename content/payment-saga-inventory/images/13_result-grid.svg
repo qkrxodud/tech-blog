@@ -1,0 +1,513 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 660" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>10장 계약 21개를 출발 구조, 운영, 승인 먼저, 코레오그래피, 수량만, 실패로만, 조회로 확인, 그 자리 HTTP 구현마다 통과·실패 칸으로 그린 격자 — 실패 수는 출발 구조 7, 운영 0, 승인 먼저 7, 코레오그래피 0, 수량만 4, 실패로만 3, 조회로 확인 1, 그 자리 HTTP 1임. 출발 구조는 재고 부족 결제가 READY, 확정 2개가 표 없음, 늦은 답·처리 중 시간 초과·늦게 온 예약·멈춘 동안 원복이 재고 3으로 실패했음. 승인 먼저는 재고 부족과 늦은 답에도 카드사 요청 1건, 승인 취소, 확정 2개 0, 결과 모름 동안 재고 5, 몰림에 승인 300으로 실패했음. 수량만은 확정 2개 0과 해제 먼저·같은 해제 두 번이 재고 7, 실패로만은 늦은 답·처리 중 시간 초과·늦게 온 예약이 재고 3, 조회로 확인은 처리 중 시간 초과가 재고 3, 그 자리 HTTP는 멈춘 동안 원복이 재고 3으로 실패했음</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="660" fill="#ffffff"/>
+  <text x="24" y="28" class="h">10장 계약 21개를 구현마다 — 통과·실패 격자</text>
+  <use href="#vs" x="470" y="22"/>
+  <text x="482" y="26" class="oks" style="font-size:11.5px">통과</text>
+  <use href="#xs" x="528" y="22"/>
+  <text x="540" y="26" class="bads" style="font-size:11.5px">실패(칸 안은 실패 출력의 값)</text>
+  <text x="298" y="54" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">출발</text>
+  <text x="298" y="67" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">구조</text>
+  <text x="298" y="81" class="gs" text-anchor="middle" style="font-size:9.5px">01</text>
+  <text x="358" y="54" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">운영</text>
+  <text x="358" y="67" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700"></text>
+  <text x="358" y="81" class="gs" text-anchor="middle" style="font-size:9.5px">운영</text>
+  <text x="418" y="54" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">승인</text>
+  <text x="418" y="67" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">먼저</text>
+  <text x="418" y="81" class="gs" text-anchor="middle" style="font-size:9.5px">결정 1</text>
+  <text x="478" y="54" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">코레오</text>
+  <text x="478" y="67" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">그래피</text>
+  <text x="478" y="81" class="gs" text-anchor="middle" style="font-size:9.5px">결정 2</text>
+  <text x="538" y="54" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">수량만</text>
+  <text x="538" y="67" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700"></text>
+  <text x="538" y="81" class="gs" text-anchor="middle" style="font-size:9.5px">결정 3</text>
+  <text x="598" y="54" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">실패로만</text>
+  <text x="598" y="67" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700"></text>
+  <text x="598" y="81" class="gs" text-anchor="middle" style="font-size:9.5px">결정 4</text>
+  <text x="658" y="54" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">조회로</text>
+  <text x="658" y="67" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">확인</text>
+  <text x="658" y="81" class="gs" text-anchor="middle" style="font-size:9.5px">결정 4</text>
+  <text x="718" y="54" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">그 자리</text>
+  <text x="718" y="67" class="s2" text-anchor="middle" style="font-size:10.5px;fill:#1f2937;font-weight:700">HTTP</text>
+  <text x="718" y="81" class="gs" text-anchor="middle" style="font-size:9.5px">결정 5</text>
+  <rect x="329" y="42" width="58" height="540" rx="6" fill="none" stroke="#16a34a" stroke-width="2"/>
+  <text x="76" y="104.5" class="s2" style="font-size:10.5px;fill:#1f2937">카드사 승인 요청 없음</text>
+  <rect x="270" y="91" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="100.5"/>
+  <rect x="330" y="91" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="100.5"/>
+  <rect x="390" y="91" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="399" y="100.5"/>
+  <text x="408" y="104.5" class="bads" style="font-size:9.5px;font-weight:700">1</text>
+  <rect x="450" y="91" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="100.5"/>
+  <rect x="510" y="91" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="100.5"/>
+  <rect x="570" y="91" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="100.5"/>
+  <rect x="630" y="91" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="100.5"/>
+  <rect x="690" y="91" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="100.5"/>
+  <text x="76" y="125.5" class="s2" style="font-size:10.5px;fill:#1f2937">결제는 승인 없이 실패</text>
+  <rect x="270" y="112" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="279" y="121.5"/>
+  <text x="288" y="125.5" class="bads" style="font-size:9.5px;font-weight:700">준비</text>
+  <rect x="330" y="112" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="121.5"/>
+  <rect x="390" y="112" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="399" y="121.5"/>
+  <text x="408" y="125.5" class="bads" style="font-size:9.5px;font-weight:700">승인취소</text>
+  <rect x="450" y="112" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="121.5"/>
+  <rect x="510" y="112" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="121.5"/>
+  <rect x="570" y="112" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="121.5"/>
+  <rect x="630" y="112" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="121.5"/>
+  <rect x="690" y="112" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="121.5"/>
+  <text x="76" y="146.5" class="s2" style="font-size:10.5px;fill:#1f2937">쿠폰·포인트 돌려줌</text>
+  <rect x="270" y="133" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="142.5"/>
+  <rect x="330" y="133" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="142.5"/>
+  <rect x="390" y="133" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="142.5"/>
+  <rect x="450" y="133" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="142.5"/>
+  <rect x="510" y="133" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="142.5"/>
+  <rect x="570" y="133" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="142.5"/>
+  <rect x="630" y="133" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="142.5"/>
+  <rect x="690" y="133" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="142.5"/>
+  <text x="76" y="167.5" class="s2" style="font-size:10.5px;fill:#1f2937">재고 그대로</text>
+  <rect x="270" y="154" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="163.5"/>
+  <rect x="330" y="154" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="163.5"/>
+  <rect x="390" y="154" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="163.5"/>
+  <rect x="450" y="154" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="163.5"/>
+  <rect x="510" y="154" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="163.5"/>
+  <rect x="570" y="154" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="163.5"/>
+  <rect x="630" y="154" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="163.5"/>
+  <rect x="690" y="154" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="163.5"/>
+  <rect x="14" y="91" width="56" height="82" rx="6" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.2"/>
+  <text x="42" y="136" class="s2" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#1e3a8a">재고 부족</text>
+  <text x="76" y="192.5" class="s2" style="font-size:10.5px;fill:#1f2937">승인 → 확정</text>
+  <rect x="270" y="179" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="279" y="188.5"/>
+  <text x="288" y="192.5" class="bads" style="font-size:9.5px;font-weight:700">표 없음</text>
+  <rect x="330" y="179" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="188.5"/>
+  <rect x="390" y="179" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="399" y="188.5"/>
+  <text x="408" y="192.5" class="bads" style="font-size:9.5px;font-weight:700">0</text>
+  <rect x="450" y="179" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="188.5"/>
+  <rect x="510" y="179" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="519" y="188.5"/>
+  <text x="528" y="192.5" class="bads" style="font-size:9.5px;font-weight:700">0</text>
+  <rect x="570" y="179" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="188.5"/>
+  <rect x="630" y="179" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="188.5"/>
+  <rect x="690" y="179" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="188.5"/>
+  <text x="76" y="213.5" class="s2" style="font-size:10.5px;fill:#1f2937">결과 모름 → 보정 승인 → 확정</text>
+  <rect x="270" y="200" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="279" y="209.5"/>
+  <text x="288" y="213.5" class="bads" style="font-size:9.5px;font-weight:700">표 없음</text>
+  <rect x="330" y="200" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="209.5"/>
+  <rect x="390" y="200" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="399" y="209.5"/>
+  <text x="408" y="213.5" class="bads" style="font-size:9.5px;font-weight:700">0</text>
+  <rect x="450" y="200" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="209.5"/>
+  <rect x="510" y="200" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="519" y="209.5"/>
+  <text x="528" y="213.5" class="bads" style="font-size:9.5px;font-weight:700">0</text>
+  <rect x="570" y="200" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="209.5"/>
+  <rect x="630" y="200" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="209.5"/>
+  <rect x="690" y="200" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="209.5"/>
+  <text x="76" y="234.5" class="s2" style="font-size:10.5px;fill:#1f2937">같은 확정 두 번</text>
+  <rect x="270" y="221" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="230.5"/>
+  <rect x="330" y="221" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="230.5"/>
+  <rect x="390" y="221" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="230.5"/>
+  <rect x="450" y="221" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="230.5"/>
+  <rect x="510" y="221" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="230.5"/>
+  <rect x="570" y="221" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="230.5"/>
+  <rect x="630" y="221" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="230.5"/>
+  <rect x="690" y="221" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="230.5"/>
+  <rect x="14" y="179" width="56" height="61" rx="6" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.2"/>
+  <text x="42" y="213.5" class="s2" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#1e3a8a">확정</text>
+  <text x="76" y="259.5" class="s2" style="font-size:10.5px;fill:#1f2937">카드사 거절</text>
+  <rect x="270" y="246" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="255.5"/>
+  <rect x="330" y="246" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="255.5"/>
+  <rect x="390" y="246" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="255.5"/>
+  <rect x="450" y="246" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="255.5"/>
+  <rect x="510" y="246" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="255.5"/>
+  <rect x="570" y="246" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="255.5"/>
+  <rect x="630" y="246" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="255.5"/>
+  <rect x="690" y="246" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="255.5"/>
+  <text x="76" y="280.5" class="s2" style="font-size:10.5px;fill:#1f2937">만료를 보정이 닫음</text>
+  <rect x="270" y="267" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="276.5"/>
+  <rect x="330" y="267" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="276.5"/>
+  <rect x="390" y="267" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="276.5"/>
+  <rect x="450" y="267" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="276.5"/>
+  <rect x="510" y="267" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="276.5"/>
+  <rect x="570" y="267" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="276.5"/>
+  <rect x="630" y="267" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="276.5"/>
+  <rect x="690" y="267" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="276.5"/>
+  <text x="76" y="301.5" class="s2" style="font-size:10.5px;fill:#1f2937">전액 취소</text>
+  <rect x="270" y="288" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="297.5"/>
+  <rect x="330" y="288" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="297.5"/>
+  <rect x="390" y="288" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="297.5"/>
+  <rect x="450" y="288" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="297.5"/>
+  <rect x="510" y="288" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="297.5"/>
+  <rect x="570" y="288" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="297.5"/>
+  <rect x="630" y="288" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="297.5"/>
+  <rect x="690" y="288" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="297.5"/>
+  <text x="76" y="322.5" class="s2" style="font-size:10.5px;fill:#1f2937">보정이 승인 실패로 닫음</text>
+  <rect x="270" y="309" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="318.5"/>
+  <rect x="330" y="309" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="318.5"/>
+  <rect x="390" y="309" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="318.5"/>
+  <rect x="450" y="309" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="318.5"/>
+  <rect x="510" y="309" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="318.5"/>
+  <rect x="570" y="309" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="318.5"/>
+  <rect x="630" y="309" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="318.5"/>
+  <rect x="690" y="309" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="318.5"/>
+  <text x="76" y="343.5" class="s2" style="font-size:10.5px;fill:#1f2937">결과 모름 동안 예약 유지</text>
+  <rect x="270" y="330" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="339.5"/>
+  <rect x="330" y="330" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="339.5"/>
+  <rect x="390" y="330" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="399" y="339.5"/>
+  <text x="408" y="343.5" class="bads" style="font-size:9.5px;font-weight:700">5</text>
+  <rect x="450" y="330" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="339.5"/>
+  <rect x="510" y="330" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="339.5"/>
+  <rect x="570" y="330" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="339.5"/>
+  <rect x="630" y="330" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="339.5"/>
+  <rect x="690" y="330" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="339.5"/>
+  <rect x="14" y="246" width="56" height="103" rx="6" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.2"/>
+  <text x="42" y="301.5" class="s2" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#1e3a8a">원복</text>
+  <text x="76" y="368.5" class="s2" style="font-size:10.5px;fill:#1f2937">늦은 답 → 카드사 요청 없음</text>
+  <rect x="270" y="355" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="364.5"/>
+  <rect x="330" y="355" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="364.5"/>
+  <rect x="390" y="355" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="399" y="364.5"/>
+  <text x="408" y="368.5" class="bads" style="font-size:9.5px;font-weight:700">1</text>
+  <rect x="450" y="355" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="364.5"/>
+  <rect x="510" y="355" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="364.5"/>
+  <rect x="570" y="355" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="364.5"/>
+  <rect x="630" y="355" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="364.5"/>
+  <rect x="690" y="355" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="364.5"/>
+  <text x="76" y="389.5" class="s2" style="font-size:10.5px;fill:#1f2937">늦은 답 → 원복</text>
+  <rect x="270" y="376" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="279" y="385.5"/>
+  <text x="288" y="389.5" class="bads" style="font-size:9.5px;font-weight:700">3</text>
+  <rect x="330" y="376" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="385.5"/>
+  <rect x="390" y="376" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="385.5"/>
+  <rect x="450" y="376" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="385.5"/>
+  <rect x="510" y="376" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="385.5"/>
+  <rect x="570" y="376" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="579" y="385.5"/>
+  <text x="588" y="389.5" class="bads" style="font-size:9.5px;font-weight:700">3</text>
+  <rect x="630" y="376" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="385.5"/>
+  <rect x="690" y="376" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="385.5"/>
+  <text x="76" y="410.5" class="s2" style="font-size:10.5px;fill:#1f2937">처리 중 시간 초과 → 원복</text>
+  <rect x="270" y="397" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="279" y="406.5"/>
+  <text x="288" y="410.5" class="bads" style="font-size:9.5px;font-weight:700">3</text>
+  <rect x="330" y="397" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="406.5"/>
+  <rect x="390" y="397" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="406.5"/>
+  <rect x="450" y="397" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="406.5"/>
+  <rect x="510" y="397" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="406.5"/>
+  <rect x="570" y="397" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="579" y="406.5"/>
+  <text x="588" y="410.5" class="bads" style="font-size:9.5px;font-weight:700">3</text>
+  <rect x="630" y="397" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="639" y="406.5"/>
+  <text x="648" y="410.5" class="bads" style="font-size:9.5px;font-weight:700">3</text>
+  <rect x="690" y="397" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="406.5"/>
+  <text x="76" y="431.5" class="s2" style="font-size:10.5px;fill:#1f2937">해제 먼저 → 늘지 않음</text>
+  <rect x="270" y="418" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="427.5"/>
+  <rect x="330" y="418" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="427.5"/>
+  <rect x="390" y="418" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="427.5"/>
+  <rect x="450" y="418" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="427.5"/>
+  <rect x="510" y="418" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="519" y="427.5"/>
+  <text x="528" y="431.5" class="bads" style="font-size:9.5px;font-weight:700">7</text>
+  <rect x="570" y="418" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="427.5"/>
+  <rect x="630" y="418" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="427.5"/>
+  <rect x="690" y="418" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="427.5"/>
+  <text x="76" y="452.5" class="s2" style="font-size:10.5px;fill:#1f2937">늦게 온 예약 → 줄이지 않음</text>
+  <rect x="270" y="439" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="279" y="448.5"/>
+  <text x="288" y="452.5" class="bads" style="font-size:9.5px;font-weight:700">3</text>
+  <rect x="330" y="439" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="448.5"/>
+  <rect x="390" y="439" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="448.5"/>
+  <rect x="450" y="439" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="448.5"/>
+  <rect x="510" y="439" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="448.5"/>
+  <rect x="570" y="439" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="579" y="448.5"/>
+  <text x="588" y="452.5" class="bads" style="font-size:9.5px;font-weight:700">3</text>
+  <rect x="630" y="439" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="448.5"/>
+  <rect x="690" y="439" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="448.5"/>
+  <text x="76" y="473.5" class="s2" style="font-size:10.5px;fill:#1f2937">같은 해제 두 번</text>
+  <rect x="270" y="460" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="469.5"/>
+  <rect x="330" y="460" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="469.5"/>
+  <rect x="390" y="460" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="469.5"/>
+  <rect x="450" y="460" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="469.5"/>
+  <rect x="510" y="460" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="519" y="469.5"/>
+  <text x="528" y="473.5" class="bads" style="font-size:9.5px;font-weight:700">7</text>
+  <rect x="570" y="460" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="469.5"/>
+  <rect x="630" y="460" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="469.5"/>
+  <rect x="690" y="460" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="469.5"/>
+  <rect x="14" y="355" width="56" height="124" rx="6" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.2"/>
+  <text x="42" y="421" class="s2" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#1e3a8a">늦음·순서</text>
+  <text x="76" y="498.5" class="s2" style="font-size:10.5px;fill:#1f2937">멈춘 동안 끝남 → 돌아오면 원복</text>
+  <rect x="270" y="485" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="279" y="494.5"/>
+  <text x="288" y="498.5" class="bads" style="font-size:9.5px;font-weight:700">3</text>
+  <rect x="330" y="485" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="494.5"/>
+  <rect x="390" y="485" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="494.5"/>
+  <rect x="450" y="485" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="494.5"/>
+  <rect x="510" y="485" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="494.5"/>
+  <rect x="570" y="485" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="494.5"/>
+  <rect x="630" y="485" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="494.5"/>
+  <rect x="690" y="485" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="699" y="494.5"/>
+  <text x="708" y="498.5" class="bads" style="font-size:9.5px;font-weight:700">3</text>
+  <rect x="14" y="485" width="56" height="19" rx="6" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.2"/>
+  <text x="42" y="498.5" class="s2" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#1e3a8a">멈춤</text>
+  <text x="76" y="523.5" class="s2" style="font-size:10.5px;fill:#1f2937">300건에 승인 100건 이하</text>
+  <rect x="270" y="510" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="519.5"/>
+  <rect x="330" y="510" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="519.5"/>
+  <rect x="390" y="510" width="56" height="19" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="399" y="519.5"/>
+  <text x="408" y="523.5" class="bads" style="font-size:9.5px;font-weight:700">300</text>
+  <rect x="450" y="510" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="519.5"/>
+  <rect x="510" y="510" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="519.5"/>
+  <rect x="570" y="510" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="519.5"/>
+  <rect x="630" y="510" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="519.5"/>
+  <rect x="690" y="510" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="519.5"/>
+  <text x="76" y="544.5" class="s2" style="font-size:10.5px;fill:#1f2937">취소 뒤 재고 + 승인 = 100</text>
+  <rect x="270" y="531" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="298" y="540.5"/>
+  <rect x="330" y="531" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="358" y="540.5"/>
+  <rect x="390" y="531" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="418" y="540.5"/>
+  <rect x="450" y="531" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="478" y="540.5"/>
+  <rect x="510" y="531" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="538" y="540.5"/>
+  <rect x="570" y="531" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="598" y="540.5"/>
+  <rect x="630" y="531" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="658" y="540.5"/>
+  <rect x="690" y="531" width="56" height="19" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="718" y="540.5"/>
+  <rect x="14" y="510" width="56" height="40" rx="6" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.2"/>
+  <text x="42" y="534" class="s2" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#1e3a8a">몰림</text>
+  <line x1="14" y1="557" x2="748" y2="557" stroke="#9ca3af" stroke-width="1"/>
+  <text x="76" y="575" class="s2" style="font-size:11px;font-weight:700;fill:#1f2937">실패 수(21개 중)</text>
+  <text x="298" y="575" class="badt" text-anchor="middle">7</text>
+  <text x="358" y="575" class="okt" text-anchor="middle">0</text>
+  <text x="418" y="575" class="badt" text-anchor="middle">7</text>
+  <text x="478" y="575" class="okt" text-anchor="middle">0</text>
+  <text x="538" y="575" class="badt" text-anchor="middle">4</text>
+  <text x="598" y="575" class="badt" text-anchor="middle">3</text>
+  <text x="658" y="575" class="badt" text-anchor="middle">1</text>
+  <text x="718" y="575" class="badt" text-anchor="middle">1</text>
+  <text x="24" y="595" class="gs" style="font-size:10.5px">준비 = READY · 승인취소 = APPROVAL_CANCELED · 표 없음 = <tspan class="m">stock_reservation</tspan> 표를 읽지 못함</text>
+  <text x="24" y="611" class="gs" style="font-size:10.5px">출발 구조는 바뀐 계약 21개로 출발 코드를 다시 돌린 결과(01) — 같은 실행의 8장 계약 1개 실패는 따로</text>
+  <text x="24" y="627" class="gs" style="font-size:10.5px">몰림 뒤 취소 계약은 이 기록에서 모두 통과 — 수량만은 결정 5 커밋 실행에서 191, 반복 실행에서 수량만·실패로만이 세 번째에만 실패(겹침을 고정하지 않음)</text>
+</svg>
