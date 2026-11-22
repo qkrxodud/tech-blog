@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>같은 알림 두 개가 동시에 닿을 때 unique 키 전과 뒤 — 결정 3을 만든 시점에는 알림을 받은 요청 안에서 반영해서, 두 알림이 둘 다 PG에 조회해 같은 transactionKey의 PG 취소를 모르는 키로 보고 들여와 같은 취소가 2건이 된 것을 실행에서 봄. unique(payment_id, transaction_key)를 더한 뒤에는 두 번째 기록이 막혀 500으로 끝나고, PG의 재전송에서 정상 처리되어 취소 기록은 1건</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+  </defs>
+
+  <rect width="760" height="470" fill="#ffffff"/>
+  <text x="24" y="30" class="h">같은 알림 두 개가 동시에 닿을 때 — unique 키 전과 뒤</text>
+  <text x="24" y="52" class="gs">결정 3을 만든 시점(알림을 받은 요청 안에서 반영)에 실행에서 본 것 · 같은 PG 취소 = 같은 <tspan class="m">transactionKey</tspan></text>
+  <rect x="24" y="72" width="712" height="168" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="40" y="96" class="badt" style="font-size:13px">unique 키 전</text>
+  <text x="40" y="134" class="t2" style="font-size:12px">알림 1</text>
+  <line x1="110" y1="129" x2="736" y2="129" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="116" y="110" width="96" height="38" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/>
+  <text x="164.0" y="134" class="ot" text-anchor="middle" style="font-size:11.5px">PG 조회</text>
+  <line x1="214" y1="129" x2="230" y2="129" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="232" y="110" width="130" height="38" rx="8" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/>
+  <text x="297.0" y="134" class="t2" text-anchor="middle" style="font-size:11.5px">모르는 키로 봄</text>
+  <line x1="364" y1="129" x2="380" y2="129" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="382" y="110" width="150" height="38" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="457.0" y="134" class="bt" text-anchor="middle" style="font-size:11.5px">PG 취소를 들여옴</text>
+  <text x="40" y="184" class="t2" style="font-size:12px">알림 2</text>
+  <line x1="110" y1="179" x2="736" y2="179" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="116" y="160" width="96" height="38" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/>
+  <text x="164.0" y="184" class="ot" text-anchor="middle" style="font-size:11.5px">PG 조회</text>
+  <line x1="214" y1="179" x2="230" y2="179" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="232" y="160" width="130" height="38" rx="8" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/>
+  <text x="297.0" y="184" class="t2" text-anchor="middle" style="font-size:11.5px">모르는 키로 봄</text>
+  <line x1="364" y1="179" x2="380" y2="179" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="382" y="160" width="150" height="38" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="457.0" y="184" class="bt" text-anchor="middle" style="font-size:11.5px">PG 취소를 들여옴</text>
+  <rect x="588" y="108" width="136" height="88" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xmark" x="608" y="130"/>
+  <text x="656" y="162" class="badt" text-anchor="middle" style="font-size:12.5px">같은 취소</text>
+  <text x="656" y="182" class="badt" text-anchor="middle" style="font-size:12.5px">2건</text>
+  <text x="40" y="226" class="bads" style="font-size:11.5px">두 요청이 동시에 읽어 둘 다 아직 없는 키로 봄</text>
+  <rect x="24" y="254" width="712" height="200" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="40" y="278" class="okt" style="font-size:13px">unique 키 뒤 — <tspan class="m">unique(payment_id, transaction_key)</tspan></text>
+  <text x="40" y="316" class="t2" style="font-size:12px">알림 1</text>
+  <line x1="110" y1="311" x2="736" y2="311" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="116" y="292" width="96" height="38" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/>
+  <text x="164.0" y="316" class="ot" text-anchor="middle" style="font-size:11.5px">PG 조회</text>
+  <line x1="214" y1="311" x2="230" y2="311" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="232" y="292" width="130" height="38" rx="8" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/>
+  <text x="297.0" y="316" class="t2" text-anchor="middle" style="font-size:11.5px">모르는 키로 봄</text>
+  <line x1="364" y1="311" x2="380" y2="311" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="382" y="292" width="150" height="38" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="457.0" y="316" class="bt" text-anchor="middle" style="font-size:11.5px">PG 취소를 들여옴</text>
+  <text x="40" y="366" class="t2" style="font-size:12px">알림 2</text>
+  <line x1="110" y1="361" x2="736" y2="361" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="116" y="342" width="96" height="38" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/>
+  <text x="164.0" y="366" class="ot" text-anchor="middle" style="font-size:11.5px">PG 조회</text>
+  <line x1="214" y1="361" x2="230" y2="361" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="232" y="342" width="130" height="38" rx="8" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/>
+  <text x="297.0" y="366" class="t2" text-anchor="middle" style="font-size:11.5px">모르는 키로 봄</text>
+  <line x1="364" y1="361" x2="380" y2="361" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <rect x="382" y="342" width="150" height="38" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="457.0" y="366" class="badt" text-anchor="middle" style="font-size:11.5px">두 번째 기록 막힘</text>
+  <rect x="588" y="342" width="136" height="38" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="656" y="366" class="badt" text-anchor="middle" style="font-size:12px"><tspan class="m">500</tspan>으로 끝남</text>
+  <line x1="564" y1="361" x2="584" y2="361" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <path d="M656,382 V404 H190 V418" fill="none" stroke="#c2410c" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#aor)"/>
+  <text x="430" y="398" class="os" text-anchor="middle" style="font-size:11.5px">PG가 같은 알림을 다시 보냄</text>
+  <rect x="116" y="420" width="300" height="26" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <text x="266" y="438" class="okt" text-anchor="middle" style="font-size:12px">재전송에서 정상 처리</text>
+  <rect x="588" y="290" width="136" height="38" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <use href="#vmark" x="606" y="309"/>
+  <text x="664" y="314" class="okt" text-anchor="middle" style="font-size:12.5px">취소 1건</text>
+  <path d="M564,311 H584" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+</svg>

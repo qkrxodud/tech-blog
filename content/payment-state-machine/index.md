@@ -109,6 +109,10 @@ setter를 없앤 것만으로도 "어떤 일이 일어났는지"는 메서드 �
 
 이 구조가 무엇을 막지 못하는지 테스트로 먼저 확인하였습니다. 구현이 바뀌어도 같은 규칙을 검사할 수 있도록, 테스트는 결제 객체를 `perform(action)`과 `status()`로만 다루는 추상 클래스(`PaymentTransitionContract`)로 만들고 구현마다 상속하게 했습니다. 구현마다 둔 `PaymentHandle`이 `perform(CAPTURE)`를 그 구현의 방식대로 넘기고(허용 전이 표와 State 패턴은 `capture()` 같은 메서드 호출, Statemachine은 이벤트 전송), 테스트에 쓰는 `paymentIn(from)`은 상태를 직접 넣지 않고 `READY`에서 행위를 차례로 호출해 원하는 상태를 만듭니다.
 
+계약 테스트가 구현마다 결제를 만들고, 출발 상태를 거쳐 행위를 시험하는 순서를 그리면 아래와 같습니다.
+
+![계약 테스트가 결제를 다루는 순서 — 구현마다 newPayment()로 READY 결제를 만들고, paymentIn(from)이 PATH에 적힌 행위를 차례로 perform해 출발 상태를 만든 뒤 status()로 확인하고, 시험할 행위를 perform해 허용 표에 있으면 다음 상태로 바뀌었는지, 없으면 InvalidPaymentTransitionException이 나고 상태가 출발 상태 그대로인지 봄. perform은 허용 전이 표와 State 패턴에서는 capture() 같은 메서드 호출로, Spring Statemachine에서는 이벤트 전송으로 넘어가며, 구현마다 개별 테스트 7개와 조합 63개로 70개](images/09_contract-test-flow.svg)
+
 규칙은 허용되는 전이만 적은 표로 정의하였습니다. 표에 없는 (상태, 행위) 조합은 모두 거부되어야 합니다. 뒤에서 비교할 State 패턴과 Spring Statemachine 구현은 이 표를 쓰지 않기 때문에, 테스트는 구현과 상관없이 기대 규칙을 따로 적어 둡니다. 운영 코드의 표를 그대로 가져다 쓰면 그 표가 틀렸을 때 테스트도 함께 틀리게 됩니다.
 
 ```java
@@ -316,6 +320,10 @@ private boolean isRejected(StateMachineEventResult<PaymentStatus, PaymentAction>
 - 의존성: Spring Statemachine 저장소의 README에는 "Spring Statemachine is no longer maintained"라고 적혀 있고, GitHub 저장소는 2026-07-05에 보관(archived) 처리되었습니다. 마지막 버전인 4.0.2는 Spring Framework 6.2.19를 기준으로 만들어졌습니다. 이번 테스트에서는 Spring Framework 7.0.10(Spring Boot 4.1.2) 위에서도 동작했지만, 앞으로 버전을 올릴 때 계속 동작한다는 보장은 없습니다.
 - 영속성: 이번 Statemachine 구현은 메모리에서만 돌렸고, DB에 저장된 상태로 머신을 다시 세우는 코드는 만들지 않았습니다. 엔티티의 상태 컬럼과 머신의 상태를 맞추는 일이 따로 남습니다.
 
+세 구현을 고르는 기준과 각 방식이 맞는 조건을 나란히 놓으면 아래와 같습니다.
+
+![결정 2에서 세 구현을 고른 기준 — 허용 전이 표, State 패턴, Spring Statemachine 모두 같은 70개 테스트를 통과함. 코드 양(package·import·빈 줄·주석 제외)은 34줄(상태 선언 포함), 72줄, 47줄. 규칙은 허용 전이 표와 Statemachine 선언에서는 전이 9개가 한 화면에 모이고 State 패턴은 상태 클래스마다 흩어짐. 의존성은 Spring Statemachine만 있고 2026-07-05에 저장소가 보관되어 유지보수가 끝남. Statemachine 구현은 메모리에서만 돌려 DB 상태로 머신을 다시 세우는 코드가 없고, 허용 전이 표는 JPA 엔티티의 상태 컬럼과 그대로 맞물림. 허용 전이 표의 한계는 전이에 조건이 붙으면 규칙이 표와 메서드 두 곳으로 나뉘는 것이고, 다른 선택이 맞는 조건은 상태마다 하는 일이 크게 다르고 조건 붙은 전이가 많으면 State 패턴, 계층·병렬 상태가 필요하면 상태 머신 라이브러리지만 Spring Statemachine이 아닌 다른 라이브러리](images/10_guard-tradeoffs.svg)
+
 허용 전이 표 방식을 고른 이유는 규칙이 한 곳에 모여 있고, 추가 의존성 없이 JPA 엔티티의 상태 컬럼과 그대로 맞물리기 때문입니다.
 
 다만 전이에 조건이나 부수 효과가 붙으면 이 방식의 한계가 드러납니다. 표는 "이 상태에서 이 행위를 하면 저 상태가 된다"만 표현합니다. "취소 금액이 남은 금액보다 크면 거부한다" 같은 조건은 표 밖, 엔티티 메서드 안에 따로 써야 합니다. 이런 조건이 늘어날수록 규칙이 표와 메서드 두 곳으로 나뉩니다.
@@ -387,6 +395,10 @@ enum insert error: Data truncated for column 'enum_status' at row 1
 - varchar: `'APPROVED'`로 저장되어 V2에서도 `APPROVED`로 읽혔습니다. 새 상태 `'AUTHENTICATED'`도 그대로 저장되었습니다.
 - MySQL enum: 컬럼 정의에 없는 `'AUTHENTICATED'`를 넣으면 `Data truncated for column 'enum_status'` 오류로 거부되었습니다. 새 상태를 쓰려면 애플리케이션 배포 전에 `ALTER TABLE`로 컬럼 정의를 먼저 바꿔야 합니다.
 
+상태를 하나 더했을 때 세 저장 방식에서 생긴 일을 시험한 경우별로 모으면 아래와 같습니다.
+
+![결정 4에서 상태를 하나 더했을 때 세 저장 방식의 결과 — MySQL 8.4(Testcontainers)에서 V1 코드(READY, APPROVED, CAPTURED, CANCELED)가 남긴 APPROVED를 READY와 APPROVED 사이에 AUTHENTICATED를 끼운 V2 코드가 읽으면, ORDINAL은 저장된 1이 AUTHENTICATED로 오류 없이 읽히고 varchar는 APPROVED로 읽힘. 새 상태 AUTHENTICATED를 넣으면 varchar는 그대로 저장되고 MySQL enum 칸은 Data truncated for column enum_status 오류로 거부해 배포 전에 ALTER TABLE이 먼저 필요함.](images/11_storage-new-status.svg)
+
 여기서 하나 더 확인한 것이 있습니다. 스키마를 Hibernate(7.4.13)에게 만들게 하면, `@Enumerated(EnumType.STRING)`에 `length = 30`을 지정해도 상태 컬럼이 `varchar`가 아니라 MySQL `enum` 타입으로 만들어졌습니다.
 
 ```text
@@ -405,6 +417,10 @@ create table if not exists payment (
     unique key uk_payment_order_id (order_id)
 );
 ```
+
+스키마를 Hibernate에게 맡길 때와 `schema.sql`로 직접 관리할 때의 상태 컬럼, 그리고 고른 쪽이 치르는 비용을 그리면 아래와 같습니다.
+
+![결정 4에서 스키마를 만드는 곳 — Hibernate 7.4.13에게 맡기면(ddl-auto=create) @Enumerated(EnumType.STRING)에 length = 30을 지정해도 상태 칸이 상태 9개를 나열한 MySQL enum 타입이 되고, schema.sql로 직접 관리하면(ddl-auto=none) status varchar(30)이 되어 새 상태를 그대로 받음. 대신 DB가 값을 검사하지 않아 APROVED 같은 오타도 들어가고, 상태 이름을 바꾸면 기존 행을 바꾸는 마이그레이션이 필요함. 상태 목록이 거의 바뀌지 않고 SQL로 직접 고치는 일이 잦으면 MySQL enum이나 CHECK 제약, 숫자로 저장하고 싶으면 상태마다 고정 코드와 AttributeConverter가 맞으며 이 둘은 구현하지 않음](images/12_schema-owner.svg)
 
 대신 DB가 값을 검사해 주지 않습니다. `varchar` 컬럼에는 `'APROVED'` 같은 오타도 그대로 들어갑니다. 애플리케이션을 거치지 않고 SQL로 직접 상태를 고치는 일이 생기면 이 점이 문제가 될 수 있습니다. 또한 상태 이름을 바꾸면 기존 행을 함께 바꾸는 마이그레이션이 필요합니다.
 
@@ -480,6 +496,10 @@ coverage INSTRUCTION 100%, BRANCH 100%, LINE 100%, COMPLEXITY 100%, METHOD 100%,
 - 전이 규칙 테스트 210개를 뺀 8개("결제 서버", "저장 구조", "실제 보관함에서")는 Testcontainers로 띄운 MySQL 8.4에서 돌렸고, "결제 서버"는 MySQL에 연결된 채로 애플리케이션이 뜨는지 보는 테스트입니다.
 - 전체 218개 테스트가 통과했고, JaCoCo로 잰 커버리지는 100%였습니다(애플리케이션 시작 클래스 제외).
 
+1장 완성 코드의 테스트 218개를 묶음별로 그리면 아래와 같습니다.
+
+![1장 완성 코드의 테스트 218개 — 결제 상태 바꾸기 허용 전이 표 70개, State 패턴(비교 구현) 70개, Spring Statemachine(비교 구현) 70개로 전이 규칙 테스트 210개는 메모리에서 돌렸고, 결제 서버 1개, 저장 구조를 서버가 직접 만들게 두면 1개, 결제 기록 실제 보관함에서 2개, 상태를 남기는 방식 비교 4개로 8개는 Testcontainers MySQL 8.4에서 돌림. 70 × 3 + 1 + 1 + 2 + 4 = 218개 모두 통과, JaCoCo 커버리지 100%(애플리케이션 시작 클래스 제외). 출발 구조에서 70개 중 61개 실패하던 전이 규칙 테스트가 허용 전이 표에서 모두 통과](images/13_test-count.svg)
+
 실행 환경은 Apple M1 Max(메모리 32GB), Azul Zulu 17.0.15, Spring Boot 4.1.2, Hibernate 7.4.13.Final, MySQL 8.4.11(Testcontainers 2.0.5), JaCoCo 0.8.13입니다. 이 장은 처리량이나 락 경합을 다루지 않기 때문에 부하 테스트는 하지 않았습니다.
 
 ## 남은 한계
@@ -494,6 +514,10 @@ coverage INSTRUCTION 100%, BRANCH 100%, LINE 100%, COMPLEXITY 100%, METHOD 100%,
 - 두 요청이 같은 결제를 동시에 읽어 각각 전이하면, 객체 안의 검사만으로는 막을 수 없습니다. 이 문제는 서버가 한 대여도 같은 결제에 요청이 동시에 들어오면 생기고, 서버가 여러 대가 되면 더 자주 드러납니다. 7장 동시성 제어에서 다룹니다.
 - 상태가 언제 어떻게 바뀌었는지 이력이 남지 않습니다. PG 기록과 맞춰 보는 대사에서 필요해지면 12장에서 다룹니다.
 
+남은 한계와 그 한계를 다루는 장을 이어 그리면 아래와 같습니다.
+
+![1장 상태 머신의 남은 한계와 다루는 장 — 한 객체 안에서 잘못된 전이만 막음. 실제 PG를 호출하지 않고 승인 요청을 트랜잭션 안과 밖 어디서 보낼지는 2장, 같은 요청이 두 번 들어오면 두 번째가 예외로 실패하는 것과 요청 금액 검증은 3장, 승인 요청의 응답을 받지 못하면 승인 여부를 표현할 수 없는 것은 4장(APPROVAL_UNKNOWN과 MARK_APPROVAL_UNKNOWN을 더함), 전액 취소만 되는 것은 5장, PG 웹훅이 순서가 바뀌어 들어오면 거부하는 것은 6장(토스페이먼츠에는 매입 웹훅이 없어 예시는 6장에서 바로잡음), 두 요청이 같은 결제를 동시에 읽어 각각 전이하는 것은 7장, 상태 변경 이력이 남지 않는 것은 12장](images/14_remaining-limits.svg)
+
 ## 요약
 
 오늘은 결제 단계와 상태 머신을 정리하였습니다. 요약하자면 아래와 같습니다.
@@ -503,6 +527,10 @@ coverage INSTRUCTION 100%, BRANCH 100%, LINE 100%, COMPLEXITY 100%, METHOD 100%,
 - 허용 전이 표, State 패턴, Spring Statemachine 모두 같은 테스트를 통과하였고, 규칙이 한 곳에 모이고 추가 의존성이 없는 허용 전이 표를 골랐습니다. Spring Statemachine은 유지보수가 끝난 상태입니다.
 - 잘못된 전이는 예외로 알리고, 중복 요청 처리는 3장으로 넘겼습니다.
 - 상태 컬럼은 ORDINAL이면 상태를 추가할 때 기존 행의 의미가 바뀌고, Hibernate가 만든 스키마는 MySQL enum 타입이 되어 새 상태를 받지 못했습니다. 그래서 `varchar(30)`을 `schema.sql`로 직접 관리합니다.
+
+이 장의 결정 네 가지를 한눈에 그리면 아래와 같습니다.
+
+![1장 결정 네 가지 한눈에 — 결정 1 결제 단계는 승인 하나로 묶으면 매입 전후를 가를 수 없어, 인증·승인·매입을 하나의 상태 필드(상태 9개)에 두어 취소 방향이 전이 표 한 곳에서 갈라지게 함. 결정 2 전이는 변경 메서드가 현재 상태를 보지 않아 출발 코드에서 계약 테스트 70개 중 61개 실패하던 것을 enum의 허용 전이 표와 changeStatus()로 막아 70개 모두 통과, 비교 구현 둘도 통과. 결정 3 잘못된 전이가 예외 없이 실행되던 것을 InvalidPaymentTransitionException으로 알리고, 같은 요청이 두 번 오면 두 번째는 실패하는 비용이 남아 3장으로 넘김. 결정 4 ORDINAL은 상태를 추가하면 뜻이 바뀌고 Hibernate가 만든 칸은 MySQL enum이 되던 것을 schema.sql의 varchar(30)으로 관리](images/15_decision-summary.svg)
 
 결제를 처음 다룰 때는 승인만 생각하기 쉬운데, 정리하면서 매입과 취소 시점까지 상태에 담아야 이후의 취소와 대사가 성립할 수 있다는 것을 알 수 있었습니다.
 
