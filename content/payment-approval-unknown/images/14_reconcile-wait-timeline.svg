@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결정 3에서 결과 모름이 확정되기까지 — 인증을 커밋하며 authenticated_at을 남기고 PG에 승인을 요청한 뒤 연결 1초·읽기 5초 안에 답을 받지 못하면 APPROVAL_UNKNOWN으로 남기고 504로 답함. wait-after-request(기본 1분)가 지나기 전에는 보정 대상이 아니고, 앞 보정이 끝난 뒤 interval(기본 1분)만큼 쉬고 다시 도는 주기 보정(fixedDelay)이 now − wait-after-request보다 먼저 인증한 결과 모름·인증 결제를 오래된 것부터 100건 골라 주문번호로 조회해 닫음. 대기 시간이 지난 뒤 처음 도는 회차가 닫으므로 확정까지 1분에서 2분이고 그동안 고객은 확인 중을 봄. PG가 조회에 답하지 않으면 한 회차에 100건 × 5초를 기다릴 수 있음. 측정에서 첫 보정의 조회에만 늦게 답하게 하자 확정까지 보정 2번, 16322ms가 걸렸고, 이 값은 읽기 시간 제한 1초로 대기 시간과 주기를 빼고 잰 것임</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+  </defs>
+
+  <rect width="760" height="470" fill="#ffffff"/>
+  <text x="24" y="30" class="h">결정 3 — 결과 모름이 확정되기까지: 대기 시간 뒤 주기 보정에서 조회</text>
+  <text x="24" y="52" class="gs">기본값 <tspan class="m">wait-after-request</tspan> 1분 · <tspan class="m">interval</tspan> 1분 · PG 시간 제한 연결 1초, 읽기 5초 · 시각은 <tspan class="m">Clock</tspan> 빈(UTC)</text>
+  <line x1="40" y1="248" x2="724" y2="248" stroke="#374151" stroke-width="1.5"/>
+  <line x1="60" y1="243" x2="60" y2="253" stroke="#374151" stroke-width="1.5"/>
+  <text x="60" y="270" class="gs" text-anchor="middle" style="font-size:11.5px">0</text>
+  <line x1="170" y1="243" x2="170" y2="253" stroke="#374151" stroke-width="1.5"/>
+  <text x="170" y="270" class="gs" text-anchor="middle" style="font-size:11.5px">5초</text>
+  <line x1="420" y1="243" x2="420" y2="253" stroke="#374151" stroke-width="1.5"/>
+  <text x="420" y="270" class="gs" text-anchor="middle" style="font-size:11.5px">1분</text>
+  <line x1="680" y1="243" x2="680" y2="253" stroke="#374151" stroke-width="1.5"/>
+  <text x="680" y="270" class="gs" text-anchor="middle" style="font-size:11.5px">2분</text>
+  <rect x="262" y="245" width="16" height="6" fill="#ffffff"/>
+  <path d="M258,256 l8,-16 M270,256 l8,-16" stroke="#374151" stroke-width="1.5" fill="none"/>
+  <rect x="24" y="74" width="150" height="52" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="36" y="95" class="t2" style="font-size:12px">인증 커밋</text>
+  <text x="36" y="113" class="s" style="font-size:11px"><tspan class="m">authenticated_at</tspan> 남김</text>
+  <line x1="60" y1="128" x2="60" y2="240" stroke="#7b93c9" stroke-width="1.2" marker-end="url(#ak)"/>
+  <rect x="186" y="74" width="214" height="52" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="198" y="95" class="badt" style="font-size:12px">PG 답 없음 · 읽기 시간 제한</text>
+  <text x="198" y="113" class="bads" style="font-size:11px"><tspan class="m">APPROVAL_UNKNOWN</tspan> · 504</text>
+  <path d="M293,127 V150 H170 V240" fill="none" stroke="#e08a8a" stroke-width="1.2" marker-end="url(#arr)"/>
+  <rect x="60" y="196" width="360" height="24" rx="5" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.2"/>
+  <text x="240" y="213" class="os" text-anchor="middle" style="font-size:11px"><tspan class="m">wait-after-request</tspan> — 이 동안은 보정 대상이 아님</text>
+  <rect x="420" y="196" width="260" height="24" rx="5" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.2"/>
+  <text x="550" y="213" class="bs" text-anchor="middle" style="font-size:11px;font-weight:700">이 사이 처음 도는 회차가 조회해 닫음</text>
+  <path d="M420,226 V234 H680 V226" fill="none" stroke="#2563eb" stroke-width="1.2"/>
+  <rect x="420" y="74" width="316" height="92" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="432" y="95" class="t2" style="font-size:12px">주기 보정(<tspan class="m">@Scheduled</tspan> <tspan class="m">fixedDelay</tspan>)</text>
+  <text x="432" y="114" class="s" style="font-size:11px">앞 보정이 끝난 뒤 <tspan class="m">interval</tspan>만큼 쉬고 다시 돎</text>
+  <text x="432" y="132" class="s" style="font-size:11px"><tspan class="m">now − wait-after-request</tspan>보다 먼저 인증한</text>
+  <text x="432" y="150" class="s" style="font-size:11px">결과 모름·인증 결제를 오래된 것부터 100건</text>
+  <line x1="550" y1="168" x2="550" y2="192" stroke="#2563eb" stroke-width="1.2" marker-end="url(#abl)"/>
+  <rect x="420" y="282" width="304" height="26" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.2"/>
+  <text x="572" y="300" class="oks" text-anchor="middle" style="font-size:11.5px;font-weight:700">확정까지 1~2분 — 그동안 고객은 "확인 중"</text>
+  <text x="60" y="300" class="gs" style="font-size:11px">축은 0~5초 구간을 늘려 그림</text>
+  <line x1="16" y1="326" x2="744" y2="326" stroke="#d1d5db" stroke-width="1"/>
+  <rect x="24" y="340" width="352" height="116" rx="10" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="38" y="364" class="badt" style="font-size:12.5px">PG가 조회에 답하지 않으면</text>
+  <text x="38" y="388" class="bads" style="font-size:11px">조회도 승인과 같은 PG 클라이언트 — 읽기 5초</text>
+  <text x="38" y="408" class="bads" style="font-size:11px">한 회차에 100건 × 5초까지 기다릴 수 있음</text>
+  <rect x="388" y="340" width="348" height="116" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="402" y="364" class="gt" style="font-size:12px">측정 — 첫 보정의 조회에만 늦게 답하게 함</text>
+  <text x="402" y="392" class="badt" style="font-size:15px">확정까지 보정 2번 · 16322ms</text>
+  <text x="402" y="414" class="gs" style="font-size:11px">읽기 시간 제한 1초로 잰 값</text>
+  <text x="402" y="431" class="gs" style="font-size:11px">운영의 대기 시간과 주기는 들어 있지 않음</text>
+  <text x="402" y="448" class="gs" style="font-size:10.5px">첫 보정의 조회가 시간 제한에 걸리고 둘째에서 닫힘</text>
+</svg>

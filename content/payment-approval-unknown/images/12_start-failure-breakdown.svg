@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 536" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>4장 출발 코드에서 4장 테스트 320개 중 51개가 실패 — 전이 규칙 테스트 42개(세 구현 각 14개)와 도메인 테스트 1개는 결과 모름으로 가는 전이가 없어서, 나머지 8개는 세 원인으로 실패. 첫째 PG와 어긋난 채 남음: 늦은 승인, 결과 기록 실패, 늦은 거절, 닿지 않은 요청, 다음 보정 재확인의 보정 계약 5개가 AUTHENTICATED로 남음. 둘째 상태만 봐서는 가려낼 수 없음: 남은 상태가 모두 AUTHENTICATED이고, 결제 API의 다시 조회하면 결과 모름 상태다도 AUTHENTICATED. 셋째 다시 온 요청에 409: 확인 중이라고 답한다는 보정 계약과 결제 API가 202 대신 409. 통과한 테스트 가운데 다시 승인을 요청하지 않는다는 409로 PG 앞에서 막혀서, 답이 없으면 상태를 바꾸지 않는다는 보정이 없어서 통과함</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+  </defs>
+
+  <rect width="760" height="536" fill="#ffffff"/>
+  <text x="24" y="30" class="h">4장 출발 코드의 실패 51개 — 전이가 없어서 43개, 원인 세 가지로 8개</text>
+  <text x="24" y="52" class="gs">4장 테스트(보정 계약, 전이 규칙 세 구현, 결제 금액과 승인 요청 확인, 결제 API) 320개 중 51개 실패</text>
+  <rect x="24" y="72" width="586" height="30" rx="6" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.2"/>
+  <rect x="610" y="72" width="14" height="30" fill="#d1d5db" stroke="#9ca3af" stroke-width="1.2"/>
+  <rect x="624" y="72" width="112" height="30" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.2"/>
+  <text x="38" y="92" class="s" style="font-size:11.5px;fill:#374151">전이 규칙 42 — 허용 전이 표·State 패턴·Spring Statemachine 각 14</text>
+  <text x="680.0" y="92" class="badt" text-anchor="middle" style="font-size:12px">나머지 8</text>
+  <text x="617.0" y="118" class="gs" text-anchor="middle" style="font-size:11px">도메인 1</text>
+  <text x="24" y="118" class="gs" style="font-size:11px">결과 모름으로 가는 전이(<tspan class="m">MARK_APPROVAL_UNKNOWN</tspan>)가 아직 없어서 실패</text>
+  <line x1="680.0" y1="104" x2="680.0" y2="140" stroke="#e08a8a" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="24" y1="132" x2="736" y2="132" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="24" y="148" width="232" height="300" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="36" y="172" class="badt" style="font-size:12.5px">첫째 · PG와 어긋난 채 남음</text>
+  <text x="36" y="190" class="gs" style="font-size:11px">보정 계약 5개</text>
+  <rect x="34" y="200" width="212" height="38" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="44" y="216" class="s" style="font-size:11.5px;fill:#1f2937">늦은 승인</text>
+  <text x="44" y="231" class="bads" style="font-size:10.5px">PG <tspan class="m">DONE</tspan> · 결제 <tspan class="m">AUTHENTICATED</tspan></text>
+  <rect x="34" y="242" width="212" height="38" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="44" y="258" class="s" style="font-size:11.5px;fill:#1f2937">승인 뒤 결과 기록 실패</text>
+  <text x="44" y="273" class="bads" style="font-size:10.5px">PG <tspan class="m">DONE</tspan> · 결제 <tspan class="m">AUTHENTICATED</tspan></text>
+  <rect x="34" y="284" width="212" height="38" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="44" y="300" class="s" style="font-size:11.5px;fill:#1f2937">늦은 거절</text>
+  <text x="44" y="315" class="bads" style="font-size:10.5px">승인 실패로 닫히지 않고 <tspan class="m">AUTHENTICATED</tspan></text>
+  <rect x="34" y="326" width="212" height="38" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="44" y="342" class="s" style="font-size:11.5px;fill:#1f2937">요청이 닿지 않음</text>
+  <text x="44" y="357" class="bads" style="font-size:10.5px">승인 실패로 닫히지 않고 <tspan class="m">AUTHENTICATED</tspan></text>
+  <rect x="34" y="368" width="212" height="38" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="44" y="384" class="s" style="font-size:11.5px;fill:#1f2937">다음 보정에서 다시 확인</text>
+  <text x="44" y="399" class="bads" style="font-size:10.5px">PG <tspan class="m">DONE</tspan> · 결제 <tspan class="m">AUTHENTICATED</tspan></text>
+  <text x="36" y="436" class="gs" style="font-size:11px">PG 기록에 맞추는 곳이 서버에 없음</text>
+  <rect x="264" y="148" width="232" height="300" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="276" y="172" class="badt" style="font-size:12.5px">둘째 · 상태로 가려낼 수 없음</text>
+  <text x="276" y="190" class="gs" style="font-size:11px">결제 API 1개</text>
+  <rect x="274" y="200" width="212" height="38" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="284" y="216" class="s" style="font-size:11.5px;fill:#1f2937">다시 조회하면 결과 모름 상태다</text>
+  <text x="284" y="231" class="bads" style="font-size:10.5px"><tspan class="m">AUTHENTICATED</tspan>로 남음</text>
+  <rect x="274" y="256" width="150" height="28" rx="6" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="349" y="274" class="s" text-anchor="middle" style="font-size:10.5px">승인 요청을 보내기 직전</text>
+  <line x1="424" y1="270" x2="440" y2="270" stroke="#9ca3af" stroke-width="1.2"/>
+  <rect x="274" y="290" width="150" height="28" rx="6" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="349" y="308" class="s" text-anchor="middle" style="font-size:10.5px">지금 PG 답을 기다리는 중</text>
+  <line x1="424" y1="304" x2="440" y2="304" stroke="#9ca3af" stroke-width="1.2"/>
+  <rect x="274" y="324" width="150" height="28" rx="6" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="349" y="342" class="s" text-anchor="middle" style="font-size:10.5px">PG 답을 받지 못함(결과 모름)</text>
+  <line x1="424" y1="338" x2="440" y2="338" stroke="#9ca3af" stroke-width="1.2"/>
+  <line x1="440" y1="270" x2="440" y2="338" stroke="#9ca3af" stroke-width="1.2"/>
+  <line x1="440" y1="338" x2="440" y2="359" stroke="#9ca3af" stroke-width="1.2" marker-end="url(#agy)"/>
+  <text x="448" y="300" class="gs" style="font-size:10.5px">모두</text>
+  <text x="448" y="313" class="gs" style="font-size:10.5px">같은</text>
+  <text x="448" y="326" class="gs" style="font-size:10.5px">상태</text>
+  <rect x="274" y="362" width="212" height="30" rx="6" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="380" y="382" class="gt" text-anchor="middle" style="font-size:12px"><tspan class="m">AUTHENTICATED</tspan></text>
+  <text x="276" y="422" class="gs" style="font-size:11px">상태만 봐서는 이 결제들을</text>
+  <text x="276" y="436" class="gs" style="font-size:11px">가려낼 수 없음</text>
+  <rect x="504" y="148" width="232" height="300" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="516" y="172" class="badt" style="font-size:12.5px">셋째 · 다시 온 요청에 409</text>
+  <text x="516" y="190" class="gs" style="font-size:11px">보정 계약 1개 · 결제 API 1개</text>
+  <rect x="514" y="200" width="212" height="38" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="524" y="216" class="s" style="font-size:11.5px;fill:#1f2937">확인 중이라고 답한다(보정 계약)</text>
+  <text x="524" y="231" class="bads" style="font-size:10.5px">인증 전이에서 거부</text>
+  <rect x="514" y="242" width="212" height="38" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="524" y="258" class="s" style="font-size:11.5px;fill:#1f2937">확인 중이라고 답한다(결제 API)</text>
+  <text x="524" y="273" class="bads" style="font-size:10.5px">202 대신 409</text>
+  <rect x="514" y="294" width="212" height="30" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="524" y="314" class="s" style="font-size:11px;fill:#1f2937">첫 요청 · PG 답 없음</text>
+  <text x="716" y="314" class="badt" text-anchor="end" style="font-size:11.5px">504</text>
+  <line x1="620" y1="324" x2="620" y2="333" stroke="#1f2937" stroke-width="1.3" marker-end="url(#ak)"/>
+  <rect x="514" y="334" width="212" height="30" rx="6" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="524" y="354" class="s" style="font-size:11px;fill:#1f2937">같은 결제 키로 다시</text>
+  <text x="716" y="354" class="bt" text-anchor="end" style="font-size:11.5px"><tspan class="m">AUTHENTICATED</tspan></text>
+  <line x1="620" y1="364" x2="620" y2="373" stroke="#1f2937" stroke-width="1.3" marker-end="url(#ak)"/>
+  <rect x="514" y="374" width="212" height="30" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="524" y="394" class="s" style="font-size:11px;fill:#1f2937">인증 전이에서 거부</text>
+  <text x="716" y="394" class="badt" text-anchor="end" style="font-size:11.5px">409</text>
+  <text x="516" y="422" class="gs" style="font-size:11px">504 뒤 다시 보낸 클라이언트는</text>
+  <text x="516" y="436" class="gs" style="font-size:11px">409만 보고는 결과를 모름</text>
+  <rect x="24" y="460" width="712" height="62" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="38" y="480" class="gt" style="font-size:12px">통과했지만 이유가 다른 2개</text>
+  <text x="38" y="498" class="gs" style="font-size:11px">"카드사에 다시 승인을 요청하지 않는다" — 다시 온 요청이 PG를 부르기 전에 인증 전이에서 409로 막혀서</text>
+  <text x="38" y="514" class="gs" style="font-size:11px">"확인 요청에도 답이 없으면 결제 상태를 바꾸지 않는다" — 보정이 없어서 상태가 바뀌지 않았을 뿐</text>
+</svg>
