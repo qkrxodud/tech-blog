@@ -1552,5 +1552,12 @@
     "series": "결제 시스템 챌린지",
     "seriesOrder": 10,
     "date": "2026-11-21"
+  },
+  {
+    "slug": "payment-consumer-idempotency",
+    "category": "spring",
+    "series": "결제 시스템 챌린지",
+    "seriesOrder": 11,
+    "date": "2026-11-22"
   }
 ]

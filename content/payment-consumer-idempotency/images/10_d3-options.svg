@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 640" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결정 3 선택지 비교 — 같은 파티션에 같은 주문의 승인과 취소를 보내고 승인이 일시 오류일 때, 같은 자리에서 간격을 늘려 다시 시도하는 운영(blocking)은 취소가 뒤에서 기다려, 계약(다시 시도 2·4·4·4초, 6초 장애)에서는 장애가 끝난 뒤 다시 시도에서 승인이 반영되고 취소가 이어 받은 순서대로 반영됨. 측정(운영 값 1·2·4·8초로 계속 실패시켜 15초를 다 쓰고 실패 모음으로 감)에서 일시 오류가 뒤 결과를 막은 시간은 첫 실행 15813~15933ms·두 번째 15736~15759ms이고, 영구 오류는 바로 실패 모음으로 58~70ms·42~46ms임. Spring Kafka 기본 처리는 처음 1번에 간격 없이 9번 더(모두 10번, 약 4.6초) 읽은 뒤 ERROR 로그로 넘어가 6초 장애에 승인을 잃고 실패 모음이 없으며, 막는 시간은 일시 4630~4650ms·4572~4599ms, 영구 4612~4618ms·4572~4605ms임. 다시 시도 토픽(non-blocking)은 승인을 다시 시도 토픽으로 넘겨 취소가 먼저 반영되고 늦게 온 승인은 결정 2가 걸러 받은 순서가 APPROVAL_CANCELED, APPROVED로 바뀌며, 막는 시간은 일시 45~48ms·41~50ms, 영구 49~57ms·46~51ms이고 다 쓴 메시지의 원인 머리가 비어 있음. 11장 계약 실패는 운영 0·0, 기본 처리 주문 8·재고 7, 다시 시도 토픽 주문 2·재고 1인 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="640" fill="#ffffff"/>
+  <text x="24" y="28" class="h">결정 3 — 처리에 실패한 메시지를 언제 다시 시도할까</text>
+  <text x="24" y="48" class="gs" style="font-size:11.5px">같은 파티션 · 같은 주문의 승인 → 취소 순서로 보냄 · 승인이 일시 오류(그림의 길이는 순서만 나타냄)</text>
+  <rect x="14" y="64" width="160" height="140" rx="10" fill="#f9fafb" stroke="#16a34a" stroke-width="3"/>
+  <text x="26" y="88" class="t2" style="font-size:12.5px">같은 자리에서 다시 시도</text>
+  <text x="26" y="108" class="oks" style="font-size:10.5px;font-weight:700">blocking · 1·2·4·8초</text><text x="26" y="124" class="oks" style="font-size:10.5px;font-weight:700">이 장에서 고름 · 운영</text>
+  <text x="186" y="80" class="gs" style="font-size:10.5px">파티션</text>
+  <rect x="186" y="86" width="54" height="30" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="213" y="105" class="bads" text-anchor="middle" style="font-size:10.5px;">승인 ✕</text>
+  <rect x="242" y="86" width="196" height="30" rx="6" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/>
+  <text x="340" y="105" class="ys" text-anchor="middle" style="font-size:10.5px;">같은 자리에서 다시 시도 — 간격을 늘림</text>
+  <rect x="442" y="86" width="66" height="30" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <text x="475" y="105" class="oks" text-anchor="middle" style="font-size:10.5px;font-weight:700">승인 반영</text>
+  <rect x="512" y="86" width="66" height="30" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <text x="545" y="105" class="oks" text-anchor="middle" style="font-size:10.5px;font-weight:700">취소 반영</text>
+  <rect x="242" y="122" width="266" height="24" rx="6" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="375" y="138" class="gs" text-anchor="middle" style="font-size:10.5px">취소는 같은 자리 뒤에서 기다림</text>
+  <use href="#vs" x="194" y="160"/>
+  <text x="206" y="164" class="oks" style="font-size:11px">계약(다시 시도 2·4·4·4초, 6초 장애): 장애 뒤 다시 시도에서 승인 반영 → 취소</text>
+  <text x="186" y="182" class="s2" style="font-size:10px;fill:#1f2937">측정(운영 값 1·2·4·8초, 계속 실패시킴 — 15초를 다 쓰고 실패 모음으로): 뒤 결과를</text><text x="186" y="196" class="s2" style="font-size:10px;fill:#1f2937">15813~15933ms(첫 실행) · 15736~15759ms(두 번째) 막음 · 영구 오류는 바로 실패 모음, 58~70ms · 42~46ms</text>
+  <rect x="14" y="218" width="160" height="140" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="26" y="242" class="t2" style="font-size:12.5px">Spring Kafka 기본 처리</text>
+  <text x="26" y="262" class="gs" style="font-size:10.5px">간격 없이 다시 9번 · 로그</text><text x="26" y="278" class="gs" style="font-size:10.5px">결정 3까지의 운영</text>
+  <text x="186" y="234" class="gs" style="font-size:10.5px">파티션</text>
+  <rect x="186" y="240" width="54" height="30" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="213" y="259" class="bads" text-anchor="middle" style="font-size:10.5px;">승인 ✕</text>
+  <rect x="242" y="240" width="11" height="30" rx="2" fill="#fdf3d7" stroke="#d4a845"/>
+  <rect x="255" y="240" width="11" height="30" rx="2" fill="#fdf3d7" stroke="#d4a845"/>
+  <rect x="268" y="240" width="11" height="30" rx="2" fill="#fdf3d7" stroke="#d4a845"/>
+  <rect x="281" y="240" width="11" height="30" rx="2" fill="#fdf3d7" stroke="#d4a845"/>
+  <rect x="294" y="240" width="11" height="30" rx="2" fill="#fdf3d7" stroke="#d4a845"/>
+  <rect x="307" y="240" width="11" height="30" rx="2" fill="#fdf3d7" stroke="#d4a845"/>
+  <rect x="320" y="240" width="11" height="30" rx="2" fill="#fdf3d7" stroke="#d4a845"/>
+  <rect x="333" y="240" width="11" height="30" rx="2" fill="#fdf3d7" stroke="#d4a845"/>
+  <rect x="346" y="240" width="11" height="30" rx="2" fill="#fdf3d7" stroke="#d4a845"/>
+  <rect x="361" y="240" width="90" height="30" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="406" y="259" class="bads" text-anchor="middle" style="font-size:10.5px;font-weight:700">ERROR 로그</text>
+  <rect x="455" y="240" width="66" height="30" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <text x="488" y="259" class="oks" text-anchor="middle" style="font-size:10.5px;font-weight:700">취소 반영</text>
+  <text x="186" y="290" class="ys" style="font-size:10.5px">처음 1번(승인 ✕) + 다시 9번 = 모두 10번, 약 4.6초(약 0.5초씩)</text>
+  <use href="#xs" x="194" y="318"/>
+  <text x="206" y="322" class="bads" style="font-size:11px">6초 장애에 승인을 잃음 · 실패 모음 없음 · 모르는 상태 뒤 결과도 4.6초 기다림</text>
+  <text x="186" y="342" class="s2" style="font-size:10px;fill:#1f2937">막는 시간 일시 4630~4650ms · 4572~4599ms, 영구 4612~4618ms · 4572~4605ms — 일시·영구 모두 같은 처리</text>
+  <rect x="14" y="372" width="160" height="140" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <text x="26" y="396" class="t2" style="font-size:12.5px">다시 시도 토픽</text>
+  <text x="26" y="416" class="gs" style="font-size:10.5px">non-blocking</text><text x="26" y="432" class="gs" style="font-size:10.5px">&lt;토픽&gt;<tspan class="m">-retry-…</tspan></text>
+  <text x="186" y="388" class="gs" style="font-size:10.5px">파티션</text>
+  <rect x="186" y="394" width="54" height="30" rx="6" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="213" y="413" class="bads" text-anchor="middle" style="font-size:10.5px;">승인 ✕</text>
+  <rect x="244" y="394" width="66" height="30" rx="6" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <text x="277" y="413" class="oks" text-anchor="middle" style="font-size:10.5px;font-weight:700">취소 반영</text>
+  <line x1="213" y1="425" x2="213" y2="438" stroke="#c2410c" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#aor)"/>
+  <rect x="186" y="440" width="210" height="30" rx="6" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/>
+  <text x="291" y="459" class="os" text-anchor="middle" style="font-size:10.5px;">다시 시도 토픽으로 넘김 → 뒤에 다시 처리</text>
+  <line x1="398" y1="455" x2="420" y2="455" stroke="#c2410c" stroke-width="1.6" marker-end="url(#aor)"/>
+  <rect x="422" y="440" width="160" height="30" rx="6" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/>
+  <text x="502" y="459" class="ys" text-anchor="middle" style="font-size:10.5px;">늦게 온 승인 — 결정 2가 거름</text>
+  <use href="#xs" x="194" y="488"/>
+  <text x="206" y="492" class="bads" style="font-size:11px">받은 순서 <tspan class="m">[APPROVAL_CANCELED, APPROVED]</tspan> — 순서 계약 실패 · 주문은 취소로 끝남</text>
+  <text x="186" y="510" class="s2" style="font-size:10px;fill:#1f2937">막는 시간 일시 45~48ms · 41~50ms, 영구 49~57ms · 46~51ms · 다 쓴 메시지의 실패 모음 원인 머리가 비어 있음</text>
+  <line x1="14" y1="528" x2="748" y2="528" stroke="#9ca3af" stroke-width="1"/>
+  <text x="24" y="550" class="t2">11장 계약 실패</text>
+  <text x="140" y="550" class="okt" style="font-size:12px">운영 주문 0 · 재고 0</text>
+  <text x="310" y="550" class="badt" style="font-size:12px">기본 처리 주문 8 · 재고 7</text>
+  <text x="510" y="550" class="badt" style="font-size:12px">다시 시도 토픽 주문 2 · 재고 1</text>
+  <text x="24" y="574" class="gs" style="font-size:10.5px">재고의 순서 계약은 다시 시도 토픽에서도 예약 상태 전이로 결과가 같아 통과 · 기본 처리의 재고 “확정 다시 시도 중 해제”는 해제가 재고를 돌려줘 통과</text>
+  <text x="24" y="596" class="gs" style="font-size:10.5px">문서: “By using this strategy you lose Kafka's ordering guarantees for that topic.” (다시 시도 토픽)</text>
+  <text x="24" y="618" class="gs" style="font-size:10.5px">막는 시간: 주문 서비스, 한 결제를 계속 실패시킨 뒤 같은 파티션 결과가 반영되기까지 · 두 값은 첫 실행 · 두 번째 실행(방식마다 3번씩)</text>
+</svg>

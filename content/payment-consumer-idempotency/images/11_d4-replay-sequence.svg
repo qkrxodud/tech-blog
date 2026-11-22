@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 640" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결정 4 다시 넣기 순서 — 운영자가 java -jar order-service.jar에 --spring.config.name=order-service, --order.dead-letter.replay=true, --spring.kafka.listener.auto-startup=false를 주어 같은 서비스를 리스너 없이 다시 넣기 모드로 띄우면 DeadLetterReplayCommand.run이 KafkaDeadLetterReplayer.replayAll을 불러 partitionsFor·assign·endOffsets로 명령을 시작한 때의 실패 모음 끝을 잡고, replayUntil·poll로 읽은 메시지를 replayIfBefore가 원래 토픽 payment-events의 같은 파티션에 같은 키·본문으로 send(…).join()한 뒤 한 건마다 다시 넣기 그룹에 commitSync함. Replayed 1 로그 뒤 종료 코드 0으로 주문 6초·재고 3초에 끝나고, 다시 넣은 메시지는 떠 있는 주문 서비스가 읽어 아직 반영 전이면 반영하고 더 새 취소 뒤면 결정 2가 거름. 다시 돌리면 Replayed 0 뒤 종료 코드 0, 도중에 멈추면 커밋한 자리부터 다시 넣고 두 번 가도 결정 1이 한 번만 반영하며, --spring.config.name이 없으면 DB 계정이 비어 종료 코드 1, 재고 서비스는 웹도 끄는 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="640" fill="#ffffff"/>
+  <text x="24" y="28" class="h" style="font-size:16px">결정 4 — 다시 넣기: 같은 서비스를 다시 넣기 모드로 한 번 띄움</text>
+  <line x1="40" y1="96" x2="40" y2="420" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <line x1="250" y1="96" x2="250" y2="420" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <line x1="430" y1="96" x2="430" y2="372" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <line x1="575" y1="96" x2="575" y2="352" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <line x1="700" y1="96" x2="700" y2="352" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <rect x="4" y="44" width="72" height="52" rx="10" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/><use href="#i-card" transform="translate(11,56) scale(0.5)"/><text x="32" y="66" class="t2">운영자</text>
+  <rect x="150" y="44" width="200" height="52" rx="10" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/><use href="#i-app" transform="translate(157,56) scale(0.7)"/><text x="184" y="66" class="t2">다시 넣기 프로세스</text><text x="184" y="84" class="s2">같은 jar · 리스너 끔</text>
+  <rect x="366" y="44" width="128" height="52" rx="10" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/><use href="#i-kafka" transform="translate(373,56) scale(0.7)"/><text x="400" y="66" class="t2">실패 모음</text><text x="400" y="84" class="s2"><tspan class="m">…events.DLT</tspan></text>
+  <rect x="504" y="44" width="142" height="52" rx="10" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/><use href="#i-kafka" transform="translate(511,56) scale(0.7)"/><text x="538" y="66" class="t2">원래 토픽</text><text x="538" y="84" class="s2"><tspan class="m">payment-events</tspan></text>
+  <rect x="652" y="44" width="96" height="52" rx="10" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/><use href="#i-app" transform="translate(659,56) scale(0.5)"/><text x="678" y="66" class="t2">주문 서비스</text><text x="678" y="84" class="s2">떠 있는 것</text>
+  <rect x="48.0" y="108" width="194.0" height="14" rx="3" fill="#ffffff"/><text x="145" y="117" class="lbl" text-anchor="middle" style="font-size:10px"><tspan class="m">--order.dead-letter.replay=true</tspan></text>
+  <line x1="50" y1="124" x2="240" y2="124" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="40" cy="124" r="10" fill="#111827"/><text x="40" y="128" class="num" text-anchor="middle" style="font-size:11px">1</text>
+  <rect x="87.3" y="131.5" width="115.4" height="14.5" rx="3" fill="#ffffff"/><text x="145" y="141" class="gs" text-anchor="middle" style="font-size:10.5px">다시 넣기 모드로 띄움</text>
+  <rect x="160" y="152" width="180" height="52" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <text x="250" y="168" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10px"><tspan class="m">DeadLetterReplayCommand.run</tspan></text>
+  <text x="250" y="182" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10px">→ <tspan class="m">KafkaDeadLetterReplayer</tspan></text>
+  <text x="250" y="196" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10px"><tspan class="m">.replayAll</tspan></text>
+  <circle cx="160" cy="152" r="10" fill="#111827"/><text x="160" y="156" class="num" text-anchor="middle" style="font-size:11px">2</text>
+  <rect x="267.3" y="209.5" width="145.3" height="14.5" rx="3" fill="#ffffff"/><text x="340" y="219" class="lbl" text-anchor="middle" style="font-size:10.5px"><tspan class="m">partitionsFor</tspan> → <tspan class="m">assign</tspan></text>
+  <line x1="260" y1="226" x2="420" y2="226" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="250" cy="226" r="10" fill="#111827"/><text x="250" y="230" class="num" text-anchor="middle" style="font-size:11px">3</text>
+  <rect x="267.8" y="233.5" width="144.4" height="14.5" rx="3" fill="#ffffff"/><text x="340" y="243" class="gs" text-anchor="middle" style="font-size:10.5px"><tspan class="m">endOffsets</tspan>(시작 때의 끝)</text>
+  <rect x="279.9" y="255.5" width="120.1" height="14.5" rx="3" fill="#ffffff"/><text x="340" y="265" class="lbl" text-anchor="middle" style="font-size:10.5px"><tspan class="m">replayUntil</tspan> → <tspan class="m">poll</tspan></text>
+  <line x1="420" y1="272" x2="260" y2="272" stroke="#1f2937" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ak)"/>
+  <circle cx="430" cy="272" r="10" fill="#111827"/><text x="430" y="276" class="num" text-anchor="middle" style="font-size:11px">4</text>
+  <rect x="291.9" y="287.5" width="96.2" height="14.5" rx="3" fill="#ffffff"/><text x="340" y="297" class="lbl" text-anchor="middle" style="font-size:10.5px"><tspan class="m">replayIfBefore</tspan></text>
+  <line x1="260" y1="304" x2="565" y2="304" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="250" cy="304" r="10" fill="#111827"/><text x="250" y="308" class="num" text-anchor="middle" style="font-size:11px">5</text>
+  <rect x="286.0" y="311.5" width="108.0" height="14.5" rx="3" fill="#ffffff"/><text x="340" y="321" class="lbl" text-anchor="middle" style="font-size:10.5px">→ <tspan class="m">send(…).join()</tspan></text>
+  <rect x="449.3" y="311.5" width="105.4" height="14.5" rx="3" fill="#ffffff"/><text x="502" y="321" class="gs" text-anchor="middle" style="font-size:10.5px">같은 파티션·키·본문</text>
+  <rect x="272.8" y="337.5" width="134.4" height="14.5" rx="3" fill="#ffffff"/><text x="340" y="347" class="lbl" text-anchor="middle" style="font-size:10.5px"><tspan class="m">commitSync</tspan> — 한 건마다</text>
+  <line x1="260" y1="354" x2="420" y2="354" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="250" cy="354" r="10" fill="#111827"/><text x="250" y="358" class="num" text-anchor="middle" style="font-size:11px">6</text>
+  <rect x="263.1" y="362" width="153.8" height="14" rx="3" fill="#ffffff"/><text x="340" y="371" class="gs" text-anchor="middle" style="font-size:10px">다시 넣기 그룹 <tspan class="m">…-dlt-replay</tspan></text>
+  <rect x="65.6" y="379.5" width="158.8" height="14.5" rx="3" fill="#ffffff"/><text x="145" y="389" class="oks" text-anchor="middle" style="font-size:10.5px"><tspan class="m">Replayed 1 …</tspan> · 종료 코드 0</text>
+  <line x1="240" y1="396" x2="50" y2="396" stroke="#16a34a" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#agr)"/>
+  <circle cx="250" cy="396" r="10" fill="#111827"/><text x="250" y="400" class="num" text-anchor="middle" style="font-size:11px">7</text>
+  <rect x="72.6" y="403.5" width="144.8" height="14.5" rx="3" fill="#ffffff"/><text x="145" y="413" class="gs" text-anchor="middle" style="font-size:10.5px">주문 6초 · 재고 3초에 끝남</text>
+  <rect x="579.3" y="319.5" width="115.4" height="14.5" rx="3" fill="#ffffff"/><text x="637" y="329" class="lbl" text-anchor="middle" style="font-size:10.5px">떠 있는 서비스가 읽음</text>
+  <line x1="585" y1="336" x2="690" y2="336" stroke="#1f2937" stroke-width="1.6" marker-end="url(#ak)"/>
+  <circle cx="575" cy="336" r="10" fill="#111827"/><text x="575" y="340" class="num" text-anchor="middle" style="font-size:11px">8</text>
+  <rect x="560" y="362" width="188" height="30" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/><text x="654" y="381" class="s2" text-anchor="middle" style="fill:#15803d;font-size:11px;font-weight:700">아직 반영 전 → 반영</text>
+  <rect x="560" y="398" width="188" height="38" rx="8" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/><text x="654" y="414" class="s2" text-anchor="middle" style="fill:#92400e;font-size:10.5px">더 새 취소 뒤 → 무시</text><text x="654" y="428" class="s2" text-anchor="middle" style="fill:#92400e;font-size:10.5px">결정 2가 거름</text>
+  <line x1="14" y1="450" x2="748" y2="450" stroke="#9ca3af" stroke-width="1"/>
+  <rect x="14" y="462" width="734" height="168" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <use href="#i-doc" transform="translate(26,474) scale(0.8)"/>
+  <text x="58" y="492" class="t2" style="font-size:12px">시험 밖에서 확인 — bootJar를 따로 띄운 MySQL 8.4·Kafka 4.2.0 컨테이너에 붙여 실제 JVM으로 돌림</text>
+  <text x="58" y="516" class="s2" style="font-size:10.5px;fill:#1f2937"><tspan class="m">java -jar order-service.jar --spring.config.name=order-service --order.dead-letter.replay=true</tspan></text><text x="58" y="532" class="s2" style="font-size:10.5px;fill:#1f2937"><tspan class="m">--spring.kafka.listener.auto-startup=false</tspan></text><text x="58" y="548" class="s2" style="font-size:10.5px;fill:#1f2937">실패 모음에 1건씩 두고 돌리면 “Replayed 1 …” 뒤 종료 코드 0 — 끝나게 하는 코드는 따로 필요 없었음</text><text x="58" y="564" class="s2" style="font-size:10.5px;fill:#1f2937">주문 서비스를 한 번 더 돌리면 “Replayed 0 …” 뒤 종료 코드 0 — 다시 넣기 그룹이 넘긴 자리를 기억함</text><text x="58" y="580" class="s2" style="font-size:10.5px;fill:#1f2937">도중에 멈추면 다음 명령이 커밋한 자리부터 · 두 번 가도 받는 쪽 결정 1이 한 번만 반영</text><text x="58" y="596" class="bads" style="font-size:10.5px;fill:#1f2937"><tspan class="m">--spring.config.name</tspan>을 주지 않으면 DB 계정이 비어 뜨지 못함(종료 코드 1) — 명령 예와 주석에 더함</text><text x="58" y="612" class="s2" style="font-size:10.5px;fill:#1f2937">재고 서비스는 <tspan class="m">--spring.main.web-application-type=none</tspan>을 더해 웹도 끔</text>
+  <rect x="150" y="44" width="200" height="52" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0;0.1515;0.1615;0.2115;0.2215;0.5437;0.5537;0.6037;0.6137;1"/></rect>
+  <rect x="160" y="152" width="180" height="52" rx="8" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.1879;0.1979;0.2479;0.2579;1"/></rect>
+  <rect x="366" y="44" width="128" height="52" rx="10" fill="none" stroke="#d97706" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.3415;0.3515;0.4515;0.4615;1"/></rect>
+  <rect x="504" y="44" width="142" height="52" rx="10" fill="none" stroke="#d97706" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.7842;0.7942;0.8442;0.8542;1"/></rect>
+  <rect x="652" y="44" width="96" height="52" rx="10" fill="none" stroke="#2563eb" stroke-width="3.5" opacity="0" class="anim"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.89;0.9;0.95;0.96;1"/></rect>
+  <g class="anim" opacity="0">
+    <use href="#pkt"/>
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      path="M40,124 H250 V178 V226 H430 V272 H250 V304 H575 V336 H700"
+      keyPoints="0;0;0.1705;0.2143;0.3994;0.3994;0.5828;0.8726;1;1;1" keyTimes="0;0.02;0.1615;0.1979;0.3515;0.4015;0.5537;0.7942;0.9;0.9;1"/>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.015;0.02;0.9;0.91;1"/>
+  </g>
+</svg>

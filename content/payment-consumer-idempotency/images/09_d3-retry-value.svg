@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결정 3 다시 시도 값의 근거 — 시험 밖에서 MySQL 8.4 컨테이너를 docker restart 한 뒤 select 1이 성공할 때까지 잰 시간은 5번 2.62~3.04초(docker exec 시간 포함)이고, 운영 다시 시도는 같은 자리에서 1·2·4·8초(누적 1·3·7·15초, 기다림 합 15초)임. 15초는 잰 값의 약 5배이고 5배 여유는 가정이며, 계약에서만 2·4·4·4초(합 14초)를 씀. 한 번 기다리는 가장 긴 8초는 max.poll.interval.ms 기본값 5분보다 짧음. 잰 것은 이 머신의 재시작 시간뿐이고 운영 DB 전환 시간의 기준은 없으며, 비용은 다시 시도를 다 쓸 때까지 같은 파티션의 뒤 메시지가 기다리는 것인 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="520" fill="#ffffff"/>
+  <text x="24" y="28" class="h">결정 3 — 다시 시도 값 1·2·4·8초: 잰 것과 가정</text>
+  <defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#f3f4f6"/><line x1="0" y1="0" x2="0" y2="8" stroke="#9ca3af" stroke-width="2"/></pattern></defs>
+  <line x1="210" y1="66" x2="720" y2="66" stroke="#9ca3af" stroke-width="1.2"/>
+  <line x1="210" y1="62" x2="210" y2="70" stroke="#9ca3af"/>
+  <text x="210" y="58" class="gs" text-anchor="middle" style="font-size:10.5px">0</text>
+  <line x1="244" y1="62" x2="244" y2="70" stroke="#9ca3af"/>
+  <text x="244" y="58" class="gs" text-anchor="middle" style="font-size:10.5px">1</text>
+  <line x1="278" y1="62" x2="278" y2="70" stroke="#9ca3af"/>
+  <line x1="312" y1="62" x2="312" y2="70" stroke="#9ca3af"/>
+  <text x="312" y="58" class="gs" text-anchor="middle" style="font-size:10.5px">3</text>
+  <line x1="346" y1="62" x2="346" y2="70" stroke="#9ca3af"/>
+  <line x1="380" y1="62" x2="380" y2="70" stroke="#9ca3af"/>
+  <text x="380" y="58" class="gs" text-anchor="middle" style="font-size:10.5px">5</text>
+  <line x1="414" y1="62" x2="414" y2="70" stroke="#9ca3af"/>
+  <line x1="448" y1="62" x2="448" y2="70" stroke="#9ca3af"/>
+  <text x="448" y="58" class="gs" text-anchor="middle" style="font-size:10.5px">7</text>
+  <line x1="482" y1="62" x2="482" y2="70" stroke="#9ca3af"/>
+  <line x1="516" y1="62" x2="516" y2="70" stroke="#9ca3af"/>
+  <line x1="550" y1="62" x2="550" y2="70" stroke="#9ca3af"/>
+  <text x="550" y="58" class="gs" text-anchor="middle" style="font-size:10.5px">10</text>
+  <line x1="584" y1="62" x2="584" y2="70" stroke="#9ca3af"/>
+  <line x1="618" y1="62" x2="618" y2="70" stroke="#9ca3af"/>
+  <line x1="652" y1="62" x2="652" y2="70" stroke="#9ca3af"/>
+  <line x1="686" y1="62" x2="686" y2="70" stroke="#9ca3af"/>
+  <line x1="720" y1="62" x2="720" y2="70" stroke="#9ca3af"/>
+  <text x="720" y="58" class="gs" text-anchor="middle" style="font-size:10.5px">15</text>
+  <text x="726" y="70" class="gs" style="font-size:10.5px">초</text>
+  <text x="24" y="100" class="t2" style="font-size:12px">잰 값 — MySQL 8.4 재시작</text>
+  <text x="24" y="116" class="gs" style="font-size:10.5px">시험 밖 · 5번</text>
+  <rect x="299.08" y="90" width="14.279999999999998" height="16" rx="3" fill="#bfdbfe" stroke="#2563eb"/>
+  <circle cx="313.36" cy="98" r="3.2" fill="#1e3a8a"/>
+  <circle cx="301.46" cy="98" r="3.2" fill="#1e3a8a"/>
+  <circle cx="299.08" cy="98" r="3.2" fill="#1e3a8a"/>
+  <circle cx="299.08" cy="98" r="3.2" fill="#1e3a8a"/>
+  <circle cx="299.42" cy="98" r="3.2" fill="#1e3a8a"/>
+  <text x="323.36" y="102" class="bs" style="font-size:10.5px">2.62~3.04초 — <tspan class="m">docker restart</tspan> 뒤 <tspan class="m">select 1</tspan>이 성공할 때까지(<tspan class="m">docker exec</tspan> 시간 포함)</text>
+  <text x="24" y="156" class="t2" style="font-size:12px">운영 다시 시도</text>
+  <text x="24" y="172" class="gs" style="font-size:10.5px">같은 자리 · 4번</text>
+  <rect x="211" y="146" width="32" height="18" rx="3" fill="#e3f3e6" stroke="#6aab78"/>
+  <text x="227" y="159" class="oks" text-anchor="middle" style="font-size:11px;font-weight:700">1초</text>
+  <rect x="245" y="146" width="66" height="18" rx="3" fill="#e3f3e6" stroke="#6aab78"/>
+  <text x="278" y="159" class="oks" text-anchor="middle" style="font-size:11px;font-weight:700">2초</text>
+  <rect x="313" y="146" width="134" height="18" rx="3" fill="#e3f3e6" stroke="#6aab78"/>
+  <text x="380" y="159" class="oks" text-anchor="middle" style="font-size:11px;font-weight:700">4초</text>
+  <rect x="449" y="146" width="270" height="18" rx="3" fill="#e3f3e6" stroke="#6aab78"/>
+  <text x="584" y="159" class="oks" text-anchor="middle" style="font-size:11px;font-weight:700">8초</text>
+  <text x="210" y="182" class="oks" style="font-size:11px">누적 1 → 3 → 7 → 15초에 다시 시도 · 기다림 합 15초</text>
+  <text x="24" y="218" class="t2" style="font-size:12px">여유</text>
+  <text x="24" y="234" class="gs" style="font-size:10.5px">잰 값 → 15초</text>
+  <rect x="313.36" y="208" width="406.64000000000004" height="20" rx="3" fill="url(#hatch)" stroke="#9ca3af"/>
+  <rect x="420.8" y="210" width="190.39999999999998" height="16" rx="3" fill="#ffffff"/>
+  <text x="516" y="222" class="gt" text-anchor="middle" style="font-size:11.5px">15초는 잰 값의 약 5배 — 5배 여유는 가정</text>
+  <text x="24" y="270" class="t2" style="font-size:12px">계약 다시 시도</text>
+  <text x="24" y="286" class="gs" style="font-size:10.5px">계약에서만</text>
+  <rect x="211" y="260" width="66" height="18" rx="3" fill="#ffffff" stroke="#9b88d6"/>
+  <text x="244" y="273" class="s2" text-anchor="middle" style="font-size:11px;fill:#6d28d9">2초</text>
+  <rect x="279" y="260" width="134" height="18" rx="3" fill="#ffffff" stroke="#9b88d6"/>
+  <text x="346" y="273" class="s2" text-anchor="middle" style="font-size:11px;fill:#6d28d9">4초</text>
+  <rect x="415" y="260" width="134" height="18" rx="3" fill="#ffffff" stroke="#9b88d6"/>
+  <text x="482" y="273" class="s2" text-anchor="middle" style="font-size:11px;fill:#6d28d9">4초</text>
+  <rect x="551" y="260" width="134" height="18" rx="3" fill="#ffffff" stroke="#9b88d6"/>
+  <text x="618" y="273" class="s2" text-anchor="middle" style="font-size:11px;fill:#6d28d9">4초</text>
+  <text x="694" y="273" class="s2" style="font-size:10.5px;fill:#6d28d9">합 14초</text>
+  <line x1="14" y1="306" x2="748" y2="306" stroke="#9ca3af" stroke-width="1"/>
+  <use href="#i-clock" transform="translate(22,322) scale(0.8)"/>
+  <text x="56" y="340" class="t2">한 번 기다리는 가장 긴 시간과 소비자가 그룹에서 빠지는 시간</text>
+  <rect x="210" y="362" width="520" height="18" rx="3" fill="#fdf3d7" stroke="#d4a845"/>
+  <text x="722" y="375" class="ys" text-anchor="end" style="font-size:11px"><tspan class="m">max.poll.interval.ms</tspan> 기본값 5분(300초)</text>
+  <rect x="210" y="388" width="13.866666666666667" height="18" rx="2" fill="#16a34a"/>
+  <text x="231.86666666666667" y="401" class="oks" style="font-size:11px">8초 — 같은 비율로 그린 길이</text>
+  <text x="24" y="375" class="s2" style="font-size:11px;fill:#1f2937">5분</text>
+  <text x="24" y="401" class="s2" style="font-size:11px;fill:#1f2937">가장 긴 기다림</text>
+  <rect x="14" y="428" width="734" height="78" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="28" y="452" class="gt" style="font-size:12px">잰 것은 이 머신의 컨테이너 재시작 시간뿐 — 운영 DB 전환 시간의 기준은 따로 없음</text>
+  <text x="28" y="474" class="gs" style="font-size:11.5px">비용: 다시 시도를 다 쓸 때까지 같은 파티션의 뒤 메시지가 기다림(측정의 막는 시간)</text>
+  <text x="28" y="494" class="gs" style="font-size:11px">설정: <tspan class="m">order.retry.initial-interval=1s</tspan> · <tspan class="m">multiplier=2</tspan> · <tspan class="m">max-interval=8s</tspan> · <tspan class="m">max-retries=4</tspan></text>
+</svg>
