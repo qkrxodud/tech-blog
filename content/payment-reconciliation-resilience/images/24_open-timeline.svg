@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결정 4 차단기의 비용 타임라인 — 운영 값으로 잰 장애 15초 측정에서 처음 20건은 읽기 제한 5초를 기다려 결과 모름이 되고(두 실행 같음), 그 뒤 15초까지의 승인은 카드사에 보내지 않고 바로 실패해 승인 실패가 3690건·3623건이었음(두 실행, 승인 요청 전체 3710건·3643건의 응답 중앙 33ms). 차단기가 열리는 약 5초 경계는 잰 값이 아니라 읽기 제한 5초에서 계산한 모양임. 15초 뒤는 측정하지 않은 구간으로, 운영 값대로라면 열린 시간 30초(가정)가 지날 때까지 카드사가 돌아와도 새 승인이 바로 실패하고 그 뒤 반쯤 열림에서 설정 값 3번을 시험 삼아 보내는 모양이며, 열린 동안에도 재고는 잡았다가 돌려주고, 시험은 차단기를 기본으로 끈 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="470" fill="#ffffff"/>
+  <text x="24" y="28" class="h">결정 4의 비용 — 열리기 전과 열린 동안</text>
+  <text x="24" y="48" class="gs" style="font-size:10.5px">장애 15초 측정(고객 20명, 운영 값) · 15초 뒤 새 요청을 멈춤 · 약 5초 경계와 15초 뒤는 운영 값으로 그린 모양(측정값 아님)</text>
+  <line x1="120" y1="330" x2="727.5" y2="330" stroke="#1f2937" stroke-width="1.4"/>
+  <line x1="120" y1="330" x2="120" y2="336" stroke="#1f2937"/>
+  <text x="120" y="350" class="gs" text-anchor="middle" style="font-size:10px">0초</text>
+  <line x1="187.5" y1="330" x2="187.5" y2="336" stroke="#1f2937"/>
+  <text x="187.5" y="350" class="gs" text-anchor="middle" style="font-size:10px">5초</text>
+  <line x1="255" y1="330" x2="255" y2="336" stroke="#1f2937"/>
+  <text x="255" y="350" class="gs" text-anchor="middle" style="font-size:10px">10초</text>
+  <line x1="322.5" y1="330" x2="322.5" y2="336" stroke="#1f2937"/>
+  <text x="322.5" y="350" class="gs" text-anchor="middle" style="font-size:10px">15초</text>
+  <line x1="390" y1="330" x2="390" y2="336" stroke="#1f2937"/>
+  <text x="390" y="350" class="gs" text-anchor="middle" style="font-size:10px">20초</text>
+  <line x1="457.5" y1="330" x2="457.5" y2="336" stroke="#1f2937"/>
+  <text x="457.5" y="350" class="gs" text-anchor="middle" style="font-size:10px">25초</text>
+  <line x1="525" y1="330" x2="525" y2="336" stroke="#1f2937"/>
+  <text x="525" y="350" class="gs" text-anchor="middle" style="font-size:10px">30초</text>
+  <line x1="592.5" y1="330" x2="592.5" y2="336" stroke="#1f2937"/>
+  <text x="592.5" y="350" class="gs" text-anchor="middle" style="font-size:10px">35초</text>
+  <line x1="660" y1="330" x2="660" y2="336" stroke="#1f2937"/>
+  <text x="660" y="350" class="gs" text-anchor="middle" style="font-size:10px">40초</text>
+  <line x1="727.5" y1="330" x2="727.5" y2="336" stroke="#1f2937"/>
+  <text x="727.5" y="350" class="gs" text-anchor="middle" style="font-size:10px">45초</text>
+  <text x="18" y="94" class="t2" style="font-size:12px">카드사</text>
+  <text x="18" y="110" class="gs" style="font-size:9.5px"></text>
+  <rect x="120" y="80" width="202.5" height="30" rx="4" fill="#fde8e8" stroke="#e08a8a"/>
+  <text x="221.25" y="100" class="bads" text-anchor="middle" style="font-size:10.5px;font-weight:700">장애 — 답 없음(LOST)</text>
+  <rect x="322.5" y="80" width="405" height="30" rx="4" fill="#f9fafb" stroke="#9ca3af" stroke-dasharray="5 4"/>
+  <text x="525" y="100" class="gs" text-anchor="middle" style="font-size:10.5px">돌아왔다고 놓은 구간(측정은 15초에서 끝)</text>
+  <text x="18" y="144" class="t2" style="font-size:12px">차단기</text>
+  <text x="18" y="160" class="gs" style="font-size:9.5px">운영 값</text>
+  <rect x="120" y="130" width="67.5" height="30" rx="4" fill="#e3f3e6" stroke="#6aab78" stroke-dasharray="5 4"/>
+  <text x="153.75" y="150" class="oks" text-anchor="middle" style="font-size:10.5px;font-weight:700">닫힘</text>
+  <rect x="187.5" y="130" width="135" height="30" rx="4" fill="#fde8e8" stroke="#e08a8a" stroke-dasharray="5 4"/>
+  <text x="255" y="150" class="bads" text-anchor="middle" style="font-size:10.5px;font-weight:700">열림</text>
+  <rect x="322.5" y="130" width="270" height="30" rx="4" fill="#fff7f7" stroke="#e08a8a" stroke-dasharray="5 4"/>
+  <text x="457.5" y="150" class="bads" text-anchor="middle" style="font-size:10px">열림 — 열린 시간 30초(가정)가 지날 때까지</text>
+  <rect x="592.5" y="130" width="135" height="30" rx="4" fill="#fdf3d7" stroke="#d4a845" stroke-dasharray="5 4"/>
+  <text x="660" y="150" class="ys" text-anchor="middle" style="font-size:10px">반쯤 열림 · 3번</text>
+  <text x="18" y="194" class="t2" style="font-size:12px">승인 요청</text>
+  <text x="18" y="210" class="gs" style="font-size:9.5px">고객 20명</text>
+  <rect x="120" y="180" width="67.5" height="40" rx="4" fill="#fbebdd" stroke="#d99a6c"/>
+  <text x="153.75" y="196" class="os" text-anchor="middle" style="font-size:10px;font-weight:700">처음 20건</text>
+  <text x="153.75" y="212" class="os" text-anchor="middle" style="font-size:9.5px">읽기 5초</text>
+  <rect x="187.5" y="180" width="135" height="40" rx="4" fill="#fde8e8" stroke="#e08a8a"/>
+  <text x="255" y="196" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">바로 실패 3690 / 3623건</text>
+  <text x="255" y="212" class="bads" text-anchor="middle" style="font-size:8.5px">전체 3710 / 3643건 중앙 33ms</text>
+  <rect x="322.5" y="180" width="270" height="40" rx="4" fill="#fff7f7" stroke="#e08a8a" stroke-dasharray="5 4"/>
+  <text x="457.5" y="196" class="bads" text-anchor="middle" style="font-size:10px">새 승인도 카드사에 보내지 않고 바로 실패</text>
+  <text x="457.5" y="212" class="gs" text-anchor="middle" style="font-size:9.5px">카드사가 돌아와도 · 측정하지 않음</text>
+  <line x1="187.5" y1="116" x2="187.5" y2="226" stroke="#6b7280" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <line x1="322.5" y1="70" x2="322.5" y2="330" stroke="#374151" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <text x="326.5" y="240" class="gs" style="font-size:10px">15초: 측정이 새 요청을 멈춤</text>
+  <rect x="189.5" y="113" width="222" height="14" rx="3" fill="#ffffff"/>
+  <text x="193.5" y="124" class="gs" style="font-size:9.5px">약 5초 — 읽기 5초에서 계산, 측정값 아님</text>
+  <text x="18" y="270" class="t2" style="font-size:12px">결과</text>
+  <text x="18" y="286" class="gs" style="font-size:9.5px"></text>
+  <rect x="120" y="256" width="103.5" height="44" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/><text x="171.75" y="275" class="s2" text-anchor="middle" style="fill:#c2410c;font-size:9.5px">결과 모름 20</text><text x="171.75" y="289" class="s2" text-anchor="middle" style="fill:#c2410c;font-size:9.5px">두 실행 같음</text>
+  <rect x="231.5" y="256" width="91" height="44" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/><text x="277" y="275" class="s2" text-anchor="middle" style="fill:#b91c1c;font-size:9.5px">승인 실패</text><text x="277" y="289" class="s2" text-anchor="middle" style="fill:#b91c1c;font-size:9.5px">다시 결제해야 함</text>
+  <text x="330.5" y="284" class="s2" style="font-size:10.5px;fill:#1f2937">열린 동안에도 재고는 잡았다가 돌려줌(승인 요청 전에 예약 — 10장)</text>
+  <line x1="12" y1="368" x2="748" y2="368" stroke="#9ca3af" stroke-width="1"/>
+  <rect x="14" y="380" width="734" height="76" rx="8" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="28" y="400" class="gs" style="font-size:10.5px">열리기 전까지 결과 모름이 될 수 있는 승인 = 많아야 최소 기록(10번) + 그때 이미 보낸 승인 → 측정에서는 처음 20건</text><text x="28" y="420" class="gs" style="font-size:10.5px">열린 시간 30초·창 20번·최소 10번·실패율 50%는 운영 기준 없이 둔 가정(반쯤 열림 3번은 설정 값) · 측정은 장애 15초만 잼</text><text x="28" y="440" class="gs" style="font-size:10.5px">시험은 차단기를 기본으로 끔(<tspan class="m">payment.pg.circuit-breaker.enabled=false</tspan>, build.gradle) — 차단기 계약과 측정만 켬</text>
+</svg>

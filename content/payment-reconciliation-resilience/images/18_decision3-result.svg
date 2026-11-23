@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결정 3 비교 결과 격자 — 상태 이력 계약 9개를 운영(같은 트랜잭션 이력 표), 이력 없음, 결제 결과 기록(outbox)으로 대신함에 돌린 결과로 실패 수는 차례로 0, 8, 7개임. 이력 없음은 남는 것이 없어 롤백된 승인 계약만 통과하고, 결과 기록으로 대신함은 null → APPROVED처럼 결과 상태만 남아 인증·결과 모름 줄이 없고 이전 상태·행위·계기가 null이라 실패하며 롤백된 승인과 바뀐 때 계약만 통과한 격자</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="500" fill="#ffffff"/>
+  <text x="24" y="28" class="h">결정 3 비교 결과 — 상태 이력 계약 9개</text>
+  <text x="24" y="48" class="gs" style="font-size:11px">운영은 docs/ch12/02, 두 비교는 docs/ch12/03(<tspan class="m">knownFailingTest</tspan>, 결정 5 커밋과 같은 코드)</text>
+  <use href="#vs" x="30" y="66"/>
+  <text x="42" y="70" class="oks" style="font-size:11px">통과</text>
+  <use href="#xs" x="84" y="66"/>
+  <text x="96" y="70" class="bads" style="font-size:11px">실패(칸 안은 실패 출력의 값)</text>
+  <text x="374.3333333333333" y="94" class="s2" text-anchor="middle" style="font-size:11px;fill:#1f2937;font-weight:700">같은 트랜잭션 이력 표</text>
+  <text x="374.3333333333333" y="108" class="gs" text-anchor="middle" style="font-size:10px">운영 · 이 장에서 고름</text>
+  <text x="523" y="94" class="s2" text-anchor="middle" style="font-size:11px;fill:#1f2937;font-weight:700">이력 없음</text>
+  <text x="523" y="108" class="gs" text-anchor="middle" style="font-size:10px"><tspan class="m">NoStatusHistory</tspan></text>
+  <text x="671.6666666666666" y="94" class="s2" text-anchor="middle" style="font-size:11px;fill:#1f2937;font-weight:700">결제 결과 기록으로 대신함</text>
+  <text x="671.6666666666666" y="108" class="gs" text-anchor="middle" style="font-size:10px">outbox 결과 줄을 이력으로 읽음</text>
+  <rect x="301" y="80" width="146.66666666666666" height="306" rx="6" fill="none" stroke="#16a34a" stroke-width="2"/>
+  <text x="18" y="137" class="s2" style="font-size:10.5px;fill:#1f2937">인증·승인이 차례로 한 줄씩</text>
+  <rect x="302.0" y="120" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="374.3" y="133"/>
+  <rect x="450.7" y="120" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="460.7" y="133"/>
+  <text x="531.0" y="137" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">빈 목록</text>
+  <rect x="599.3" y="120" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="609.3" y="133"/>
+  <text x="679.7" y="137" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">null → APPROVED</text>
+  <text x="18" y="167" class="s2" style="font-size:10.5px;fill:#1f2937">승인 요청이 바꿨다고(계기)</text>
+  <rect x="302.0" y="150" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="374.3" y="163"/>
+  <rect x="450.7" y="150" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="460.7" y="163"/>
+  <text x="531.0" y="167" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">빈 목록</text>
+  <rect x="599.3" y="150" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="609.3" y="163"/>
+  <text x="679.7" y="167" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">계기 null</text>
+  <text x="18" y="197" class="s2" style="font-size:10.5px;fill:#1f2937">결과 모름을 거친 이력</text>
+  <rect x="302.0" y="180" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="374.3" y="193"/>
+  <rect x="450.7" y="180" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="460.7" y="193"/>
+  <text x="531.0" y="197" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">빈 목록</text>
+  <rect x="599.3" y="180" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="609.3" y="193"/>
+  <text x="679.7" y="197" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">APPROVED만</text>
+  <text x="18" y="227" class="s2" style="font-size:10.5px;fill:#1f2937">보정이 바꿨다고(계기)</text>
+  <rect x="302.0" y="210" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="374.3" y="223"/>
+  <rect x="450.7" y="210" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="460.7" y="223"/>
+  <text x="531.0" y="227" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">빈 목록</text>
+  <rect x="599.3" y="210" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="609.3" y="223"/>
+  <text x="679.7" y="227" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">계기 null</text>
+  <text x="18" y="257" class="s2" style="font-size:10.5px;fill:#1f2937">알림이 바꿨다고(계기)</text>
+  <rect x="302.0" y="240" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="374.3" y="253"/>
+  <rect x="450.7" y="240" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="460.7" y="253"/>
+  <text x="531.0" y="257" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">빈 목록</text>
+  <rect x="599.3" y="240" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="609.3" y="253"/>
+  <text x="679.7" y="257" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">이전·행위 null</text>
+  <text x="18" y="287" class="s2" style="font-size:10.5px;fill:#1f2937">고객 전액 취소 한 줄 더</text>
+  <rect x="302.0" y="270" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="374.3" y="283"/>
+  <rect x="450.7" y="270" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="460.7" y="283"/>
+  <text x="531.0" y="287" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">빈 목록</text>
+  <rect x="599.3" y="270" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="609.3" y="283"/>
+  <text x="679.7" y="287" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">이전·행위 null</text>
+  <text x="18" y="317" class="s2" style="font-size:10.5px;fill:#1f2937">부분 취소는 남기지 않음</text>
+  <rect x="302.0" y="300" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="374.3" y="313"/>
+  <rect x="450.7" y="300" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="460.7" y="313"/>
+  <text x="531.0" y="317" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">0줄</text>
+  <rect x="599.3" y="300" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="609.3" y="313"/>
+  <text x="679.7" y="317" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">1줄</text>
+  <text x="18" y="347" class="s2" style="font-size:10.5px;fill:#1f2937">롤백된 승인은 남지 않음</text>
+  <rect x="302.0" y="330" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="374.3" y="343"/>
+  <rect x="450.7" y="330" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="523.0" y="343"/>
+  <rect x="599.3" y="330" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="671.7" y="343"/>
+  <text x="18" y="377" class="s2" style="font-size:10.5px;fill:#1f2937">바뀐 때 = 요청을 처리하던 때</text>
+  <rect x="302.0" y="360" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="374.3" y="373"/>
+  <rect x="450.7" y="360" width="144.7" height="26" rx="4" fill="#fde8e8"/>
+  <use href="#xs" x="460.7" y="373"/>
+  <text x="531.0" y="377" class="bads" text-anchor="middle" style="font-size:9.5px;font-weight:700">빈 목록</text>
+  <rect x="599.3" y="360" width="144.7" height="26" rx="4" fill="#e3f3e6"/>
+  <use href="#vs" x="671.7" y="373"/>
+  <line x1="14" y1="392" x2="748" y2="392" stroke="#9ca3af" stroke-width="1"/>
+  <text x="18" y="412" class="s2" style="font-size:11px;font-weight:700;fill:#1f2937">실패 수(9개 중)</text>
+  <text x="374.3333333333333" y="412" class="okt" text-anchor="middle">0</text>
+  <text x="523" y="412" class="badt" text-anchor="middle">8</text>
+  <text x="671.6666666666666" y="412" class="badt" text-anchor="middle">7</text>
+  <text x="18" y="436" class="gs" style="font-size:10.5px">이력 없음은 남는 것이 없어 “롤백된 승인” 하나만 통과 · 출발 구조(docs/ch12/01)도 같은 8개 실패</text>
+  <text x="18" y="453" class="gs" style="font-size:10.5px">결과 기록으로 대신함은 결과 기록도 상태를 바꾼 트랜잭션에서 남기고 승인 결과를 남긴 때가 요청 안이라 두 계약 통과</text>
+  <text x="18" y="470" class="gs" style="font-size:10.5px">결과 기록은 결과 상태만 실어 인증·결과 모름 줄이 없고, 이전 상태·행위·계기가 null</text>
+</svg>

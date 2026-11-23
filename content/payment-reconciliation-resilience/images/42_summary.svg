@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>12장 다섯 결정과 비교 구현의 실패 수 요약 — 1 하루치 대사는 그날 거래 내역을 5000건씩 읽어 결제 키로 맞추고 어긋남을 (날짜, 결제 키, 종류)마다 한 줄씩 남기며 결제마다 단건 조회는 계약 13개 중 4개 실패(대사 측정 1만 건에서 단건 조회 35263~36130ms, 운영 995~1033ms), 2 어긋남 처리는 뒤처진 결제만 카드사에 다시 조회해 6장 따라가기로 맞추고 나머지는 운영자 확인으로 남겨 기록만 3개·모두 맞춤 7개 실패, 3 상태 이력은 상태를 바꾼 트랜잭션에서 이전·다음 상태·행위·계기·바뀐 때를 남겨 이력 없음 8개·outbox로 대신 7개 실패, 4 승인 차단기는 기준을 넘으면 승인을 요청하지 않고 바로 실패해 15초 장애 측정에서 결과 모름이 시간 제한만 60·다시 시도 20·차단기 20이고 계약 6개에서 시간 제한만·다시 시도가 4개씩 실패, 5 지표 6개와 보낸 outbox 7일·받은 기록·처리한 명령 14일 정리로 지표 없음 6개·지우지 않음 3개 실패한 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="400" fill="#ffffff"/>
+  <text x="24" y="28" class="h">12장 요약 — 다섯 결정과 비교 구현의 실패 수</text>
+  <text x="24" y="48" class="gs" style="font-size:11px">출발 코드에서 12장 계약 41개 중 30개 실패 → 완성 코드 825개 모두 통과</text>
+  <rect x="14" y="62" width="142" height="196" rx="10" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <circle cx="16" cy="64" r="11" fill="#111827"/><text x="16" y="68" class="num" text-anchor="middle" style="font-size:11px">1</text>
+  <use href="#i-search" transform="translate(32,76) scale(0.6)"/>
+  <text x="58" y="92" class="t2" style="font-size:12px">하루치 대사</text>
+  <text x="26" y="118" class="s2" style="font-size:10.5px;fill:#1f2937">그날 거래 내역을</text><text x="26" y="135" class="s2" style="font-size:10.5px;fill:#1f2937">5000건씩 읽어</text><text x="26" y="152" class="s2" style="font-size:10.5px;fill:#1f2937">결제 키로 맞춤</text><text x="26" y="169" class="s2" style="font-size:10.5px;fill:#1f2937">어긋남 다섯 종류를</text><text x="26" y="186" class="s2" style="font-size:10.5px;fill:#1f2937">(날짜, 결제 키, 종류)</text><text x="26" y="203" class="s2" style="font-size:10.5px;fill:#1f2937">한 줄씩 남김</text>
+  <rect x="14" y="266" width="142" height="30" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="85" y="279" class="gs" text-anchor="middle" style="font-size:9.5px">대사 측정 1만 건</text><text x="85" y="291" class="gs" text-anchor="middle" style="font-size:9.5px">운영 995~1033ms</text>
+  <rect x="14" y="306" width="142" height="34" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xs" x="28" y="323"/>
+  <text x="40" y="320" class="bads" style="font-size:10px">결제마다 단건 조회</text>
+  <text x="40" y="334" class="badt" style="font-size:11px">계약 13개 중 4 실패</text>
+  <rect x="162" y="62" width="142" height="196" rx="10" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <circle cx="164" cy="64" r="11" fill="#111827"/><text x="164" y="68" class="num" text-anchor="middle" style="font-size:11px">2</text>
+  <use href="#i-chips" transform="translate(180,76) scale(0.6)"/>
+  <text x="206" y="92" class="t2" style="font-size:12px">어긋남 처리</text>
+  <text x="174" y="118" class="s2" style="font-size:10.5px;fill:#1f2937">뒤처진 결제만</text><text x="174" y="135" class="s2" style="font-size:10.5px;fill:#1f2937">카드사에 다시 조회해</text><text x="174" y="152" class="s2" style="font-size:10.5px;fill:#1f2937">6장 따라가기로 맞춤</text><text x="174" y="169" class="s2" style="font-size:10.5px;fill:#1f2937">나머지는</text><text x="174" y="186" class="s2" style="font-size:10.5px;fill:#1f2937">운영자 확인으로 남김</text>
+  <rect x="162" y="266" width="142" height="30" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="233" y="285" class="gs" text-anchor="middle" style="font-size:9.5px">확인한 줄을 닫는 길 없음</text>
+  <rect x="162" y="306" width="142" height="34" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xs" x="176" y="323"/>
+  <text x="188" y="320" class="bads" style="font-size:10px">기록만</text>
+  <text x="188" y="334" class="badt" style="font-size:11px">계약 13개 중 3 실패</text>
+  <rect x="162" y="346" width="142" height="34" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xs" x="176" y="363"/>
+  <text x="188" y="360" class="bads" style="font-size:10px">모두 맞춤</text>
+  <text x="188" y="374" class="badt" style="font-size:11px">계약 13개 중 7 실패</text>
+  <rect x="310" y="62" width="142" height="196" rx="10" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <circle cx="312" cy="64" r="11" fill="#111827"/><text x="312" y="68" class="num" text-anchor="middle" style="font-size:11px">3</text>
+  <use href="#i-table" transform="translate(328,76) scale(0.6)"/>
+  <text x="354" y="92" class="t2" style="font-size:12px">상태 이력</text>
+  <text x="322" y="118" class="s2" style="font-size:10.5px;fill:#1f2937">상태를 바꾼</text><text x="322" y="135" class="s2" style="font-size:10.5px;fill:#1f2937">트랜잭션에서</text><text x="322" y="152" class="s2" style="font-size:10.5px;fill:#1f2937">이전·다음 상태, 행위,</text><text x="322" y="169" class="s2" style="font-size:10.5px;fill:#1f2937">계기, 바뀐 때를</text><text x="322" y="186" class="s2" style="font-size:10.5px;fill:#1f2937">한 줄씩 남김</text>
+  <rect x="310" y="266" width="142" height="30" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="381" y="285" class="gs" text-anchor="middle" style="font-size:9.5px">이력을 지우는 코드 없음</text>
+  <rect x="310" y="306" width="142" height="34" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xs" x="324" y="323"/>
+  <text x="336" y="320" class="bads" style="font-size:10px">이력 없음</text>
+  <text x="336" y="334" class="badt" style="font-size:11px">계약 9개 중 8 실패</text>
+  <rect x="310" y="346" width="142" height="34" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xs" x="324" y="363"/>
+  <text x="336" y="360" class="bads" style="font-size:10px">outbox로 대신</text>
+  <text x="336" y="374" class="badt" style="font-size:11px">계약 9개 중 7 실패</text>
+  <rect x="458" y="62" width="142" height="196" rx="10" fill="#ece8fb" stroke="#9b88d6" stroke-width="1.5"/>
+  <circle cx="460" cy="64" r="11" fill="#111827"/><text x="460" y="68" class="num" text-anchor="middle" style="font-size:11px">4</text>
+  <use href="#i-lock" transform="translate(476,76) scale(0.6)"/>
+  <text x="502" y="92" class="t2" style="font-size:12px">승인 차단기</text>
+  <text x="470" y="118" class="s2" style="font-size:10.5px;fill:#1f2937">답 없음·카드사 오류가</text><text x="470" y="135" class="s2" style="font-size:10.5px;fill:#1f2937">기준을 넘으면</text><text x="470" y="152" class="s2" style="font-size:10.5px;fill:#1f2937">승인을 요청하지 않고</text><text x="470" y="169" class="s2" style="font-size:10.5px;fill:#1f2937">바로 실패(503)</text><text x="470" y="186" class="s2" style="font-size:10.5px;fill:#1f2937">15초 장애 측정 — 결과 모름</text><text x="470" y="203" class="s2" style="font-size:10.5px;fill:#1f2937">시간 제한만 60</text><text x="470" y="220" class="s2" style="font-size:10.5px;fill:#1f2937">다시 시도 20 · 차단기 20</text>
+  <rect x="458" y="266" width="142" height="30" rx="6" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="529" y="285" class="gs" text-anchor="middle" style="font-size:9.5px">기준값은 가정</text>
+  <rect x="458" y="306" width="142" height="34" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xs" x="472" y="323"/>
+  <text x="484" y="320" class="bads" style="font-size:10px">시간 제한만</text>
+  <text x="484" y="334" class="badt" style="font-size:11px">계약 6개 중 4 실패</text>
+  <rect x="458" y="346" width="142" height="34" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xs" x="472" y="363"/>
+  <text x="484" y="360" class="bads" style="font-size:10px">다시 시도</text>
+  <text x="484" y="374" class="badt" style="font-size:11px">계약 6개 중 4 실패</text>
+  <rect x="606" y="62" width="142" height="196" rx="10" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/>
+  <circle cx="608" cy="64" r="11" fill="#111827"/><text x="608" y="68" class="num" text-anchor="middle" style="font-size:11px">5</text>
+  <use href="#i-chart" transform="translate(624,76) scale(0.6)"/>
+  <text x="650" y="92" class="t2" style="font-size:12px">지표와 정리</text>
+  <text x="618" y="118" class="s2" style="font-size:10.5px;fill:#1f2937">게이지 6개</text><text x="618" y="135" class="s2" style="font-size:10.5px;fill:#1f2937">보낸 outbox 7일</text><text x="618" y="152" class="s2" style="font-size:10.5px;fill:#1f2937">받은 기록·처리한 명령</text><text x="618" y="169" class="s2" style="font-size:10.5px;fill:#1f2937">14일 뒤 지움</text><text x="618" y="186" class="s2" style="font-size:10.5px;fill:#1f2937">보내지 않은 줄은</text><text x="618" y="203" class="s2" style="font-size:10.5px;fill:#1f2937">지우지 않음</text>
+  <rect x="606" y="266" width="142" height="30" rx="6" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="677" y="285" class="gs" text-anchor="middle" style="font-size:9.5px">7일·14일은 가정</text>
+  <rect x="606" y="306" width="142" height="34" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xs" x="620" y="323"/>
+  <text x="632" y="320" class="bads" style="font-size:10px">지표 없음</text>
+  <text x="632" y="334" class="badt" style="font-size:11px">계약 13개 중 6 실패</text>
+  <rect x="606" y="346" width="142" height="34" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <use href="#xs" x="620" y="363"/>
+  <text x="632" y="360" class="bads" style="font-size:10px">지우지 않음</text>
+  <text x="632" y="374" class="badt" style="font-size:11px">계약 13개 중 3 실패</text>
+  <text x="85" y="364" class="gs" text-anchor="middle" style="font-size:9.5px">대사 측정 · 단건 조회 1만 건</text>
+  <text x="85" y="378" class="gs" text-anchor="middle" style="font-size:9.5px">35263~36130ms</text>
+</svg>

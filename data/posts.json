@@ -1559,5 +1559,12 @@
     "series": "결제 시스템 챌린지",
     "seriesOrder": 11,
     "date": "2026-11-22"
+  },
+  {
+    "slug": "payment-reconciliation-resilience",
+    "category": "spring",
+    "series": "결제 시스템 챌린지",
+    "seriesOrder": 12,
+    "date": "2026-11-23"
   }
 ]

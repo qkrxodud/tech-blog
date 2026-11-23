@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 578" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>카드사 장애 측정의 응답 시간과 결과를 두 실행으로 그린 비교 — 장애 15초 동안 고객 20명이 쉬지 않고 승인을 요청했을 때(로그 눈금) 시간 제한만은 중앙 5036~5040ms, p95 5055~5103ms, 최대 5064~5116ms로 모두 읽기 시간 제한 5초를 기다렸고, 다시 시도는 중앙 15070~15097ms, p95 15083~15104ms, 최대 15083~15105ms, 차단기는 처음 20건을 포함한 승인 요청 전체(3710·3643건)의 중앙 33ms, p95 64~68ms, 최대 5152~5251ms이고 최대는 읽기 5초를 기다린 처음 20건임. 시간 제한만은 승인 요청 60·결과 모름 60·카드사가 받은 승인 요청 60, 다시 시도는 20·20·60(같은 결제에 세 번), 차단기는 승인 요청 3710 / 3643과 승인 실패 3690 / 3623이 두 실행에서 달랐고 결과 모름 20·카드사가 받은 승인 요청 20은 같은 그림</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="578" fill="#ffffff"/>
+  <text x="24" y="28" class="h">카드사 장애 측정 — 응답 시간과 결과(두 실행)</text>
+  <text x="24" y="48" class="gs" style="font-size:10.5px">장애 15초 · 고객 20명이 쉬지 않고 승인 요청 · 카드사는 받고 30초 동안 답하지 않다가 아무것도 남기지 않음(LOST) · PG 시간 제한·차단기는 운영 값</text>
+  <line x1="96" y1="330" x2="740" y2="330" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="88" y="334" class="gs" text-anchor="end" style="font-size:10.5px">10ms</text>
+  <line x1="96" y1="259.8" x2="740" y2="259.8" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="88" y="263.8" class="gs" text-anchor="end" style="font-size:10.5px">100ms</text>
+  <line x1="96" y1="189.7" x2="740" y2="189.7" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="88" y="193.7" class="gs" text-anchor="end" style="font-size:10.5px">1초</text>
+  <line x1="96" y1="119.5" x2="740" y2="119.5" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="88" y="123.5" class="gs" text-anchor="end" style="font-size:10.5px">10초</text>
+  <line x1="96" y1="140.6" x2="740" y2="140.6" stroke="#d97706" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="620" y="155.6" class="ys" text-anchor="end" style="font-size:10px">읽기 시간 제한 5초</text>
+  <line x1="96" y1="86" x2="96" y2="330" stroke="#9ca3af" stroke-width="1"/>
+  <text x="24" y="80" class="gs" style="font-size:10px">로그 눈금</text>
+  <line x1="136" y1="140.4" x2="136" y2="140.4" stroke="#c2410c" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+  <circle cx="131" cy="140.4" r="4.5" fill="#c2410c"/>
+  <circle cx="141" cy="140.4" r="4.5" fill="#ffffff" stroke="#c2410c" stroke-width="2"/>
+  <text x="136" y="130.4" class="s2" text-anchor="middle" style="font-size:9.5px;fill:#c2410c;font-weight:700">5036~5040</text>
+  <text x="136" y="346" class="gs" text-anchor="middle" style="font-size:10px">중앙</text>
+  <line x1="203.33333333333331" y1="140" x2="203.33333333333331" y2="140.3" stroke="#c2410c" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+  <circle cx="198.33333333333331" cy="140" r="4.5" fill="#c2410c"/>
+  <circle cx="208.33333333333331" cy="140.3" r="4.5" fill="#ffffff" stroke="#c2410c" stroke-width="2"/>
+  <text x="203.33333333333331" y="130" class="s2" text-anchor="middle" style="font-size:9.5px;fill:#c2410c;font-weight:700">5055~5103</text>
+  <text x="203.33333333333331" y="346" class="gs" text-anchor="middle" style="font-size:10px">p95</text>
+  <line x1="270.66666666666663" y1="139.9" x2="270.66666666666663" y2="140.2" stroke="#c2410c" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+  <circle cx="265.66666666666663" cy="139.9" r="4.5" fill="#c2410c"/>
+  <circle cx="275.66666666666663" cy="140.2" r="4.5" fill="#ffffff" stroke="#c2410c" stroke-width="2"/>
+  <text x="270.66666666666663" y="129.9" class="s2" text-anchor="middle" style="font-size:9.5px;fill:#c2410c;font-weight:700">5064~5116</text>
+  <text x="270.66666666666663" y="346" class="gs" text-anchor="middle" style="font-size:10px">최대</text>
+  <text x="203.33333333333331" y="362" class="t2" text-anchor="middle" style="font-size:12px;fill:#c2410c">시간 제한만</text>
+  <line x1="310.66666666666663" y1="86" x2="310.66666666666663" y2="364" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="350.66666666666663" y1="106.9" x2="350.66666666666663" y2="107" stroke="#7c3aed" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+  <circle cx="345.66666666666663" cy="107" r="4.5" fill="#7c3aed"/>
+  <circle cx="355.66666666666663" cy="106.9" r="4.5" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="350.66666666666663" y="96.9" class="s2" text-anchor="middle" style="font-size:9.5px;fill:#7c3aed;font-weight:700">15070~15097</text>
+  <text x="350.66666666666663" y="346" class="gs" text-anchor="middle" style="font-size:10px">중앙</text>
+  <line x1="417.99999999999994" y1="106.9" x2="417.99999999999994" y2="107" stroke="#7c3aed" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+  <circle cx="412.99999999999994" cy="107" r="4.5" fill="#7c3aed"/>
+  <circle cx="422.99999999999994" cy="106.9" r="4.5" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="417.99999999999994" y="96.9" class="s2" text-anchor="middle" style="font-size:9.5px;fill:#7c3aed;font-weight:700">15083~15104</text>
+  <text x="417.99999999999994" y="346" class="gs" text-anchor="middle" style="font-size:10px">p95</text>
+  <line x1="485.33333333333326" y1="106.9" x2="485.33333333333326" y2="107" stroke="#7c3aed" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+  <circle cx="480.33333333333326" cy="107" r="4.5" fill="#7c3aed"/>
+  <circle cx="490.33333333333326" cy="106.9" r="4.5" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="485.33333333333326" y="96.9" class="s2" text-anchor="middle" style="font-size:9.5px;fill:#7c3aed;font-weight:700">15083~15105</text>
+  <text x="485.33333333333326" y="346" class="gs" text-anchor="middle" style="font-size:10px">최대</text>
+  <text x="417.99999999999994" y="362" class="t2" text-anchor="middle" style="font-size:12px;fill:#7c3aed">다시 시도</text>
+  <line x1="525.3333333333333" y1="86" x2="525.3333333333333" y2="364" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="565.3333333333333" y1="293.6" x2="565.3333333333333" y2="293.6" stroke="#16a34a" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+  <circle cx="560.3333333333333" cy="293.6" r="4.5" fill="#16a34a"/>
+  <circle cx="570.3333333333333" cy="293.6" r="4.5" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="565.3333333333333" y="283.6" class="s2" text-anchor="middle" style="font-size:9.5px;fill:#16a34a;font-weight:700">33(전체)</text>
+  <text x="565.3333333333333" y="346" class="gs" text-anchor="middle" style="font-size:10px">중앙</text>
+  <line x1="632.6666666666666" y1="271.6" x2="632.6666666666666" y2="273.4" stroke="#16a34a" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+  <circle cx="627.6666666666666" cy="273.4" r="4.5" fill="#16a34a"/>
+  <circle cx="637.6666666666666" cy="271.6" r="4.5" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="632.6666666666666" y="261.6" class="s2" text-anchor="middle" style="font-size:9.5px;fill:#16a34a;font-weight:700">64~68</text>
+  <text x="632.6666666666666" y="346" class="gs" text-anchor="middle" style="font-size:10px">p95</text>
+  <line x1="699.9999999999999" y1="139.1" x2="699.9999999999999" y2="139.7" stroke="#16a34a" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+  <circle cx="694.9999999999999" cy="139.7" r="4.5" fill="#16a34a"/>
+  <circle cx="704.9999999999999" cy="139.1" r="4.5" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="699.9999999999999" y="129.1" class="s2" text-anchor="middle" style="font-size:9.5px;fill:#16a34a;font-weight:700">5152~5251</text>
+  <text x="699.9999999999999" y="346" class="gs" text-anchor="middle" style="font-size:10px">최대</text>
+  <text x="632.6666666666666" y="362" class="t2" text-anchor="middle" style="font-size:12px;fill:#16a34a">차단기(운영)</text>
+  <circle cx="560" cy="76" r="4.5" fill="#4b5563"/>
+  <text x="569" y="80" class="gs" style="font-size:10px">첫 실행</text>
+  <circle cx="630" cy="76" r="4.5" fill="#fff" stroke="#4b5563" stroke-width="2"/>
+  <text x="639" y="80" class="gs" style="font-size:10px">두 번째 실행 (ms)</text>
+  <line x1="14" y1="378" x2="748" y2="378" stroke="#9ca3af" stroke-width="1"/>
+  <text x="100" y="0" class="s2"></text>
+  <text x="100" y="0" class="s2"></text>
+  <text x="100" y="0" class="s2"></text>
+  <text x="100" y="0" class="s2"></text>
+  <rect x="104" y="396" width="198.66666666666666" height="136" rx="10" fill="#ffffff" stroke="#c2410c" stroke-width="1.5"/>
+  <text x="203.33333333333331" y="416" class="t2" text-anchor="middle" style="font-size:12px;fill:#c2410c">시간 제한만</text>
+  <text x="114" y="444" class="gs" style="font-size:10px">승인 요청</text>
+  <text x="292.66666666666663" y="444" class="bt" text-anchor="end" style="font-size:11.5px">60</text>
+  <text x="114" y="469" class="gs" style="font-size:10px">결과 모름</text>
+  <text x="292.66666666666663" y="469" class="bt" text-anchor="end" style="font-size:11.5px">60</text>
+  <text x="114" y="494" class="gs" style="font-size:10px">카드사가 받은 승인 요청</text>
+  <text x="292.66666666666663" y="494" class="bt" text-anchor="end" style="font-size:11.5px">60</text>
+  <text x="114" y="519" class="gs" style="font-size:10px">승인 실패</text>
+  <text x="292.66666666666663" y="519" class="bt" text-anchor="end" style="font-size:11.5px">0</text>
+  <rect x="318.66666666666663" y="396" width="198.66666666666666" height="136" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="417.99999999999994" y="416" class="t2" text-anchor="middle" style="font-size:12px;fill:#7c3aed">다시 시도</text>
+  <text x="328.66666666666663" y="444" class="gs" style="font-size:10px">승인 요청</text>
+  <text x="507.33333333333326" y="444" class="bt" text-anchor="end" style="font-size:11.5px">20</text>
+  <text x="328.66666666666663" y="469" class="gs" style="font-size:10px">결과 모름</text>
+  <text x="507.33333333333326" y="469" class="bt" text-anchor="end" style="font-size:11.5px">20</text>
+  <text x="328.66666666666663" y="494" class="gs" style="font-size:10px">카드사가 받은 승인 요청</text>
+  <text x="507.33333333333326" y="494" class="bt" text-anchor="end" style="font-size:11.5px">60</text>
+  <text x="328.66666666666663" y="519" class="gs" style="font-size:10px">승인 실패</text>
+  <text x="507.33333333333326" y="519" class="bt" text-anchor="end" style="font-size:11.5px">0</text>
+  <rect x="533.3333333333333" y="396" width="198.66666666666666" height="136" rx="10" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="632.6666666666666" y="416" class="t2" text-anchor="middle" style="font-size:12px;fill:#16a34a">차단기(운영)</text>
+  <text x="543.3333333333333" y="444" class="gs" style="font-size:10px">승인 요청</text>
+  <text x="721.9999999999999" y="444" class="ot" text-anchor="end" style="font-size:11.5px">3710 / 3643</text>
+  <text x="543.3333333333333" y="469" class="gs" style="font-size:10px">결과 모름</text>
+  <text x="721.9999999999999" y="469" class="bt" text-anchor="end" style="font-size:11.5px">20</text>
+  <text x="543.3333333333333" y="494" class="gs" style="font-size:10px">카드사가 받은 승인 요청</text>
+  <text x="721.9999999999999" y="494" class="bt" text-anchor="end" style="font-size:11.5px">20</text>
+  <text x="543.3333333333333" y="519" class="gs" style="font-size:10px">승인 실패</text>
+  <text x="721.9999999999999" y="519" class="ot" text-anchor="end" style="font-size:11.5px">3690 / 3623</text>
+  <text x="22" y="416" class="gs" style="font-size:10px">두 실행</text>
+  <text x="22" y="430" class="gs" style="font-size:10px">결과</text>
+  <text x="24" y="550" class="gs" style="font-size:10px">주황 = 두 실행이 달랐던 값(첫 실행 / 두 번째) · 다시 시도의 60은 같은 결제에 세 번 · 차단기 결과 모름 20건은 최소 10번이 차기 전에 이미 보낸 요청</text>
+  <text x="24" y="564" class="gs" style="font-size:10px">차단기의 중앙·p95·최대는 처음 20건을 포함한 승인 요청 전체(3710 · 3643건)의 값 — 최대 5152~5251ms는 읽기 5초를 기다린 처음 20건</text>
+</svg>

@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 600" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>결정 5 운영 지표 지도 — 결제 서버는 payment.outbox.unsent(보내지 않은 결제 결과 수), payment.outbox.oldest-unsent-age(가장 먼저 남긴 보내지 않은 결과가 기다린 초), payment.reconciliation.open-mismatches(운영자가 확인할 대사 어긋남 수), payment.pg.circuit.state(0 닫힘·1 열림·2 반쯤 열림·3 꺼짐·4 그 밖)를, 재고 서비스는 inventory.dead-letter.pending, 주문 서비스는 order.dead-letter.pending을 게이지로 내며 읽을 때마다 DB 집계나 브로커 조회(5초 제한)로 새로 셈. 결제 서버와 재고 서비스는 health,metrics를 열어 /actuator/metrics/{이름}으로 보고, 주문 서비스는 웹 서버가 없어 서비스 안에만 있으며 수집기는 붙이지 않음. 실패 모음 수는 파티션마다 토픽 끝에서 다시 넣기 그룹이 커밋한 자리를 뺀 값이라 다시 넣은 메시지는 빠지는 구성</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="600" fill="#ffffff"/>
+  <text x="24" y="28" class="h">결정 5 — 운영 지표 여섯 개와 보는 길</text>
+  <text x="24" y="48" class="gs" style="font-size:10.5px">모두 게이지 — 읽을 때마다 DB 집계 한 문장 또는 브로커 조회(5초 제한)로 새로 셈 · Micrometer 1.17.2</text>
+  <rect x="14" y="74" width="470" height="262" rx="16" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <rect x="26" y="62" width="110" height="24" rx="6" fill="#5b7194"/><text x="81" y="78.5" class="tab" text-anchor="middle">결제 서버</text>
+  <rect x="28" y="90" width="442" height="50" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <use href="#i-chart" transform="translate(38,102) scale(0.85)"/>
+  <text x="74" y="110" class="s2" style="font-size:10.5px;fill:#1f2937;font-weight:700"><tspan class="m">payment.outbox.unsent</tspan></text>
+  <text x="74" y="128" class="s2" style="font-size:10px">보내지 않은 결제 결과 수 — 릴레이 밀림</text>
+  <text x="462" y="128" class="gs" text-anchor="end" style="font-size:9.5px"><tspan class="m">countUnsent</tspan></text>
+  <rect x="28" y="148" width="442" height="50" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <use href="#i-chart" transform="translate(38,160) scale(0.85)"/>
+  <text x="74" y="168" class="s2" style="font-size:10.5px;fill:#1f2937;font-weight:700"><tspan class="m">payment.outbox.oldest-unsent-age</tspan></text>
+  <text x="74" y="186" class="s2" style="font-size:10px">가장 먼저 남긴 보내지 않은 결과가 기다린 초</text>
+  <text x="462" y="186" class="gs" text-anchor="end" style="font-size:9.5px"><tspan class="m">findOldestUnsentOccurredAt</tspan></text>
+  <rect x="28" y="206" width="442" height="50" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <use href="#i-chart" transform="translate(38,218) scale(0.85)"/>
+  <text x="74" y="226" class="s2" style="font-size:10.5px;fill:#1f2937;font-weight:700"><tspan class="m">payment.reconciliation.open-mismatches</tspan></text>
+  <text x="74" y="244" class="s2" style="font-size:10px">운영자가 확인할 대사 어긋남 수</text>
+  <text x="462" y="244" class="gs" text-anchor="end" style="font-size:9.5px"><tspan class="m">countNeedingReview</tspan></text>
+  <rect x="28" y="264" width="442" height="50" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <use href="#i-chart" transform="translate(38,276) scale(0.85)"/>
+  <text x="74" y="284" class="s2" style="font-size:10.5px;fill:#1f2937;font-weight:700"><tspan class="m">payment.pg.circuit.state</tspan></text>
+  <text x="74" y="302" class="s2" style="font-size:10px">0 닫힘 · 1 열림 · 2 반쯤 열림 · 3 꺼짐 · 4 그 밖</text>
+  <text x="462" y="302" class="gs" text-anchor="end" style="font-size:9.5px">차단기 <tspan class="m">getState</tspan></text>
+  <rect x="14" y="360" width="470" height="74" rx="16" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <rect x="26" y="348" width="110" height="24" rx="6" fill="#5b7194"/><text x="81" y="364.5" class="tab" text-anchor="middle">재고 서비스</text>
+  <rect x="28" y="374" width="442" height="46" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <use href="#i-chart" transform="translate(38,384) scale(0.8)"/>
+  <text x="74" y="393" class="s2" style="font-size:10.5px;fill:#1f2937;font-weight:700"><tspan class="m">inventory.dead-letter.pending</tspan></text>
+  <text x="74" y="410" class="s2" style="font-size:10px">실패 모음에 남아 아직 다시 넣지 않은 재고 명령 수</text>
+  <rect x="14" y="458" width="470" height="74" rx="16" fill="#f3f6fb" stroke="#9fb3d1" stroke-width="1.5"/>
+  <rect x="26" y="446" width="110" height="24" rx="6" fill="#5b7194"/><text x="81" y="462.5" class="tab" text-anchor="middle">주문 서비스</text>
+  <rect x="28" y="472" width="442" height="46" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/>
+  <use href="#i-chart" transform="translate(38,482) scale(0.8)"/>
+  <text x="74" y="491" class="s2" style="font-size:10.5px;fill:#1f2937;font-weight:700"><tspan class="m">order.dead-letter.pending</tspan></text>
+  <text x="74" y="508" class="s2" style="font-size:10px">실패 모음에 남아 아직 다시 넣지 않은 결제 이벤트 수</text>
+  <rect x="560" y="150" width="188" height="56" rx="8" fill="#e3f3e6" stroke="#6aab78" stroke-width="1.5"/>
+  <text x="654" y="172" class="s2" text-anchor="middle" style="fill:#15803d;font-size:10px"><tspan class="m">/actuator/metrics/</tspan>{이름}</text>
+  <text x="654" y="190" class="s2" text-anchor="middle" style="fill:#15803d;font-size:10px"><tspan class="m">health,metrics</tspan>를 염</text>
+  <line x1="484" y1="170" x2="558" y2="170" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <path d="M484,397 H518 V194 H556" fill="none" stroke="#16a34a" stroke-width="1.6" marker-end="url(#agr)"/>
+  <text x="654" y="224" class="gs" text-anchor="middle" style="font-size:10px">Spring Boot 기본은 health만 노출</text>
+  <rect x="560" y="474" width="188" height="50" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/>
+  <text x="654" y="494" class="bads" text-anchor="middle" style="font-size:10px">웹 서버 없음(9장)</text>
+  <text x="654" y="511" class="bads" text-anchor="middle" style="font-size:10px">서비스 안에만 — 밖으로 안 냄</text>
+  <line x1="484" y1="497" x2="556" y2="497" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <rect x="560" y="74" width="188" height="56" rx="8" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="654" y="96" class="gt" text-anchor="middle" style="font-size:11px">Prometheus 같은 수집기</text>
+  <text x="654" y="116" class="gs" text-anchor="middle" style="font-size:10.5px">붙이지 않음</text>
+  <rect x="540" y="246" width="208" height="210" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="552" y="266" class="t2" style="font-size:11.5px">실패 모음 수 = 파티션마다</text>
+  <text x="552" y="283" class="s2" style="font-size:10px">토픽 끝 − 다시 넣기 그룹이</text>
+  <text x="552" y="298" class="s2" style="font-size:10px">커밋한 자리</text>
+  <rect x="554" y="312" width="180" height="22" rx="3" fill="#f3f4f6" stroke="#9ca3af"/>
+  <rect x="650" y="312" width="84" height="22" rx="3" fill="#fdba74" stroke="#c2410c"/>
+  <line x1="650" y1="306" x2="650" y2="340" stroke="#1f2937" stroke-width="1.6"/>
+  <text x="602" y="328" class="gs" text-anchor="middle" style="font-size:10px">다시 넣음</text>
+  <text x="692" y="328" class="os" text-anchor="middle" style="font-size:10px;font-weight:700">남은 수</text>
+  <text x="650" y="354" class="s2" text-anchor="middle" style="font-size:10px">커밋한 자리</text>
+  <text x="734" y="354" class="s2" text-anchor="end" style="font-size:10px">끝</text>
+  <text x="552" y="376" class="gs" style="font-size:10px">11장 다시 넣기 명령이 한 건마다</text><text x="552" y="394" class="gs" style="font-size:10px">그 그룹에 커밋 → 다시 넣은 것은 빠짐</text><text x="552" y="412" class="gs" style="font-size:10px">커밋이 없으면 토픽 처음부터 셈</text><text x="552" y="430" class="gs" style="font-size:10px">브로커가 답하지 않으면 값 없음</text>
+  <text x="24" y="556" class="gs" style="font-size:10.5px">시험은 각 서비스 컨텍스트의 <tspan class="m">MeterRegistry</tspan>에서 읽음 · 지표를 읽을 때마다 DB 집계 한 문장이나 브로커 조회가 생김</text>
+  <text x="24" y="576" class="gs" style="font-size:10.5px">Micrometer 문서: “A gauge is a handle to get the current value.”</text>
+</svg>

@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <title>12장 계약의 시험 도구 — Mock PG에 거래 조회(GET /v1/transactions, 승인·취소마다 거래 한 건), 가맹점 관리 화면 취소와 카드사에만 남는 승인, 받는 곳 없는 알림 주소(7번 재전송이 끝날 때까지 기다림), 거래 조회 답 붙잡기(래치), 3초 동안 답 없이 사라지는 승인(LOST)을 두고, 결제 서버 두 대(OtherPaymentServer)는 래치로 한 서버의 조회 중에 다른 서버가 대사를 부르게 고정하며, 시험이 결제 줄의 금액·상태를 고치거나 카드사가 모르는 승인 결제를 넣어 우리 쪽 어긋남을 만들고, 장애 계약은 읽기 1초·차단기 4번 중 50%(최소 4번)·2초·1번, 실패 모음은 트리거와 0.1초 한 번 다시 시도로 만드는 구성</title>
+  <style>
+    .h { font-size: 17px; font-weight: 700; fill: #1f2937; }
+    .t { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .t2 { font-size: 13px; font-weight: 700; fill: #1f2937; }
+    .s { font-size: 12px; fill: #4b5563; }
+    .s2 { font-size: 11.5px; fill: #4b5563; }
+    .m { font-family: Menlo, Consolas, monospace; }
+    .lbl { font-size: 12px; fill: #4b5563; }
+    .tab { font-size: 12.5px; font-weight: 700; fill: #ffffff; letter-spacing: 0.5px; }
+    .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .badt { font-size: 13px; font-weight: 700; fill: #b91c1c; }
+    .bads { font-size: 12px; fill: #b91c1c; }
+    .okt { font-size: 13px; font-weight: 700; fill: #15803d; }
+    .oks { font-size: 12px; fill: #15803d; }
+    .gt { font-size: 13px; font-weight: 700; fill: #6b7280; }
+    .gs { font-size: 12px; fill: #6b7280; }
+    .ys { font-size: 12px; fill: #92400e; }
+    .yt { font-size: 13px; font-weight: 700; fill: #92400e; }
+    .ot { font-size: 13px; font-weight: 700; fill: #c2410c; }
+    .os { font-size: 12px; fill: #c2410c; }
+    .bt { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+    .bs { font-size: 12px; fill: #1e3a8a; }
+    .o { stroke: #1f2937; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+    .spine { stroke: #1f2937; stroke-width: 1.5; fill: none; }
+    .life { stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .hl { paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round; }
+    .run { stroke-dasharray: 5 4; animation: run 0.9s linear infinite; }
+    @keyframes run { to { stroke-dashoffset: -18; } }
+    @media (prefers-reduced-motion: reduce) { .run { animation: none; } .anim { display: none; } }
+  </style>
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/></marker>
+    <marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="aor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+    <marker id="agy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker>
+    <marker id="abl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <g id="pkt">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#2dd4bf" stroke="#0f766e" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+    </g>
+    <g id="pkt2">
+      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="#fdba74" stroke="#c2410c" stroke-width="1.5"/>
+      <path d="M-10,-7 L0,1 L10,-7" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    </g>
+    <g id="xmark"><circle r="9" fill="#ef4444"/><path d="M-4,-4 L4,4 M4,-4 L-4,4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="vmark"><circle r="9" fill="#22c55e"/><path d="M-4.5,0 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="xs"><circle r="7" fill="#ef4444"/><path d="M-3,-3 L3,3 M3,-3 L-3,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+    <g id="vs"><circle r="7" fill="#22c55e"/><path d="M-3.5,0 L-1,2.8 L3.5,-2.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-card"><rect x="0" y="3" width="32" height="22" rx="4" fill="#5eead4" class="o"/><rect x="0" y="8" width="32" height="5" fill="#1f2937"/><rect x="4" y="16" width="8" height="6" rx="1.5" fill="#fbbf24" class="o" stroke-width="1"/></g>
+    <g id="i-app"><rect x="0" y="0" width="30" height="30" rx="5" fill="#93c5fd" class="o"/><path d="M0,9 h30" class="o" fill="none"/><circle cx="5" cy="4.5" r="1.4" fill="#1f2937"/><circle cx="10" cy="4.5" r="1.4" fill="#1f2937"/><path d="M7,16 h16 M7,22 h11" stroke="#1e3a8a" stroke-width="1.6" stroke-linecap="round"/></g>
+    <g id="i-db"><path d="M1,5 v20 a13,5 0 0 0 26,0 v-20 a13,5 0 0 1 -26,0 z" fill="#60a5fa" class="o"/><path d="M1,15 a13,5 0 0 0 26,0" fill="none" class="o"/><ellipse cx="14" cy="5" rx="13" ry="5" fill="#bfdbfe" class="o"/></g>
+    <g id="i-server"><rect x="0" y="0" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><rect x="0" y="16" width="36" height="13" rx="3" fill="#cbd5e1" class="o"/><circle cx="7" cy="6.5" r="2.2" fill="#22c55e"/><circle cx="7" cy="22.5" r="2.2" fill="#22c55e"/><path d="M14,6.5 h16 M14,22.5 h16" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-coin"><circle cx="12" cy="12" r="11" fill="#fbbf24" class="o"/><circle cx="12" cy="12" r="7" fill="#fcd34d" stroke="#b45309" stroke-width="1"/><text x="12" y="16.5" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">₩</text></g>
+    <g id="i-key"><circle cx="8" cy="12" r="7.5" fill="#fbbf24" class="o"/><circle cx="8" cy="12" r="2.6" fill="#ffffff" class="o" stroke-width="1.2"/><path d="M15.5,12 H30 V17.5 M25,12 V16.5" fill="none" class="o" stroke-width="2"/></g>
+    <g id="i-clock"><circle cx="14" cy="14" r="13" fill="#fde68a" class="o"/><path d="M14,7 V14 L20,18" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-chips"><rect x="0" y="4" width="13" height="14" rx="4" fill="#e5e7eb" class="o"/><rect x="21" y="4" width="13" height="14" rx="4" fill="#86efac" class="o"/><path d="M14,11 h6" class="o" fill="none"/><path d="M17,8 l3,3 l-3,3" class="o" fill="none"/></g>
+    <g id="i-plane"><path d="M1,13 L31,1 L23,29 L15,19 Z" fill="#fdba74" class="o"/><path d="M15,19 L31,1 L11,16 Z" fill="#fb923c" class="o"/></g>
+    <g id="i-doc"><path d="M0,0 h18 l8,8 v26 h-26 z" fill="#ffffff" class="o"/><path d="M18,0 v8 h8" fill="#e5e7eb" class="o"/><circle cx="20" cy="26" r="8" fill="#22c55e" class="o"/><path d="M16.5,26 l2.5,2.5 l4.5,-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5,10 h9 M5,16 h7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></g>
+    <g id="i-table"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#60a5fa" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="9" fill="#bae6fd" class="o"/><path d="M18,18 L27,27" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="i-chart"><rect x="0" y="16" width="7" height="12" fill="#93c5fd" class="o"/><rect x="10" y="8" width="7" height="20" fill="#60a5fa" class="o"/><rect x="20" y="2" width="7" height="26" fill="#2563eb" class="o"/></g>
+    <g id="i-bell"><path d="M14,3 C8.5,3 6,7.5 6,13 V19 L3,23 H25 L22,19 V13 C22,7.5 19.5,3 14,3 Z" fill="#fde047" class="o"/><circle cx="14" cy="26" r="3" fill="#f59e0b" class="o"/></g>
+    <g id="i-warn"><path d="M14,2 L27,25 H1 Z" fill="#fca5a5" class="o"/><path d="M14,10 V17" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="21" r="1.5" fill="#7f1d1d"/></g>
+    <g id="i-lock"><path d="M7,12 V8 a7,7 0 0 1 14,0 V12" fill="none" class="o" stroke-width="2.2"/><rect x="3" y="12" width="22" height="16" rx="3" fill="#fbbf24" class="o"/><circle cx="14" cy="20" r="2.4" fill="#1f2937"/></g>
+    <g id="i-wait"><path d="M3,1 H23 M3,29 H23" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/><path d="M5,2 C5,10 13,12 13,15 C13,18 5,20 5,28 H21 C21,20 13,18 13,15 C13,12 21,10 21,2 Z" fill="#e0e7ff" class="o"/><path d="M8,26 C9,22 13,21 13,19 C13,21 17,22 18,26 Z" fill="#f59e0b"/></g>
+    <g id="i-box"><path d="M2,9 L15,3 L28,9 V23 L15,29 L2,23 Z" fill="#fcd34d" class="o"/><path d="M2,9 L15,15 L28,9 M15,15 V29" fill="none" class="o"/><path d="M8.5,6 L21.5,12" stroke="#b45309" stroke-width="1.5"/></g>
+    <g id="i-ticket"><path d="M1,6 H29 V12 a3,3 0 0 0 0,6 V24 H1 V18 a3,3 0 0 0 0,-6 Z" fill="#f9a8d4" class="o"/><path d="M10,7 V23" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="2 2"/><text x="19.5" y="19" font-size="9" font-weight="700" fill="#831843" text-anchor="middle">%</text></g>
+    <g id="i-point"><circle cx="13" cy="13" r="12" fill="#a7f3d0" class="o"/><circle cx="13" cy="13" r="8" fill="#6ee7b7" stroke="#047857" stroke-width="1"/><text x="13" y="17.5" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">P</text></g>
+  <g id="i-kafka"><rect x="0" y="2" width="30" height="8" rx="2" fill="#fde68a" class="o"/><rect x="0" y="12" width="30" height="8" rx="2" fill="#fdba74" class="o"/><rect x="0" y="22" width="30" height="8" rx="2" fill="#fde68a" class="o"/><path d="M8,2 v8 M16,2 v8 M8,12 v8 M16,12 v8 M22,12 v8 M8,22 v8" stroke="#1f2937" stroke-width="1"/></g>
+    <g id="i-bolt"><path d="M15,1 L3,17 H12 L9,29 L23,11 H14 Z" fill="#fde047" class="o"/></g>
+    <g id="i-outbox"><rect x="0" y="0" width="30" height="26" rx="3" fill="#ffffff" class="o"/><rect x="0" y="0" width="30" height="7" rx="3" fill="#86efac" class="o"/><path d="M0,13.5 h30 M0,20 h30 M11,7 v19" stroke="#1f2937" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="760" height="560" fill="#ffffff"/>
+  <text x="24" y="28" class="h">12장 계약의 시험 도구 — 어긋남과 장애를 만드는 방법</text>
+  <text x="24" y="48" class="gs" style="font-size:11.5px">카드사 쪽 어긋남은 Mock PG로, 우리 쪽 어긋남은 시험이 결제 줄을 직접 고쳐 만듦</text>
+  <rect x="14" y="64" width="300" height="336" rx="12" fill="#f9fafb" stroke="#374151" stroke-width="1.5"/>
+  <use href="#i-server" transform="translate(26,76) scale(0.8)"/>
+  <text x="64" y="92" class="t2">Mock PG(카드사)</text>
+  <rect x="28" y="110" width="272" height="62" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/><text x="164" y="130" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">거래 조회 <tspan class="m">GET /v1/transactions</tspan></text><text x="164" y="145" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px"><tspan class="m">startDate</tspan>·<tspan class="m">endDate</tspan>·<tspan class="m">startingAfter</tspan>·<tspan class="m">limit</tspan></text><text x="164" y="160" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">승인·취소마다 거래 한 건</text>
+  <rect x="28" y="180" width="272" height="46" rx="8" fill="#fbebdd" stroke="#d99a6c" stroke-width="1.5"/><text x="164" y="199.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">가맹점 관리 화면 취소 <tspan class="m">cancelAtCardCompany</tspan></text><text x="164" y="214.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">카드사에만 남는 승인 <tspan class="m">approveAtCardCompany</tspan></text>
+  <rect x="28" y="234" width="272" height="62" rx="8" fill="#fde8e8" stroke="#e08a8a" stroke-width="1.5"/><text x="164" y="254" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">알림 주소 <tspan class="m">http://localhost:1/…</tspan>(받는 곳 없음)</text><text x="164" y="269" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">7번 재전송(시험 간격 0.1초)이 모두</text><text x="164" y="284" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">끝날 때까지 기다림</text>
+  <rect x="28" y="304" width="272" height="36" rx="8" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/><text x="164" y="326" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">거래 조회 답 붙잡기(래치)</text>
+  <rect x="28" y="348" width="272" height="40" rx="8" fill="#fdf3d7" stroke="#d4a845" stroke-width="1.5"/><text x="164" y="364.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">장애: 승인을 받고 3초 동안 답하지 않다가</text><text x="164" y="379.5" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">아무것도 남기지 않음(LOST)</text>
+  <rect x="338" y="64" width="196" height="200" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="350" y="88" class="t2">결제 서버 두 대(7장)</text>
+  <rect x="352" y="100" width="168" height="40" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/><text x="436" y="124" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px">이 서버</text>
+  <rect x="352" y="150" width="168" height="40" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/><text x="436" y="174" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:11px"><tspan class="m">OtherPaymentServer</tspan></text>
+  <text x="352" y="210" class="gs" style="font-size:10.5px">한 서버가 거래 내역을 조회하는</text><text x="352" y="226" class="gs" style="font-size:10.5px">동안 다른 서버가 대사를 부름</text><text x="352" y="242" class="gs" style="font-size:10.5px">(답을 붙잡아 겹침을 고정)</text>
+  <rect x="556" y="64" width="192" height="200" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <use href="#i-db" transform="translate(568,76) scale(0.75)"/>
+  <text x="598" y="92" class="t2">시험이 직접 고침</text>
+  <rect x="570" y="108" width="164" height="46" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/><text x="652" y="127" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">결제 줄 금액·상태</text><text x="652" y="143" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px"><tspan class="m">update</tspan></text>
+  <rect x="570" y="164" width="164" height="46" rx="8" fill="#e6edfa" stroke="#7b93c9" stroke-width="1.5"/><text x="652" y="183" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">카드사가 모르는</text><text x="652" y="199" class="s2" text-anchor="middle" style="fill:#1f2937;font-size:10.5px">승인 결제 <tspan class="m">insert</tspan></text>
+  <text x="570" y="236" class="gs" style="font-size:10.5px">우리 쪽 어긋남</text>
+  <rect x="338" y="280" width="410" height="114" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <use href="#i-warn" transform="translate(350,292) scale(0.7)"/>
+  <text x="380" y="308" class="t2">카드사 장애 계약 값</text>
+  <text x="352" y="332" class="s2" style="font-size:10.5px;fill:#1f2937">읽기 시간 제한 1초로 줄임</text><text x="352" y="350" class="s2" style="font-size:10.5px;fill:#1f2937">차단기: 최근 4번 중 50%(최소 4번), 열린 시간 2초, 시험 삼아 1번</text>
+  <text x="352" y="378" class="gs" style="font-size:10.5px">운영 값과 다른 계약 값</text>
+  <line x1="12" y1="412" x2="748" y2="412" stroke="#9ca3af" stroke-width="1"/>
+  <rect x="14" y="426" width="734" height="120" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+  <use href="#i-kafka" transform="translate(26,438) scale(0.7)"/>
+  <text x="58" y="454" class="t2">실패 모음과 지표</text>
+  <text x="30" y="480" class="s2" style="font-size:10.5px;fill:#1f2937">실패 모음: 받는 쪽 기록을 트리거로 실패시키고, 다시 시도를 0.1초 한 번으로 줄여 실패 모음(토픽 이름 + <tspan class="m">.DLT</tspan>)에 쌓음</text><text x="30" y="500" class="s2" style="font-size:10.5px;fill:#1f2937">지표: 각 서비스 컨텍스트의 <tspan class="m">MeterRegistry</tspan>에서 읽음(결제 서버·주문 서비스·재고 서비스)</text><text x="30" y="520" class="s2" style="font-size:10.5px;fill:#1f2937">출발 구조 시험 구현: 대사 자리에서 4장 보정·5장 취소 보정·6장 알림 처리를 보정 대기 시간이 지난 때로 한 번씩 돌림</text>
+</svg>
