@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>결제 시스템 챌린지 학습</title>
+<meta name="description" content="결제 시스템 챌린지 연재 12장을 단계별 움직이는 흐름도로 따라가며 익히는 학습 페이지입니다.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="learn.css">
+<script src="../../assets/theme.js"></script>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <a class="brand" href="../../">~/tech-blog</a>
+    <span class="crumb-sep">/</span>
+    <span class="brand-sub">결제 시스템 챌린지 학습</span>
+    <a class="top-link" href="../../series/">연재 글 목록</a>
+    <button id="theme-toggle" class="icon-btn" type="button" aria-label="화면 테마 바꾸기">☀</button>
+  </header>
+
+  <aside class="course" aria-label="장 목록">
+    <div class="course-head"><span>장 목록</span><span class="muted" id="course-count"></span></div>
+    <nav id="course-nav"></nav>
+    <div class="progress"><span>다 본 장</span><span id="progress-count">0 / 12</span></div>
+  </aside>
+
+  <main class="lesson" id="lesson">
+    <div class="lesson-head">
+      <div class="crumbs" id="crumbs"></div>
+      <div class="title-row">
+        <h1 id="lesson-title"></h1>
+        <div class="chips" id="chips"></div>
+      </div>
+      <p class="goal" id="lesson-goal"></p>
+    </div>
+
+    <section class="stage-card">
+      <div class="stage-top">
+        <div class="metrics" id="metrics"></div>
+        <div class="stage-btns">
+          <button class="btn" id="replay" type="button">↻ 다시 보기</button>
+          <button class="btn primary" id="play" type="button">▶ 자동 재생</button>
+        </div>
+      </div>
+      <div class="stage-scroll"><svg id="stage" viewBox="0 0 1000 560" role="img" aria-label="단계 흐름도"></svg></div>
+      <div class="legend" id="legend"></div>
+      <ol class="flowlog" id="flowlog" aria-label="이 단계에서 지나간 흐름"></ol>
+    </section>
+
+    <section class="talk-card" id="talk" hidden>
+      <div class="talk-bar">
+        <span class="talk-title">이야기로 듣기</span>
+        <button class="btn primary" id="talk-play" type="button">▶ 듣기</button>
+        <button class="btn" id="talk-speed" type="button" aria-label="읽는 빠르기">1.0x</button>
+        <label class="talk-sub"><input type="checkbox" id="talk-sub" checked> 자막</label>
+        <span class="talk-note" id="talk-note"></span>
+      </div>
+      <ol class="talk-lines" id="talk-lines"></ol>
+    </section>
+
+    <section class="steps-card">
+      <div class="steps-head"><span>이 장의 단계</span><span class="muted" id="steps-pos"></span></div>
+      <ol class="stepbar" id="stepbar"></ol>
+    </section>
+  </main>
+
+  <aside class="explain" aria-live="polite">
+    <div class="explain-card">
+      <div class="explain-top"><span id="step-pos"></span><span class="tag" id="step-tag"></span></div>
+      <h2 id="step-title"></h2>
+      <div class="step-body" id="step-body"></div>
+      <div class="note" id="step-note" hidden>
+        <div class="note-head">알아 둘 것</div>
+        <div id="step-note-text"></div>
+      </div>
+      <div class="changed" id="step-changed" hidden>
+        <div class="sub-head">바뀐 것</div>
+        <ul id="step-changed-list"></ul>
+      </div>
+      <a class="src-link" id="step-src" target="_self"></a>
+      <div class="nav-btns">
+        <button class="btn" id="prev" type="button">← 이전</button>
+        <button class="btn primary" id="next" type="button">다음 →</button>
+      </div>
+      <div class="kbd-hint"><kbd>←</kbd><kbd>→</kbd> 단계 · <kbd>R</kbd> 다시 보기 · <kbd>Space</kbd> 자동 재생</div>
+    </div>
+    <div class="learn-card">
+      <div class="sub-head">이 장에서 익히는 것</div>
+      <ul id="learn-list"></ul>
+    </div>
+  </aside>
+</div>
+
+<script src="lessons/ch01.js"></script>
+<script src="lessons/ch02.js"></script>
+<script src="lessons/ch03.js"></script>
+<script src="lessons/ch04.js"></script>
+<script src="lessons/ch05.js"></script>
+<script src="lessons/ch06.js"></script>
+<script src="lessons/ch07.js"></script>
+<script src="lessons/ch08.js"></script>
+<script src="lessons/ch09.js"></script>
+<script src="lessons/ch10.js"></script>
+<script src="lessons/ch11.js"></script>
+<script src="lessons/ch12.js"></script>
+<script src="talks/talk01.js"></script>
+<script src="talks/talk02.js"></script>
+<script src="talks/talk03.js"></script>
+<script src="talks/talk04.js"></script>
+<script src="talks/talk05.js"></script>
+<script src="talks/talk06.js"></script>
+<script src="talks/talk07.js"></script>
+<script src="talks/talk08.js"></script>
+<script src="talks/talk09.js"></script>
+<script src="talks/talk10.js"></script>
+<script src="talks/talk11.js"></script>
+<script src="talks/talk12.js"></script>
+<script src="learn.js"></script>
+</body>
+</html>

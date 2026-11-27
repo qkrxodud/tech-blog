@@ -838,6 +838,20 @@ ${sections.join('\n')}`;
 }
 
 // ---------- 카테고리 ----------
+// 연재를 단계별 흐름도와 대화로 따라가는 학습 페이지(learn/). 있는 연재만 카테고리·연재 페이지에 입구를 단다.
+const LEARN_PAGES = { '결제 시스템 챌린지': 'learn/payment/' };
+function learnLink(seriesName, rel) {
+  const href = LEARN_PAGES[seriesName];
+  if (!href) return '';
+  const n = seriesMap[seriesName].length;
+  return `<a class="learn-link" href="${rel}${href}">
+  <span class="learn-badge">학습 페이지</span>
+  <span class="learn-main"><span class="learn-title">글이 어렵다면, 흐름도로 먼저 따라가 보세요</span>
+  <span class="learn-desc">${n}장을 단계마다 요청·응답이 움직이는 흐름도로 보여 주고, 진행자와 개발자의 대화를 음성과 자막으로 들려줍니다.</span></span>
+  <span class="learn-go">열기 →</span>
+</a>`;
+}
+
 function seriesBox(seriesName, rel, currentSlug, compact) {
   const list = seriesMap[seriesName];
   const items = list.map(p => {
@@ -850,6 +864,7 @@ function seriesBox(seriesName, rel, currentSlug, compact) {
   return `<div class="series-box${compact ? ' compact' : ''}">
   <div class="series-head"><div class="series-name">${compact ? '이 시리즈 · ' : '연재 · '}<a href="${href}">${esc(seriesName)}</a></div><div class="series-count">전체 ${list.length}편</div></div>
   <div class="series-list">${items}</div>
+  ${compact ? '' : learnLink(seriesName, rel)}
 </div>`;
 }
 
@@ -882,6 +897,7 @@ function buildSeries() {
   <h1 class="cat-title">${esc(name)} <span class="cat-count">${list.length} posts</span></h1>
   <p class="cat-desc">${esc(info.span ? `${info.span} · ` : '')}${esc(info.catName)} · 다 읽는 데 약 ${info.minutes}분</p>
   ${seriesIntro(name)}
+  ${learnLink(name, rel)}
   <div class="ser-actions"><a class="ser-start" href="${rel}${list[0].url}">1편부터 읽기 →</a><a class="ser-cat" href="${rel}category/${info.category}/">${esc(info.catName)} 주제의 다른 글</a></div>
 </div>
 <div class="ser-list">${items}</div>`;
@@ -1231,6 +1247,8 @@ function write(relPath, data) {
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 fs.cpSync(path.join(ROOT, 'assets'), path.join(DIST, 'assets'), { recursive: true });
+// 연재를 단계별 흐름도로 따라가는 학습 페이지. 손으로 만든 정적 파일이라 그대로 옮긴다.
+fs.cpSync(path.join(ROOT, 'learn'), path.join(DIST, 'learn'), { recursive: true });
 
 (async () => {
   // 그림 크기를 먼저 재 둬야 본문을 찍을 때 태그에 적을 수 있다.

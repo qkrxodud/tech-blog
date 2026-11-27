@@ -267,6 +267,16 @@ a { color: var(--ink); text-decoration: none; }
 .series-item.current .s-title { font-weight: 800; }
 .series-item.current .num { color: var(--accent); }
 .series-item .now { font: 400 11px var(--mono); color: var(--accent); }
+/* 학습 페이지 입구 */
+.learn-link { display: flex; align-items: center; gap: 14px; margin-top: 18px; padding: 14px 16px; border: 1px dashed var(--accent); border-radius: 9px; color: var(--body); transition: background .12s; }
+.learn-link:hover { background: color-mix(in oklch, var(--accent) 8%, transparent); }
+.learn-badge { flex: none; font: 700 11px var(--mono); color: var(--card); background: var(--accent); border-radius: 5px; padding: 4px 8px; }
+.learn-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.learn-title { font-size: 14.5px; font-weight: 800; color: var(--ink); }
+.learn-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.learn-go { margin-left: auto; flex: none; font: 700 13px var(--mono); color: var(--accent-strong); }
+.ser-intro + .learn-link, .cat-header > .learn-link { max-width: 760px; }
+@media (max-width: 640px) { .learn-link { flex-wrap: wrap; } .learn-go { margin-left: 0; } }
 .series-name a { color: inherit; }
 .series-name a:hover { color: var(--accent-strong); }
 
